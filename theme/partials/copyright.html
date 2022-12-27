@@ -1,0 +1,18 @@
+<!-- Copyright and theme information -->
+<div class="md-copyright">
+  {% if config.copyright %}
+  <div class="md-footer-copyright__highlight">
+    <a href="https://matrado.ca" target="_blank" rel="noopener"
+      >epanet-js created by {{ config.copyright }}</a
+    >
+  </div>
+  {% endif %} {% if not config.extra.generator == false %} docs built with
+  <a
+    href="https://squidfunk.github.io/mkdocs-material/"
+    target="_blank"
+    rel="noopener"
+  >
+    Material for MkDocs
+  </a>
+  {% endif %}
+</div>
