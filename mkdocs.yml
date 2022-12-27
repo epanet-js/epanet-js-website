@@ -44,7 +44,7 @@ extra:
       link: https://www.linkedin.com/in/lukepbutler/
   analytics:
     provider: google
-    property: UA-65873036-7
+    property: G-P3DE99YELD
 
 extra_css:
   - stylesheets/colours.css
