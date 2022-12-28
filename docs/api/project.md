@@ -194,7 +194,7 @@ These functions are used for working with time patterns. [More...](Time-Pattern-
 | <a href="../project-functions/time-pattern#getpatternindex"><code>getPatternIndex</code></a>               | Retrieves the index of a time pattern given its ID name.        |
 | <a href="../project-functions/time-pattern#getpatternid"><code>getPatternId</code></a>                     | Retrieves the ID name of a time pattern given its index.        |
 | <a href="../project-functions/time-pattern#setpatternid"><code>setPatternId</code></a>                     | Changes the ID name of a time pattern given its index.          |
-| <a href="../project-functions/time-pattern#getpatternlenth"><code>getPatternLenth</code></a>               | Retrieves the number of time periods in a time pattern.         |
+| <a href="../project-functions/time-pattern#getPatternLength"><code>getPatternLength</code></a>             | Retrieves the number of time periods in a time pattern.         |
 | <a href="../project-functions/time-pattern#getpatternvalue"><code>getPatternValue</code></a>               | Retrieves a time pattern's factor for a given time period.      |
 | <a href="../project-functions/time-pattern#setpatternvalue"><code>setPatternValue</code></a>               | Sets a time pattern's factor for a given time period.           |
 | <a href="../project-functions/time-pattern#getaveragepatternvalue"><code>getAveragePatternValue</code></a> | Retrieves the average of all pattern factors in a time pattern. |
