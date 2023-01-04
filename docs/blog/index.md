@@ -1,1 +1,6 @@
-# Blog
+---
+hide:
+  - footer
+---
+
+# epanet-js Blog
