@@ -31,6 +31,8 @@ theme:
   favicon: assets/favicon.png
   features:
     - navigation.tabs
+    - navigation.indexes
+    - navigation.footer
 #    - instant
 
 # Extras
@@ -61,6 +63,7 @@ markdown_extensions:
 
 plugins:
   - search # necessary for search to work
+  - blog
   #  - awesome-pages
 #  - minify:
 #      minify_html: true
@@ -92,3 +95,5 @@ nav:
           - Simple Control: api/project-functions/simple-control.md
           - Rule Based Control: api/project-functions/rule-based-control.md
           - Enumerated Types: api/project-functions/enumerated-types.md
+  - Blog:
+      - blog/index.md

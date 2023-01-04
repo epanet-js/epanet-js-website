@@ -9,7 +9,7 @@ These functions are used for working with time patterns.
 | <a href="#getpatternindex"><code>getPatternIndex</code></a>               | Retrieves the index of a time pattern given its ID name.        |
 | <a href="#getpatternid"><code>getPatternId</code></a>                     | Retrieves the ID name of a time pattern given its index.        |
 | <a href="#setpatternid"><code>setPatternId</code></a>                     | Changes the ID name of a time pattern given its index.          |
-| <a href="#getpatternlenth"><code>getPatternLenth</code></a>               | Retrieves the number of time periods in a time pattern.         |
+| <a href="#getPatternLength"><code>getPatternLength</code></a>             | Retrieves the number of time periods in a time pattern.         |
 | <a href="#getpatternvalue"><code>getPatternValue</code></a>               | Retrieves a time pattern's factor for a given time period.      |
 | <a href="#setpatternvalue"><code>setPatternValue</code></a>               | Sets a time pattern's factor for a given time period.           |
 | <a href="#getaveragepatternvalue"><code>getAveragePatternValue</code></a> | Retrieves the average of all pattern factors in a time pattern. |
@@ -110,12 +110,12 @@ setPatternId(index: number, id: string): void;
 
 ---
 
-#### getPatternLenth
+#### getPatternLength
 
 Retrieves the number of time periods in a time pattern.
 
 ```typescript
-getPatternLenth(index: number): number;
+getPatternLength(index: number): number;
 ```
 
 **Parameters**
