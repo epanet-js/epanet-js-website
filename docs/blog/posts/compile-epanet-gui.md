@@ -48,7 +48,7 @@ Once you have downloaded the installer, run it and select “I already have a pr
   <figcaption>Install Delphi Windows Community Edition, and remember to select TeeChart Standard during the installation process.</figcaption>
 </figure>
 
-## Step 4: Copy the DLL
+## Step 4: Copy the toolkit DLL
 
 In the GUI source code you downloaded, there will be a folder called Delphi_GUI which contains another folder called epanet2w. Inside the toolkit folder, there will be a DLL called epanet2.dll. Copy the DLL into the epanet2w folder.
 
