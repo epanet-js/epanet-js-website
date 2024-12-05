@@ -21,7 +21,7 @@ Thanks to Oscar Vegas Niño for creating a [guide in Spanish](https://www.resear
 
 First, download the EPANET 2.2 programmer’s toolkit and the source code files from the EPANET website. Extract these zip files to your local drive.
 
-** Download: ** [:octicons-link-external-16: EPANET Source Code](https://www.epa.gov/water-research/epanet){:target="\_blank"}
+**Download:** [:octicons-link-external-16: EPANET Source Code](https://www.epa.gov/water-research/epanet){:target="\_blank"}
 
 <figure markdown>
   ![EPANET Source Code Location](/assets/blog/compile-epanet-gui/1-download-source-code.png){: style="max-width:400px" }
@@ -32,7 +32,7 @@ First, download the EPANET 2.2 programmer’s toolkit and the source code files 
 
 The EPANET GUI is written in Pascal, so you will need to download the Delphi Community Edition from the Embarcadero website. You will need to register and provide your email address to receive a serial code.
 
-** Download: ** [:octicons-link-external-16: Delphi Community Edition](https://www.embarcadero.com/products/delphi/starter/free-download){:target="\_blank"}
+**Download:** [:octicons-link-external-16: Delphi Community Edition](https://www.embarcadero.com/products/delphi/starter/free-download){:target="\_blank"}
 
 <figure markdown>
 ![Delphi Community Edition Download](/assets/blog/compile-epanet-gui/2-register.png){style="border:1px solid #e5e5e5;box-shadow: 0px 10px 20px -6px rgba(0,0,0,0.1);"}

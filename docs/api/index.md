@@ -17,7 +17,7 @@ If you are not familiar with the OWA-EPANET Toolkit API or EPANET it is worthwhi
 
 ** List of Classes **
 
-| Class                    | Description                                                                                     |
-| ------------------------ | ----------------------------------------------------------------------------------------------- |
-| [Workspace](./workspace) | A virtual file system where you can store and read files that are consumed by the tool kit      |
-| [Project](./project)     | A single instance of the EN_Project wrapper object and a singleton with all 122 toolkit methods |
+| Class                       | Description                                                                                     |
+| --------------------------- | ----------------------------------------------------------------------------------------------- |
+| [Workspace](./workspace.md) | A virtual file system where you can store and read files that are consumed by the tool kit      |
+| [Project](./project.md)     | A single instance of the EN_Project wrapper object and a singleton with all 122 toolkit methods |
