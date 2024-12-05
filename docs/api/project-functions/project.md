@@ -44,7 +44,7 @@ Future versions of the epanetJS library will include the ability to attach a cal
 Initializes an EPANET project.
 
 ```typescript
-runProject(rptFile: String, outFile: String, unitType: FlowUnits, headLosstype: HeadLossType): void
+init(rptFile: String, outFile: String, unitType: FlowUnits, headLosstype: HeadLossType): void
 ```
 
 **Parameters**
