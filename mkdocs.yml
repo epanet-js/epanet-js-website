@@ -79,7 +79,9 @@ nav:
       - Getting Started: introduction/index.md
       - What is Water Modelling: introduction/water-modelling.md
       - Library Development: introduction/development.md
-      - Examples: introduction/examples.md
+      - Examples:
+          - index: introduction/examples/index.md
+          - React + Vite + TypeScript: introduction/examples/vite.md
       - Showcase: introduction/showcase.md
   - API:
       - Overview: api/index.md
