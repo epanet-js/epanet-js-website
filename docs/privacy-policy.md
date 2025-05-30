@@ -64,4 +64,4 @@ epanet-js is operated from Canada and hosted in the United States.
 
 epanet-js may update this policy once in a blue moon — we’ll notify you about significant changes by emailing the account owner or by placing a prominent notice on our site. You can access, change or delete your personal information at any time by contacting **support@epanetjs.com**.
 
-Questions about this privacy policy? Please **support@epanet.com** and we’ll be happy to answer them!
+Questions about this privacy policy? Please **support@epanetjs.com** and we’ll be happy to answer them!
