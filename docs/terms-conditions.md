@@ -19,7 +19,7 @@ Violation of any of the terms below may result in the termination of your accoun
 
 1. For any upgrade or downgrade in plan level, will result in the new rate being charged at the next billing cycle. There will be no prorating for downgrades in between billing cycles.
 2. Downgrading your Service may cause the loss of features or capacity of your account. The Company does not accept any liability for such loss.
-3. All fees are exclusive of all taxes, levies, or duties imposed by taxing authorities, and you shall be responsible for payment of all such taxes, levies, or duties, excluding only United States (federal or state) taxes. Where required, The Company will collect those taxes on behalf of taxing authority and remit those taxes to taxing authorities.
+3. All fees are exclusive of all taxes, levies, or duties imposed by taxing authorities, and you shall be responsible for payment of all such taxes, levies, or duties, excluding only Canadian taxes. Where required, The Company will collect those taxes on behalf of taxing authority and remit those taxes to taxing authorities.
 4. Refunds are processed according to this policy: If you're ever unhappy with epanet-js, for any reason, just contact **support@epanetjs.com** and we'll take care of you.
 
 ## **Cancellation and Termination**
@@ -37,7 +37,7 @@ Violation of any of the terms below may result in the termination of your accoun
 
 ## **Copyright and Content Ownership**
 
-1. All content posted on the Service must comply with European copyright law.
+1. All content posted on the Service must comply with Canadian copyright law.
 2. We claim no intellectual property rights over the material you provide to the Service. All materials uploaded remain yours.
 3. The Company does not pre-screen content, but reserves the right (but not the obligation) in their sole discretion to refuse or remove any content that is available via the Service.
 4. The look and feel of the Service is copyright© to the Company. All rights reserved. You may not duplicate, copy, or reuse any portion of the HTML, CSS, JavaScript, or visual design elements without express written permission from the Company.
