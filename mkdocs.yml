@@ -1,8 +1,7 @@
 # Project information
 site_name: epanet-js
 site_description: >-
-  epanet-js is a javascript library for engineers, developers and academics to simulate water networks
-  using the Open Water Analytics EPANET engine.
+  Run EPANET in your browser with epanet-js — no download needed. Works on Mac, Linux, or Windows. Save files locally. Modern, enhanced, and built on the trusted EPANET engine.
 site_author: Luke Butler
 site_url: https://epanetjs.com/
 
@@ -12,7 +11,7 @@ repo_url: https://github.com/modelcreate/epanet-js
 edit_uri: blob/master/website/docs/
 
 # Copyright
-copyright: Luke Butler - Matrado
+copyright: Iterating Inc.
 
 # Configuration
 theme:
@@ -74,18 +73,17 @@ plugins:
 #      minify_html: true
 
 nav:
-  - Home: index.md
-  - Learn More:
-      - Getting Started: introduction/index.md
-      - What is Water Modelling: introduction/water-modelling.md
-      - Library Development: introduction/development.md
-      - Examples:
-          - index: introduction/examples/index.md
-          - React + Vite + TypeScript: introduction/examples/vite.md
-      - Showcase: introduction/showcase.md
-  - API:
-      - Overview: api/index.md
-
+  - Home: index.html
+  - Toolkit:
+      - Getting Started: api/index.md
+      - Learn More:
+          - What is Water Modelling: api/introduction/water-modelling.md
+          - Library Development: api/introduction/development.md
+          - Examples:
+              - index: api/introduction/examples/index.md
+              - React + Vite + TypeScript: api/introduction/examples/vite.md
+          - Showcase: api/introduction/showcase.md
+      - Toolkit Overview: api/toolkit.md
       - Workspace Class: api/workspace.md
       - Project Class: api/project.md
       - Project Class (Methods):
