@@ -6,7 +6,9 @@ authors:
   - lbutler
 ---
 
-# Introducing epanet-js: Fast, local-first water modeling right in your browser
+# Introducing epanet-js
+
+**Fast, local-first water modeling right in your browser**
 
 For decades, the U.S. EPA’s EPANET engine has powered almost every hydraulic modeling tool on the market. Yet most of us still wrestle with either the “classic” Windows interface — slow, dated, and held together by workarounds. Meanwhile, commercial platforms cost a fortune, lock up our data, and bury us in features we don’t need.
 
