@@ -5,6 +5,9 @@ categories:
 authors:
   - lbutler
 draft: true
+social:
+  cards_layout_options:
+    description: You can now build EPANET models from GIS data in seconds. Plus - tanks, check valves, new languages, and smarter translations.
 ---
 
 # epanet-js July 2025 Progress Report

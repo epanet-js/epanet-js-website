@@ -68,6 +68,14 @@ markdown_extensions:
 plugins:
   - search # necessary for search to work
   - blog
+  - meta
+  - social:
+      cards_layout: default/variant
+      cards_layout_options:
+        background_image: docs/assets/banner-background2.png
+        background_color: transparent #"#7090ac"
+        color: "#333"
+        logo: docs/assets/favicon.png
   #  - awesome-pages
 #  - minify:
 #      minify_html: true
