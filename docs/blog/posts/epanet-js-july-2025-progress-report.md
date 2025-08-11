@@ -82,6 +82,13 @@ And we're not stopping here. We have a few tricks up our sleeves to make this ev
 
 What used to take hours of manual (and less accurate) drawing can now be done before your coffee gets cold.
 
+<figure markdown="span">
+  <a href="https://www.youtube.com/watch?v=3B9UWHMb3W4" target="_blank" rel="noopener">
+  ![Watch the new model build process](/assets/blog/progress-report/2025-07/youtube-preview.png){ width="700"  }
+  </a>
+  <figcaption style="margin-top: 0.5rem">Watch the full model build process on YouTube.</figcaption>
+</figure>
+
 ## **More Realistic Models**
 
 **Tanks and Check Valves are Here!**
