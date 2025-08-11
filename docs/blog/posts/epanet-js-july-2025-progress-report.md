@@ -4,7 +4,6 @@ categories:
   - Blog
 authors:
   - lbutler
-draft: true
 social:
   cards_layout_options:
     description: You can now build EPANET models from GIS data in seconds. Plus - tanks, check valves, new languages, and smarter translations.
@@ -26,6 +25,28 @@ It’s been one month since we launched [epanet-js](https://epanetjs.com), and t
 We've been busy adding new features and improving the experience. Highlights this month include full support for tanks and check valves, plus support for three new languages: Dutch, Portuguese, and French.
 
 But the biggest news, and one of our most requested features, is finally here - GIS model builds!
+
+<div style="text-align: center">
+  <a href="https://app.epanetjs.com" style="
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: white;
+    zoom: 75%;
+    background-image: linear-gradient(to right, #2563eb, #9333ea);
+    border-radius: 0.375rem;
+    text-decoration: none;
+  ">
+    Launch epanet-js. No login needed.
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14"></path>
+      <path d="m12 5 7 7-7 7"></path>
+    </svg>
+  </a>
+</div>
 
 ## **Build Your Model from GIS Data**
 
@@ -61,10 +82,6 @@ And we're not stopping here. We have a few tricks up our sleeves to make this ev
 
 What used to take hours of manual (and less accurate) drawing can now be done before your coffee gets cold.
 
-[SCREENSHOT AND LINK TO YOUTUBE DEMO]
-
-Watch a quick demo of the new GIS model build feature and how it works.
-
 ## **More Realistic Models**
 
 **Tanks and Check Valves are Here!**
@@ -84,6 +101,28 @@ Sometimes referred to as non-return valves, check valves are simple but critical
 </figure>
 
 With tanks and check valves now included, you have a complete toolkit for laying out your network.
+
+<div style="text-align: center">
+  <a href="https://app.epanetjs.com" style="
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: white;
+    zoom: 75%;
+    background-image: linear-gradient(to right, #2563eb, #9333ea);
+    border-radius: 0.375rem;
+    text-decoration: none;
+  ">
+    Launch epanet-js now.
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14"></path>
+      <path d="m12 5 7 7-7 7"></path>
+    </svg>
+  </a>
+</div>
 
 ## **Speaking Your Language: Now in Dutch, Portuguese & French**
 
@@ -166,5 +205,27 @@ Thank you again for an amazing first month. We're thrilled by the thousands of y
 If you haven’t already, [please give us a follow](https://www.linkedin.com/company/iteratinginc). You’ll get the latest epanet-js updates as they happen, and your support helps build momentum for a more open and sustainable future.
 
 Support EPANET by using software that supports it back.
+
+<div style="text-align: center">
+  <a href="https://app.epanetjs.com" style="
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: white;
+    zoom: 75%;
+    background-image: linear-gradient(to right, #2563eb, #9333ea);
+    border-radius: 0.375rem;
+    text-decoration: none;
+  ">
+    Launch epanet-js. No login needed.
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14"></path>
+      <path d="m12 5 7 7-7 7"></path>
+    </svg>
+  </a>
+</div>
 
 — Luke and Sam
