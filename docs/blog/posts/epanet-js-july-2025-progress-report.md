@@ -55,7 +55,7 @@ We heard you loud and clear: drawing an entire network from scratch is a huge, i
 Now, you can bring your GIS data directly into epanet-js. For consultants building a new model for a utility or engineers who have their data on hand, this feature is a must.
 
 <figure>
-    <video width=720 autoplay loop playsinline style="
+    <video width=720 autoplay loop muted playsinline style="
     box-sizing: border-box;
     border-style: solid;
     border-color: #e5e7eb;
@@ -184,7 +184,7 @@ A subtle but important change. We tweaked our automatic contrast logic so that j
 We fixed a frustrating bug where clicking just outside a junction could accidentally move it. Now, you have to be much more deliberate to move a node, preventing unwanted changes to your layout.
 
 <figure>
-    <video width=400 autoplay loop playsinline style="
+    <video width=400 autoplay muted loop playsinline style="
     box-sizing: border-box;
     border-style: solid;
     border-color: #e5e7eb;
