@@ -2,6 +2,7 @@
 date: 2025-08-07
 categories:
   - Blog
+  - Progress Report
 authors:
   - lbutler
 social:
