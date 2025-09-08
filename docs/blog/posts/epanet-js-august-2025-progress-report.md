@@ -96,7 +96,7 @@ We also dedicated time this month to improving the overall user experience, star
 
 ### A Modern and Consistent Icon Set
 
-We've refreshed the app with a new set of icons! We’ve moved from the radix icon set to the much more extensive **lucid icon library**. This gives us thousands of icons to choose from, allowing us to create a more modern, consistent, and intuitive interface. You'll notice that buttons and tools, like **Save** and **Save As**, are now much clearer and easier to understand at a glance.
+We've refreshed the app with a new set of icons! We’ve moved from the [radix icon](https://www.radix-ui.com/icons) set to the much more extensive [**Lucide icon library**](https://lucide.dev/). This gives us thousands of icons to choose from, allowing us to create a more modern, consistent, and intuitive interface. You'll notice that buttons and tools, like **Save** and **Save As**, are now much clearer and easier to understand at a glance.
 
 <figure markdown="span">
   <div style="position: relative; width: 700px;">
