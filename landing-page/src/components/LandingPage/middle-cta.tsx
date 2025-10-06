@@ -24,7 +24,7 @@ export default function NewsletterCTA() {
           asChild
         >
           <a href="https://app.epanetjs.com">
-            Start modeling now.
+            Start modeling now
             <ArrowRight className="ml-2 h-4 w-4" />
           </a>
         </Button>
