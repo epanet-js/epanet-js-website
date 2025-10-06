@@ -24,3 +24,10 @@ yarn-error.log*
 # python virtual environmentß
 /epanet-js-website
 /epanet-js-website-v2
+
+# Compiled landing page files
+/docs/assets/
+/docs/assets/index*.js
+/docs/assets/index*.css
+/docs/assets/index*.png
+/docs/assets/index*.svg
