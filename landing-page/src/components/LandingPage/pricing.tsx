@@ -116,20 +116,12 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
         )}
         {/* Included Features */}
         {features.length > 0 && (
-          <ul
-            className={`space-y-2 text-sm ${
-              name === "Teams" ? "text-muted-foreground" : ""
-            }`}
-          >
+          <ul className="space-y-2 text-sm">
             {features.map((feature, index) => (
               <li key={index} className="flex items-start">
                 {" "}
                 {/* Changed to items-start */}
-                <Check
-                  className={`mr-2 mt-0.5 h-4 w-4 ${
-                    name === "Teams" ? "text-gray-400" : "text-blue-500"
-                  } flex-shrink-0`}
-                />
+                <Check className="mr-2 mt-0.5 h-4 w-4 text-blue-500 flex-shrink-0" />
                 <span>{feature}</span>
               </li>
             ))}
@@ -331,19 +323,18 @@ const planDetails = {
       annually: { price: 2500, suffix: "year" }, // Approx 17% discount ($500 saving)
     },
     tooltipText: "Minimum 2 licenses",
-    features: [
-      "Priority support",
-      "Pay by invoice",
-      "Team storage",
-      "Point in time restore – 90 days",
-      "Sharing of networks",
-      "Volume discounts",
-    ],
-
+    features: ["Priority support", "Volume discounts", "Pay by invoice"],
     featureSubtitle: "Everything in professional, and:",
+    comingSoonFeatures: [
+      "Team storage",
+      "Point in time restore - 90 days",
+      "Sharing of networks",
+    ],
+    comingSoonSubtitle: "Coming soon:",
     buttonVariant: "outline" as const,
-    isPlanComingSoon: true,
-    buttonText: "Apply for early access", // Changed from original as it's coming soon
+    isPlanComingSoon: false,
+    buttonText: "Get Teams.",
+    buttonUrl: "https://tally.so/r/wkqjyo",
   },
 };
 
