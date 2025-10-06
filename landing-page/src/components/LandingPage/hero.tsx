@@ -22,7 +22,7 @@ export default function Hero() {
                 water modeling — powered by the engine you already trust.
               </p>
             </div>
-            <div className="flex flex-col gap-2 min-[400px]:flex-row mx-auto lg:mx-0">
+            <div className="flex flex-col gap-2 md:flex-row mx-auto lg:mx-0">
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
