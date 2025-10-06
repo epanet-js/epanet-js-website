@@ -222,6 +222,12 @@ export default function Footer() {
                 >
                   Privacy Policy
                 </a>
+                <a
+                  href="https://epanetjs.com/cookies-policy/"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Cookies Policy
+                </a>
               </nav>
             </div>
           </div>
