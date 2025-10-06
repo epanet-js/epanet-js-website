@@ -171,6 +171,14 @@ export default function Footer() {
                   Help Center
                 </a>
                 <a
+                  href="https://roadmap.epanetjs.com"
+                  target="_blank"
+                  rel="noopener"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Roadmap
+                </a>
+                <a
                   href="https://github.com/epanet-js/epanet-js"
                   rel="noopener"
                   className="text-gray-300 hover:text-white transition-colors"
