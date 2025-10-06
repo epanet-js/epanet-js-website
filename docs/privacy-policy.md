@@ -1,67 +1,103 @@
-Last updated: Mar 7, 2025
+Last updated: Oct 5, 2025
 
-The privacy of your data — and it is your data, not ours! — is a big deal to us. We’ll only ever access your account to help you with a problem or squash a software bug. We’ll never open any uploaded files unless you ask us to. We log all access to all accounts by IP address, so we can always verify that no unauthorized access has happened for as long as the logs are kept.
+## **INTRODUCTION**
 
-### **Identity & access**
+Iterating Inc. is the owner of the domain names “epanetjs.com”, “masteringwater.com”, and “iterating.ca”, as well as the applications and associated educational content it makes available to its Users (hereinafter, the “Websites and Services”) for the purpose of offering its products, services, and educational content.
 
-When you sign up for epanet-js, we ask for your name, company name, and email address. That's just so you can personalize your new account, and we can send you invoices, updates, or other essential information. We’ll never sell your personal info to third parties, and we won’t use your name or company in marketing statements without your permission, either.
+This Privacy Policy forms an integral part of the Terms and Conditions of use of our Websites and Services and will apply to the processing of personal data of the Users of our Websites and services, including both data provided directly by Users and data that may be collected automatically or provided by third parties during the provision of any service and/or in the development of a contractual relationship with us.
 
-When you sign up to epanet-js, we typically ask for identifying information such as your email address, and maybe a company name. That’s just so you can personalize your new account, and we can send you invoices, updates, or other essential information. We sometimes also give you the option to add a profile picture that displays in our products, but we do not normally look at or access that picture. We’ll never sell your personal info to third parties, and we won’t use your name or company in marketing statements without your permission either.
+Your privacy matters to us, and we are committed to protecting your information in Canada, the European Union, and any other jurisdiction where we operate. Our Privacy Policy describes how Iterating Inc. collects such data, complying with the provisions of Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data (GDPR), as well as in compliance with any other applicable data protection regulations, ensuring a high standard of protection for all our users globally.
 
-When you pay for epanet-js, we ask for your credit card and billing address. That's so we can charge you for service, calculate taxes due, and send you invoices. Your credit card is passed directly to our payment processor and doesn't ever go through our servers. We store a record of the payment transaction.
+Access, use, and maintenance of our Websites and Services imply the processing of personal information of its Users in accordance with the purposes contained and duly informed in this policy. Browse or using our Websites, as well as their services and functionalities, implies full and unreserved acceptance by the User of the content of this Privacy Policy and the Terms and Conditions.
 
-When you write epanet-js with a question or to ask for help, we'll keep that correspondence, and the email address, for future reference. When you browse our marketing pages, we'll track that for statistical purposes (like conversion rates and to test new designs). We also store any information you volunteer, like surveys, for as long as it makes sense.
+You should read our policy carefully to ensure you fully understand it. We recommend that you consult the Policy frequently for any updates or changes it may contain.
 
-The only time we'll ever share your info:
+In case you have any questions, you can contact us directly at the postal address and email provided in the section “WHO IS RESPONSIBLE FOR THE PROCESSING OF YOUR DATA?”. If you do not agree with our policies, please leave our Websites and do not use our services.
 
-- To provide products or services you've requested, with your permission.
-- To investigate, prevent, or take action regarding illegal activities, suspected fraud, situations involving potential threats to the physical safety of any person, violations of our Terms of Service, or as otherwise required by law.
-- If epanet-js is acquired by or merged with another company — we don’t plan on that, but if it happens — we’ll notify you well before any info about you is transferred and becomes subject to a different privacy policy.
+## **WHO IS RESPONSIBLE FOR THE PROCESSING OF YOUR DATA?**
 
-### **Your rights with respects to your information**
+Iterating Inc. (hereinafter, “Iterating”), with its registered office at 2967 Dundas St W \#536, Toronto, Ontario, M6P 1Z2, Canada, is the Data Controller of your personal data, which will be processed in accordance with the parameters set forth in this policy.
 
-You may have heard about the General Data Protection Regulation (“GDPR”) in Europe. GDPR gives people under its protection certain rights with respect to their personal information collected by us on the Site. Accordingly, epanet-js recognizes and will comply with GDPR and those rights, except as limited by applicable law. The rights under GDPR include:
+All comments, queries, and requests regarding our use of your information should be addressed to the email address support@iterating.ca.
 
-- **Right of Access.** This includes your right to access the personal information we gather about you, and your right to obtain information about the sharing, storage, security and processing of that information.
-- **Right to Correction.** This is your right to request correction of your personal information.
-- **Right to Erasure.** This is your right to request, subject to certain limitations under applicable law, that your personal information be erased from our possession (also known as the “Right to be forgotten”). However, if applicable law requires us to comply with your request to delete your information, fulfillment of your request may prevent you from using epanet-js services and may result in closing your account.
-- **Right to Complain.** You have the right to make a complaint regarding our handling of your personal information with the appropriate supervisory authority.
-- Right to Restrict Processing. This is your right to request restriction of how and why your personal information is used or processed.
-- **Right to Object.** This is your right, in certain situations, to object to how or why your personal information is processed.
-- **Right to Portability.** This is your right to receive the personal information we have about you and the right to transmit it to another party.
-- **Right to not be subject to Automated Decision-Making.** This is your right to object and prevent any decision that could have a legal, or similarly significant, effect on you from being made solely based on automated processes. This right is limited, however, if the decision is necessary for performance of any contract between you and us, is allowed by applicable European law, or is based on your explicit consent.
+## **WHAT ARE THE DETAILS OF THE PROCESSING OF YOUR DATA?**
 
-Many of these rights can be exercised by signing in and directly updating your account information. If you have questions about exercising these rights or need assistance, please contact us at **support@epanetjs.com**.
+We collect and process the information that the User provides us or to which we have access during navigation on our Websites and through the use of the services provided through them, under the terms established in this Privacy Policy.
 
-### **Processors we use**
+Below, you will find more details about the processing of such data, classified by purpose:
 
-As part of the services we provide, and only to the extent necessary, we may use certain third party processors to process some or all of your personal information. For identification of these processors, and where they are located, please see the list bellow. We have signed appropriate data processing contracts that comply with GDPR with each processor.
+### **Data linked to the user:**
 
-Subprocessors located in the United States:
+#### **Providing access and user account management (Login/Registration):**
 
-- [Google Cloud Platform](https://cloud.google.com/security/gdpr/resource-center/). Cloud services provider.
-- [Google Analytics](https://support.google.com/analytics/answer/6004245?hl=en). Web analytics service.
-- [Stripe](https://stripe.com/privacy). Payment processing software.
-- [Kit](https://www.kit.com). Messaging provider.
+- **Data processed:** email, first name, and last name.
+- **Method of obtaining:** Directly from the user when they complete the registration form directly from our Platform or when they do so through our links, integrated with third-party services such as Google or Microsoft, or by an email to which we send a code to log in (Clerk).
+- **Legal bases:** Performance of a contract to which the data subject is party or in order to take steps at the request of the data subject prior to entering into a contract.
+- **Retention periods:** The time necessary to fulfill the purpose for which the data were collected (as long as the user maintains their account active and is a user of our services), and to comply with our legal obligations, unless the user revokes consent, requests erasure, restricts processing, portability, or objects to processing, except for those that need to be retained for a longer period as required by law.
+- **Data communication:** We delegate the storage and handling of user data to Clerk.
+- **International transfers:** The company is located in Canada, which is a country recognized by the EU as an adequate and safe country for protection. When using Clerk, data may be transferred to jurisdictions outside the EU. We ensure that adequate data transfer mechanisms (such as EU Standard Contractual Clauses) are in place with our providers, thus guaranteeing data protection regardless of their location.
 
-### **Law enforcement**
+#### **Provision of contracted services (Payments and Subscriptions):**
 
-epanet-js won’t hand your data over to law enforcement unless a court order says we have to. We flat-out reject requests from local and federal law enforcement when they seek data without a court order. And unless we're legally prevented from it, we’ll always inform you when such requests are made.
+- **Data processed:** identifying data (first name and last name), contact data (email), payment data.
+- **Method of obtaining:** Directly from the User.
+- **Legal bases:** Performance of a contract to which the data subject is party or in order to take steps at the request of the data subject prior to entering into a contract.
+- **Retention period:** The time necessary to fulfill the purpose for which the data were collected (as long as the user maintains their active subscription), and to comply with our legal obligations, unless the User revokes consent, requests erasure, restricts processing, portability, or objects to processing, except for those that need to be retained for a longer period as required by law.
+- **Data communication:** We use Stripe for payments and subscriptions. The Stripe platform is an external payment platform. We do not manage or process credit card or bank account data, only those necessary to know if the user has paid the fee, which do not include the aforementioned data.
 
-### **Security & Encryption**
+#### **Sending commercial information and news (Newsletter):**
 
-All data is encrypted via SSL/TLS when transmitted from our servers to your browser. The database backups are also encrypted. Data isn’t encrypted while it's live in our database (since it needs to be ready to send to you when you need it), but we go to great lengths to secure your data at rest.
+- **Data processed:** users' phone number, name, and email.
+- **Method of obtaining:** Directly from the User when they provide their data through the forms enabled for subscription (KIT).
+- **Legal bases:** Express consent of the data subject.
+- **Retention period:** As long as the User is subscribed to this news service, unless they revoke their consent. After its termination, data will be kept for the legally foreseen periods.
+- **Data communication:** We use KIT to send updates and notifications.
+- **International transfers:** No data transfers to third countries are foreseen.
 
-### **Deleted data**
+#### **Communication with the user (Support and Contact):**
 
-When you cancel your account, we'll ensure that nothing is stored on our servers past 30 days. Anything you delete on your account while it's active will also be purged within 30 days (up until then it's available in the trash can).
+- **Data processed:** identifying data (first name and last name), contact data (email and phone number) and any other information the User wishes to provide verbally or in writing, as there are free text boxes in the different spaces, establishing a communication channel through which the User can include any type of personal data they deem appropriate in their message.
+- **Method of obtaining:** Directly from the User when they complete contact forms or contact via email or through our support channels.
+- **Legal bases:** Performance of a contract to which the data subject is party or for the application of contractual measures at their request (to manage their request or query).
+- **Retention period:** As long as necessary to process and respond to the query. After its completion, data will be kept for the legally foreseen periods to comply with legal obligations.
+- **Data communication:** Data may be communicated to third-party support or communication service providers if necessary to manage the query.
+- **International transfers:** No data transfers to third countries are foreseen.
 
-### **Location of site and data**
+### **Data not directly linked to the user:**
 
-epanet-js is operated from Canada and hosted in the United States.
+#### **Website/Application usage and functionality analysis (PostHog):**
 
-### **Changes and questions**
+- **Data processed:** traffic and Browse data, user actions within the application.
+- **Method of obtaining:** Through Browse and using the application.
+- **Legal bases:** Legitimate interest (to improve the application and make better decisions about functionalities and improvements). If non-essential cookies are used, User consent will be required.
+- **Retention period:** Defined according to PostHog configuration, no more than 18 months.
+- **Data communication:** Data is processed by PostHog.
+- **International transfers:** When using PostHog, data may be transferred to jurisdictions outside the EU. We ensure that adequate data transfer mechanisms (such as EU Standard Contractual Clauses) are in place with our providers. Options for cookieless tracking are explored to minimise privacy impact.
 
-epanet-js may update this policy once in a blue moon — we’ll notify you about significant changes by emailing the account owner or by placing a prominent notice on our site. You can access, change or delete your personal information at any time by contacting **support@epanetjs.com**.
+## **COMMUNICATIONS**
 
-Questions about this privacy policy? Please **support@epanetjs.com** and we’ll be happy to answer them!
+Iterating Inc. may share information about platform activity, as well as about users who interact on it, always previously anonymised, so that it cannot reasonably be used to identify you. For example, we may share raw data or aggregated user statistics to describe our business to partners, the public, or for third-party collaborators of Iterating to analyse such anonymised and fully disassociated information to detect problems, trends, and help us improve our services.
+
+## **HOW DO WE PROTECT YOUR DATA?**
+
+Iterating Inc. informs you that it has taken reasonable technical and organizational measures to prevent the loss, misuse, alteration, or unlawful disclosure of your data. Any third party, agent, or representative of Iterating Inc. who needs to access your information will also be required to implement reasonable technical and organizational measures for the protection of your information.
+
+However, our Websites may contain links to third-party websites. If you choose to click on these third-party links, you will be redirected to the website of such third parties. Please note that these websites are governed by their own policies, so we recommend that you review their terms and conditions, privacy policy, and cookie policy before using such services. We cannot be held responsible for the use and access to such third-party websites or for the information or content made available by such third-party sites. The presence of third-party links on our website does not indicate that the company endorses or recommends such third parties. Access to or use of these sites is solely at the user's own risk.
+
+## **WHAT ARE YOUR RIGHTS REGARDING YOUR DATA?**
+
+As a data subject, the User has the right to exercise the following rights, which we guarantee to all our users, regardless of their geographical location:
+
+- Access to your data.
+- Rectification of your data, because we also want to ensure that your information is accurate and up to date.
+- Restriction of the processing of data concerning you.
+- Objection to the processing of your data, when the legal basis for processing is our legitimate interest.
+- Withdrawal of your consent for data processing (when consent was the legal basis).
+- Portability of your data, when the legal basis for data processing was your consent or the performance of a contract.
+- Not to be subject to automated individual decision-making.
+
+To exercise the aforementioned rights, data subjects must contact Iterating Inc. via the email address indicated at the beginning of this Policy (support@iterating.ca). For security reasons, we may additionally request a copy of an equivalent identification document for identity verification purposes, in accordance with the legally established minimum content.
+
+We will process your request as soon as possible, always within the margins and deadlines stipulated by the GDPR and the applicable current legislation at the time of such request, guaranteeing a response to all our users under the highest privacy standards.
+
+Furthermore, the User has the right to lodge a complaint with the competent data protection authority if they have doubts or are not satisfied with the exercise of their rights.
