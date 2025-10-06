@@ -333,6 +333,7 @@ const planDetails = {
     tooltipText: "Minimum 2 licenses",
     features: [
       "Priority support",
+      "Pay by invoice",
       "Team storage",
       "Point in time restore – 90 days",
       "Sharing of networks",

@@ -2,6 +2,15 @@
 
 The epanet-js website is created using Material for MkDocs.
 
+### landing page
+
+```
+cd landing-page
+pnpm install
+pnpm dev
+pnpm build
+```
+
 ### install
 
 ```

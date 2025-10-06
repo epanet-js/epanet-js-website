@@ -26,6 +26,7 @@ yarn-error.log*
 /epanet-js-website-v2
 
 # Compiled landing page files
+/docs/index.html
 /docs/assets/
 /docs/assets/index*.js
 /docs/assets/index*.css

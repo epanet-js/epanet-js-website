@@ -5,7 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && npm run copy-assets",
+    "copy-assets": "npm run clean-docs-assets && npm run copy-landing-assets && npm run copy-index-html",
+    "clean-docs-assets": "find ../docs/assets -type f -not -path '*/blog/*' -not -path '*/images/*' -delete && find ../docs/assets -type d -empty -not -path '*/blog*' -not -path '*/images*' -delete",
+    "copy-landing-assets": "cp -r dist/assets/* ../docs/assets/",
+    "copy-index-html": "cp dist/index.html ../docs/index.html",
     "lint": "eslint .",
     "preview": "vite preview"
   },
