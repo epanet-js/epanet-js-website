@@ -33,6 +33,14 @@ export default function Hero() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
               </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                asChild
+              >
+                <a href="https://cal.com/epanet-js/">Book a demo.</a>
+              </Button>
             </div>
           </div>
           <div className="flex items-center justify-center">
