@@ -27,8 +27,14 @@ yarn-error.log*
 
 # Compiled landing page files
 /docs/index.html
-/docs/assets/
 /docs/assets/index*.js
 /docs/assets/index*.css
 /docs/assets/index*.png
 /docs/assets/index*.svg
+
+/docs/assets/banner-background2.png
+/docs/assets/banner.png
+/docs/assets/epanetjs-*.svg
+/docs/assets/favicon.png
+
+/docs/assets/landing/*
