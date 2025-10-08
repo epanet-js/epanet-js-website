@@ -48,7 +48,7 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
     if (!buttonUrl || isPlanComingSoon) return buttonUrl;
 
     // For Professional plan, append payment type
-    if (name === "Professional") {
+    if (name === "Pro") {
       const paymentType = billingCycle === "monthly" ? "monthly" : "yearly";
       return `${buttonUrl}&paymentType=${paymentType}&startCheckout=true`;
     }
@@ -60,7 +60,13 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
   const finalUrl = getFinalUrl();
 
   return (
-    <div className={`relative flex flex-col justify-between rounded-lg border bg-background transition-shadow md:min-h-[450px] mx-auto md:mx-0 w-full max-w-[450px] md:min-w-0 ${isPopular ? 'shadow-lg shadow-purple-200/50 hover:shadow-xl hover:shadow-purple-300/50' : 'shadow-sm hover:shadow-md'}`}>
+    <div
+      className={`relative flex flex-col justify-between rounded-lg border bg-background transition-shadow md:min-h-[450px] mx-auto md:mx-0 w-full max-w-[450px] md:min-w-0 ${
+        isPopular
+          ? "shadow-lg shadow-purple-200/50 hover:shadow-xl hover:shadow-purple-300/50"
+          : "shadow-sm hover:shadow-md"
+      }`}
+    >
       {" "}
       {/* Added min-height for consistency */}
       {/* Badges */}
@@ -292,7 +298,7 @@ const planDetails = {
     buttonUrl: "https://app.epanetjs.com",
   },
   professional: {
-    name: "Professional",
+    name: "Pro",
     description: "Individual named license",
     titleDescription: "For solo modelers and small utilities.",
     pricing: {
@@ -324,7 +330,7 @@ const planDetails = {
     },
     tooltipText: "Minimum 2 licenses",
     features: ["Priority support", "Volume discounts", "Pay by invoice"],
-    featureSubtitle: "Everything in professional, and:",
+    featureSubtitle: "Everything in Pro, and:",
     comingSoonFeatures: [
       "Team storage",
       "Point in time restore - 90 days",
