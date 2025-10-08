@@ -331,7 +331,9 @@ const planDetails = {
       "Sharing of networks",
     ],
     comingSoonSubtitle: "Coming soon:",
-    buttonVariant: "outline" as const,
+    buttonVariant: "default" as const,
+    buttonClassName:
+      "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white",
     isPlanComingSoon: false,
     buttonText: "Get Teams",
     buttonUrl: "https://tally.so/r/wkqjyo",
