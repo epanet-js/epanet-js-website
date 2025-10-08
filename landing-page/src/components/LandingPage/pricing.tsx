@@ -60,15 +60,10 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
   const finalUrl = getFinalUrl();
 
   return (
-    <div className="relative flex flex-col justify-between rounded-lg border bg-background shadow-sm transition-shadow hover:shadow-md md:min-h-[450px] mx-auto md:mx-0 w-full max-w-[450px] md:min-w-0">
+    <div className={`relative flex flex-col justify-between rounded-lg border bg-background transition-shadow md:min-h-[450px] mx-auto md:mx-0 w-full max-w-[450px] md:min-w-0 ${isPopular ? 'shadow-lg shadow-purple-200/50 hover:shadow-xl hover:shadow-purple-300/50' : 'shadow-sm hover:shadow-md'}`}>
       {" "}
       {/* Added min-height for consistency */}
       {/* Badges */}
-      {isPopular && (
-        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 mx-auto w-fit rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-3 py-1 text-xs font-medium text-white z-10">
-          Most popular
-        </div>
-      )}
       {isPlanComingSoon && (
         <div className="absolute -top-3 right-3 mx-auto w-fit rounded-full bg-gray-500 px-3 py-1 text-xs font-medium text-white z-10">
           Coming Soon
@@ -76,8 +71,13 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
       )}
       {/* Top Content */}
       <div className="flex flex-col gap-2 p-6">
-        <h3 className="whitespace-nowrap tracking-tight flex items-center gap-x-3 text-xl font-semibold">
-          {name}
+        <h3 className="tracking-tight flex items-center justify-between w-full text-xl font-semibold">
+          <span>{name}</span>
+          {isPopular && (
+            <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700 whitespace-nowrap">
+              Most popular
+            </span>
+          )}
         </h3>
         <span className="text-base text-gray-900 ">{titleDescription}</span>
         <span className="inline-block whitespace-nowrap leading-none">
@@ -121,7 +121,7 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
               <li key={index} className="flex items-start">
                 {" "}
                 {/* Changed to items-start */}
-                <Check className="mr-2 mt-0.5 h-4 w-4 text-blue-500 flex-shrink-0" />
+                <Check className="mr-2 mt-0.5 h-4 w-4 text-green-500 flex-shrink-0" />
                 <span>{feature}</span>
               </li>
             ))}
@@ -240,7 +240,7 @@ const SpecialPricingCard: React.FC<SpecialPricingCardProps> = ({
               <li key={index} className="flex items-start">
                 {" "}
                 {/* Changed to items-start */}
-                <CircleMinus className="mr-1.5 mt-0.5 h-3.5 w-3.5 text-blue-500 flex-shrink-0" />
+                <CircleMinus className="mr-1.5 mt-0.5 h-3.5 w-3.5 text-green-500 flex-shrink-0" />
                 <span>{limitation}</span>
               </li>
             ))}
@@ -399,11 +399,11 @@ export default function Pricing() {
           <Button
             variant={billingCycle === "monthly" ? "default" : "outline"}
             onClick={() => setBillingCycle("monthly")}
-            // Apply gradient/solid style only if active, otherwise default outline
+            // Apply blue solid style only if active, otherwise default outline
             className={`
                     ${
                       billingCycle === "monthly"
-                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white border-transparent"
+                        ? "bg-blue-600 text-white border-transparent hover:bg-blue-700"
                         : "text-blue-600 border-blue-300 hover:bg-blue-50 hover:border-blue-400"
                     }
                 `}
@@ -413,11 +413,11 @@ export default function Pricing() {
           <Button
             variant={billingCycle === "annually" ? "default" : "outline"}
             onClick={() => setBillingCycle("annually")}
-            // Apply gradient/solid style only if active, otherwise default outline
+            // Apply blue solid style only if active, otherwise default outline
             className={`
                      ${
                        billingCycle === "annually"
-                         ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white border-transparent"
+                         ? "bg-blue-600 text-white border-transparent hover:bg-blue-700"
                          : "text-blue-600 border-blue-300 hover:bg-blue-50 hover:border-blue-400"
                      }
                 `}
