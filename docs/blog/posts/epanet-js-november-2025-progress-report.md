@@ -359,6 +359,8 @@ The team attended the Suez and Optimatics user group in Portland, the CwMAG conf
 
 We are hosting a special **hands-on webinar in January**. We will provide a real GIS dataset, and together we will walk through the entire process of building a model, getting it running, and performing a fire flow test live. It’s the perfect way to learn the workflow.
 
+[From GIS to running model: a hands-on hydraulic modeling workshop - register now!](https://www.crowdcast.io/c/epanet-js-hydraulic-modeling-workshop)
+
 <iframe width='100%' height='800' frameborder='0' marginheight='0' marginwidth='0' allowtransparency='true' src='https://www.crowdcast.io/c/epanet-js-hydraulic-modeling-workshop' style='border: 1px solid #EEE;border-radius:3px' allowfullscreen='true' webkitallowfullscreen='true' mozallowfullscreen='true' allow='microphone; camera;'></iframe><a ng-href='https://www.crowdcast.io/?utm_source=embed&utm_medium=website&utm_campaign=embed' style="color: #aaa; font-family: 'Helvetica', 'Arial', sans-serif;text-decoration: none;display: block;text-align: center;font-size: 13px;padding: 5px 0">powered by Crowdcast</a>
 
 ## **What's next**
