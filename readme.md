@@ -11,7 +11,7 @@ pnpm dev
 pnpm build
 ```
 
-### install
+### Install
 
 ```
 pip install git+https://{GH_TOKEN}@github.com/squidfunk/mkdocs-material-insiders.git@9.6.16-insiders-4.53.16
