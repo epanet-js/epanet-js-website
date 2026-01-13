@@ -1,0 +1,61 @@
+---
+import Container from "@components/container.astro";
+import Cta from "@components/cta.astro";
+import FeatureAlt from "@components/feature-alt.astro";
+import FeatureGrid from "@components/feature-grid.astro";
+import Features from "@components/landing/features.tsx";
+import Hero from "@components/landing/hero.tsx";
+import Logos from "@components/logos.astro";
+import Testimonials from "@components/testimonials.astro";
+import Layout from "@layouts/Layout.astro";
+import UserDilemma from "@components/landing/user-dilemma";
+import MiddleCTA from "@components/landing/newsletter-cta";
+import OpenSource from "@components/landing/open-source";
+import Pricing from "@components/landing/pricing";
+import FrequentlyAskedQuestions from "@components/landing/faq.tsx";
+import CTAJustOpen from "@components/landing/cta-just-open.tsx";
+import WhyWeBuilt from "@components/landing/why-we-built.tsx";
+import BottomCTA from "@components/landing/bottom-cta.tsx";
+import NewsletterCTA from "@components/landing/middle-cta";
+---
+
+<Layout footerMargin={false}>
+  <Hero />
+  {/* Top CTA */}
+  {/* <TrustedBy /> */}
+  <UserDilemma />
+  {/* Features Section */}
+  <Features />
+  {/* Newsletter Section */}
+  <NewsletterCTA />
+  <MiddleCTA />
+  <OpenSource />
+  {/* Testimonials Section
+  <TestimonialsAlt />
+  <Testimonials />
+  */}
+  {/* Pricing Section */}
+  <Pricing client:load />
+  {/* Middle CTA
+  <Newsletter />
+  */}
+  {/* FAQ Section */}
+  <FrequentlyAskedQuestions client:load />
+  <CTAJustOpen />
+  <WhyWeBuilt />
+  {/* CTA Section */}
+  <BottomCTA />
+
+  {/*
+  <Container>
+    <Logos />
+    <FeatureAlt />
+  </Container>
+  <Testimonials />
+  <Container>
+    <FeatureGrid />
+    <Features />
+  </Container>
+  <Cta />
+   */}
+</Layout>

@@ -1,0 +1,470 @@
+---
+import Badge from "@components/ui/badge.astro";
+import { Picture } from "astro:assets";
+import FeatureImg1 from "../assets/features/6.png";
+import FeatureImg2 from "../assets/features/2.png";
+import { Icon } from "astro-icon/components";
+import Link from "@components/ui/link.astro";
+
+const { nomargin } = Astro.props;
+
+import PricingComponent, { type Plan } from "@components/pricing.astro";
+const plans: Plan[] = [
+  {
+    name: "Free",
+    price: "0",
+    desc: "For everyone",
+    popular: false,
+    features: [
+      "Web based EPANET model",
+      "Background maps and satellite",
+      "Automated Elevations",
+      "No limits on sizes",
+      "Community Support",
+    ],
+    color: "purple",
+    button: {
+      text: "Launch epanet-js",
+      link: "//app.epanetjs.com",
+    },
+  },
+  {
+    name: "Pro",
+    price: "950",
+    desc: "For solo modelers and small utilities",
+    popular: true,
+    features: [
+      "All Free features",
+      "Professional support",
+      "Custom layers",
+    ],
+    color: "purple",
+    button: {
+      text: "Get Pro",
+      link: "#",
+    },
+  },
+  {
+    name: "Teams",
+    price: "2500",
+    desc: "For teams that build together",
+    popular: false,
+    features: [
+      "All Pro Features",
+      "Priority support",
+      "Volume discounts",
+      "Pay by invoice",
+    ],
+    color: "purple",
+    button: {
+      text: "Contact us",
+      link: "/contact",
+    },
+  },
+];
+---
+
+<div
+  class:list={[
+    "max-w-4xl mx-auto flex flex-col items-center justify-center",
+    !nomargin && "mt-24",
+  ]}>
+  <h2 class="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">The EPANET user's dilemma</h2>
+</div>
+
+<div class="grid md:grid-cols-2 py-10">
+  <div class="grid place-items-center">
+    <Picture
+      src={FeatureImg1}
+      alt="Feature Image"
+      formats={["avif", "webp"]}
+      loading="lazy"
+    />
+  </div>
+
+  <div class="grid place-items-center">
+    <div class="max-w-lg">
+      <ul class="grid mt-6 text-left gap-y-4">
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class="">Classic EPANET is powerful —but <strong>clunky and outdated</strong>. Workarounds become your workflow —slow and cumbersome.</span>
+        </li>
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class="">Big-name platforms look polished, but they're <strong>overpriced and bloated with features</strong> you don't need to analyze your network quickly.</span>
+        </li>
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class="">Modern browser-based tools exist —but they <strong>force your data into the cloud</strong>, raising privacy and compliance concerns. Plus, they offer little for those doing long-term planning and analysis.</span>
+        </li>
+      </ul>
+      <div class="ps-7 mt-4 text-sm text-slate-600">
+        <p class="max-w-[600px] mx-auto lg:mx-0 italic">You shouldn't have to choose between speed, security, and affordability just to understand your water networks.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class:list={[
+    "max-w-4xl mx-auto flex flex-col items-center justify-center",
+    !nomargin && "mt-24",
+  ]}>
+  <Badge color="purple">TWO-COL FEATURES</Badge>
+  <h2 class="text-center mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">epanet-js gives you full control with a local-first, browser-based EPANET experience</h2>
+  <p class="text-lg mt-4 text-slate-600 text-center [text-wrap:pretty]">
+    Model quickly and securely with local-first file-saving and a faster, smoother interface —all on top of the trusted EPANET engine.
+  </p>
+</div>
+
+<div class="grid md:grid-cols-2 py-10">
+  <div class="grid place-items-center pb-10 md:pb-0 md:order-2">
+    <Picture
+      src={FeatureImg2}
+      alt="Feature Image"
+      formats={["avif", "webp"]}
+      loading="lazy"
+    />
+  </div>
+
+  <div class="grid place-items-center">
+    <div class="max-w-lg">
+      <Badge color="purple" class="-ml-px">AI-Powered Insights</Badge>
+      <h3 class="text-2xl font-medium mt-4 [text-wrap:balance]">
+        Your data, your control
+      </h3>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">
+        epanet-js works directly with files on your local computer and is cloud-optional. By default, your projects are run and saved locally —giving you full control, security, and privacy.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">
+        Choose the cloud only if and when you need it.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="grid md:grid-cols-2 py-10 gap-8">
+  <div class="grid place-items-center pb-10 md:pb-0">
+    <Picture
+      src={FeatureImg2}
+      alt="Feature Image"
+      formats={["avif", "webp"]}
+      loading="lazy"
+    />
+  </div>
+
+  <div class="grid place-items-center">
+    <div class="max-w-lg">
+      <Badge color="purple" class="-ml-px">AI-Powered Insights</Badge>
+      <h3 class="text-2xl font-medium mt-4 [text-wrap:balance]">
+        The EPANET you know, enhanced
+      </h3>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">
+        epanet-js keeps the core functionality you’re familiar with but adds a smoother, faster experience with modern touches like undo/redo, automatic elevations, quick drawing of elements, and basemaps like satellite view.
+        </p>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">
+        Import your network or build from scratch with intuitive tools that make it easy to update, draw, connect, and edit.
+      </p>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">
+        Everything you need to work quicker —without having to learn a new tool.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="grid md:grid-cols-2 py-10">
+  <div class="grid place-items-center pb-10 md:pb-0 md:order-2">
+    <Picture
+      src={FeatureImg2}
+      alt="Feature Image"
+      formats={["avif", "webp"]}
+      loading="lazy"
+    />
+  </div>
+
+  <div class="grid place-items-center">
+    <div class="max-w-lg">
+      <h3 class="text-2xl font-medium mt-4 [text-wrap:balance]">
+        Built for working, not troubleshooting
+      </h3>
+      <ul class="grid mt-6 text-left gap-y-4">
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class=""><strong>Draw visually.</strong> Click to add nodes, pipes, and reservoirs —with auto-junctions and auto-elevations.</span>
+        </li>
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class=""><strong>Run simulations instantly.</strong> Shift+Enter, and you’re done.</span>
+        </li>
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class=""><strong>See results fast.</strong> View pressures, flow paths, and velocity at a glance —all color-coded.</span>
+        </li>
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class=""><strong>Make mistakes without starting over.</strong> Undo/redo is finally here!</span>
+        </li>
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class=""><strong>Use satellite map overlays.</strong> Sketch and analyze your networks against a real-world layout.</span>
+        </li>
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class=""><strong>EPANET file compatible.</strong> Compatible with .inp files —no conversion required.</span>
+        </li>
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class=""><strong>Works on Mac, Linux and Windows.</strong> Use any modern browser. No virtual machines. No installs.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="grid md:grid-cols-2 py-10 gap-8">
+  <div class="grid place-items-center pb-10 md:pb-0">
+    <Picture
+      src={FeatureImg2}
+      alt="Feature Image"
+      formats={["avif", "webp"]}
+      loading="lazy"
+    />
+  </div>
+
+  <div class="grid place-items-center">
+    <div class="max-w-lg">
+      <h3 class="text-2xl font-medium mt-4 [text-wrap:balance]">
+        Who epanet-js is for:
+      </h3>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]"><strong>Utilities &amp; consultants</strong> <br>Build fast, run local. Everything you need to just get the job done, none of the feature bloat.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]"><strong>Educators &amp; professors</strong> <br>Teach new modelers the concepts without fighting software. Watch students draw real networks and run sims in minutes —not hours.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]"><strong>Students &amp; new engineers</strong> <br>Focus on learning, not software quirks. Undo/redo, auto-elevation, visual overlays —built to help you learn water modeling quickly.</p>
+    </div>
+  </div>
+</div>
+
+<div class="grid md:grid-cols-2 py-10">
+  <div class="grid place-items-center pb-10 md:pb-0 md:order-2">
+    <Picture
+      src={FeatureImg2}
+      alt="Feature Image"
+      formats={["avif", "webp"]}
+      loading="lazy"
+    />
+  </div>
+
+  <div class="grid place-items-center">
+    <div class="max-w-lg">
+      <Badge color="purple" class="-ml-px">AI-Powered Insights</Badge>
+      <h3 class="text-2xl font-medium mt-4 [text-wrap:balance]">
+        Your data, your control
+      </h3>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">
+        epanet-js works directly with files on your local computer and is cloud-optional. By default, your projects are run and saved locally —giving you full control, security, and privacy.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">
+        Choose the cloud only if and when you need it.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<section id="newsletter" class="w-full px-8 py-32 md:py-32 lg:py-40 relative overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_18%_140%,rgba(147,197,253,0.3),transparent_47%),radial-gradient(circle_at_80%_141%,rgba(216,180,254,0.35),transparent_54%)]">
+  </div>
+  <div class="flex flex-col items-center justify-center space-y-4 text-center">
+    <div class="space-y-2">
+      <h3 class="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Model water networks instantly.</h3>
+      <p class="text-lg mt-4 text-slate-600 text-center [text-wrap:pretty]">No setup or downloads —just instant access right in your browser.</p>
+    </div>
+    <a href="https://web3templates.com/templates/astroship-pro-astro-saas-website-template" target="_blank" rel="noopener" class="rounded-full text-center transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo px-7 py-2.5 bg-indigo-600 text-white hover:bg-indigo-800 flex gap-1 items-center justify-center relative">
+      Start modelling now
+    </a>
+  </div>
+</section>
+
+<div class="grid md:grid-cols-2 py-10 gap-8">
+  <div class="grid place-items-center pb-10 md:pb-0 md:order-1">
+    <Picture
+      src={FeatureImg2}
+      alt="Feature Image"
+      formats={["avif", "webp"]}
+      loading="lazy"
+    />
+  </div>
+
+  <div class="grid place-items-center">
+    <div class="max-w-lg">
+      <h3 class="text-2xl font-medium mt-4 [text-wrap:balance]">
+        EPANET deserves better —and so do you.
+      </h3>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">EPANET was a gift to the industry —free, open-source water modeling for all. But commercial vendors built on it, locked away improvements, and left the community behind.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">epanet-js is our answer: a faster, simpler, affordable water modeling tool that protects your privacy and sustains the open-source future of water modeling.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">We’re proud to be part of the next chapter —and we’re just getting started.</p>
+    </div>
+  </div>
+</div>
+
+<div class="grid md:grid-cols-2 py-10 gap-8">
+  <div class="grid place-items-center pb-10 md:pb-0">
+    <Picture
+      src={FeatureImg2}
+      alt="Feature Image"
+      formats={["avif", "webp"]}
+      loading="lazy"
+    />
+  </div>
+
+  <div class="grid place-items-center">
+    <div class="max-w-lg">
+      <h3 class="text-2xl font-medium mt-4 [text-wrap:balance]">
+        When you support epanet-js, you support EPANET
+      </h3>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">When you purchase more features in epanet-js, you’re investing in the future of open-source EPANET development.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">Our open-source model balances innovation and accessibility:</p>
+      <ul class="grid mt-6 text-left gap-y-4">
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class="">Public <a href="https://github.com/epanet-js/epanet-js">source code</a> from day one.</span>
+        </li>
+        <li class="flex items-start gap-3 text-slate-600">
+          <Icon name="ph:check-circle-fill" class="w-5 h-5 flex-none" />
+          <span class="">Fully open source (MIT) after two years under our <a href="https://fsl.software/">Functional Source License (FSL)</a>.</span>
+        </li>
+      </ul>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">Anyone can build on our code. The two-year commercial-use delay gives us the incentive to keep pushing forward —and that fuels progress for everyone.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:balance]">That means when you support us, you support more affordable hydraulic modeling software for the entire community.</p>
+    </div>
+  </div>
+</div>
+
+<div
+  class:list={[
+    "max-w-4xl mx-auto flex flex-col items-center justify-center",
+    !nomargin && "mt-24",
+  ]}>
+  <h2 class="text-center mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Simple, transparent pricing for every kind of modeler</h2>
+  <p class="text-lg mt-4 text-slate-600 text-center [text-wrap:pretty]">
+    Choose the plan that works for you
+  </p>
+</div>
+
+<div>
+  <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-screen-lg mt-12">
+    {plans.map((item) => <PricingComponent plan={item} />)}
+  </div>
+  <p class="mt-8 text-lg text-slate-600 text-center [text-wrap:pretty]">
+    Have questions? <a class="underline" href="mailto:sales@epanetjs.com">Send us an email</a> or <a class="underline" href="https://cal.com/epanet-js/">book a call</a>.
+  </p>
+</div>
+
+<div class="mt-12 px-4 md:px-6 relative">
+  <div class="flex flex-col items-center justify-center space-y-4 text-center">
+    <div class="space-y-2">
+      <h3
+        class="text-center mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Frequently
+        asked questions</h3>
+      <p class="text-lg mt-4 text-slate-600 text-center [text-wrap:pretty]">Find answers to common
+        questions about epanet-js.</p>
+    </div>
+  </div>
+  <div class="mx-auto max-w-3xl py-12">
+    <details class="border-b border-slate-200 py-4">
+      <summary>What is epanet-js?</summary>
+      <p class="mt-4">
+        epanet-js is a modern, web-based water network modeling tool based on the EPANET engine. It allows you to build, simulate, and analyze water distribution networks directly in your browser without installing any software.
+      </p>
+    </details>
+    <details class="border-b border-slate-200 py-4">
+      <summary>Is my data secure with epanet-js?</summary>
+      <p class="mt-4">Yes! epanet-js uses a local-first approach, meaning your project data is saved directly to your computer, not to our servers. This ensures your sensitive network data remains private and under your control. <a href="https://help.epanetjs.com/Understanding-the-local-first-approach-1f2e18c9f0f68034b7d8dd83cc3554dd">Learn more about the Local-First Approach</a>.</p>
+    </details>
+    <details class="border-b border-slate-200 py-4">
+      <summary>Do I need to create an account to use epanet-js?</summary>
+      <p class="mt-4">No, you can start using epanet-js immediately without creating an account or logging in. Simply visit our website and launch the application to begin modeling.</p>
+    </details>
+    <details class="border-b border-slate-200 py-4">
+      <summary>Can I import existing EPANET files?</summary>
+      <p class="mt-4">Yes, epanet-js supports importing .inp files from desktop EPANET. You can seamlessly transition your existing projects to our web-based platform.</p>
+    </details>
+    <details class="border-b border-slate-200 py-4">
+      <summary>Does epanet-js work on Mac?</summary>
+      <p class="mt-4">Yes! epanet-js works on all modern browsers including Chrome, Firefox, Safari, and Edge. Since it runs in a web browser, epanet-js works great on macOS, Windows, and Linux. This makes it a great option if you've had trouble installing traditional EPANET on a Mac. For the best experience, we recommend using the latest version of your preferred browser.</p>
+    </details>
+    <details class="border-b border-slate-200 py-4">
+      <summary>Is epanet-js open source?</summary>
+      <p class="mt-4">Yes, our source code is public from day one, but there’s a two-year delay from the time we release a new version to when it becomes fully open source. This is how we drive sustainable open-source development for epanet-js, and, by extension, EPANET. You can <a href="https://epanetjs.com/#why-we-built-epanet-js">learn more about why we’re doing this</a> and <a href="https://fsl.software/">how the FSL license works here</a>.</p>
+    </details>
+    <details class="border-b border-slate-200 py-4">
+      <summary>How do I get support if I have questions?</summary>
+      <p class="mt-4">We offer different support options depending on your plan. Free users can access our community forums and documentation, while paid users receive priority email support. Educational users have access to specialized resources for classroom use.</p>
+    </details>
+  </div>
+</div>
+
+<section class="w-full px-8 py-32 md:py-32 lg:py-40 relative overflow-hidden bg-gray-800">
+  <div
+    class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_18%_140%,rgba(147,197,253,0.1),transparent_47%),radial-gradient(circle_at_80%_141%,rgba(216,180,254,0.15),transparent_54%)]">
+  </div>
+  <div class="flex flex-col items-center justify-center text-center">
+    <h3 class="text-center text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-white">Just open your browser and model</h3>
+    <p class="text-lg mt-4 mb-8 text-slate-200 text-center [text-wrap:pretty]">No install. No login. No cloud required.</p>
+    <a href="#" class="rounded-full text-center transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo px-7 py-2.5 bg-white text-slate-800 border-2 border-transparent">Sign up for a 14-day Trial</a>
+  </div>
+</section>
+
+<section class="w-full pt-16 pb-8 md:pt-24 lg:pt-32 lg:pb-32 relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-white"></div>
+  <div class="px-8 md:px-6 xl:px-24 relative">
+    <div class="flex flex-col items-center md:gap-10 justify-center space-y-4 text-center mb-8 md:mb-12 lg:mb-12">
+      <div class="space-y-2">
+        <h2
+          class="pb-2 text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Why we built epanet-js</h2>
+      </div>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-10 mt-4">
+        <div class="flex flex-col items-center space-y-4">
+          <img src="https://epanetjs.com/assets/landing/lbutler.webp" alt="Luke Butler, Co-founder" class="w-36 h-36 md:w-44 md:h-44 rounded-xl object-cover" src="/assets/landing/lbutler.webp">
+          <div class="">
+            <p class="font-semibold text-slate-700">Luke Butler</p> <p class="text-sm text-slate-500">Co-founder</p>
+          </div>
+        </div>
+        <div class="flex flex-col items-center space-y-4">
+          <img src="https://epanetjs.com/assets/landing/spaya.webp" alt="Sam, Co-founder" class="w-36 h-36 md:w-44 md:h-44 rounded-xl object-cover" src="/assets/landing/spaya.webp">
+          <div class="">
+            <p class="font-semibold text-slate-700">Sam Payá</p>
+            <p class="text-sm text-slate-500">Co-founder</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-4xl mx-auto">
+      <p class="mt-4 text-slate-600 [text-wrap:pretty]">You may not know this, but for decades, the U.S. EPA has given the water
+        industry an extraordinary gift: the free and open-source hydraulic modeling software EPANET. Odds are, if you've
+        used any commercial hydraulic modeling software today, it was built on the EPANET engine.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:pretty]">The problem is, instead of giving back to their open-source roots like other
+        industries do, big-name software vendors took EPANET's open code, built private tools on top of the engine, and
+        then locked those improvements behind patents and proprietary licenses.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:pretty]">Some vendors even pressured the EPA to focus only on the engine —
+        discouraging any effort to improve the interface or user experience for everyone else.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:pretty]">Those vendors now charge you exorbitant prices to use their software while
+        EPANET lags behind — and utilities, engineers, and educators with smaller budgets suffer.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:pretty]">We think this is backwards — and we're on a mission to change it. We're
+        focused on creating a better experience for the entire hydraulic modeling community.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:pretty]">That's why we built epanet-js under an FSL license — because we want to give
+        you an affordable, easy-to-use water modeling option that creates a sustainable future for open-source EPANET
+        development.</p>
+      <p class="mt-4 text-slate-600 [text-wrap:pretty]">Support EPANET by using software that supports it back.</p>
+    </div>
+  </div>
+</section>
+
+<section class="w-full px-8 py-32 md:py-32 lg:py-40 relative overflow-hidden bg-gray-800">
+  <div
+    class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_18%_140%,rgba(147,197,253,0.1),transparent_47%),radial-gradient(circle_at_80%_141%,rgba(216,180,254,0.15),transparent_54%)]">
+  </div>
+  <div class="flex flex-col items-center justify-center text-center">
+    <h3 class="text-center text-3xl sm:text-4xl md:text-5xl font-bold tracking-tighter text-white">A better future for water modeling</h3>
+    <p class="text-lg mt-4 mb-8 text-slate-200 text-center [text-wrap:pretty]">Simple, quick, and useful right out of the gate — designed to open-and-go.</p>
+    <a href="#" class="rounded-full text-center transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 focus-visible:outline-none focus-visible:shadow-outline-indigo px-7 py-2.5 bg-white text-slate-800 border-2 border-transparent">Launch epanet-js now</a>
+  </div>
+</section>
