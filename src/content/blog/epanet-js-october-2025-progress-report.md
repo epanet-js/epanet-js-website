@@ -1,14 +1,14 @@
 ---
 draft: false
 title: "epanet-js October 2025 Progress Report"
-snippet: "TODO"
+snippet: "Network Reviews, a New Teammate, and a Focus on Fundamentals"
 image:
   {
     src: "https://images.unsplash.com/photo-1485230405346-71acb9518d9c?fit=crop&w=600&h=335",
     alt: "",
   }
 publishDate: "2025-11-06 09:15"
-category: "blog"
+category: "Progress report"
 author: "lbutler"
 tags: [Progress report]
 ---

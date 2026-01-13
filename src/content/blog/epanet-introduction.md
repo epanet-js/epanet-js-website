@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "epanet-js - the water distribution modelling engine for the web!"
-snippet: "TODO"
+snippet: "epanet-js allows developers to build web applications using the EPANET engine"
 image:
   {
     src: "https://images.unsplash.com/photo-1485230405346-71acb9518d9c?fit=crop&w=600&h=335",

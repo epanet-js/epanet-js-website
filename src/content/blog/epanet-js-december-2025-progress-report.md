@@ -8,7 +8,7 @@ image:
     alt: "",
   }
 publishDate: "2026-01-13 09:15"
-category: "blog"
+category: "Progress report"
 author: "lbutler"
 tags: [Progress report]
 ---

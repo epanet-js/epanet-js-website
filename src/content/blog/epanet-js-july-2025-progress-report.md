@@ -1,14 +1,14 @@
 ---
 draft: false
 title: "epanet-js July 2025 Progress Report"
-snippet: "You can now build EPANET models from GIS data in seconds. Plus - tanks, check valves, new languages, and smarter translations."
+snippet: "GIS Model Builds, New Languages, and More!"
 image:
   {
     src: "https://images.unsplash.com/photo-1485230405346-71acb9518d9c?fit=crop&w=600&h=335",
     alt: "",
   }
 publishDate: "2025-08-07 09:15"
-category: "blog"
+category: "Progress report"
 author: "lbutler"
 tags: [Progress report]
 ---
