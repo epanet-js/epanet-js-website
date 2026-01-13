@@ -4,7 +4,7 @@ title: "epanet-js October 2025 Progress Report"
 snippet: "Network Reviews, a New Teammate, and a Focus on Fundamentals"
 image:
   {
-    src: "https://images.unsplash.com/photo-1485230405346-71acb9518d9c?fit=crop&w=600&h=335",
+    src: "https://epanetjs.com/assets/blog/progress-report/2025-10/01-network-review.png",
     alt: "",
   }
 publishDate: "2025-11-06 09:15"

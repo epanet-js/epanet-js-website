@@ -4,7 +4,7 @@ title: "How to Compile the EPANET GUI"
 snippet: "This article will walk you through the steps of compiling the Graphical User Interface (GUI) for EPANET using Delphi Community Edition"
 image:
   {
-    src: "https://images.unsplash.com/photo-1485230405346-71acb9518d9c?fit=crop&w=600&h=335",
+    src: "https://epanetjs.com/assets/blog/compile-epanet-gui/EPANET.gif",
     alt: "",
   }
 publishDate: "2023-04-09 09:15"
@@ -25,10 +25,10 @@ Thanks to Oscar Vegas Niño for creating a [guide in Spanish](https://www.resear
 
 First, download the EPANET 2.2 programmer’s toolkit and the source code files from the EPANET website. Extract these zip files to your local drive.
 
-**Download:** [:octicons-link-external-16: EPANET Source Code](https://www.epa.gov/water-research/epanet){:target="\_blank"}
+**Download:** [EPANET Source Code](https://www.epa.gov/water-research/epanet){:target="\_blank"}
 
 <figure markdown>
-  ![EPANET Source Code Location](/assets/blog/compile-epanet-gui/1-download-source-code.png){: style="max-width:400px" }
+  ![EPANET Source Code Location](/assets/blog/compile-epanet-gui/1-download-source-code.png)
   <figcaption>Download the EPANET toolkit and GUI source code.</figcaption>
 </figure>
 

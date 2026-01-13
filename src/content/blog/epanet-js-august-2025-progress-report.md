@@ -4,7 +4,7 @@ title: "epanet-js August 2025 Progress Report"
 snippet: "Introducing Customer Points, a UI Refresh, and More!"
 image:
   {
-    src: "https://images.unsplash.com/photo-1485230405346-71acb9518d9c?fit=crop&w=600&h=335",
+    src: "https://epanetjs.com/assets/blog/progress-report/2025-08/cust-point-1.png",
     alt: "",
   }
 publishDate: "2025-09-08 09:15"

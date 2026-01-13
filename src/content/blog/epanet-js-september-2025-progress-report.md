@@ -4,7 +4,7 @@ title: "epanet-js September 2025 Progress Report"
 snippet: "Roadmaps, Redrawing, and Reports"
 image:
   {
-    src: "https://images.unsplash.com/photo-1485230405346-71acb9518d9c?fit=crop&w=600&h=335",
+    src: "https://epanetjs.com/assets/blog/progress-report/2025-09/roadmap.png",
     alt: "",
   }
 publishDate: "2025-10-07 09:15"
