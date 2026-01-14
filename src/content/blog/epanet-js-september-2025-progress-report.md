@@ -4,7 +4,7 @@ title: "epanet-js September 2025 Progress Report"
 snippet: "Roadmaps, Redrawing, and Reports"
 image:
   {
-    src: "https://epanetjs.com/assets/blog/progress-report/2025-09/roadmap.png",
+    src: "/assets/blog/progress-report/2025-09/roadmap.png",
     alt: "",
   }
 publishDate: "2025-10-07 09:15"
@@ -17,16 +17,14 @@ tags: [Progress report]
 
 September was a milestone month for epanet-js. We’ve been working hard not only on new tools to make building and editing networks faster, but also on opening up the direction of the project itself.
 
-This month, we introduced our [public roadmap](https://roadmap.epanetjs.com){:target="\_blank"} — a place where anyone can see what’s coming next, share ideas, and help shape the future of epanet-js.
+This month, we introduced our [public roadmap](https://roadmap.epanetjs.com) — a place where anyone can see what’s coming next, share ideas, and help shape the future of epanet-js.
 
 <figure markdown="span">
   <a href="https://roadmap.epanetjs.com" target="_blank" rel="noopener">
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-09/roadmap.png){ width="700" }
+    <img src="/assets/blog/progress-report/2025-09/roadmap.png" alt="epanet-js roadmap" />
   </a>
   <figcaption style="margin-top: 0rem">The new public roadmap is live — see what's coming next and help shape the future of epanet-js!</figcaption>
 </figure>
-
-<!-- more -->
 
 Alongside that, we hosted our first live webinar, rolled out new editing tools for reversing and redrawing pipes, improved the demo networks, and added new workflow features to make debugging and model cleanup even smoother.
 
@@ -52,11 +50,11 @@ Alongside that, we hosted our first live webinar, rolled out new editing tools f
   </a>
 </div>
 
-## **Product Updates and Announcements**
+## Product Updates and Announcements
 
 ### Our Public Roadmap Is Live
 
-The biggest news this month is the launch of the [epanet-js Roadmap](https://roadmap.epanetjs.com/){:target="\_blank"}\!
+The biggest news this month is the launch of the [epanet-js Roadmap](https://roadmap.epanetjs.com/)!
 
 We’ve made our entire development plan public so you can see what we’re working on, what’s planned next, and what ideas are still being explored. More importantly, you can now take part directly — vote on the features you’d like to see, comment on ideas, or suggest new ones entirely.
 
@@ -65,7 +63,7 @@ We believe _epanet-js_ should be a community-led project. By opening up the road
 The roadmap will automatically update as we move features from ideas into development, and you’ll receive updates on the items you follow. It’s a simple but powerful way to stay involved and help us build the tools you want to see.
 
 <figure markdown="span">
-    ![epanet-js feedback](/assets/blog/progress-report/2025-09/feedback.png){ width="700" }
+  <img src="/assets/blog/progress-report/2025-09/feedback.png" alt="epanet-js feedback" />
   <figcaption style="margin-top: 0rem">Vote, comment, and follow along — your feedback now helps shape every feature in epanet-js.</figcaption>
 </figure>
 
@@ -75,7 +73,7 @@ Last week, we hosted our first community webinar, _Introducing epanet-js_, which
 
 In the session, we talked about the state of hydraulic modeling today, why we built _epanet-js_, and how we’re building an open and sustainable future for the industry. We also gave a live demo of the app, shared what’s next on our roadmap, introduced the Teams plan, and finished with a long Q\&A that covered everything from engine details to future features.
 
-If you missed it, you can now [watch the full recording on YouTube](https://www.youtube.com/watch?v=tbbYdd4kWYE){:target="\_blank"}. The video includes bookmarks so you can jump straight to the sections or questions that interest you most.
+If you missed it, you can now [watch the full recording on YouTube](https://www.youtube.com/watch?v=tbbYdd4kWYE). The video includes bookmarks so you can jump straight to the sections or questions that interest you most.
 
 <iframe width="688" height="380" src="https://www.youtube.com/embed/tbbYdd4kWYE?si=M6EeYtvX-lLOlARX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -88,7 +86,7 @@ Teams can now purchase floating licenses, pay by invoice, and receive volume dis
 This is a great option for utilities and consultancies looking to use _epanet-js_ across multiple users.
 
 <figure markdown="span">
-    ![epanet-js Teams plan](/assets/blog/progress-report/2025-09/teams-plan.png){ width="700" }
+    <img src="/assets/blog/progress-report/2025-09/teams-plan.png" alt="epanet-js Teams plan" />
   <figcaption style="margin-top: 0rem">Introducing the Teams plan — flexible licensing and collaboration for organizations using epanet-js.</figcaption>
 </figure>
 
@@ -102,11 +100,11 @@ In September, we reached **1,839 monthly active users**, up from **1,542 in Augu
 
 We’re incredibly proud of this growth for a free, open-source app still early in development, and we know it’s just the beginning.
 
-![epanet-js weekly active users](/assets/blog/progress-report/2025-09/DAU.png){ width="700" }
-![epanet-js weekly active users](/assets/blog/progress-report/2025-09/WAU.png){ width="700" }
-![epanet-js weekly active users](/assets/blog/progress-report/2025-09/MAU.png){ width="700" }
+![epanet-js weekly active users](/assets/blog/progress-report/2025-09/DAU.png)
+![epanet-js weekly active users](/assets/blog/progress-report/2025-09/WAU.png)
+![epanet-js weekly active users](/assets/blog/progress-report/2025-09/MAU.png)
 
-## **Features updates and improvements**
+## Features updates and improvements
 
 ### Select Assets from the Report
 
@@ -117,17 +115,19 @@ When you click an item in the report, _epanet-js_ will automatically pan and zoo
 This makes it much easier to debug issues, investigate results, or quickly understand what’s happening in your model — for example, locating where a pump turned on or a valve changed state during a simulation.
 
 <figure>
-    <video width=720 autoplay muted loop playsinline style="
-    box-sizing: border-box;
-    border-style: solid;
-    border-color: #e5e7eb;
-    overflow: hidden;
-    border-radius: .75rem;
-    border-width: 1px;
-    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
-    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
-    ><source src="/assets/blog/progress-report/2025-09/report.mp4" type="video/mp4"></video>
+  <video width=720 autoplay muted loop playsinline style="
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: #e5e7eb;
+  overflow: hidden;
+  border-radius: .75rem;
+  border-width: 1px;
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
+  >
+    <source src="/assets/blog/progress-report/2025-09/report.mp4" type="video/mp4">
+  </video>
 </figure>
 
 ### Split Assets When Drawing
@@ -139,17 +139,19 @@ When drawing junctions on existing pipes, _epanet-js_ will now automatically spl
 This small change makes a big difference when cleaning up or building networks, saving time and reducing manual rework.
 
 <figure>
-    <video width=720 autoplay muted loop playsinline style="
-    box-sizing: border-box;
-    border-style: solid;
-    border-color: #e5e7eb;
-    overflow: hidden;
-    border-radius: .75rem;
-    border-width: 1px;
-    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
-    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
-    ><source src="/assets/blog/progress-report/2025-09/split-pipes.mp4" type="video/mp4"></video>
+  <video width=720 autoplay muted loop playsinline style="
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: #e5e7eb;
+  overflow: hidden;
+  border-radius: .75rem;
+  border-width: 1px;
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
+  >
+    <source src="/assets/blog/progress-report/2025-09/split-pipes.mp4" type="video/mp4">
+  </video>
 </figure>
 
 ### Reverse Link Direction
@@ -159,17 +161,19 @@ You can now quickly reverse the direction of any link asset — including pipes,
 This flips the upstream and downstream nodes instantly, letting you fix incorrect orientations or adjust the layout of your network in seconds.
 
 <figure>
-    <video width=720 autoplay muted loop playsinline style="
-    box-sizing: border-box;
-    border-style: solid;
-    border-color: #e5e7eb;
-    overflow: hidden;
-    border-radius: .75rem;
-    border-width: 1px;
-    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
-    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
-    ><source src="/assets/blog/progress-report/2025-09/reverse.mp4" type="video/mp4"></video>
+  <video width=720 autoplay muted loop playsinline style="
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: #e5e7eb;
+  overflow: hidden;
+  border-radius: .75rem;
+  border-width: 1px;
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
+  >
+    <source src="/assets/blog/progress-report/2025-09/reverse.mp4" type="video/mp4">
+  </video>
 </figure>
 
 ### Redraw Pipes
@@ -181,17 +185,19 @@ When you select a link (pipe, pump, or valve), you can activate the **Redraw Too
 You’ll see the old alignment in light blue, so you can easily adjust the geometry while keeping the original attributes like diameter and roughness. Whether you’re fixing pipe geometry or connecting to a new part of the network, this tool keeps your data intact.
 
 <figure>
-    <video width=720 autoplay muted loop playsinline style="
-    box-sizing: border-box;
-    border-style: solid;
-    border-color: #e5e7eb;
-    overflow: hidden;
-    border-radius: .75rem;
-    border-width: 1px;
-    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
-    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
-    ><source src="/assets/blog/progress-report/2025-09/redraw.mp4" type="video/mp4"></video>
+  <video width=720 autoplay muted loop playsinline style="
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: #e5e7eb;
+  overflow: hidden;
+  border-radius: .75rem;
+  border-width: 1px;
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
+  >
+    <source src="/assets/blog/progress-report/2025-09/redraw.mp4" type="video/mp4">
+  </video>
 </figure>
 
 ### Updated Demo Networks
@@ -204,7 +210,7 @@ If you open _epanet-js_ for the first time, you’ll see these demos right on th
 
 We fixed a small but important issue where the **Next** button in the Model Build wizard could disappear if your browser window wasn’t tall enough. You can now scroll and continue through the steps normally, even on smaller screens.
 
-## **Community and Closing**
+## Community and Closing
 
 ### Community Highlights
 
@@ -223,73 +229,72 @@ Thank you [John Paulo Agrimano](https://www.linkedin.com/in/john-paulo-agrimano-
   }
   .community-grid figure {
     break-inside: avoid;
-    margin-bottom: 1rem; 
+    margin: 0 0 1rem;
   }
   .community-grid figure:last-child {
     margin-bottom: 0;
   }
   .community-grid figure img {
-    width: 100%; height: auto; box-sizing: border-box; border-style: solid; border-color: #e5e7eb; overflow: hidden; border-radius: .25rem; border-width: 1px; box-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+    width: 100%; height: auto; margin: 0; box-sizing: border-box; border-style: solid; border-color: #e5e7eb; overflow: hidden; border-radius: .25rem; border-width: 1px; box-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
   }
 
 </style>
 
 <div class="community-grid">
-    <figure >
-        <a href="https://www.linkedin.com/posts/john-paulo-agrimano-636374117_epanetjs-watermodeling-hydraulicengineering-ugcPost-7379347613654974464-zhtZ" target="_blank">
-            <img width="350" 
-            src="/assets/blog/progress-report/2025-09/linkedin-1.png">
-        </a>
-    </figure>
+  <figure>
+      <a href="https://www.linkedin.com/posts/john-paulo-agrimano-636374117_epanetjs-watermodeling-hydraulicengineering-ugcPost-7379347613654974464-zhtZ" target="_blank">
+          <img width="350" 
+          src="/assets/blog/progress-report/2025-09/linkedin-1.png">
+      </a>
+  </figure>
 
-    <figure >
-        <a href="https://www.linkedin.com/posts/suhermanstp_epanet-js-aplikasi-epanet-berbasis-web-activity-7377225471123492864-0pp5" target="_blank">
-        <img width="350"
-        src="/assets/blog/progress-report/2025-09/linkedin-2.png">
-        </a>
-    </figure>
+  <figure>
+      <a href="https://www.linkedin.com/posts/suhermanstp_epanet-js-aplikasi-epanet-berbasis-web-activity-7377225471123492864-0pp5" target="_blank">
+      <img width="350"
+      src="/assets/blog/progress-report/2025-09/linkedin-2.png">
+      </a>
+  </figure>
 
-    <figure >
-        <a href="https://www.linkedin.com/posts/geosaber_the-epanet-you-know-but-modern-enhanced-activity-7374804123386368000-B8Ah" target="_blank">
-        <img width="350"
-        src="/assets/blog/progress-report/2025-09/linkedin-3.png">
-        </a>
-    </figure>
+  <figure>
+      <a href="https://www.linkedin.com/posts/geosaber_the-epanet-you-know-but-modern-enhanced-activity-7374804123386368000-B8Ah" target="_blank">
+      <img width="350"
+      src="/assets/blog/progress-report/2025-09/linkedin-3.png">
+      </a>
+  </figure>
 
-    <figure >
-        <a href="https://www.linkedin.com/posts/moise-k-b1a629176_epanet-js-epanet-in-your-browser-start-activity-7373554115311894528-xT1u" target="_blank">
-        <img width="350"
-        src="/assets/blog/progress-report/2025-09/linkedin-4.png">
-        </a>
-    </figure>
-    <figure >
-        <a href="https://www.linkedin.com/posts/lucas-soma-capapelo-bb3949210_in-recent-days-i-developed-a-hydraulic-model-ugcPost-7372749648077144064-2Uut" target="_blank">
-        <img width="350"
-        src="/assets/blog/progress-report/2025-09/linkedin-5.png">
-        </a>
-    </figure>
+  <figure>
+      <a href="https://www.linkedin.com/posts/moise-k-b1a629176_epanet-js-epanet-in-your-browser-start-activity-7373554115311894528-xT1u" target="_blank">
+      <img width="350"
+      src="/assets/blog/progress-report/2025-09/linkedin-4.png">
+      </a>
+  </figure>
+  <figure>
+      <a href="https://www.linkedin.com/posts/lucas-soma-capapelo-bb3949210_in-recent-days-i-developed-a-hydraulic-model-ugcPost-7372749648077144064-2Uut" target="_blank">
+      <img width="350"
+      src="/assets/blog/progress-report/2025-09/linkedin-5.png">
+      </a>
+  </figure>
 
-    <figure >
-        <a href="https://www.linkedin.com/posts/%C3%A1lvaro-ribeiro-62127327_create-a-water-network-in-under-a-minute-ugcPost-7369905056323735552-dGlz" target="_blank">
-        <img width="350"
-        src="/assets/blog/progress-report/2025-09/linkedin-6.png">
-        </a>
-
-
-    <figure >
-        <a href="https://www.linkedin.com/posts/vhgarzonr_ense%C3%B1ando-con-epanetjs-ugcPost-7368003706199392259-ZWjH" target="_blank">
-        <img width="350"
-        src="/assets/blog/progress-report/2025-09/linkedin-7.png">
-        </a>
+  <figure>
+      <a href="https://www.linkedin.com/posts/%C3%A1lvaro-ribeiro-62127327_create-a-water-network-in-under-a-minute-ugcPost-7369905056323735552-dGlz" target="_blank">
+      <img width="350"
+      src="/assets/blog/progress-report/2025-09/linkedin-6.png">
+      </a>
 
 
-    <figure >
-        <a href="https://www.linkedin.com/posts/yusuke-shinoda-a78754aa_now-we-have-beta-version-of-japanese-language-activity-7364978108019429399-0fVG" target="_blank">
-        <img width="350"
-        src="/assets/blog/progress-report/2025-09/linkedin-8.png">
-        </a>
-    </figure>
+  <figure>
+      <a href="https://www.linkedin.com/posts/vhgarzonr_ense%C3%B1ando-con-epanetjs-ugcPost-7368003706199392259-ZWjH" target="_blank">
+      <img width="350"
+      src="/assets/blog/progress-report/2025-09/linkedin-7.png">
+      </a>
 
+
+  <figure>
+      <a href="https://www.linkedin.com/posts/yusuke-shinoda-a78754aa_now-we-have-beta-version-of-japanese-language-activity-7364978108019429399-0fVG" target="_blank">
+      <img width="350"
+      src="/assets/blog/progress-report/2025-09/linkedin-8.png">
+      </a>
+  </figure>
 </div>
 
 ### Closing

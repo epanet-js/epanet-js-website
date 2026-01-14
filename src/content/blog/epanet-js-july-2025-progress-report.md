@@ -4,7 +4,7 @@ title: "epanet-js July 2025 Progress Report"
 snippet: "GIS Model Builds, New Languages, and More!"
 image:
   {
-    src: "https://epanetjs.com/assets/blog/progress-report/2025-07/model-build-modal.png",
+    src: "/assets/blog/progress-report/2025-07/model-build-modal.png",
     alt: "",
   }
 publishDate: "2025-08-07 09:15"
@@ -18,7 +18,7 @@ tags: [Progress report]
 It’s been one month since we launched [epanet-js](https://epanetjs.com), and the response from the community has been incredible. Sam and I have been blown away by the feedback and are thrilled that over 3,000 of you from all around the world have already used the tool.
 
 <figure markdown="span">
-  ![Image title](/assets/blog/progress-report/2025-07/model-build-modal.png){ width="700"  }
+  <img src="/assets/blog/progress-report/2025-07/model-build-modal.png" alt="" />
   <figcaption style="margin-top: 0.5rem">GIS model builds are now in epanet-js!</figcaption>
 </figure>
 
@@ -50,7 +50,7 @@ But the biggest news, and one of our most requested features, is finally here - 
   </a>
 </div>
 
-## **Build Your Model from GIS Data**
+## Build Your Model from GIS Data
 
 We heard you loud and clear: drawing an entire network from scratch is a huge, if not impossible, task. While this feature is core to most commercial tools, it's been missing from the classic EPANET experience for years. We made it our number one priority to change that.
 
@@ -86,12 +86,12 @@ What used to take hours of manual (and less accurate) drawing can now be done be
 
 <figure markdown="span">
   <a href="https://www.youtube.com/watch?v=3B9UWHMb3W4" target="_blank" rel="noopener">
-  ![Watch the new model build process](/assets/blog/progress-report/2025-07/youtube-preview.png){ width="700"  }
+  <img src="/assets/blog/progress-report/2025-07/youtube-preview.png" alt="Watch the new model build process" />
   </a>
   <figcaption style="margin-top: 0.5rem">Watch the full model build process on YouTube.</figcaption>
 </figure>
 
-## **More Realistic Models**
+## More Realistic Models
 
 **Tanks and Check Valves are Here!**
 
@@ -106,7 +106,7 @@ While epanet-js currently runs steady-state simulations where tanks behave like 
 Sometimes referred to as non-return valves, check valves are simple but critical devices that ensure water flows in only one direction. This feature was essential for accurately modeling common scenarios like pump stations or pressure zone boundaries
 
 <figure markdown="span">
-  ![Image title](/assets/blog/progress-report/2025-07/cv-tanks.png){ width="700"  loading=lazy}
+  <img src="/assets/blog/progress-report/2025-07/cv-tanks.png" loading=lazy />
 </figure>
 
 With tanks and check valves now included, you have a complete toolkit for laying out your network.
@@ -133,21 +133,22 @@ With tanks and check valves now included, you have a complete toolkit for laying
   </a>
 </div>
 
-## **Speaking Your Language: Now in Dutch, Portuguese & French**
+## Speaking Your Language: Now in Dutch, Portuguese & French
 
 When we launched with English and Spanish, we were thrilled to see a global community embrace epanet-js from day one. However, this created a challenge: many of you were using your browser's built-in "Translate Page" feature, which we discovered was causing [a tricky bug](https://issues.chromium.org/issues/41407169) that made simulations fail.
 
 <figure markdown="span">
-  ![Image title](/assets/blog/progress-report/2025-07/epanet-js-languages.gif){ width="700" }
-
+  <img src="/assets/blog/progress-report/2025-07/epanet-js-languages.gif" alt="" />
   <figcaption style="margin-top: -1rem">epanet-js in English, Spanish, Portuguese, French, and Dutch.</figcaption>
 </figure>
 
 To ensure the app was stable, we had to disable the browser's in-built translation tool. But we were determined to find a better way to support our international users.
 
-![Image title](/assets/blog/progress-report/2025-07/language-menu.png){ align=right width="250"}
+<img src="/assets/blog/progress-report/2025-07/language-menu.png" alt="" style="float: right; margin: 0;" width="250" />
 
 Our first step was to build a more robust foundation. Sam replaced our original home-grown translation library with i18next, a powerful and widely-used solution. With that in place, we began adding community languages based on where you, our users, are coming from. Portuguese was an easy first choice, as users from Brazil are our third-largest group. French was next, followed by a fantastic community contribution for Dutch.
+
+<div style="clear: both"></div>
 
 But as we celebrated supporting five languages, we realized we had traded one problem for another. Every new feature or text change required complex manual updates, creating a significant maintenance burden. To keep moving fast, we knew we had to innovate.
 
@@ -160,14 +161,14 @@ This system allows us to maintain many languages with minimal overhead. It means
 If you are a native speaker and spot a translation that could be improved, we’d love your help. You can contribute directly via our [GitHub locales repository](https://github.com/epanet-js/epanet-js-locales).
 
 <figure markdown="span">
-  ![Image title](/assets/blog/progress-report/2025-07/translate-github.png){ width="700"  loading=lazy}
+  <img src="/assets/blog/progress-report/2025-07/translate-github.png" loading="lazy" />
 
   <figcaption style="margin-top: -0.5rem">Community languages are now automatically translated used Google's Gemini AI.</figcaption>
 </figure>
 
 Finally, we’ve published [the script](https://github.com/epanet-js/epanet-js-locales/blob/main/translate.ts) and its automated process as open source! So if you’re using i18next or another internationalization library, you can also benefit from this work.
 
-## **Improvements and Bug Squashing**
+## Improvements and Bug Squashing
 
 We also made a number of smaller tweaks and fixes to make your workflow smoother.
 
@@ -176,7 +177,7 @@ We also made a number of smaller tweaks and fixes to make your workflow smoother
 A subtle but important change. We tweaked our automatic contrast logic so that junctions with light fill colors now have a more distinct outline, making them clearly visible even on light-colored satellite maps.
 
 <figure markdown="span">
-  ![Image title](/assets/blog/progress-report/2025-07/node-stroke.gif){ width="700"  loading=lazy}
+  <img src="/assets/blog/progress-report/2025-07/node-stroke.gif" loading="lazy" />
 
   <figcaption style="margin-top: -0.5rem">Watch the white junctions in the center to see the improved junction visibility.</figcaption>
 </figure>
@@ -207,7 +208,7 @@ You can now visualize pipe roughness directly on the map. This is a great way to
 
 Previously, trying to draw very short pipes at low zoom levels could cause a crash. We've fixed this, so you can now model even the smallest connections without issue.
 
-## **Closing**
+## Closing
 
 Thank you again for an amazing first month. We're thrilled by the thousands of you using the app and blown away that over 1,000 people are now following our company, [Iterating, on LinkedIn](https://www.linkedin.com/company/iteratinginc). This incredible growth shows a powerful public demand for change in the world of water modeling.
 

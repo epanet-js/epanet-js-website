@@ -4,7 +4,7 @@ title: "epanet-js December 2025 Progress Report"
 snippet: "We are incredibly proud to announce that we have delivered our single biggest feature request: Extended Period Simulations (EPS) are now supported in epanet-js!"
 image:
   {
-    src: "https://epanetjs.com/assets/blog/progress-report/2025-12/eps.png",
+    src: "/assets/blog/progress-report/2025-12/eps.png",
     alt: "",
   }
 publishDate: "2026-01-13 09:15"
@@ -19,9 +19,9 @@ December was a short month for the team, with the holidays compressing our devel
 
 We are incredibly proud to announce that we have delivered our single biggest feature request: Extended Period Simulations (EPS) are now supported in epanet-js!
 
-<figure markdown="span">
-    ![epanet-js with extended period simulations](/assets/blog/progress-report/2025-12/eps.png){ width="700" }
-  <figcaption style="margin-top: 0rem">You can now run Extended Period Simulations directly in the browser.</figcaption>
+<figure>
+  <img src="/assets/blog/progress-report/2025-12/eps.png" alt="epanet-js with extended period simulations" />
+  <figcaption>You can now run Extended Period Simulations directly in the browser.</figcaption>
 </figure>
 
 Alongside this major milestone, we’ve added new selection tools, enabled asset ID editing, and announced our next community webinar where we will be building a model from scratch together.
@@ -82,8 +82,8 @@ When you switch your project settings from "steady state" to "EPS," a new **time
 This update also brings support for **simple controls** and **rule-based controls**. Currently, these are available as free-text fields. We know this is just the first step, and we plan to build a more user-friendly interface for defining rules in the future, but for now, your existing logic is fully preserved and editable.
 
 <figure markdown="span">
- 
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-12/controls.png){ width="700" }
+
+  ![epanet-js roadmap](/assets/blog/progress-report/2025-12/controls.png)
 
 </figure>
 
@@ -120,8 +120,9 @@ border-width: 1px;
 --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
 --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
-><source src="/assets/blog/progress-report/2025-12/new-selection-tools.mp4" type="video/mp4"></video>
-          <figcaption style="margin-top: 0rem">Select multiple assets fast with the new rectangular and freehand selection tools.</figcaption>
+>
+  <source src="/assets/blog/progress-report/2025-12/new-selection-tools.mp4" type="video/mp4"></video>
+  <figcaption style="margin-top: 0rem">Select multiple assets fast with the new rectangular and freehand selection tools.</figcaption>
 </figure>
 
 # Customize your asset labels
@@ -154,27 +155,25 @@ We also squeezed in a number of improvements to make the daily experience of usi
 We replaced the old map geolocation button with a new zoom to extents button. One click now resets the map view to the full extent of your network - perfect for reorienting yourself after zooming in to work on fine details.
 
 <figure>
-<video width=600 autoplay muted loop playsinline style="
-box-sizing: border-box;
-border-style: solid;
-border-color: #e5e7eb;
-overflow: hidden;
-border-radius: .75rem;
-border-width: 1px;
---tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
---tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
-box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
-><source src="/assets/blog/progress-report/2025-12/zoom-to-extents.mp4" type="video/mp4"></video>
-
+  <video width=600 autoplay muted loop playsinline style="
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: #e5e7eb;
+    overflow: hidden;
+    border-radius: .75rem;
+    border-width: 1px;
+    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
+>
+  <source src="/assets/blog/progress-report/2025-12/zoom-to-extents.mp4" type="video/mp4"></video>
 </figure>
 
 ## Better compatibility reporting
 
 When opening an INP file, the reporting is now more descriptive. We’ve added counts for non-supported features and direct links to the roadmap for features that are partially supported, so you know exactly where your model stands.
 
-<figure markdown="span">
-  ![epanet-js roadmap](/assets/blog/progress-report/2025-12/compatibility.png){ width="700" }
-</figure>
+![epanet-js roadmap](/assets/blog/progress-report/2025-12/compatibility.png)
 
 ## Improved readability for numbers
 
@@ -216,11 +215,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 
 We’ve got a ton of keyboard shortcuts in epanet-js and the list was getting pretty long, so we’ve reorganized the shortcut help into clear, logical sections to make everything easier to find.
 
-<figure markdown="span">
- 
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-12/shortcuts.png){ width="700" }
-
-</figure>
+![epanet-js roadmap](/assets/blog/progress-report/2025-12/shortcuts.png)
 
 ## Multi-asset sorting
 

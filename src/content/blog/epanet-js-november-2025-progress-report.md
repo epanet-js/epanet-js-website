@@ -4,7 +4,7 @@ title: "epanet-js November 2025 Progress Report"
 snippet: "Active topology, pump curves, and a new suite of utilities"
 image:
   {
-    src: "https://epanetjs.com/assets/blog/progress-report/2025-11/fire-flow.png",
+    src: "/assets/blog/progress-report/2025-11/fire-flow.png",
     alt: "",
   }
 publishDate: "2025-12-09 09:15"
@@ -19,14 +19,12 @@ It’s been another big, busy month working at epanet-js. We’ve been working a
 
 But we’ve also launched a range of interesting new utility tools. The standout is our new **Fire Flow Analysis**, which allows you to run thousands of simulations directly in your browser to instantly check your network's capacity to supply fire flows.
 
-<figure markdown="span">
+<figure>
   <a href="https://utils.epanetjs.com/" target="_blank" rel="noopener">
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-11/fire-flow.png){ width="700" }
+    <img src="/assets/blog/progress-report/2025-11/fire-flow.png" alt="" />
   </a>
-  <figcaption style="margin-top: 0rem">You can now run fire flow simulations of your hydraulic model.</figcaption>
+  <figcaption>You can now run Extended Period Simulations directly in the browser.</figcaption>
 </figure>
-
-<!-- more -->
 
 We’ve overhauled our external utilities website to host these new tools, but that’s just one part of the story. Inside the core app, we’ve released features that allow you to manage complex network states, model pumps with greater precision, and select vast areas of your system in seconds.
 
@@ -138,7 +136,7 @@ We’ve redesigned the epanet-js utilities website and launched three new standa
 
 <figure markdown="span">
   <a href="https://utils.epanetjs.com/" target="_blank" rel="noopener">
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-11/utility-site.png){ width="700" }
+    <img src="/assets/blog/progress-report/2025-11/utility-site.png" alt="epanet-js roadmap" />
   </a>
   <figcaption style="margin-top: 0rem">We’ve launched three new utilities apps—fire flow, data extraction, and logger optimization—now live on the site.</figcaption>
 </figure>
@@ -178,7 +176,7 @@ A simple but essential utility. Drop in an `.inp` file to extract GIS data (as G
 
 <figure markdown="span">
   <a href="https://utils.epanetjs.com/" target="_blank" rel="noopener">
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-11/data-extractor.png){ width="700" }
+    <img src="/assets/blog/progress-report/2025-11/data-extractor.png" alt="epanet-js roadmap" />
   </a>
   <figcaption style="margin-top: 0rem">A quick way to extract GIS layers and simulation results straight from your INP file.</figcaption>
 </figure>
@@ -190,7 +188,7 @@ We’ve released a new tool for exploring acoustic logger placement, supporting 
 For more advanced analysis, the tool includes a **genetic algorithm** that searches thousands of combinations to find layouts that maximize coverage while minimizing cost. You can watch the solution improve live on the map as each generation updates.
 
 <figure>
-    <video width=500 autoplay muted loop playsinline style="
+  <video width=500 autoplay muted loop playsinline style="
     box-sizing: border-box;
     border-style: solid;
     border-color: #e5e7eb;
@@ -200,8 +198,9 @@ For more advanced analysis, the tool includes a **genetic algorithm** that searc
     --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
     --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
-    ><source src="/assets/blog/progress-report/2025-11/acoustic-logger.mp4" type="video/mp4"></video>
-          <figcaption style="margin-top: 0rem">Test logger locations on the fly and watch the optimizer improve your coverage in real time.</figcaption>
+  >
+    <source src="/assets/blog/progress-report/2025-11/acoustic-logger.mp4" type="video/mp4"></video>
+    <figcaption style="margin-top: 0rem">Test logger locations on the fly and watch the optimizer improve your coverage in real time.</figcaption>
 </figure>
 
 <div style="text-align: center">
@@ -273,9 +272,7 @@ When you draw a valve, pump, or pipe directly on top of an existing pipe, epanet
 The action buttons in the asset panel are now sticky, so they remain visible even when you scroll down long lists of attributes.
 
 <figure markdown="span">
- 
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-11/sticky-header.png){ width="700" }
-
+  <img src="/assets/blog/progress-report/2025-11/sticky-header.png" alt="sticky header" />
 </figure>
 
 ### Empty state
@@ -283,9 +280,7 @@ The action buttons in the asset panel are now sticky, so they remain visible eve
 We’ve cleaned up the asset panel to show a helpful empty state when nothing is selected, removing the old tutorial text.
 
 <figure markdown="span">
- 
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-11/empty-state.png){ width="700" }
-
+  <img src="/assets/blog/progress-report/2025-11/empty-state.png" alt="empty state" />
 </figure>
 
 ### Loop detection
@@ -293,9 +288,7 @@ We’ve cleaned up the asset panel to show a helpful empty state when nothing is
 You’ll now see a cursor hint if you try to create a loop where a pipe starts and ends at the same node.
 
 <figure markdown="span">
- 
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-11/no-loop.png){ width="700" }
-
+  <img src="/assets/blog/progress-report/2025-11/no-loop.png" alt="no loop" />
 </figure>
 
 ### Customer points on pipes
@@ -303,9 +296,7 @@ You’ll now see a cursor hint if you try to create a loop where a pipe starts a
 You can now see the aggregated demand and list of specific customers directly on the Pipe asset, not just the Junction.
 
 <figure markdown="span">
- 
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-11/cust-points-pipes.png){ width="700" }
-
+  <img src="/assets/blog/progress-report/2025-11/cust-points-pipes.png" alt="customers point pipes" />
 </figure>
 
 ### Better shortcuts
@@ -313,9 +304,7 @@ You can now see the aggregated demand and list of specific customers directly on
 We’ve reorganized the Keyboard Shortcuts menu into logical groups so it’s easier to find what you need.
 
 <figure markdown="span">
- 
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-11/shortcuts.png){ width="700" }
-
+  <img src="/assets/blog/progress-report/2025-11/shortcuts.png" alt="keyboard shortcuts" />
 </figure>
 
 <div style="text-align: center">
@@ -340,7 +329,7 @@ We’ve reorganized the Keyboard Shortcuts menu into logical groups so it’s ea
   </a>
 </div>
 
-## **Community & events**
+## Community & events
 
 ### IWA water loss webinar
 
@@ -353,9 +342,7 @@ Luke presented to the IWA Water Loss Specialist Group on using hydraulic models 
 The team attended the Suez and Optimatics user group in Portland, the CwMAG conference in the UK, and Luke presented at the WEAO Intelligent Water Solutions seminar in Ontario.
 
 <figure markdown="span">
-
-    ![Luke at WEAO](/assets/blog/progress-report/2025-11/luke-weao.jpeg){ width="700" }
-
+  <img src="/assets/blog/progress-report/2025-11/luke-weao.jpeg" alt="Luke at WEAO" />
   <figcaption style="margin-top: 1rem">Luke introducing epanet-js at the WEAO Intelligent Water Solutions seminar in Ontario.</figcaption>
 </figure>
 
@@ -372,9 +359,7 @@ We are hosting a special **hands-on webinar in January**. We will provide a real
 We recently polled the community on LinkedIn to ask what you wanted next: **Scenario Management** or **Extended Period Simulations (EPS)**.
 
 <figure markdown="span">
- 
-    ![linkedin votes](/assets/blog/progress-report/2025-11/linkedin-votes.png){ width="450" }
-
+  <img src="/assets/blog/progress-report/2025-11/linkedin-votes.png" alt="linkedin votes" />
 </figure>
 
 While Active Topology laid the foundation for scenarios, the vote was clear—**you want EPS first**. We’re listening.

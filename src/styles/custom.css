@@ -125,6 +125,20 @@ summary {
   }
 }
 
+figure {
+  display: flow-root;
+  max-width: 100%;
+  text-align: center;
+  width: fit-content;
+  margin: 1em auto;
+}
+
+figcaption {
+  font-style: italic;
+  max-width: 24rem;
+  margin: 1em auto;
+}
+
 /*
 .astronav-sticky-header {
   --tw-backdrop-blur: blur(16px);

@@ -4,13 +4,14 @@ title: "epanet-js - the water distribution modelling engine for the web!"
 snippet: "epanet-js allows developers to build web applications using the EPANET engine"
 image:
   {
-    src: "https://epanetjs.com/assets/images/epanet-js-app.png",
+    src: "/assets/images/epanet-js-app.png",
     alt: "",
   }
 publishDate: "2023-01-04 09:15"
 category: "blog"
 author: "lbutler"
 tags: [blog]
+slug: 2023/01/04/epanet-js---the-water-distribution-modelling-engine-for-the-web
 ---
 
 EPANET is a powerful hydraulic analysis software that is widely used in the water distribution industry. It allows users to model and analyze the behavior of water distribution systems, including the flow of water through pipes, the pressure at various points in the system, and water quality behaviour within the network.

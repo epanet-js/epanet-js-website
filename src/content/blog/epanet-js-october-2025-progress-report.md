@@ -4,7 +4,7 @@ title: "epanet-js October 2025 Progress Report"
 snippet: "Network Reviews, a New Teammate, and a Focus on Fundamentals"
 image:
   {
-    src: "https://epanetjs.com/assets/blog/progress-report/2025-10/01-network-review.png",
+    src: "/assets/blog/progress-report/2025-10/01-network-review.png",
     alt: "",
   }
 publishDate: "2025-11-06 09:15"
@@ -23,12 +23,10 @@ We’re thrilled to release the new **Network Review** toolset, a major feature 
 
 <figure markdown="span">
   <a href="https://roadmap.epanetjs.com" target="_blank" rel="noopener">
-    ![epanet-js roadmap](/assets/blog/progress-report/2025-10/01-network-review.png){ width="700" }
+    <img src="/assets/blog/progress-report/2025-10/01-network-review.png" alt="epanet-js roadmap">
   </a>
   <figcaption style="margin-top: 0rem">You can now review your network data after a model build.</figcaption>
 </figure>
-
-<!-- more -->
 
 This new feature set is just the start of the big news, as it was built entirely by the newest member of our team.
 
@@ -54,17 +52,17 @@ This new feature set is just the start of the big news, as it was built entirely
   </a>
 </div>
 
-## **Welcome, Sandra!**
+## Welcome, Sandra!
 
 We are incredibly excited to share that our friend [Sandra Saornil](https://www.linkedin.com/in/ssaornil/) has joined Iterating full-time!
 
-![Sandra joins Iterating](/assets/blog/progress-report/2025-10/02-sandra-at-iterating.jpeg){ width="700" }
+![Sandra joins Iterating](/assets/blog/progress-report/2025-10/02-sandra-at-iterating.jpeg)
 
 With Sandra on board, the epanet-js team has grown to three, allowing us to build even faster. She brings deep experience and an incredible eye for detail, and as you'll see, she has already made a huge impact.
 
 Sandra’s first project was building the entire Network Review feature from the ground up, a perfect example of her jumping straight in to tackle one of our users' biggest pain points. We’re so happy to have her on the team as we work together to build the next generation of open, accessible water modeling tools.
 
-## **Introducing the Network Review**
+## Introducing the Network Review
 
 The Network Review panel is your new command center for quality assurance. It runs a series of checks to validate your network's topology and data, which is essential after importing GIS data. The goal is to find all the little issues that would normally cause a model to fail _before_ you ever hit "run".
 
@@ -148,7 +146,7 @@ For each disconnected area, the tool also checks whether it has a water supply s
     ><source src="/assets/blog/progress-report/2025-10/06-connectivity-trace.mp4" type="video/mp4"></video>
 </figure>
 
-## **A Major UI and Workflow Refresh**
+## A Major UI and Workflow Refresh
 
 We also revisited some core parts of the interface based on your feedback.
 
@@ -220,7 +218,7 @@ This change gives you more control over your workspace and makes it much easier 
   </a>
 </div>
 
-## **Polishing the Fundamentals**
+## Polishing the Fundamentals
 
 Alongside the big features, we shipped a whole set of improvements focused on the fundamental, moment-to-moment experience of building a model.
 
@@ -344,7 +342,7 @@ We added a small but helpful visual cue. When you hold the **Ctrl** key while dr
   </a>
 </div>
 
-## **More User-Focused Updates**
+## More User-Focused Updates
 
 A few more updates focused on customization and privacy:
 
@@ -409,7 +407,7 @@ We're committed to respecting your privacy. New guest users will now see a pop-u
   </a>
 </div>
 
-## **Bug Fixes and Minor Tweaks**
+## Bug Fixes and Minor Tweaks
 
 We were also busy squashing bugs to improve stability.
 
@@ -419,7 +417,7 @@ We were also busy squashing bugs to improve stability.
 - Standardized the heights of modal pop-ups across the app for a more consistent feel.
 - Reworked the customer point importer to be more resilient. It no longer fails on null geometries and provides much clearer error messages.
 
-## **Community and Growth**
+## Community and Growth
 
 It’s been amazing to watch the community grow. This month, we were thrilled to see epanet-js pass **1,000 registered users**! Thank you to everyone who has signed up and is finding value in the tool.
 
@@ -441,7 +439,7 @@ It’s been amazing to watch the community grow. This month, we were thrilled to
 - **IWA Water Loss Conference:** Luke was invited to present at the IWA Water Loss Group, where he discussed how modern, accessible hydraulic models can be a powerful tool in the fight against water loss. Check out the [recording of the session on YouTube](https://www.youtube.com/watch?v=eKPhihGw7AQ).
 - **Thank You for the Feedback!** We've been getting a ton of excellent ideas and feedback through our [roadmap](https://roadmap.epanetjs.com/). Please keep it coming—it directly helps us decide what to build next. In fact, a common suggestion was to make it easier to set attributes _before_ drawing, like default pipe diameters or roughness. We're excited to say we are already working on this, and it's a perfect example of your feedback in action!
 
-## **What's Next**
+## What's Next
 
 We're shifting our attention to some highly requested improvements that we're very excited about:
 

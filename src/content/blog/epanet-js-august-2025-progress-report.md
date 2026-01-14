@@ -4,7 +4,7 @@ title: "epanet-js August 2025 Progress Report"
 snippet: "Introducing Customer Points, a UI Refresh, and More!"
 image:
   {
-    src: "https://epanetjs.com/assets/blog/progress-report/2025-08/cust-point-1.png",
+    src: "/assets/blog/progress-report/2025-08/cust-point-1.png",
     alt: "",
   }
 publishDate: "2025-09-08 09:15"
@@ -20,7 +20,7 @@ August was a huge month for epanet-js! We've been working hard on one of our big
 Alongside that, we’ve rolled out a some UI refreshers to improve your workflow, added a new language, and squashed some important bugs.
 
 <figure markdown="span">
-  ![Image title](/assets/blog/progress-report/2025-08/cust-point-1.png){ width="700"  }
+  <img src="/assets/blog/progress-report/2025-08/cust-point-1.png" alt="">
   <figcaption style="margin-top: -0.5rem">Customer points are now in epanet-js!</figcaption>
 </figure>
 
@@ -68,7 +68,7 @@ For a step-by-step walkthrough, check out our new guide: **[How to Import Custom
     <img 
       alt="Luke Butler - Co-founder" 
       src="/assets/landing/lbutler.webp"
-      style="display:block; width:9rem; height:9rem; border-radius:0.75rem; object-fit:cover; border:2px solid #e5e7eb; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); "
+      style="display:block; width:9rem; height:9rem; margin: 0; border-radius:0.75rem; object-fit:cover; border:2px solid #e5e7eb; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); "
     >
     <div style="text-align:center; display:flex; flex-direction:column; gap:0rem;">
       <p style="font-size:0.875rem; font-weight:600; color:#1f2937; margin:0;">Luke Butler</p>
@@ -80,7 +80,7 @@ For a step-by-step walkthrough, check out our new guide: **[How to Import Custom
     <img 
       alt="Sam - Co-founder" 
       src="/assets/landing/spaya.webp"
-      style="display:block; width:9rem; height:9rem; border-radius:0.75rem; object-fit:cover; border:2px solid #e5e7eb; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); "
+      style="display:block; width:9rem; height:9rem; margin: 0; border-radius:0.75rem; object-fit:cover; border:2px solid #e5e7eb; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); "
     >
     <div style="text-align:center; display:flex; flex-direction:column; gap:0rem;">
       <p style="font-size:0.875rem; font-weight:600; color:#1f2937; margin:0;">Sam Payá</p>
@@ -109,14 +109,14 @@ We've refreshed the app with a new set of icons! We’ve moved from the [radix i
       width="700" 
       loading="lazy" 
       alt="toolbar before"
-      style="position: absolute; top: 0; left: 0; transition: opacity 0.5s ease; cursor: crosshair;"
+      style="margin: 0; position: absolute; top: 0; left: 0; transition: opacity 0.5s ease; cursor: crosshair;"
     >
     <img 
       src="/assets/blog/progress-report/2025-08/toolbar-after.png"
       width="700" 
       loading="lazy"
       alt="Toolbar after" 
-      style="opacity: 0; transition: opacity 0.5s ease; cursor: crosshair;"
+      style="margin: 0; opacity: 0; transition: opacity 0.5s ease; cursor: crosshair;"
       onmouseover="this.style.opacity='1'; this.previousElementSibling.style.opacity='0';"
       onmouseout="this.style.opacity='0'; this.previousElementSibling.style.opacity='1';"
     >
@@ -183,7 +183,7 @@ Our international community continues to grow, and we've made some major strides
 We are thrilled to add **Japanese** as our fourth community language! A huge thank you to Yusuke Shinoda for his incredible effort in translating and providing feedback to ensure the accuracy was top-notch.
 
 <figure markdown="span">
-  ![Image title](/assets/blog/progress-report/2025-08/japanese.png){ width="700"  loading=lazy}
+  <img src="/assets/blog/progress-report/2025-08/japanese.png" loading="lazy" />
 
   <figcaption style="margin-top: -0.5rem">ようこそ！Welcome, Japanese Speakers!</figcaption>
 </figure>
@@ -207,14 +207,14 @@ We fixed a bug in the import process where assets with a specific ID format coul
       width="700" 
       loading="lazy" 
       alt="toolbar before"
-      style="position: absolute; top: 0; left: 0; transition: opacity 0.5s ease; cursor: crosshair;"
+      style="margin: 0; position: absolute; top: 0; left: 0; transition: opacity 0.5s ease; cursor: crosshair;"
     >
     <img 
       src="/assets/blog/progress-report/2025-08/import-bug-after.png"
       width="700" 
       loading="lazy"
       alt="Toolbar after" 
-      style="opacity: 0; transition: opacity 0.5s ease; cursor: crosshair;"
+      style="margin: 0; opacity: 0; transition: opacity 0.5s ease; cursor: crosshair;"
       onmouseover="this.style.opacity='1'; this.previousElementSibling.style.opacity='0';"
       onmouseout="this.style.opacity='0'; this.previousElementSibling.style.opacity='1';"
     >

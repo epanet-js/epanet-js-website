@@ -4,7 +4,7 @@ title: "Introducing epanet-js"
 snippet: "Fast, local-first water modeling right in your browser"
 image:
   {
-    src: "https://epanetjs.com/assets/images/epanet-js-app.png",
+    src: "/assets/images/epanet-js-app.png",
     alt: "",
   }
 publishDate: "2025-08-01 09:15"
