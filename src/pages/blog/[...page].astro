@@ -28,6 +28,17 @@ export async function getStaticPaths({
   });
 }
 
+const getCustomUrl = (entry: any) => {
+  const date = new Date(entry.data.publishDate);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  
+  const slugify = (text: string) => text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').trim();
+
+  return `/blog/${year}/${month}/${day}/${slugify(entry.data.title)}/`; // Add trailing slash if needed
+};
+
 const { page } = Astro.props;
 ---
 
@@ -44,7 +55,7 @@ const { page } = Astro.props;
         {
           page.data.map((post, index) => (
             <li>
-              <a href={`/blog/${post.slug}`}>
+              <a href={getCustomUrl(post)}>
                 <div class="grid md:grid-cols-2 gap-5 md:gap-10 items-center">
                   <Picture
                     formats={["avif", "webp"]}
