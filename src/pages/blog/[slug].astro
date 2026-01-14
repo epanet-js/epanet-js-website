@@ -50,18 +50,6 @@ const { Content } = await entry.render();
       </div>
     </div>
 
-    <div class="mx-auto max-w-4xl">
-      <Picture
-        formats={["avif", "webp"]}
-        src={entry.data.image.src}
-        alt="Feature image"
-        width="1280"
-        height="800"
-        class="h-full w-full object-contain rounded-xl mt-6"
-        transition:name={`post-img-${entry.slug}`}
-      />
-    </div>
-
     <div
       class="mx-auto prose mt-6 max-w-3xl prose-headings:mb-2 prose-headings:mt-8">
       <Content />
