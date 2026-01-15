@@ -171,7 +171,7 @@ The multi-select view is also much cleaner. Assets are now grouped by type (e.g.
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
     ><source src="/assets/blog/progress-report/2025-10/new-asset-panel.mp4" type="video/mp4"></video>
 
-  <figcaption style="margin-top: 0rem">Before and after - the new asset panel!</figcaption>
+  <figcaption style="margin-top: 1rem">Before and after - the new asset panel!</figcaption>
 </figure>
 
 ### New Panel Toggle Buttons
@@ -297,7 +297,7 @@ We re-engineered how asset selection works. This fixes a Mapbox bug that caused 
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
     ><source src="/assets/blog/progress-report/2025-10/selection-improvement.mp4" type="video/mp4"></video>
 
-  <figcaption style="margin-top: 0rem">Before and after - a huge improvement in performance!</figcaption>
+  <figcaption style="margin-top: 1rem">Before and after - a huge improvement in performance!</figcaption>
 </figure>
 
 ### Ctrl-Draw Feedback
@@ -317,7 +317,7 @@ We added a small but helpful visual cue. When you hold the **Ctrl** key while dr
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
     ><source src="/assets/blog/progress-report/2025-10/ctrl-draw.mp4" type="video/mp4"></video>
 
-  <figcaption style="margin-top: 0rem">Hold Ctrl while drawing to place nodes and keep going — now with visual feedback!</figcaption>
+  <figcaption style="margin-top: 1rem">Hold Ctrl while drawing to place nodes and keep going — now with visual feedback!</figcaption>
 </figure>
 
 <div style="text-align: center">
@@ -371,19 +371,19 @@ And as a quick tip — if you want to simplify the map further, you can hide roa
 
 Based on direct user feedback, you can now visualize demand directly on the map. In the Map tab, you can select 'Actual Demand' to color-code your junctions, making it easy to spot high-demand areas or verify your demand allocation at a glance.
 
-![Visualize actual demand](/assets/blog/progress-report/2025-10/actual-demand.png){ width="700" }
+![Visualize actual demand](/assets/blog/progress-report/2025-10/actual-demand.png)
 
 ### Custom IDs for Customer Points
 
 When you import customer points, you can now map one of your data fields to be the asset's ID, rather than just getting a sequential number.
 
-![Customer IDs](/assets/blog/progress-report/2025-10/cust-ids.png){ width="700" }
+![Customer IDs](/assets/blog/progress-report/2025-10/cust-ids.png)
 
 ### Manage Privacy Settings
 
 We're committed to respecting your privacy. New guest users will now see a pop-up asking for consent to collect anonymous usage analytics and error reports. This data is vital for helping us find bugs and understand which features to improve, but the choice is yours.
 
-![Manage privacy settings](/assets/blog/progress-report/2025-10/user-privacy.png){ width="700" }
+![Manage privacy settings](/assets/blog/progress-report/2025-10/user-privacy.png)
 
 <div style="text-align: center">
   <a href="https://app.epanetjs.com" style="

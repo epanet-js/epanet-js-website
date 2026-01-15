@@ -30,7 +30,7 @@ First, download the EPANET 2.2 programmer’s toolkit and the source code files 
 **Download:** [EPANET Source Code](https://www.epa.gov/water-research/epanet)
 
 <figure>
-  <img src="/assets/blog/compile-epanet-gui/1-download-source-code.png" alt="EPANET Source Code Location" />
+  <img src="/assets/blog/compile-epanet-gui/1-download-source-code.png" alt="EPANET Source Code Location" width="500" />
   <figcaption>Download the EPANET toolkit and GUI source code.</figcaption>
 </figure>
 

@@ -48,7 +48,7 @@ Launch epanet-js. No login needed.
 </a>
 </div>
 
-# Time to get dynamic: extended period simulations
+## Time to get dynamic: extended period simulations
 
 Until now, epanet-js has been a tool for steady-state analysis - taking a snapshot of your network at a single moment in time. But water systems are dynamic. To truly understand how your network performs, you need to see how tank levels fluctuate, how pressures change during peak demand, and how your controls respond throughout the day.
 
@@ -66,10 +66,10 @@ border-width: 1px;
 --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 ><source src="/assets/blog/progress-report/2025-12/time-control.mp4" type="video/mp4"></video>
-<figcaption style="margin-top: 0.5rem">Use the new time browser to visualize changes in your network over time.</figcaption>
+<figcaption style="margin-top: 1rem">Use the new time browser to visualize changes in your network over time.</figcaption>
 </figure>
 
-## The time browser
+### The time browser
 
 When you switch your project settings from "steady state" to "EPS," a new **time browser** appears in the top right corner of the map. This tool gives you full control over the simulation timeline:
 
@@ -77,7 +77,7 @@ When you switch your project settings from "steady state" to "EPS," a new **time
 - **Jump:** Use the dropdown to instantly select the exact time you want to analyze.
 - **Shortcuts:** We’ve added keyboard shortcuts to make moving through time even faster.
 
-## Controls and patterns
+### Controls and patterns
 
 This update also brings support for **simple controls** and **rule-based controls**. Currently, these are available as free-text fields. We know this is just the first step, and we plan to build a more user-friendly interface for defining rules in the future, but for now, your existing logic is fully preserved and editable.
 
@@ -89,7 +89,7 @@ This update also brings support for **simple controls** and **rule-based control
 
 Additionally, **Time series demand patterns** are now accessible and included in the model. While these are currently read-only, we are actively working on allowing you to define your own patterns and apply them to demands in an upcoming release.
 
-# Join us for a hands-on workshop
+## Join us for a hands-on workshop
 
 Building on the success of our first webinar, we are excited to announce our next event: **"From GIS to a running hydraulic model."**
 
@@ -103,7 +103,7 @@ This won't be just a presentation - it’s a hands-on workshop. Luke will guide 
 
 We’ll also take some time to showcase the latest features we've built, including the new EPS capabilities. [Register now to secure your spot!](https://www.crowdcast.io/c/epanet-js-hydraulic-modeling-workshop)
 
-# New ways to select
+## New ways to select
 
 We’ve expanded the selection toolkit to give you more flexibility when working with complex models. While the polygon select tool is powerful, sometimes you just need a simple box or a quick lasso.
 
@@ -122,10 +122,10 @@ border-width: 1px;
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 >
   <source src="/assets/blog/progress-report/2025-12/new-selection-tools.mp4" type="video/mp4"></video>
-  <figcaption style="margin-top: 0rem">Select multiple assets fast with the new rectangular and freehand selection tools.</figcaption>
+  <figcaption style="margin-top: 1rem">Select multiple assets fast with the new rectangular and freehand selection tools.</figcaption>
 </figure>
 
-# Customize your asset labels
+## Customize your asset labels
 
 You asked, and we listened. A frequent request from the community was the ability to rename assets without deleting and redrawing them.
 
@@ -146,11 +146,11 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 
 </figure>
 
-# Improvements and bug squashing
+## Improvements and bug squashing
 
 We also squeezed in a number of improvements to make the daily experience of using epanet-js smoother.
 
-## Zoom to extents
+### Zoom to extents
 
 We replaced the old map geolocation button with a new zoom to extents button. One click now resets the map view to the full extent of your network - perfect for reorienting yourself after zooming in to work on fine details.
 
@@ -169,18 +169,18 @@ We replaced the old map geolocation button with a new zoom to extents button. On
   <source src="/assets/blog/progress-report/2025-12/zoom-to-extents.mp4" type="video/mp4"></video>
 </figure>
 
-## Better compatibility reporting
+### Better compatibility reporting
 
 When opening an INP file, the reporting is now more descriptive. We’ve added counts for non-supported features and direct links to the roadmap for features that are partially supported, so you know exactly where your model stands.
 
 ![epanet-js roadmap](/assets/blog/progress-report/2025-12/compatibility.png)
 
-## Improved readability for numbers
+### Improved readability for numbers
 
 We’ve updated the asset panel to use tabular numbers (monospaced digits). This makes comparing flow and pressure values across different assets much easier on the eyes.
 
 <figure markdown="span">
-  <div style="position: relative; width: 300px;
+  <div style="position: relative; width: 300px; margin: auto;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -211,13 +211,13 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
   <figcaption>Hover to see the previous spacing of the asset panel numbers.</figcaption>
 </figure>
 
-## Shortcuts panel
+### Shortcuts panel
 
 We’ve got a ton of keyboard shortcuts in epanet-js and the list was getting pretty long, so we’ve reorganized the shortcut help into clear, logical sections to make everything easier to find.
 
 ![epanet-js roadmap](/assets/blog/progress-report/2025-12/shortcuts.png)
 
-## Multi-asset sorting
+### Multi-asset sorting
 
 When you multi-select assets in epanet-js, the summary panel now lets you sort the results while inspecting properties and simulation data.
 
@@ -238,13 +238,13 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 
 </figure>
 
-## Other Fixes
+### Other Fixes
 
 - **Help center:** We reorganized the content and updated the information to be more helpful.
 - **Performance:** Optimized map performance after bulk updates of assets.
 - **Utility apps:** Added a direct link to our external `utility apps` in the help dropdown.
 
-# What's next
+## What's next
 
 With extended period simulations now live, we are shifting our focus to the next major frontier in epanet-js: **scenario management**.
 

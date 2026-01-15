@@ -23,7 +23,7 @@ But we’ve also launched a range of interesting new utility tools. The standout
   <a href="https://utils.epanetjs.com/" target="_blank" rel="noopener">
     <img src="/assets/blog/progress-report/2025-11/fire-flow.png" alt="" />
   </a>
-  <figcaption>You can now run Extended Period Simulations directly in the browser.</figcaption>
+  <figcaption style="margin-top: 0">You can now run Extended Period Simulations directly in the browser.</figcaption>
 </figure>
 
 We’ve overhauled our external utilities website to host these new tools, but that’s just one part of the story. Inside the core app, we’ve released features that allow you to manage complex network states, model pumps with greater precision, and select vast areas of your system in seconds.
@@ -73,7 +73,7 @@ If you select an area and disable it, epanet-js automatically determines which c
     --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
     ><source src="/assets/blog/progress-report/2025-11/topology.mp4" type="video/mp4"></video>
-      <figcaption style="margin-top: 0rem">Quickly enable or disable pipes and other assets to test layouts, upgrades, or scenarios on the fly.</figcaption>
+      <figcaption>Quickly enable or disable pipes and other assets to test layouts, upgrades, or scenarios on the fly.</figcaption>
 </figure>
 
 While active topology is already useful on its own, it’s also the foundation for something much bigger: **Scenario Management**. This is the core engine that will support complex, multi-year planning, alternative design pathways, and advanced modeling workflows—all within a single model.
@@ -98,7 +98,7 @@ This is the first step in bringing epanet-js closer to full EPANET standard supp
     --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
     ><source src="/assets/blog/progress-report/2025-11/3-point-pumps.mp4" type="video/mp4"></video>
-          <figcaption style="margin-top: 0rem">epanet-js now supports three-point pump curves, letting you define shutoff, design, and max operating values directly.</figcaption>
+          <figcaption>epanet-js now supports three-point pump curves, letting you define shutoff, design, and max operating values directly.</figcaption>
 </figure>
 
 We also improved the one-point curve view. Now, instead of just entering design head and flow, the panel calculates and displays the shutoff head and maximum operating flow, giving you a better sense of the pump’s full operating range right in the attributes panel.
@@ -123,7 +123,7 @@ Selecting multiple assets is now much faster. We’ve added a new area selection
     --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
     ><source src="/assets/blog/progress-report/2025-11/multi-select.mp4" type="video/mp4"></video>
-          <figcaption style="margin-top: 0rem">Select multiple assets fast with the new polygon tool, with Shift to add and Alt to subtract.</figcaption>
+          <figcaption>Select multiple assets fast with the new polygon tool, with Shift to add and Alt to subtract.</figcaption>
 </figure>
 
 This update is about more than just convenience; it’s a prerequisite for **Multi-Element Editing**. To edit many assets at once, you first need a fast, precise way to select them.
@@ -138,7 +138,7 @@ We’ve redesigned the epanet-js utilities website and launched three new standa
   <a href="https://utils.epanetjs.com/" target="_blank" rel="noopener">
     <img src="/assets/blog/progress-report/2025-11/utility-site.png" alt="epanet-js roadmap" />
   </a>
-  <figcaption style="margin-top: 0rem">We’ve launched three new utilities apps—fire flow, data extraction, and logger optimization—now live on the site.</figcaption>
+  <figcaption style="margin-top: 0">We’ve launched three new utilities apps—fire flow, data extraction, and logger optimization—now live on the site.</figcaption>
 </figure>
 
 ### Fire flow analysis
@@ -161,7 +161,7 @@ You can now run full **fire flow assessments** directly in your browser. The too
     --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
     ><source src="/assets/blog/progress-report/2025-11/fire-flow-poc.mp4" type="video/mp4"></video>
-          <figcaption style="margin-top: 0rem">A faster way to run fire flow: hundreds of simulations per second, all in your browser.</figcaption>
+          <figcaption>A faster way to run fire flow: hundreds of simulations per second, all in your browser.</figcaption>
 </figure>
 
 While this lives on the utilities site for now, the plan is to bring this capability directly into epanet-js so it becomes a native part of your analysis workflow.
@@ -178,7 +178,7 @@ A simple but essential utility. Drop in an `.inp` file to extract GIS data (as G
   <a href="https://utils.epanetjs.com/" target="_blank" rel="noopener">
     <img src="/assets/blog/progress-report/2025-11/data-extractor.png" alt="epanet-js roadmap" />
   </a>
-  <figcaption style="margin-top: 0rem">A quick way to extract GIS layers and simulation results straight from your INP file.</figcaption>
+  <figcaption style="margin-top: 0">A quick way to extract GIS layers and simulation results straight from your INP file.</figcaption>
 </figure>
 
 ### Acoustic Logger Optimization
@@ -200,7 +200,7 @@ For more advanced analysis, the tool includes a **genetic algorithm** that searc
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
   >
     <source src="/assets/blog/progress-report/2025-11/acoustic-logger.mp4" type="video/mp4"></video>
-    <figcaption style="margin-top: 0rem">Test logger locations on the fly and watch the optimizer improve your coverage in real time.</figcaption>
+    <figcaption>Test logger locations on the fly and watch the optimizer improve your coverage in real time.</figcaption>
 </figure>
 
 <div style="text-align: center">
@@ -342,7 +342,10 @@ Luke presented to the IWA Water Loss Specialist Group on using hydraulic models 
 The team attended the Suez and Optimatics user group in Portland, the CwMAG conference in the UK, and Luke presented at the WEAO Intelligent Water Solutions seminar in Ontario.
 
 <figure markdown="span">
-  <img src="/assets/blog/progress-report/2025-11/luke-weao.jpeg" alt="Luke at WEAO" />
+  <img src="/assets/blog/progress-report/2025-11/luke-weao.jpeg" alt="Luke at WEAO" style="border-radius: 0.75rem;
+    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);" />
   <figcaption style="margin-top: 1rem">Luke introducing epanet-js at the WEAO Intelligent Water Solutions seminar in Ontario.</figcaption>
 </figure>
 
