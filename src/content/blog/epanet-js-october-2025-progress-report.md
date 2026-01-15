@@ -36,10 +36,8 @@ This new feature set is just the start of the big news, as it was built entirely
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
-    font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    zoom: 75%;
     background-image: linear-gradient(to right, #2563eb, #9333ea);
     border-radius: 0.375rem;
     text-decoration: none;
@@ -202,10 +200,8 @@ This change gives you more control over your workspace and makes it much easier 
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
-    font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    zoom: 75%;
     background-image: linear-gradient(to right, #2563eb, #9333ea);
     border-radius: 0.375rem;
     text-decoration: none;
@@ -326,10 +322,8 @@ We added a small but helpful visual cue. When you hold the **Ctrl** key while dr
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
-    font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    zoom: 75%;
     background-image: linear-gradient(to right, #2563eb, #9333ea);
     border-radius: 0.375rem;
     text-decoration: none;
@@ -391,10 +385,8 @@ We're committed to respecting your privacy. New guest users will now see a pop-u
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
-    font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    zoom: 75%;
     background-image: linear-gradient(to right, #2563eb, #9333ea);
     border-radius: 0.375rem;
     text-decoration: none;
@@ -459,10 +451,8 @@ Support EPANET by using software that supports it back.
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
-    font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    zoom: 75%;
     background-image: linear-gradient(to right, #2563eb, #9333ea);
     border-radius: 0.375rem;
     text-decoration: none;

@@ -34,10 +34,8 @@ We’ve overhauled our external utilities website to host these new tools, but t
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
-    font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    zoom: 75%;
     background-image: linear-gradient(to right, #2563eb, #9333ea);
     border-radius: 0.375rem;
     text-decoration: none;
@@ -209,10 +207,8 @@ For more advanced analysis, the tool includes a **genetic algorithm** that searc
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
-    font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    zoom: 75%;
     background-image: linear-gradient(to right, #2563eb, #9333ea);
     border-radius: 0.375rem;
     text-decoration: none;
@@ -313,10 +309,8 @@ We’ve reorganized the Keyboard Shortcuts menu into logical groups so it’s ea
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
-    font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    zoom: 75%;
     background-image: linear-gradient(to right, #2563eb, #9333ea);
     border-radius: 0.375rem;
     text-decoration: none;
@@ -379,10 +373,8 @@ Support EPANET by using software that supports it back.
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
-    font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    zoom: 75%;
     background-image: linear-gradient(to right, #2563eb, #9333ea);
     border-radius: 0.375rem;
     text-decoration: none;

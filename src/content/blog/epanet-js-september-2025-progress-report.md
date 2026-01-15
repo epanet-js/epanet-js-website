@@ -34,10 +34,8 @@ Alongside that, we hosted our first live webinar, rolled out new editing tools f
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
-    font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    zoom: 75%;
     background-image: linear-gradient(to right, #2563eb, #9333ea);
     border-radius: 0.375rem;
     text-decoration: none;
@@ -309,10 +307,8 @@ Support EPANET by using software that supports it back.
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
-    font-size: 0.875rem;
     font-weight: 500;
     color: white;
-    zoom: 75%;
     background-image: linear-gradient(to right, #2563eb, #9333ea);
     border-radius: 0.375rem;
     text-decoration: none;
