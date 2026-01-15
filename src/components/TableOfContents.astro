@@ -1,0 +1,108 @@
+---
+type Heading = {
+  depth: number;
+  slug: string;
+  text: string;
+};
+
+const { headings }: { headings?: Heading[] } = Astro.props;
+const toc = (headings ?? []).filter((h) => h.depth > 1 && h.depth < 4);
+---
+
+<nav class="toc-container">
+  <ul class="space-y-3 text-sm">
+    {
+      toc.map((heading) => (
+        <li
+          class:list={[
+            heading.depth === 3 ? "pl-4" : "",
+          ]}
+        >
+          <a 
+            href={`#${heading.slug}`} 
+            class:list={[
+              "toc-link block transition-colors duration-300", 
+              // Default state (Future) is slate-500
+              "text-slate-500 hover:text-slate-900" 
+            ]}
+          >
+            {heading.text}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .toc-link.active {
+    color: #1d4ed8;
+  }
+
+  .toc-link.passed {
+    opacity: 0.7;
+    font-weight: 400;
+  }
+</style>
+
+<script>
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -40% 0px', 
+    threshold: 1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const id = entry.target.getAttribute('id');
+      if (entry.isIntersecting) {
+        setActive(id);
+      }
+    });
+    checkScrollPosition();
+
+  }, observerOptions);
+
+  function setActive(id) {
+    document.querySelectorAll('.toc-link').forEach((l) => l.classList.remove('active'));
+    document.querySelectorAll('.toc-link').forEach((l) => l.classList.remove('passed'));
+
+    const link = document.querySelector(`.toc-link[href="#${id}"]`);
+    if (!link) return;
+
+    link.classList.add('active');
+
+    const allLinks = Array.from(document.querySelectorAll('.toc-link'));
+    const activeIndex = allLinks.indexOf(link);
+
+    allLinks.forEach((l, index) => {
+      if (index < activeIndex) l.classList.add('passed');
+    });
+  }
+
+  function checkScrollPosition() {
+    const headings = document.querySelectorAll('article h2, article h3');
+    let currentActiveId = null;
+
+    headings.forEach((h) => {
+      const rect = h.getBoundingClientRect();
+      if (rect.top < 150) { 
+        currentActiveId = h.getAttribute('id');
+      }
+    });
+
+    if (currentActiveId) {
+      setActive(currentActiveId);
+    }
+  }
+
+  requestAnimationFrame(() => {
+    const headings = document.querySelectorAll('article h2, article h3');
+    headings.forEach((heading) => observer.observe(heading));
+    
+    window.addEventListener('scroll', () => {
+      checkScrollPosition();
+    }, { passive: true });
+  });
+</script>

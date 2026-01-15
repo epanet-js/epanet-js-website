@@ -62,6 +62,9 @@ importers:
       astro-seo:
         specifier: ^0.8.0
         version: 0.8.0
+      astro-toc:
+        specifier: ^0.2.0
+        version: 0.2.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1755,6 +1758,9 @@ packages:
 
   astro-seo@0.8.0:
     resolution: {integrity: sha512-7gq6lhibCM8FuzZIJlbLLWP5EJ9KL2/4XqeFrAg9O6ZK2xMFxJ5ubKf+a0VJwwTu8W8Xr421CmpiXu6Hq7n/7Q==}
+
+  astro-toc@0.2.0:
+    resolution: {integrity: sha512-GZzLt9gLgi2uMqiByzK8Pxx3nclKwcKGvMNHEBc6JYWPZLWNIEVH84omXu2KxzeXEd4ni1C5CE6xyFXWa7WxIQ==}
 
   astro@5.1.2:
     resolution: {integrity: sha512-+U5lXPEJZ6cQx0botGbPhzN6XGWRgDtXgy/RUkpTmUj18LW6pbzYo0O0k3hFWOazlI039bZ+4P2e/oSNlKzm0Q==}
@@ -5326,6 +5332,8 @@ snapshots:
   astro-navbar@2.3.9: {}
 
   astro-seo@0.8.0: {}
+
+  astro-toc@0.2.0: {}
 
   astro@5.1.2(@types/node@20.11.15)(jiti@1.21.0)(rollup@4.55.1)(typescript@5.6.3)(yaml@2.6.0):
     dependencies:

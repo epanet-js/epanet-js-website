@@ -1,12 +1,16 @@
 ---
 import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 
+// --- CHANGE: Import your NEW local component ---
+import TableOfContents from "@components/TableOfContents.astro"; 
+
+// --- SERVER SIDE LOGIC ---
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-
-  // Helper to make the title URL-friendly
+  
   const slugify = (text: string) => text
     .toString()
     .toLowerCase()
@@ -14,18 +18,13 @@ export async function getStaticPaths() {
     .replace(/\s+/g, '-')
     .trim();
 
-  return posts.map((entry) => {
-    // 1. Parse the date from frontmatter
+  return posts.map((entry: CollectionEntry<"blog">) => {
     const date = new Date(entry.data.publishDate);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-
-    // 2. Create your Custom Slug
-    // Result: 2023/01/04/epanet-js-the-water...
     const customSlug = `${year}/${month}/${day}/${slugify(entry.data.title)}`;
 
-    // 3. Return the Custom Slug as the URL param
     return {
       params: { slug: customSlug },
       props: { entry },
@@ -33,52 +32,57 @@ export async function getStaticPaths() {
   });
 }
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { entry } = Astro.props as { entry: CollectionEntry<"blog"> };
+const { Content, headings } = await entry.render();
 ---
 
 <Layout title={entry.data.title}>
   <Container>
-    <div class="mx-auto max-w-3xl text-center mt-14">
+    
+    <div class="mx-auto max-w-4xl text-center mt-14 mb-10">
       <span class="text-blue-400 uppercase tracking-wider text-sm font-medium">
         {entry.data.category}
       </span>
-      <h1
-        class="text-3xl lg:text-4xl font-bold lg:tracking-tight mt-1 lg:leading-tight">
+      <h1 class="text-3xl lg:text-4xl font-bold lg:tracking-tight mt-1 lg:leading-tight">
         {entry.data.title}
       </h1>
-      <div
-        class="flex gap-2 mt-3 items-center justify-center text-sm flex-wrap md:flex-nowrap">
-        <span class="text-slate-400">
-          {entry.data.author}
-        </span>
+      
+      <div class="flex gap-2 mt-3 items-center justify-center text-sm flex-wrap md:flex-nowrap">
+        <span class="text-slate-400">{entry.data.author}</span>
         <span class="text-slate-400">•</span>
-        <time
-          class="text-slate-400"
-          datetime={entry.data.publishDate.toISOString()}>
+        <time class="text-slate-400" datetime={entry.data.publishDate.toISOString()}>
           {entry.data.publishDate.toDateString()}
         </time>
-        <span class="text-slate-400 hidden md:block">•</span>
-        <div class="w-full md:w-auto flex flex-wrap justify-center gap-3">
-          {
-            entry.data.tags.map((tag) => (
-              <span class="text-sm text-slate-500">#{tag}</span>
-            ))
-          }
+        <div class="hidden md:flex flex-wrap gap-2 ml-4">
+          {entry.data.tags.map((tag) => (
+            <span class="text-slate-500">#{tag}</span>
+          ))}
         </div>
       </div>
     </div>
 
-    <div
-      class="mx-auto prose mt-6 max-w-3xl prose-headings:mb-2 prose-headings:mt-8">
-      <Content />
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+      <article class="lg:col-span-9 prose prose-lg max-w-none prose-headings:scroll-mt-24">
+        <Content />
+      </article>
+
+      <aside class="hidden lg:block lg:col-span-3">
+        <div class="sticky top-24">
+          <h2 class="uppercase text-xs font-bold text-gray-500 mb-4 tracking-wider">
+            On this page
+          </h2>
+          <TableOfContents headings={headings} />
+        </div>
+      </aside>
+
     </div>
-    <div class="text-center mt-12">
-      <a
-        href="/blog"
-        class="bg-gray-100 px-5 py-3 rounded-md hover:bg-gray-200 transition"
-        >← Back to Blog</a
-      >
+
+    <div class="text-center mt-12 mb-10">
+      <a href="/blog" class="bg-gray-100 px-5 py-3 rounded-md hover:bg-gray-200 transition">
+        ← Back to Blog
+      </a>
     </div>
+
   </Container>
 </Layout>
