@@ -58,7 +58,7 @@ You can now import a GeoJSON file of your customers directly into epanet-js. Our
 
 We think this is a game-changing feature that will make it much faster to create, calibrate, and manage your models. What used to be a complex external task is now a streamlined, integrated part of your workflow.
 
-For a step-by-step walkthrough, check out our new guide: **[How to Import Customer Points](https://help.epanetjs.com/Importing-customer-points-265e18c9f0f680f28bf2dbc0052b1c60)**.
+For a step-by-step walkthrough, check out our new guide: **[How to Import Customer Points](https://help.epanetjs.com/Importing-customer-points-2f4e18c9f0f680bca5c9d5d00fe827ae)**.
 
 ## **Join Us for Our First Live Webinar!**
 

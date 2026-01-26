@@ -366,7 +366,7 @@ const specialPlanDetails = {
     buttonText: "Use your school email account",
     buttonVariant: "outline" as const,
     buttonUrl:
-      "https://help.epanetjs.com/Free-educational-licenses-for-epanet-js-1cee18c9f0f68090aa35cd3336577ac3",
+      "https://help.epanetjs.com/Free-educational-licenses-for-epanet-js-2a1e18c9f0f68192a785cbe61747addf",
   },
 };
 

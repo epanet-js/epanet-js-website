@@ -45,7 +45,7 @@ export default function FrequentlyAskedQuestons() {
                 This ensures your sensitive network data remains private and
                 under your control.{" "}
                 <a
-                  href="https://help.epanetjs.com/Understanding-the-local-first-approach-1f2e18c9f0f68034b7d8dd83cc3554dd"
+                  href="https://help.epanetjs.com/Understanding-the-local-first-approach-2a1e18c9f0f681d881d0c0f0b24ff032"
                   className="text-gray-600 hover:text-gray-950 underline font-medium"
                 >
                   Learn more about the Local-First Approach.
