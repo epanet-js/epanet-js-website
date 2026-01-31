@@ -7,7 +7,7 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://astroship-pro.web3templates.com",
+  site: "https://epanetjs.com",
   customCss: ["./src/styles/custom.css"],
   image: {
     domains: ["unsplash.com", "images.unsplash.com"],
