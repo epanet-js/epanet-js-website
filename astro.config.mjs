@@ -9,9 +9,6 @@ import react from "@astrojs/react";
 export default defineConfig({
   site: "https://epanetjs.com",
   customCss: ["./src/styles/custom.css"],
-  image: {
-    domains: ["unsplash.com", "images.unsplash.com"],
-  },
   redirects: {
     "api/": "https://toolkit.epanetjs.com",
     "api/introduction/water-modelling/":
