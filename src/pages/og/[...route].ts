@@ -38,9 +38,26 @@ export const { getStaticPaths, GET } = await OGImageRoute({
       path: "./public/banner-background-og.jpg",
       fit: "cover",
     },
+    // Load Inter font in multiple weights
+    fonts: [
+      "https://api.fontsource.org/v1/fonts/inter/latin-700-normal.ttf",
+      "https://api.fontsource.org/v1/fonts/inter/latin-400-normal.ttf",
+    ],
     font: {
-      title: { color: [30, 41, 59], size: 80 }, // slate-800
-      description: { color: [71, 85, 105], size: 32 }, // slate-600
+      title: {
+        color: [30, 41, 59], // slate-800
+        size: 72,
+        weight: "Bold",
+        lineHeight: 1.2,
+        families: ["Inter"],
+      },
+      description: {
+        color: [71, 85, 105], // slate-600
+        size: 32,
+        weight: "Normal",
+        lineHeight: 1.4,
+        families: ["Inter"],
+      },
     },
   }),
 });
