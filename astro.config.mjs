@@ -12,5 +12,13 @@ export default defineConfig({
   image: {
     domains: ["unsplash.com", "images.unsplash.com"],
   },
-  integrations: [tailwind(), react(), mdx(), icon(), sitemap()],
+  integrations: [
+    tailwind(),
+    react(),
+    mdx(),
+    icon(),
+    sitemap({
+      filter: (page) => page !== "https://epanetjs.com/pricing/",
+    }),
+  ],
 });
