@@ -255,7 +255,7 @@ In the meantime, thank you to everyone who has been sharing suggestions and feed
 Support EPANET by using software that supports it back.
 
 <div style="text-align: center">
-<a href="[https://app.epanetjs.com](https://app.epanetjs.com)" style="
+<a href="https://app.epanetjs.com" style="
 display: inline-flex;
 align-items: center;
 gap: 0.5rem;
