@@ -131,19 +131,19 @@ export default function Footer() {
               <h3 className="text-lg font-semibold text-white">Product</h3>
               <nav className="flex flex-col space-y-3">
                 <a
-                  href="#features"
+                  href="/#features"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Features
                 </a>
                 <a
-                  href="#pricing"
+                  href="/#pricing"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Pricing
                 </a>
                 <a
-                  href="#faq"
+                  href="/#faq"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   FAQ
@@ -180,7 +180,7 @@ export default function Footer() {
                   GitHub
                 </a>
                 <a
-                  href="https://epanetjs.com/blog/"
+                  href="/blog/"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Blog
@@ -193,7 +193,7 @@ export default function Footer() {
               <h3 className="text-lg font-semibold text-white">Company</h3>
               <nav className="flex flex-col space-y-3">
                 <a
-                  href="#why-we-built-epanet-js"
+                  href="/#why-we-built-epanet-js"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   About
@@ -205,19 +205,19 @@ export default function Footer() {
                   Contact Us
                 </a>
                 <a
-                  href="https://epanetjs.com/terms-conditions/"
+                  href="/terms-conditions/"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Terms & Conditions
                 </a>
                 <a
-                  href="https://epanetjs.com/privacy-policy/"
+                  href="/privacy-policy/"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Privacy Policy
                 </a>
                 <a
-                  href="https://epanetjs.com/cookies-policy/"
+                  href="/cookies-policy/"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Cookies Policy
