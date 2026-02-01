@@ -1,0 +1,83 @@
+---
+import { ViewTransitions } from "astro:transitions";
+import { SEO } from "astro-seo";
+import Footer from "@components/landing/footer.tsx";
+import Navbar from "@components/navbar/navbar.astro";
+import "@fontsource-variable/inter/index.css";
+import "../styles/custom.css";
+
+interface Props {
+  title?: string;
+  footerMargin?: boolean;
+  ogImage?: string;
+  description?: string;
+}
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+
+const { title, footerMargin = true, ogImage, description } = Astro.props;
+
+const resolvedImageWithDomain = new URL(
+  ogImage || "/banner.png",
+  Astro.site
+).toString();
+
+const defaultDescription = "epanet-js: EPANET in your browser — start water modeling now, no download required.";
+const metaDescription = description || defaultDescription;
+
+const makeTitle = title
+  ? title + " | " + "epanet-js"
+  : "epanet-js: EPANET in your browser — start water modeling now, no download required";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon"  href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+
+    <SEO
+      title={makeTitle}
+      description={metaDescription}
+      canonical={canonicalURL}
+      twitter={{
+        creator: "@lukepbutler_",
+        site: "@lukepbutler_",
+        card: "summary_large_image",
+      }}
+      openGraph={{
+        basic: {
+          url: canonicalURL,
+          type: "website",
+          title: makeTitle,
+          image: resolvedImageWithDomain,
+        },
+        image: {
+          alt: title ? `${title} - epanet-js` : "epanet-js Homepage Screenshot",
+        },
+      }}
+    />
+    <style is:global>
+      /* Improve Page speed */
+      /* https://css-tricks.com/almanac/properties/c/content-visibility/ */
+      img {
+        content-visibility: auto;
+      }
+      /* Remove arrows from list-style - fix for tailwindcss */
+      details > summary.list-none::-webkit-details-marker,
+      details > summary.list-none::marker {
+        display: none;
+      }
+    </style>
+    <!-- Enable this if you want to use Astro ViewTransitions  -->
+    <ViewTransitions />
+  </head>
+  <body>
+    <Navbar />
+    <slot />
+    <Footer client:visible />
+  </body>
+</html>

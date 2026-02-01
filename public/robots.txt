@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://epanetjs.com/sitemap-index.xml

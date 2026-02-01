@@ -1,0 +1,79 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+import PricingComponent, { type Plan } from "@components/pricing.astro";
+import Faq from "@components/faq.astro";
+import ComparePricing from "@components/compare-pricing.astro";
+
+const plans: Plan[] = [
+  {
+    name: "Free",
+    price: "0",
+    desc: "For everyone",
+    color: "indigo",
+    popular: false,
+    features: [
+      "Web based EPANET model",
+      "Background maps and satellite",
+      "Automated Elevations",
+      "No limits on sizes",
+      "Community Support",
+    ],
+    button: {
+      text: "Launch epanet-js",
+      link: "//app.epanetjs.com",
+    },
+  },
+  {
+    name: "Pro",
+    price: "950",
+    desc: "For solo modelers and small utilities",
+    popular: true,
+    color: "purple",
+    features: [
+      "All Free features",
+      "Professional support",
+      "Custom layers",
+    ],
+    button: {
+      text: "Get Pro",
+      link: "#",
+    },
+  },
+  {
+    name: "Teams",
+    price: "2500",
+    desc: "For teams that build together",
+    popular: false,
+    color: "purple",
+    features: [
+      "All Pro Features",
+      "Priority support",
+      "Volume discounts",
+      "Pay by invoice",
+    ],
+    button: {
+      text: "Contact us",
+      link: "/contact",
+    },
+  },
+];
+---
+
+<Layout title="Pricing">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">Pricing</Fragment>
+      <Fragment slot="desc">
+        Simple & Predictable pricing. No Surprises.
+      </Fragment>
+    </Sectionhead>
+
+    <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-screen-lg mt-12">
+      {plans.map((item) => <PricingComponent plan={item} />)}
+    </div>
+    <ComparePricing />
+    <Faq />
+  </Container>
+</Layout>
