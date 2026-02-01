@@ -9,16 +9,21 @@ import "../styles/custom.css";
 interface Props {
   title?: string;
   footerMargin?: boolean;
+  ogImage?: string;
+  description?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
+const { title, footerMargin = true, ogImage, description } = Astro.props;
+
 const resolvedImageWithDomain = new URL(
-  "/banner.png",
+  ogImage || "/banner.png",
   Astro.site
 ).toString();
 
-const { title, footerMargin = true } = Astro.props;
+const defaultDescription = "epanet-js: EPANET in your browser — start water modeling now, no download required.";
+const metaDescription = description || defaultDescription;
 
 const makeTitle = title
   ? title + " | " + "epanet-js"
@@ -36,7 +41,7 @@ const makeTitle = title
 
     <SEO
       title={makeTitle}
-      description="epanet-js: EPANET in your browser — start water modeling now, no download required."
+      description={metaDescription}
       canonical={canonicalURL}
       twitter={{
         creator: "@lukepbutler_",
@@ -47,11 +52,11 @@ const makeTitle = title
         basic: {
           url: canonicalURL,
           type: "website",
-          title: `epanet-js: EPANET in your browser — start water modeling now, no download required.`,
+          title: makeTitle,
           image: resolvedImageWithDomain,
         },
         image: {
-          alt: "epanet-js Homepage Screenshot",
+          alt: title ? `${title} - epanet-js` : "epanet-js Homepage Screenshot",
         },
       }}
     />

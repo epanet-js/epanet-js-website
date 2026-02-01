@@ -27,16 +27,17 @@ export async function getStaticPaths() {
 
     return {
       params: { slug: customSlug },
-      props: { entry },
+      props: { entry, customSlug },
     };
   });
 }
 
-const { entry } = Astro.props as { entry: CollectionEntry<"blog"> };
+const { entry, customSlug } = Astro.props as { entry: CollectionEntry<"blog">; customSlug: string };
 const { Content, headings } = await entry.render();
+const ogImageUrl = `/og/${customSlug}.png`;
 ---
 
-<Layout title={entry.data.title}>
+<Layout title={entry.data.title} ogImage={ogImageUrl} description={entry.data.snippet}>
   <Container>
     
     <div class="mx-auto max-w-4xl text-center mt-14 mb-10">
