@@ -14,7 +14,7 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
 const resolvedImageWithDomain = new URL(
-  "/opengraph.jpg",
+  "/banner.png",
   Astro.site
 ).toString();
 
@@ -30,27 +30,28 @@ const makeTitle = title
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon"  href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
 
     <SEO
       title={makeTitle}
-      description="Astroship Pro - SAAS & Startup Website Template for Astro built with TailwindCSS."
+      description="epanet-js: EPANET in your browser — start water modeling now, no download required."
       canonical={canonicalURL}
       twitter={{
-        creator: "@surjithctly",
-        site: "@web3templates",
+        creator: "@lukepbutler_",
+        site: "@lukepbutler_",
         card: "summary_large_image",
       }}
       openGraph={{
         basic: {
           url: canonicalURL,
           type: "website",
-          title: `Astroship Pro - SAAS &Startup Website Template for Astro`,
+          title: `epanet-js: EPANET in your browser — start water modeling now, no download required.`,
           image: resolvedImageWithDomain,
         },
         image: {
-          alt: "Astroship Homepage Screenshot",
+          alt: "epanet-js Homepage Screenshot",
         },
       }}
     />
