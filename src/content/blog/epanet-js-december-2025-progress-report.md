@@ -24,7 +24,7 @@ We are incredibly proud to announce that we have delivered our single biggest fe
   <figcaption>You can now run Extended Period Simulations directly in the browser.</figcaption>
 </figure>
 
-Alongside this major milestone, we’ve added new selection tools, enabled asset ID editing, and announced our next community webinar where we will be building a model from scratch together.
+Alongside this major milestone, we've added new selection tools, enabled asset ID editing, and announced our next community webinar where we will be building a model from scratch together.
 
 <div style="text-align: center">
 <a href="https://app.epanetjs.com" style="
@@ -73,7 +73,7 @@ When you switch your project settings from "steady state" to "EPS," a new **time
 
 - **Step through:** Move forward or backward in time step-by-step.
 - **Jump:** Use the dropdown to instantly select the exact time you want to analyze.
-- **Shortcuts:** We’ve added keyboard shortcuts to make moving through time even faster.
+- **Shortcuts:** We've added keyboard shortcuts to make moving through time even faster.
 
 ### Controls and patterns
 
@@ -91,7 +91,7 @@ Additionally, **Time series demand patterns** are now accessible and included in
 
 Building on the success of our first webinar, we are excited to announce our next event: **"From GIS to a running hydraulic model."**
 
-This won't be just a presentation - it’s a hands-on workshop. Luke will guide you through the entire workflow of taking raw utility GIS data, cleaning it up, converting it into a network, and running a fire flow analysis.
+This won't be just a presentation - it's a hands-on workshop. Luke will guide you through the entire workflow of taking raw utility GIS data, cleaning it up, converting it into a network, and running a fire flow analysis.
 
 <iframe width='100%' height='700' frameborder='0' marginheight='0' marginwidth='0' allowtransparency='true' src='https://www.crowdcast.io/c/epanet-js-hydraulic-modeling-workshop' style='border: 1px solid #EEE;border-radius:3px' allowfullscreen='true' webkitallowfullscreen='true' mozallowfullscreen='true' allow='microphone; camera;'></iframe><a ng-href='https://www.crowdcast.io/?utm_source=embed&utm_medium=website&utm_campaign=embed' style="color: #aaa; font-family: 'Helvetica', 'Arial', sans-serif;text-decoration: none;display: block;text-align: center;font-size: 13px;padding: 5px 0">powered by Crowdcast</a>
 
@@ -99,13 +99,13 @@ This won't be just a presentation - it’s a hands-on workshop. Luke will guide 
 - **What:** A practical session designed for engineers and modelers.
 - **No prep needed:** Just bring your curiosity. We will provide the dataset and the recording afterward so you can repeat the process at your own pace.
 
-We’ll also take some time to showcase the latest features we've built, including the new EPS capabilities. [Register now to secure your spot!](https://www.crowdcast.io/c/epanet-js-hydraulic-modeling-workshop)
+We'll also take some time to showcase the latest features we've built, including the new EPS capabilities. [Register now to secure your spot!](https://www.crowdcast.io/c/epanet-js-hydraulic-modeling-workshop)
 
 ## New ways to select
 
-We’ve expanded the selection toolkit to give you more flexibility when working with complex models. While the polygon select tool is powerful, sometimes you just need a simple box or a quick lasso.
+We've expanded the selection toolkit to give you more flexibility when working with complex models. While the polygon select tool is powerful, sometimes you just need a simple box or a quick lasso.
 
-We’ve added **rectangular** and **freehand** selection options. You can cycle between the tools by right-clicking the toolbar icon, clicking it multiple times, or clicking and holding to choose the one that feels most natural for the task at hand.
+We've added **rectangular** and **freehand** selection options. You can cycle between the tools by right-clicking the toolbar icon, clicking it multiple times, or clicking and holding to choose the one that feels most natural for the task at hand.
 
 <figure>
 <video width=600 autoplay muted loop playsinline style="
@@ -127,7 +127,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 
 You asked, and we listened. A frequent request from the community was the ability to rename assets without deleting and redrawing them.
 
-You can now edit asset IDs directly in epanet-js. Just select an asset, click into the ID field in the panel, and type your new label. It updates instantly. It’s a small change, but it makes managing your model data significantly easier.
+You can now edit asset IDs directly in epanet-js. Just select an asset, click into the ID field in the panel, and type your new label. It updates instantly. It's a small change, but it makes managing your model data significantly easier.
 
 <figure>
 <video width=600 autoplay muted loop playsinline style="
@@ -169,13 +169,13 @@ We replaced the old map geolocation button with a new zoom to extents button. On
 
 ### Better compatibility reporting
 
-When opening an INP file, the reporting is now more descriptive. We’ve added counts for non-supported features and direct links to the roadmap for features that are partially supported, so you know exactly where your model stands.
+When opening an INP file, the reporting is now more descriptive. We've added counts for non-supported features and direct links to the roadmap for features that are partially supported, so you know exactly where your model stands.
 
 ![epanet-js roadmap](/assets/blog/progress-report/2025-12/compatibility.png)
 
 ### Improved readability for numbers
 
-We’ve updated the asset panel to use tabular numbers (monospaced digits). This makes comparing flow and pressure values across different assets much easier on the eyes.
+We've updated the asset panel to use tabular numbers (monospaced digits). This makes comparing flow and pressure values across different assets much easier on the eyes.
 
 <figure markdown="span">
   <div style="position: relative; width: 300px; margin: auto;
@@ -189,18 +189,18 @@ border-width: 1px;
 --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);
   ">
-    <img 
-      src="/assets/blog/progress-report/2025-12/num-after.png" 
-      width="700" 
-      loading="lazy" 
+    <img
+      src="/assets/blog/progress-report/2025-12/num-after.png"
+      width="700"
+      loading="lazy"
       alt="toolbar before"
       style="position: absolute; top: 0; left: 0; transition: opacity 0.5s ease; cursor: crosshair;"
     >
-    <img 
+    <img
       src="/assets/blog/progress-report/2025-12/num-before.png"
-      width="700" 
+      width="700"
       loading="lazy"
-      alt="Toolbar after" 
+      alt="Toolbar after"
       style="opacity: 0; transition: opacity 0.5s ease; cursor: crosshair;"
       onmouseover="this.style.opacity='1'; this.previousElementSibling.style.opacity='0';"
       onmouseout="this.style.opacity='0'; this.previousElementSibling.style.opacity='1';"
@@ -211,7 +211,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 
 ### Shortcuts panel
 
-We’ve got a ton of keyboard shortcuts in epanet-js and the list was getting pretty long, so we’ve reorganized the shortcut help into clear, logical sections to make everything easier to find.
+We've got a ton of keyboard shortcuts in epanet-js and the list was getting pretty long, so we've reorganized the shortcut help into clear, logical sections to make everything easier to find.
 
 ![epanet-js roadmap](/assets/blog/progress-report/2025-12/shortcuts.png)
 
@@ -248,9 +248,9 @@ With extended period simulations now live, we are shifting our focus to the next
 
 We are actively working on this feature, but we aren't just looking to port existing methods into the browser. We want to reimagine how scenarios work. Our goal is to build a system that is flexible enough to handle everything from quick, small-scale "what if" operational checks to massive, multi-year master plans. We want to break away from the rigid approaches set in stone by legacy software and give you a tool that adapts to how you need to solve problems.
 
-We will soon be publishing a dedicated blog post detailing our plans for scenario management and how we expect it to work. We’d love your input on it.
+We will soon be publishing a dedicated blog post detailing our plans for scenario management and how we expect it to work. We'd love your input on it.
 
-In the meantime, thank you to everyone who has been sharing suggestions and feedback. Your input drives our roadmap and helps us focus on the features that matter most. We can’t wait to see you at the webinar on January 21st!
+In the meantime, thank you to everyone who has been sharing suggestions and feedback. Your input drives our roadmap and helps us focus on the features that matter most. We can't wait to see you at the webinar on January 21st!
 
 Support EPANET by using software that supports it back.
 
@@ -267,7 +267,7 @@ border-radius: 0.375rem;
 text-decoration: none;
 ">
 Launch epanet-js. No login needed.
-<svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 <path d="M5 12h14"></path>
 <path d="m12 5 7 7-7 7"></path>
 </svg>
