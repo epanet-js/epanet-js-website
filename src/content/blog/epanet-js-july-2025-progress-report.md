@@ -9,7 +9,7 @@ image:
   }
 publishDate: "2025-08-07 09:15"
 category: "Progress report"
-author: "lbutler"
+author: "Luke Butler"
 tags: [Progress report]
 ---
 

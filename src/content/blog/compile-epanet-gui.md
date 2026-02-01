@@ -9,7 +9,7 @@ image:
   }
 publishDate: "2023-04-09 09:15"
 category: "software"
-author: "lbutler"
+author: "Luke Butler"
 tags: [EPANET, User Interface]
 ---
 

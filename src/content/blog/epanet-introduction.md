@@ -9,7 +9,7 @@ image:
   }
 publishDate: "2023-01-04 09:15"
 category: "blog"
-author: "lbutler"
+author: "Luke Butler"
 tags: [blog]
 slug: 2023/01/04/epanet-js---the-water-distribution-modelling-engine-for-the-web
 ---

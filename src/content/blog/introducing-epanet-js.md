@@ -9,7 +9,7 @@ image:
   }
 publishDate: "2025-08-01 09:15"
 category: "software"
-author: "lbutler"
+author: "Luke Butler"
 tags: [blog]
 ---
 
