@@ -247,7 +247,7 @@ export default function Footer() {
             </div>
 
             <div className="text-sm text-gray-400">
-              © 2025 Iterating Inc. All rights reserved.
+              © {new Date().getFullYear()}  Iterating Inc. All rights reserved.
             </div>
           </div>
         </div>
