@@ -45,9 +45,13 @@ export default function Hero() {
           <div className="flex items-center justify-center">
             {/* Container sets the size and aspect ratio */}
             {/* REMOVED overflow-hidden from this div's classes */}
-            <div className="hero_demoscreen relative w-full  sm:max-w-[500px] md:max-w-[600px] lg:max-w-[650px] rounded-xl shadow-2xl bg-[#e8e8e8] browser-mockup with-url">
+            <div 
+              className="hero_demoscreen relative w-full sm:max-w-[500px] md:max-w-[600px] lg:max-w-[650px] rounded-xl shadow-2xl browser-mockup with-url bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${videoPosterUrl})`, backgroundSize: "cover", backgroundPosition: "center", aspectRatio: "8 / 5" }}
+            >
               <MuxPlayer
                 playbackId="scObjWgDiGHrsCF02pidM64ucYG394PYzWHu1OY9mP4Y"
+                poster={videoPosterUrl}
                 autoPlay="muted"
                 loop
                 muted
