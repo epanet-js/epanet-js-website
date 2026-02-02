@@ -1,6 +1,6 @@
 import { Button } from "../ui/landing/button";
+import MuxPlayer from "@mux/mux-player-react";
 import videoPosterUrl from "@assets/landing/video-poster.webp?url";
-import videoUrl from "@assets/landing/epanetjs_demo.mp4?url";
 
 export default function Hero() {
   return (
@@ -46,22 +46,22 @@ export default function Hero() {
             {/* Container sets the size and aspect ratio */}
             {/* REMOVED overflow-hidden from this div's classes */}
             <div className="hero_demoscreen relative w-full  sm:max-w-[500px] md:max-w-[600px] lg:max-w-[650px] rounded-xl shadow-2xl bg-[#e8e8e8] browser-mockup with-url">
-              <video
-                loop={true}
-                muted={true}
-                autoPlay={true}
-                playsInline={true}
-                crossOrigin="anonymous"
-                className="shadow-xl shadow-gray-400/20 rounded-md bg-blue-100 w-full h-full object-cover" // Keep sizing
-                preload="auto"
-                poster={videoPosterUrl}
-                width="1440"
-                height="1130"
-              >
-                {/* Sources remain the same */}
-                <source src={videoUrl} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              <MuxPlayer
+                playbackId="scObjWgDiGHrsCF02pidM64ucYG394PYzWHu1OY9mP4Y"
+                autoPlay="muted"
+                loop
+                muted
+                streamType="on-demand"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  aspectRatio: "8 / 5",
+                  "--controls": "none",
+                  // https://stackoverflow.com/questions/6492027/css-transform-jagged-edges-in-chrome
+                  "filter": "brightness(1)",
+                  "box-shadow": "0 0 1px rgba(255,255,255,0);",
+                }}
+              />
             </div>
           </div>
         </div>
