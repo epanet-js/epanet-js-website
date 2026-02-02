@@ -103,17 +103,15 @@ We also dedicated time this month to improving the overall user experience, star
 We've refreshed the app with a new set of icons! We’ve moved from the [radix icon](https://www.radix-ui.com/icons) set to the much more extensive [**Lucide icon library**](https://lucide.dev/). This gives us thousands of icons to choose from, allowing us to create a more modern, consistent, and intuitive interface. You'll notice that buttons and tools, like **Save** and **Save As**, are now much clearer and easier to understand at a glance.
 
 <figure markdown="span">
-  <div style="position: relative; width: 700px;">
+  <div style="position: relative;">
     <img 
       src="/assets/blog/progress-report/2025-08/toolbar-before.png" 
-      width="700" 
       loading="lazy" 
       alt="toolbar before"
       style="margin: 0; position: absolute; top: 0; left: 0; transition: opacity 0.5s ease; cursor: crosshair;"
     >
     <img 
       src="/assets/blog/progress-report/2025-08/toolbar-after.png"
-      width="700" 
       loading="lazy"
       alt="Toolbar after" 
       style="margin: 0; opacity: 0; transition: opacity 0.5s ease; cursor: crosshair;"
@@ -133,17 +131,15 @@ First impressions matter. We've completely redesigned the welcome screen to be c
 - **Explore the app:** Demo networks are clearly presented as a way to explore what epanet-js can do.
 
 <figure markdown="span">
-  <div style="position: relative; width: 700px;">
+  <div style="position: relative;">
     <img 
       src="/assets/blog/progress-report/2025-08/welcome-after.png" 
-      width="700" 
       loading="lazy" 
       alt="Welcome screen after"
       style="position: absolute; top: 0; left: 0; transition: opacity 0.5s ease; cursor: crosshair;"
     >
     <img 
       src="/assets/blog/progress-report/2025-08/welcome-before.png"
-      width="700" 
       loading="lazy"
       alt="Welcome screen before" 
       style="opacity: 0; transition: opacity 0.5s ease; cursor: crosshair;"
@@ -201,17 +197,15 @@ This was made possible by a major rewrite of our automated translation service. 
 We fixed a bug in the import process where assets with a specific ID format could cause junctions to be connected incorrectly. You can now safely use any ID format in your model build, and all connections will be made correctly.
 
 <figure markdown="span">
-  <div style="position: relative; width: 700px;">
+  <div style="position: relative;">
     <img 
       src="/assets/blog/progress-report/2025-08/import-bug-before.png" 
-      width="700" 
       loading="lazy" 
       alt="toolbar before"
       style="margin: 0; position: absolute; top: 0; left: 0; transition: opacity 0.5s ease; cursor: crosshair;"
     >
     <img 
       src="/assets/blog/progress-report/2025-08/import-bug-after.png"
-      width="700" 
       loading="lazy"
       alt="Toolbar after" 
       style="margin: 0; opacity: 0; transition: opacity 0.5s ease; cursor: crosshair;"

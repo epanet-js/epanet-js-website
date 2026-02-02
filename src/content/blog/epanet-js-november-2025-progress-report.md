@@ -166,7 +166,7 @@ While this lives on the utilities site for now, the plan is to bring this capabi
 
 We also published a YouTube video that walks through the entire process and explains each type of fire flow in detail.
 
-<iframe width="688" height="380" src="https://www.youtube.com/embed/Rx9JsUwjS3Y?si=q1X0Do2WpPhpQdk9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe style="width: 100%; aspect-ratio: 16/9; height: auto;" width="688" height="380" src="https://www.youtube.com/embed/Rx9JsUwjS3Y?si=q1X0Do2WpPhpQdk9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### Data extractor
 
@@ -329,7 +329,7 @@ We’ve reorganized the Keyboard Shortcuts menu into logical groups so it’s ea
 
 Luke presented to the IWA Water Loss Specialist Group on using hydraulic models to reduce water loss. You can watch the recording below.
 
-<iframe width="688" height="380" src="https://www.youtube.com/embed/eKPhihGw7AQ?si=1iP058eIQppPm-LR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe style="width: 100%; aspect-ratio: 16/9; height: auto;" width="688" height="380" src="https://www.youtube.com/embed/eKPhihGw7AQ?si=1iP058eIQppPm-LR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### Conferences
 
