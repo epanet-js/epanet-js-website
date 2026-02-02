@@ -50,6 +50,10 @@
   color: hsl(var(--secondary-foreground));
 }
 
+.astronav-sticky-header:not(:has(.astronav-items.hidden)) {
+  background-color: #fff;
+}
+
 .hero_demoscreen {
   position: relative;
   z-index: 1;
