@@ -73,7 +73,7 @@ In the session, we talked about the state of hydraulic modeling today, why we bu
 
 If you missed it, you can now [watch the full recording on YouTube](https://www.youtube.com/watch?v=tbbYdd4kWYE). The video includes bookmarks so you can jump straight to the sections or questions that interest you most.
 
-<iframe width="688" height="380" src="https://www.youtube.com/embed/tbbYdd4kWYE?si=M6EeYtvX-lLOlARX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe style="width: 100%; aspect-ratio: 16/9; height: auto;" width="688" height="380" src="https://www.youtube.com/embed/tbbYdd4kWYE?si=M6EeYtvX-lLOlARX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### Introducing the Teams Plan
 
