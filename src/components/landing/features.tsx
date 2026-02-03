@@ -1,7 +1,6 @@
-import dragNdropUrl from "@assets/landing/landing-page - drag and drop.mp4?url";
-import drawingNetworkUrl from "@assets/landing/landing-page - drawing network.mp4?url";
-import mapSettingsUrl from "@assets/landing/landing-page - map settings.mp4?url";
 import studyAreaUrl from "@assets/landing/study-area.webp?url";
+
+import MuxPlayer from "@mux/mux-player-react";
 
 export default function Features() {
   return (
@@ -39,16 +38,30 @@ export default function Features() {
             </div>
 
             <div className="flex items-center justify-center lg:justify-end">
-              <div className="overflow-hidden rounded-xl border shadow-lg w-full max-w-[600px] lg:max-w-none lg:w-[120%] lg:ml-8">
-                <video
-                  className="object-contain w-full h-auto max-h-[600px]"
-                  autoPlay
+              <div className="overflow-hidden rounded-xl border shadow-lg w-full max-w-[600px] lg:max-w-none lg:w-[120%] lg:ml-8
+              bg-[radial-gradient(circle_at_30%_20%,rgba(147,197,253,0.1),transparent_60%),radial-gradient(circle_at_70%_60%,rgba(216,180,254,0.08),transparent_50%)]
+              ">
+                <MuxPlayer
+                  playbackId="HL00y0195x34CGva01q01iIV2DgA1jA3kAlm8vzgU5g500qo"
+                  autoPlay="muted"
                   loop
                   muted
-                  playsInline
-                >
-                  <source src={dragNdropUrl} type="video/mp4" />
-                </video>
+                  streamType="on-demand"
+                  thumbnail-time={0}
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    height: "auto",
+                    "--controls": "none",
+                    maxHeight: "600px",
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                    "filter": "brightness(1)",
+                    aspectRatio: "836 / 720",
+                    
+
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -58,15 +71,30 @@ export default function Features() {
           <div className="grid items-center gap-8 lg:gap-0 lg:grid-cols-2">
             <div className="flex items-center justify-center lg:justify-start order-last lg:order-first">
               <div className="overflow-hidden rounded-xl border shadow-lg w-full max-w-[600px] lg:max-w-none lg:w-[120%] lg:mr-8">
-                <video
-                  className="object-contain w-full h-auto max-h-[600px]"
-                  autoPlay
+                
+                 
+                <MuxPlayer
+                  playbackId="KHLKT02VAzGiVFDYCj4f68ONdBk4g301301sWEmXhfbyV4"
+                  autoPlay="muted"
                   loop
                   muted
-                  playsInline
-                >
-                  <source src={drawingNetworkUrl} type="video/mp4" />
-                </video>
+                  streamType="on-demand"
+                  thumbnail-time={0}
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    height: "auto",
+                    "--controls": "none",
+                    maxHeight: "600px",
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                    "filter": "brightness(1)",
+
+                    aspectRatio: "836 / 720",
+                    
+
+                  }}
+                />
               </div>
             </div>
 
@@ -132,15 +160,29 @@ export default function Features() {
 
             <div className="flex items-center justify-center lg:justify-end">
               <div className="overflow-hidden rounded-xl border shadow-lg w-full max-w-[600px] lg:max-w-none lg:w-[120%] lg:ml-8">
-                <video
-                  className="object-contain w-full h-auto max-h-[600px]"
-                  autoPlay
+              <MuxPlayer
+                  playbackId="iKzonhS027Y4oLlHms7bW6vm006s5jDhXVyHs00LCtCsg8"
+                  autoPlay="muted"
                   loop
                   muted
-                  playsInline
-                >
-                  <source src={mapSettingsUrl} type="video/mp4" />
-                </video>
+                  streamType="on-demand"
+
+                  thumbnail-time={0}
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    height: "auto",
+                    "--controls": "none",
+                    maxHeight: "600px",
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                    "filter": "brightness(1)",
+
+                    aspectRatio: "1 / 1",
+                    
+
+                  }}
+                />
               </div>
             </div>
           </div>
