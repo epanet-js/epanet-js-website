@@ -5,6 +5,7 @@ import Sectionhead from "@components/sectionhead.astro";
 import PricingComponent, { type Plan } from "@components/pricing.astro";
 import Faq from "@components/faq.astro";
 import ComparePricing from "@components/compare-pricing.astro";
+import NonCommercialPricing from "@components/non-commercial-pricing.astro";
 
 const plans: Plan[] = [
   {
@@ -21,6 +22,7 @@ const plans: Plan[] = [
       "Community Support",
     ],
     button: {
+      highlight: false,
       text: "Launch epanet-js",
       link: "//app.epanetjs.com",
     },
@@ -32,11 +34,18 @@ const plans: Plan[] = [
     popular: true,
     color: "purple",
     features: [
-      "All Free features",
       "Professional support",
       "Custom layers",
     ],
+    features_title: "Everything in Free and:",
+    features_soon: [
+      "Scenarios",
+      "Cloud storage",
+      "Point in time restore - 30 days",
+      "Demand Analysis",
+    ],
     button: {
+      highlight: true,
       text: "Get Pro",
       link: "#",
     },
@@ -48,12 +57,18 @@ const plans: Plan[] = [
     popular: false,
     color: "purple",
     features: [
-      "All Pro Features",
       "Priority support",
       "Volume discounts",
       "Pay by invoice",
     ],
+    features_title: "Everything in Pro and:",
+    features_soon: [
+      "Team storage",
+      "Point in time restore - 90 days",
+      "Sharing of networks",
+    ],
     button: {
+      highlight: true,
       text: "Contact us",
       link: "/contact",
     },
@@ -63,17 +78,18 @@ const plans: Plan[] = [
 
 <Layout title="Pricing">
   <Container>
-    <Sectionhead>
-      <Fragment slot="title">Pricing</Fragment>
-      <Fragment slot="desc">
-        Simple & Predictable pricing. No Surprises.
-      </Fragment>
-    </Sectionhead>
+    <div class="mt-16 flex flex-col items-center justify-center space-y-4 text-center">
+      <div class="space-y-2">
+        <h3 class="max-w-5xl text-balance text-4xl lg:text-5xl leading-2! font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Simple, transparent pricing for every kind of modeler</h3>
+        <p class="text-lg mt-4 text-slate-500 mx-auto max-w-xl">Choose the plan that works for you</p>
+      </div>
+    </div>
 
-    <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-screen-lg mt-12">
+    <div class="grid gap-12 pt-8 md:grid-cols-3 md:gap-4 lg:gap-6 max-w-5xl mx-auto place-items-stretch">
       {plans.map((item) => <PricingComponent plan={item} />)}
     </div>
-    <ComparePricing />
+    <p class=" mx-auto text-muted-foreground text-center md:text-xl/relaxed pt-8">Have questions?<!-- --> <a href="mailto:sales@epanetjs.com?subject=epanet-js%20sales%20inquiry" class="underline hover:text-gray-500">Send us an email</a> <!-- -->or<!-- --> <a href="https://cal.com/epanet-js/" class="underline hover:text-gray-500">book a call</a>.</p>
+    <NonCommercialPricing/>
     <Faq />
   </Container>
 </Layout>

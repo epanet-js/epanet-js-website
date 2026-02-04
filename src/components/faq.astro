@@ -5,73 +5,65 @@ import { ArrowIcon } from "./ui/icons";
 
 const faq = [
   {
-    question: "What is Astroship's API-based SAAS platform?",
+    question: "What is epanet-js?",
     answer:
-      "Astroship's API-based SAAS platform is a cloud-based software service that allows users to access and use a variety of API-powered tools and functionality.",
+      "epanet-js is a modern, web-based water network modeling tool based on the EPANET engine. It allows you to build, simulate, and analyze water distribution networks directly in your browser without installing any software.",
   },
   {
-    question: "How does Astroship's billing work?",
+    question: "Is my data secure with epanet-js?",
     answer:
-      "Astroship offers a variety of billing options, including monthly and annual subscription plans, as well as pay-as-you-go pricing for certain services. Payment is typically made through a credit card or other secure online payment method.",
+      "Yes! epanet-js uses a local-first approach, meaning your project data is saved directly to your computer, not to our servers. This ensures your sensitive network data remains private and under your control. Learn more about the <a href='https://help.epanetjs.com/Understanding-the-local-first-approach-2a1e18c9f0f681d881d0c0f0b24ff032' class='text-blue-600 hover:text-blue-800 underline hover:no-underline transition-colors'>Local-First Approach</a>.",
   },
   {
-    question: "Can I get a refund for my Astroship subscription?",
+    question: "Do I need to create an account to use epanet-js?",
     answer:
-      "Astroship offers a 30-day money-back guarantee for most of its subscription plans. If you are not satisfied with your subscription within the first 30 days, you can request a full refund. Refunds for subscriptions that have been active for longer than 30 days may be considered on a case-by-case basis.",
+      "No, you can start using epanet-js immediately without creating an account or logging in. Simply visit our website and launch the application to begin modeling.",
   },
   {
-    question: "How do I cancel my Astroship subscription?",
-    answer:
-      "To cancel your Astroship subscription, you can log in to your account and navigate to the subscription management page. From there, you should be able to cancel your subscription and stop future billing.",
+    question: "Can I import existing EPANET files?",
+    answer: "Yes, epanet-js supports importing .inp files from desktop EPANET. You can seamlessly transition your existing projects to our web-based platform.",
   },
   {
-    question: "Can I try Astroship's API platform for free?",
+    question: "Does epanet-js work on Mac?",
     answer:
-      "Astroship offers a free trial of its API platform for a limited time. During the trial period, you will have access to a limited set of features and functionality, but you will not be charged.",
+      "Yes! epanet-js works on all modern browsers including Chrome, Firefox, Safari, and Edge. Since it runs in a web browser, epanet-js works great on macOS, Windows, and Linux. This makes it a great option if you've had trouble installing traditional EPANET on a Mac. For the best experience, we recommend using the latest version of your preferred browser.",
   },
   {
-    question: "How do I access Astroship's API documentation?",
+    question: "Is epanet-js open source?",
     answer:
-      "Astroship's API documentation is available on the company's website and can be accessed by logging in to your account. The documentation provides detailed information on how to use the API, as well as code examples and other resources.",
+      "Yes, our source code is public from day one, but there’s a two-year delay from the time we release a new version to when it becomes fully open source. This is how we drive sustainable open-source development for epanet-js, and, by extension, EPANET. You can learn <a href='https://epanetjs.com/#why-we-built-epanet-js' class='text-blue-600 hover:text-blue-800 underline hover:no-underline transition-colors'>more about why we’re doing this</a> and <a href='https://fsl.software/' class='text-blue-600 hover:text-blue-800 underline hover:no-underline transition-colors'>how the FSL license works here</a>.",
   },
   {
-    question: "How do I contact support?",
+    question: "How do I get support if I have questions?",
     answer:
-      "If you need help with Astroship's API platform or have any other questions, you can contact the company's support team by submitting a support request through the website or by emailing support@Astroship.com.",
-  },
-  {
-    question: "Do you offer any discounts or promotions?",
-    answer:
-      "Astroship may offer discounts or promotions from time to time. To stay up-to-date on the latest deals and special offers, you can sign up for the company's newsletter or follow it on social media.",
-  },
-  {
-    question: "How does Astroship compare to other similar services?",
-    answer:
-      "Astroship's API platform is a highly reliable and feature-rich service that offers a wide range of tools and functionality. It is competitively priced and offers a variety of billing options to suit different needs and budgets.",
+      "We offer different support options depending on your plan. Free users can access our community forums and documentation, while paid users receive priority email support. Educational users have access to specialized resources for classroom use.",
   },
 ];
 ---
 
 <Container>
-  <Sectionhead>
-    <Fragment slot="title">FAQ</Fragment>
-    <Fragment slot="desc">Frequenty asked questions</Fragment>
-  </Sectionhead>
+  <div class="mt-32 flex flex-col items-center justify-center space-y-4 text-center">
+    <div class="space-y-2">
+      <h3 class="text-balance text-3xl lg:text-4xl leading-2! font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Frequently asked questions</h3>
+      <p class="text-lg mt-4 text-slate-500 mx-auto max-w-xl">Find answers to common questions about epanet-js</p>
+    </div>
+  </div>
 
-  <div class="grid divide-y divide-neutral-200 max-w-xl mx-auto mt-8">
+  <div class="grid divide-y divide-neutral-200 max-w-xl mx-auto mt-8 mb-16">
     {
       faq.map((item) => (
         <div class="py-5">
           <details class="group">
             <summary class="flex justify-between items-center font-medium cursor-pointer list-none">
-              <span> {item.question}</span>
+              <span>{item.question}</span>
               <span class="transition group-open:rotate-180">
                 <ArrowIcon />
               </span>
             </summary>
-            <p class="text-neutral-600 mt-3 opacity-0 -translate-y-3 group-open:translate-y-0 group-open:opacity-100 group-open:transition-all">
-              {item.answer}
-            </p>
+            <p
+              class="text-neutral-600 mt-3 opacity-0 -translate-y-3 group-open:translate-y-0 group-open:opacity-100 group-open:transition-all"
+              set:html={item.answer}
+            />
           </details>
         </div>
       ))

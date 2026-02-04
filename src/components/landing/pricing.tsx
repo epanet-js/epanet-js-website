@@ -374,7 +374,7 @@ const specialPlanDetails = {
 export default function Pricing() {
   // State for billing cycle
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annually">(
-    "annually"
+    "annually",
   );
 
   return (
