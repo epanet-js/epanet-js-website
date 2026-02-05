@@ -1,8 +1,8 @@
 ---
-draft: true
+draft: false
 title: "Scenarios in epanet-js"
-snippet: "We are incredibly proud to announce that we have delivered our single biggest feature request: Extended Period Simulations (EPS) are now supported in epanet-js!"
-image: { src: "/assets/blog/progress-report/2025-12/eps.png", alt: "" }
+snippet: "Scenarios let you answer “what if?” questions without duplicating models—this RFC explains our proposed approach to making them reliable and easy to manage in epanet-js."
+image: { src: "/assets/blog/scenario-rfc/scenarios-diagram-02.png", alt: "" }
 publishDate: "2026-02-05 09:15"
 category: "Request for comments"
 author: "Luke Butler"
@@ -309,4 +309,4 @@ We are building this for the community, so we want to know if we’re on the rig
 
 Please share your thoughts on our roadmap here:
 
-\[LINK TO ROADMAP\]
+[🔗 Scenario Management - request for comments](https://roadmap.epanetjs.com/scenario-management/p/scenario-management-request-for-comments)
