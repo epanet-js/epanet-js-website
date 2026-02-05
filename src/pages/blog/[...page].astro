@@ -7,6 +7,8 @@ import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
 import Pagination from "@components/pagination.astro";
 
+export const prerender = true;
+
 // Sort content entries by publication date
 
 export async function getStaticPaths({

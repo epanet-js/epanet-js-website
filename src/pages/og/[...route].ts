@@ -1,6 +1,8 @@
 import { getCollection } from "astro:content";
 import { OGImageRoute } from "astro-og-canvas";
 
+export const prerender = true;
+
 const blogPosts = await getCollection("blog");
 
 // Helper to match the blog's slug format
@@ -18,10 +20,10 @@ const pages = Object.fromEntries(
     const date = new Date(post.data.publishDate);
     const slug = `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(
       2,
-      "0"
+      "0",
     )}/${String(date.getDate()).padStart(2, "0")}/${slugify(post.data.title)}`;
     return [slug, { title: post.data.title, description: post.data.snippet }];
-  })
+  }),
 );
 
 export const { getStaticPaths, GET } = await OGImageRoute({

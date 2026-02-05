@@ -1,8 +1,14 @@
 import epanetGifUrl from "@assets/landing/EPANET.gif?url";
 import complexUrl from "@assets/landing/Complex.webp?url";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
 
-export default function UserDilemma() {
-  // Dummy image sources (replace with your actual screenshots)
+interface Props {
+  lang?: Locale;
+}
+
+export default function UserDilemma({ lang = "en" }: Props) {
+  const t = useTranslations(lang);
 
   return (
     <section
@@ -14,7 +20,7 @@ export default function UserDilemma() {
         <div className="flex flex-col items-center justify-center space-y-4 text-center ">
           <div className="space-y-3 md:space-y-4">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              The EPANET user's dilemma
+              {t("dilemma.title")}
             </h2>
           </div>
         </div>
@@ -23,28 +29,20 @@ export default function UserDilemma() {
           <div className="grid items-center gap-8 md:gap-10 lg:grid-cols-2 lg:gap-16">
             <div className="space-y-4 max-w-[600px] mx-auto lg:mx-0">
               <ul className=" list-disc pl-5 space-y-2">
-                <li>
-                  Classic EPANET is powerful — but{" "}
-                  <strong>clunky and outdated</strong>. Workarounds become your
-                  workflow — slow and cumbersome.
-                </li>
-                <li>
-                  Big-name platforms look polished, but they're{" "}
-                  <strong>overpriced and bloated with features</strong> you
-                  don't need to analyze your network quickly.
-                </li>
-                <li>
-                  Modern browser-based tools exist — but they{" "}
-                  <strong>force your data into the cloud</strong>, raising
-                  privacy and compliance concerns. Plus, they offer little for
-                  those doing long-term planning and analysis.
-                </li>
+                <li
+                  dangerouslySetInnerHTML={{ __html: t("dilemma.bullet1") }}
+                />
+                <li
+                  dangerouslySetInnerHTML={{ __html: t("dilemma.bullet2") }}
+                />
+                <li
+                  dangerouslySetInnerHTML={{ __html: t("dilemma.bullet3") }}
+                />
               </ul>
 
               <div className="">
                 <p className="max-w-[600px]     mx-auto lg:mx-0 italic">
-                  You shouldn't have to choose between speed, security, and
-                  affordability just to understand your water networks.
+                  {t("dilemma.closing")}
                 </p>
               </div>
             </div>
@@ -58,7 +56,7 @@ export default function UserDilemma() {
                 >
                   <img
                     src={epanetGifUrl}
-                    alt="Old EPANET UI"
+                    alt={t("dilemma.imgAlt1")}
                     className="object-cover w-full h-full opacity-90"
                   />
                 </div>
@@ -69,7 +67,7 @@ export default function UserDilemma() {
                 >
                   <img
                     src={complexUrl}
-                    alt="Complex Modeling App"
+                    alt={t("dilemma.imgAlt2")}
                     className="object-cover w-full h-full opacity-90"
                   />
                 </div>

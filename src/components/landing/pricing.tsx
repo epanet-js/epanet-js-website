@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Check, CircleMinus, InfoIcon } from "lucide-react";
 import { Button } from "@components/ui/landing/button";
+import { useTranslations } from "@i18n/utils";
+import type { Locale, TranslationKey } from "@i18n/utils";
 
 // --- Props Interface for Main Pricing Card ---
 interface MainPricingCardProps {
@@ -17,10 +19,13 @@ interface MainPricingCardProps {
   buttonVariant?: "outline" | "default";
   buttonClassName?: string;
   isPopular?: boolean;
+  popularLabel?: string;
   tooltipText?: string;
   isPlanComingSoon?: boolean;
-  buttonUrl?: string; // Add URL prop for button
-  billingCycle: "monthly" | "annually"; // Add billingCycle prop
+  comingSoonBadgeText?: string;
+  comingSoonButtonText?: string;
+  buttonUrl?: string;
+  billingCycle: "monthly" | "annually";
 }
 
 // --- Main Pricing Card Component (with Spacer Logic) ---
@@ -38,10 +43,13 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
   buttonVariant = "outline",
   buttonClassName,
   isPopular,
+  popularLabel = "Most popular",
   tooltipText,
   isPlanComingSoon,
+  comingSoonBadgeText = "Coming Soon",
+  comingSoonButtonText = "Coming Soon.",
   buttonUrl,
-  billingCycle, // Add billingCycle prop
+  billingCycle,
 }) => {
   // Generate the final URL with payment type parameter
   const getFinalUrl = () => {
@@ -72,7 +80,7 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
       {/* Badges */}
       {isPlanComingSoon && (
         <div className="absolute -top-3 right-3 mx-auto w-fit rounded-full bg-gray-500 px-3 py-1 text-xs font-medium text-white z-10">
-          Coming Soon
+          {comingSoonBadgeText}
         </div>
       )}
       {/* Top Content */}
@@ -81,7 +89,7 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
           <span>{name}</span>
           {isPopular && (
             <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700 whitespace-nowrap">
-              Most popular
+              {popularLabel}
             </span>
           )}
         </h3>
@@ -172,7 +180,7 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
             variant={buttonVariant}
             disabled={isPlanComingSoon}
           >
-            {isPlanComingSoon ? "Coming Soon." : buttonText}
+            {isPlanComingSoon ? comingSoonButtonText : buttonText}
           </Button>
         )}
       </div>
@@ -184,13 +192,13 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
 interface SpecialPricingCardProps {
   name: string;
   price: string | number;
-  suffix: string; // Always '/year' but keep prop for consistency
+  suffix: string;
   description: string;
   limitations: string[];
   limitationSubtitle?: string;
   buttonText: string;
   buttonVariant?: "outline" | "default";
-  buttonUrl?: string; // Add URL prop for button
+  buttonUrl?: string;
 }
 
 // --- Special Pricing Card Component ---
@@ -276,106 +284,126 @@ const SpecialPricingCard: React.FC<SpecialPricingCardProps> = ({
   );
 };
 
-// --- Pricing Data ---
-const planDetails = {
-  free: {
-    name: "Free",
-    description: "",
-    titleDescription: "For everyone.",
-    pricing: {
-      monthly: { price: 0, suffix: "month" },
-      annually: { price: 0, suffix: "year" },
-    },
-    features: [
-      "Web based EPANET model",
-      "Background maps and satellite",
-      "Automated Elevations",
-      "No limits on sizes",
-      "Community Support",
-    ],
-    buttonText: "Launch epanet-js now",
-    buttonVariant: "outline" as const,
-    buttonUrl: "https://app.epanetjs.com",
-  },
-  professional: {
-    name: "Pro",
-    description: "Individual named license",
-    titleDescription: "For solo modelers and small utilities.",
-    pricing: {
-      monthly: { price: 95, suffix: "month" }, // Example monthly price
-      annually: { price: 950, suffix: "year" }, // Approx 15% discount
-    },
-    features: ["Professional support", "Custom layers"],
-    featureSubtitle: "Everything in free, and:",
-    comingSoonFeatures: [
-      "Scenarios",
-      "Cloud storage",
-      "Point in time restore - 30 days",
-      "Demand Analysis",
-    ],
-    buttonText: "Get Pro",
-    buttonVariant: "default" as const,
-    buttonClassName:
-      "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white",
-    isPopular: true,
-    buttonUrl: "https://app.epanetjs.com/?dialog=upgrade&plan=pro",
-  },
-  teams: {
-    name: "Teams",
-    description: "Floating shared license",
-    titleDescription: "For teams that build together. ",
-    pricing: {
-      monthly: { price: 250, suffix: "month" },
-      annually: { price: 2500, suffix: "year" }, // Approx 17% discount ($500 saving)
-    },
-    tooltipText: "Minimum 2 licenses",
-    features: ["Priority support", "Volume discounts", "Pay by invoice"],
-    featureSubtitle: "Everything in Pro, and:",
-    comingSoonFeatures: [
-      "Team storage",
-      "Point in time restore - 90 days",
-      "Sharing of networks",
-    ],
-    comingSoonSubtitle: "Coming soon:",
-    buttonVariant: "default" as const,
-    buttonClassName:
-      "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white",
-    isPlanComingSoon: false,
-    buttonText: "Get Teams",
-    buttonUrl: "https://tally.so/r/wkqjyo",
-  },
-};
-
-const specialPlanDetails = {
-  personal: {
-    name: "Personal",
-    price: 100,
-    suffix: "year",
-    description: "For curious minds and personal growth.",
-    limitations: ["Community support only", "Non-commercial usage"],
-    buttonText: "Buy personal access",
-    buttonVariant: "outline" as const,
-    buttonUrl: "https://app.epanetjs.com/?dialog=upgrade&plan=personal",
-  },
-  education: {
-    name: "Education",
-    price: 0,
-    suffix: "year",
-    description: "Free for students and teachers.",
-    limitations: ["Community support only", "Non-commercial usage"],
-    buttonText: "Use your school email account",
-    buttonVariant: "outline" as const,
-    buttonUrl:
-      "https://help.epanetjs.com/Free-educational-licenses-for-epanet-js-2a1e18c9f0f68192a785cbe61747addf",
-  },
-};
-
 // --- Main Pricing Component ---
-export default function Pricing() {
+interface PricingProps {
+  lang?: Locale;
+}
+
+export default function Pricing({ lang = "en" }: PricingProps) {
+  const t = useTranslations(lang);
+
   // State for billing cycle
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annually">(
     "annually",
   );
+
+  // --- Pricing Data (translated) ---
+  const planDetails = {
+    free: {
+      name: t("pricing.free.name"),
+      description: t("pricing.free.description"),
+      titleDescription: t("pricing.free.titleDescription"),
+      pricing: {
+        monthly: { price: 0, suffix: t("pricing.suffix.month") },
+        annually: { price: 0, suffix: t("pricing.suffix.year") },
+      },
+      features: [
+        t("pricing.free.feature1"),
+        t("pricing.free.feature2"),
+        t("pricing.free.feature3"),
+        t("pricing.free.feature4"),
+        t("pricing.free.feature5"),
+      ],
+      buttonText: t("pricing.free.button"),
+      buttonVariant: "outline" as const,
+      buttonUrl: "https://app.epanetjs.com",
+    },
+    professional: {
+      name: t("pricing.pro.name"),
+      description: t("pricing.pro.description"),
+      titleDescription: t("pricing.pro.titleDescription"),
+      pricing: {
+        monthly: { price: 95, suffix: t("pricing.suffix.month") },
+        annually: { price: 950, suffix: t("pricing.suffix.year") },
+      },
+      features: [t("pricing.pro.feature1"), t("pricing.pro.feature2")],
+      featureSubtitle: t("pricing.pro.featureSubtitle"),
+      comingSoonFeatures: [
+        t("pricing.pro.comingSoon1"),
+        t("pricing.pro.comingSoon2"),
+        t("pricing.pro.comingSoon3"),
+        t("pricing.pro.comingSoon4"),
+      ],
+      buttonText: t("pricing.pro.button"),
+      buttonVariant: "default" as const,
+      buttonClassName:
+        "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white",
+      isPopular: true,
+      popularLabel: t("pricing.pro.popular"),
+      buttonUrl: "https://app.epanetjs.com/?dialog=upgrade&plan=pro",
+    },
+    teams: {
+      name: t("pricing.teams.name"),
+      description: t("pricing.teams.description"),
+      titleDescription: t("pricing.teams.titleDescription"),
+      pricing: {
+        monthly: { price: 250, suffix: t("pricing.suffix.month") },
+        annually: { price: 2500, suffix: t("pricing.suffix.year") },
+      },
+      tooltipText: t("pricing.teams.tooltip"),
+      features: [
+        t("pricing.teams.feature1"),
+        t("pricing.teams.feature2"),
+        t("pricing.teams.feature3"),
+      ],
+      featureSubtitle: t("pricing.teams.featureSubtitle"),
+      comingSoonFeatures: [
+        t("pricing.teams.comingSoon1"),
+        t("pricing.teams.comingSoon2"),
+        t("pricing.teams.comingSoon3"),
+      ],
+      comingSoonSubtitle: t("pricing.teams.comingSoonSubtitle"),
+      buttonVariant: "default" as const,
+      buttonClassName:
+        "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white",
+      isPlanComingSoon: false,
+      comingSoonBadgeText: t("pricing.teams.comingSoonBadge"),
+      buttonText: t("pricing.teams.button"),
+      buttonUrl: "https://tally.so/r/wkqjyo",
+    },
+  };
+
+  const specialPlanDetails = {
+    personal: {
+      name: t("pricing.personal.name"),
+      price: 100,
+      suffix: t("pricing.suffix.year"),
+      description: t("pricing.personal.description"),
+      limitations: [
+        t("pricing.personal.limitation1"),
+        t("pricing.personal.limitation2"),
+      ],
+      limitationSubtitle: t("pricing.personal.limitationSubtitle"),
+      buttonText: t("pricing.personal.button"),
+      buttonVariant: "outline" as const,
+      buttonUrl: "https://app.epanetjs.com/?dialog=upgrade&plan=personal",
+    },
+    education: {
+      name: t("pricing.education.name"),
+      price: 0,
+      suffix: t("pricing.suffix.year"),
+      description: t("pricing.education.description"),
+      limitations: [
+        t("pricing.education.limitation1"),
+        t("pricing.education.limitation2"),
+      ],
+      limitationSubtitle: t("pricing.education.limitationSubtitle"),
+      buttonText: t("pricing.education.button"),
+      buttonVariant: "outline" as const,
+      buttonUrl:
+        "https://help.epanetjs.com/Free-educational-licenses-for-epanet-js-2a1e18c9f0f68192a785cbe61747addf",
+    },
+  };
 
   return (
     <section
@@ -390,10 +418,10 @@ export default function Pricing() {
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
             <h3 className="text-3xl font-bold tracking-tighter md:text-4xl/tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Simple, transparent pricing for every kind of modeler.
+              {t("pricing.heading")}
             </h3>
             <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl/relaxed">
-              Choose the plan that works for you
+              {t("pricing.subheading")}
             </p>
           </div>
         </div>
@@ -407,7 +435,6 @@ export default function Pricing() {
             aria-pressed={billingCycle === "monthly"}
             variant={billingCycle === "monthly" ? "default" : "outline"}
             onClick={() => setBillingCycle("monthly")}
-            // Apply blue solid style only if active, otherwise default outline
             className={`
                     ${
                       billingCycle === "monthly"
@@ -416,14 +443,13 @@ export default function Pricing() {
                     }
                 `}
           >
-            Billed monthly
+            {t("pricing.billedMonthly")}
           </Button>
           <Button
             type="button"
             aria-pressed={billingCycle === "annually"}
             variant={billingCycle === "annually" ? "default" : "outline"}
             onClick={() => setBillingCycle("annually")}
-            // Apply blue solid style only if active, otherwise default outline
             className={`
                      ${
                        billingCycle === "annually"
@@ -432,7 +458,7 @@ export default function Pricing() {
                      }
                 `}
           >
-            Billed yearly
+            {t("pricing.billedYearly")}
           </Button>
         </div>
 
@@ -441,41 +467,42 @@ export default function Pricing() {
           {" "}
           {/* Adjusted pt */}
           <MainPricingCard
-            {...planDetails.free} // Spread common props
+            {...planDetails.free}
             price={planDetails.free.pricing[billingCycle].price}
             suffix={planDetails.free.pricing[billingCycle].suffix}
             billingCycle={billingCycle}
           />
           <MainPricingCard
-            {...planDetails.professional} // Spread common props
+            {...planDetails.professional}
             price={planDetails.professional.pricing[billingCycle].price}
             suffix={planDetails.professional.pricing[billingCycle].suffix}
             billingCycle={billingCycle}
+            comingSoonButtonText={t("pricing.comingSoon")}
           />
           <MainPricingCard
-            {...planDetails.teams} // Spread common props
+            {...planDetails.teams}
             price={planDetails.teams.pricing[billingCycle].price}
             suffix={planDetails.teams.pricing[billingCycle].suffix}
             billingCycle={billingCycle}
-            // Button text is handled internally based on isPlanComingSoon
             buttonText={planDetails.teams.buttonText}
+            comingSoonButtonText={t("pricing.comingSoon")}
           />
         </div>
 
         <p className=" mx-auto text-muted-foreground text-center md:text-xl/relaxed pt-8">
-          Have questions?{" "}
+          {t("pricing.questions.text")}
           <a
             href="mailto:sales@epanetjs.com?subject=epanet-js%20sales%20inquiry"
             className="underline hover:text-gray-500"
           >
-            Send us an email
-          </a>{" "}
-          or{" "}
+            {t("pricing.questions.email")}
+          </a>
+          {t("pricing.questions.or")}
           <a
             href="https://cal.com/epanet-js/"
             className="underline hover:text-gray-500"
           >
-            book a call
+            {t("pricing.questions.call")}
           </a>
           .
         </p>
@@ -490,11 +517,10 @@ export default function Pricing() {
           <div className="space-y-2">
             <div className="space-y-1 max-w-[700px] mx-auto">
               <h3 className="text-2xl font-bold">
-                Special access for personal and educational use
+                {t("pricing.special.heading")}
               </h3>
               <p className="text-sm text-muted-foreground md:text-base">
-                Available for non-commercial projects, learning, and student
-                work.
+                {t("pricing.special.subheading")}
               </p>
             </div>
           </div>

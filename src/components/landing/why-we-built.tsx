@@ -1,7 +1,15 @@
 import lbutler from "@assets/landing/lbutler.webp?url";
 import spaya from "@assets/landing/spaya.webp?url";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
 
-export default function WhyWeBuilt() {
+interface Props {
+  lang?: Locale;
+}
+
+export default function WhyWeBuilt({ lang = "en" }: Props) {
+  const t = useTranslations(lang);
+
   return (
     <section
       id="why-we-built-epanet-js"
@@ -12,7 +20,7 @@ export default function WhyWeBuilt() {
         <div className="flex flex-col items-center md:gap-10 justify-center space-y-4 text-center mb-8 md:mb-12 lg:mb-12">
           <div className="space-y-2">
             <h2 className="pb-2 text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Why we built epanet-js
+              {t("whyBuilt.heading")}
             </h2>
           </div>
 
@@ -21,69 +29,44 @@ export default function WhyWeBuilt() {
             <div className="flex flex-col items-center space-y-4">
               <img
                 src={lbutler}
-                alt="Luke Butler - Co-founder"
+                alt={t("whyBuilt.lukeAlt")}
                 className="w-36 h-36 md:w-44 md:h-44 rounded-xl object-cover border-2 border-gray-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 cursor-pointer"
               />
               <div className="text-center space-y-1">
                 <p className="text-base font-semibold text-gray-800">
-                  Luke Butler
+                  {t("whyBuilt.luke")}
                 </p>
-                <p className="text-sm text-gray-600">Co-founder</p>
+                <p className="text-sm text-gray-600">
+                  {t("whyBuilt.cofounder")}
+                </p>
               </div>
             </div>
             <div className="flex flex-col items-center space-y-4">
               <img
                 src={spaya}
-                alt="Sam - Co-founder"
+                alt={t("whyBuilt.samAlt")}
                 className="w-36 h-36 md:w-44 md:h-44 rounded-xl object-cover border-2 border-gray-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 cursor-pointer"
               />
               <div className="text-center space-y-1">
                 <p className="text-base font-semibold text-gray-800">
-                  Sam Payá
+                  {t("whyBuilt.sam")}
                 </p>
-                <p className="text-sm text-gray-600">Co-founder</p>
+                <p className="text-sm text-gray-600">
+                  {t("whyBuilt.cofounder")}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
         <div className="max-w-4xl mx-auto space-y-6 ">
-          <p className="md:text-lg leading-relaxed">
-            You may not know this, but for decades, the U.S. EPA has given the
-            water industry an extraordinary gift: the free and open-source
-            hydraulic modeling software EPANET. Odds are, if you've used any
-            commercial hydraulic modeling software today, it was built on the
-            EPANET engine.
-          </p>
-          <p className="md:text-lg leading-relaxed">
-            The problem is, instead of giving back to their open-source roots
-            like other industries do, big-name software vendors took EPANET's
-            open code, built private tools on top of the engine, and then locked
-            those improvements behind patents and proprietary licenses.
-          </p>
-          <p className="md:text-lg leading-relaxed">
-            Some vendors even pressured the EPA to focus only on the engine —
-            discouraging any effort to improve the interface or user experience
-            for everyone else.
-          </p>
-          <p className="md:text-lg leading-relaxed">
-            Those vendors now charge you exorbitant prices to use their software
-            while EPANET lags behind — and utilities, engineers, and educators
-            with smaller budgets suffer.
-          </p>
-          <p className="md:text-lg leading-relaxed">
-            We think this is backwards — and we're on a mission to change it.
-            We're focused on creating a better experience for the entire
-            hydraulic modeling community.
-          </p>
-          <p className="md:text-lg leading-relaxed">
-            That's why we built epanet-js under an FSL license — because we want
-            to give you an affordable, easy-to-use water modeling option that
-            creates a sustainable future for open-source EPANET development.
-          </p>
-          <p className="md:text-lg leading-relaxed">
-            Support EPANET by using software that supports it back.
-          </p>
+          <p className="md:text-lg leading-relaxed">{t("whyBuilt.p1")}</p>
+          <p className="md:text-lg leading-relaxed">{t("whyBuilt.p2")}</p>
+          <p className="md:text-lg leading-relaxed">{t("whyBuilt.p3")}</p>
+          <p className="md:text-lg leading-relaxed">{t("whyBuilt.p4")}</p>
+          <p className="md:text-lg leading-relaxed">{t("whyBuilt.p5")}</p>
+          <p className="md:text-lg leading-relaxed">{t("whyBuilt.p6")}</p>
+          <p className="md:text-lg leading-relaxed">{t("whyBuilt.p7")}</p>
         </div>
       </div>
     </section>

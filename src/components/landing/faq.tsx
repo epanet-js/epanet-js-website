@@ -4,8 +4,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@components/ui/landing/accordion";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
 
-export default function FrequentlyAskedQuestons() {
+interface Props {
+  lang?: Locale;
+}
+
+export default function FrequentlyAskedQuestons({ lang = "en" }: Props) {
+  const t = useTranslations(lang);
+
   return (
     <section
       id="faq"
@@ -16,10 +24,10 @@ export default function FrequentlyAskedQuestons() {
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
             <h3 className="text-3xl font-bold tracking-tighter md:text-4xl/tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Frequently asked questions
+              {t("faq.heading")}
             </h3>
             <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed">
-              Find answers to common questions about epanet-js.
+              {t("faq.subheading")}
             </p>
           </div>
         </div>
@@ -27,97 +35,57 @@ export default function FrequentlyAskedQuestons() {
         <div className="mx-auto max-w-3xl pt-12">
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
-              <AccordionTrigger>What is epanet-js?</AccordionTrigger>
-              <AccordionContent>
-                epanet-js is a modern, web-based water network modeling tool
-                based on the EPANET engine. It allows you to build, simulate,
-                and analyze water distribution networks directly in your browser
-                without installing any software.
-              </AccordionContent>
+              <AccordionTrigger>{t("faq.q1")}</AccordionTrigger>
+              <AccordionContent>{t("faq.a1")}</AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
-              <AccordionTrigger>
-                Is my data secure with epanet-js?
-              </AccordionTrigger>
+              <AccordionTrigger>{t("faq.q2")}</AccordionTrigger>
               <AccordionContent>
-                Yes! epanet-js uses a local-first approach, meaning your project
-                data is saved directly to your computer, not to our servers.
-                This ensures your sensitive network data remains private and
-                under your control.{" "}
+                {t("faq.a2")}{" "}
                 <a
                   href="https://help.epanetjs.com/Understanding-the-local-first-approach-2a1e18c9f0f681d881d0c0f0b24ff032"
                   className="text-gray-600 hover:text-gray-950 underline font-medium"
                 >
-                  Learn more about the Local-First Approach.
+                  {t("faq.a2Link")}
                 </a>
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
-              <AccordionTrigger>
-                Do I need to create an account to use epanet-js?
-              </AccordionTrigger>
-              <AccordionContent>
-                No, you can start using epanet-js immediately without creating
-                an account or logging in. Simply visit our website and launch
-                the application to begin modeling.
-              </AccordionContent>
+              <AccordionTrigger>{t("faq.q3")}</AccordionTrigger>
+              <AccordionContent>{t("faq.a3")}</AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-4">
-              <AccordionTrigger>
-                Can I import existing EPANET files?
-              </AccordionTrigger>
-              <AccordionContent>
-                Yes, epanet-js supports importing .inp files from desktop
-                EPANET. You can seamlessly transition your existing projects to
-                our web-based platform.
-              </AccordionContent>
+              <AccordionTrigger>{t("faq.q4")}</AccordionTrigger>
+              <AccordionContent>{t("faq.a4")}</AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-5">
-              <AccordionTrigger>Does epanet-js work on Mac?</AccordionTrigger>
-              <AccordionContent>
-                Yes! epanet-js works on all modern browsers including Chrome,
-                Firefox, Safari, and Edge. Since it runs in a web browser,
-                epanet-js works great on macOS, Windows, and Linux. This makes
-                it a great option if you've had trouble installing traditional
-                EPANET on a Mac. For the best experience, we recommend using the
-                latest version of your preferred browser.
-              </AccordionContent>
+              <AccordionTrigger>{t("faq.q5")}</AccordionTrigger>
+              <AccordionContent>{t("faq.a5")}</AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-6">
-              <AccordionTrigger>Is epanet-js open source?</AccordionTrigger>
+              <AccordionTrigger>{t("faq.q6")}</AccordionTrigger>
               <AccordionContent>
-                Yes, our source code is public from day one, but there’s a
-                two-year delay from the time we release a new version to when it
-                becomes fully open source. This is how we drive sustainable
-                open-source development for epanet-js, and, by extension,
-                EPANET. You can{" "}
+                {t("faq.a6Pre")}
                 <a
                   href="#why-we-built-epanet-js"
                   className="text-gray-600 hover:text-gray-950 underline font-medium"
                 >
-                  learn more about why we’re doing this
-                </a>{" "}
-                and{" "}
+                  {t("faq.a6Link1")}
+                </a>
+                {t("faq.a6Mid")}
                 <a
                   href="https://fsl.software/"
                   target="_blank"
                   rel="noopener"
                   className="text-gray-600 hover:text-gray-950 underline font-medium"
                 >
-                  how the FSL license works here.
+                  {t("faq.a6Link2")}
                 </a>
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-7">
-              <AccordionTrigger>
-                How do I get support if I have questions?
-              </AccordionTrigger>
-              <AccordionContent>
-                We offer different support options depending on your plan. Free
-                users can access our community forums and documentation, while
-                paid users receive priority email support. Educational users
-                have access to specialized resources for classroom use.
-              </AccordionContent>
+              <AccordionTrigger>{t("faq.q7")}</AccordionTrigger>
+              <AccordionContent>{t("faq.a7")}</AccordionContent>
             </AccordionItem>
           </Accordion>
         </div>

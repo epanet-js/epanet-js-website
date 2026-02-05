@@ -3,8 +3,17 @@ import { Button } from "@components/ui/landing/button";
 import { Input } from "@components/ui/landing/input";
 import { useState } from "react";
 import { LogoIconAndWordmarkIcon } from "./icons";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
 
-export default function Footer() {
+interface Props {
+  lang?: Locale;
+}
+
+export default function Footer({ lang = "en" }: Props) {
+  const t = useTranslations(lang);
+  const prefix = lang === "es" ? "/es" : "";
+
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{
@@ -39,22 +48,22 @@ export default function Footer() {
 
       if (response.ok) {
         setMessage({
-          text: "Success! Please check your email to confirm your subscription.",
+          text: t("footer.newsletter.success"),
           type: "success",
         });
         setEmail(""); // Clear the form
       } else {
         const errorData = await response.json();
         setMessage({
-          text: `An error occurred: ${
-            errorData.message || "Please try again later."
+          text: `${t("footer.newsletter.errorPrefix")}${
+            errorData.message || t("footer.newsletter.errorFallback")
           }`,
           type: "error",
         });
       }
     } catch (error) {
       setMessage({
-        text: "An error occurred. Please try again later.",
+        text: t("footer.newsletter.errorGeneric"),
         type: "error",
       });
       console.error("Error:", error);
@@ -71,25 +80,24 @@ export default function Footer() {
           {/* Left Column - Logo and Newsletter */}
           <div className="lg:col-span-4 space-y-6 lg:pr-12">
             {/* Logo */}
-            <a href="/" className="flex items-center space-x-3">
+            <a href={prefix + "/"} className="flex items-center space-x-3">
               <LogoIconAndWordmarkIcon size={150} />
             </a>
             {/* Newsletter Form */}
             <div className="space-y-4">
               <div className="space-y-2">
                 <h3 className="text-xl font-bold tracking-tighter text-white">
-                  Stay in the loop
+                  {t("footer.newsletter.heading")}
                 </h3>
                 <p className="text-sm text-gray-300">
-                  Subscribe to our newsletter to receive updates, tips, and news
-                  about epanet-js and water network modeling.
+                  {t("footer.newsletter.subheading")}
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <Input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={t("footer.newsletter.placeholder")}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-400 focus:border-blue-500"
@@ -101,7 +109,9 @@ export default function Footer() {
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Subscribing..." : "Subscribe"}
+                  {isSubmitting
+                    ? t("footer.newsletter.subscribing")
+                    : t("footer.newsletter.button")}
                 </Button>
               </form>
 
@@ -119,7 +129,7 @@ export default function Footer() {
               )}
 
               <p className="text-xs text-gray-400">
-                We respect your privacy. Unsubscribe at any time.
+                {t("footer.newsletter.privacy")}
               </p>
             </div>
           </div>
@@ -128,32 +138,36 @@ export default function Footer() {
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-8 lg:pl-12">
             {/* Product */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white">Product</h3>
+              <h3 className="text-lg font-semibold text-white">
+                {t("footer.product")}
+              </h3>
               <nav className="flex flex-col space-y-3">
                 <a
-                  href="/#features"
+                  href={`${prefix}/#features`}
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Features
+                  {t("footer.features")}
                 </a>
                 <a
-                  href="/pricing"
+                  href={`${prefix}/pricing`}
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Pricing
+                  {t("footer.pricing")}
                 </a>
                 <a
-                  href="/#faq"
+                  href={`${prefix}/#faq`}
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  FAQ
+                  {t("footer.faq")}
                 </a>
               </nav>
             </div>
 
             {/* Community */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white">Community</h3>
+              <h3 className="text-lg font-semibold text-white">
+                {t("footer.community")}
+              </h3>
 
               <nav className="flex flex-col space-y-3">
                 <a
@@ -162,7 +176,7 @@ export default function Footer() {
                   rel="noopener"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Help Center
+                  {t("footer.helpCenter")}
                 </a>
                 <a
                   href="https://roadmap.epanetjs.com"
@@ -170,64 +184,66 @@ export default function Footer() {
                   rel="noopener"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Roadmap
+                  {t("footer.roadmap")}
                 </a>
                 <a
                   href="https://github.com/epanet-js/epanet-js"
                   rel="noopener"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  GitHub
+                  {t("footer.github")}
                 </a>
                 <a
                   href="https://toolkit.epanetjs.com/"
                   rel="noopener"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Toolkit
+                  {t("footer.toolkit")}
                 </a>
                 <a
                   href="/blog/"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Blog
+                  {t("footer.blog")}
                 </a>
               </nav>
             </div>
 
             {/* Company */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white">Company</h3>
+              <h3 className="text-lg font-semibold text-white">
+                {t("footer.company")}
+              </h3>
               <nav className="flex flex-col space-y-3">
                 <a
-                  href="/#why-we-built-epanet-js"
+                  href={`${prefix}/#why-we-built-epanet-js`}
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  About
+                  {t("footer.about")}
                 </a>
                 <a
                   href="mailto:support@epanetjs.com"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Contact Us
+                  {t("footer.contact")}
                 </a>
                 <a
                   href="/terms-conditions/"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Terms & Conditions
+                  {t("footer.terms")}
                 </a>
                 <a
                   href="/privacy-policy/"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Privacy Policy
+                  {t("footer.privacy")}
                 </a>
                 <a
                   href="/cookies-policy/"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Cookies Policy
+                  {t("footer.cookies")}
                 </a>
               </nav>
             </div>
@@ -286,7 +302,7 @@ export default function Footer() {
             </div>
 
             <div className="text-sm text-gray-400">
-              © {new Date().getFullYear()} Iterating Inc. All rights reserved.
+              &copy; {new Date().getFullYear()} {t("footer.copyright")}
             </div>
           </div>
         </div>

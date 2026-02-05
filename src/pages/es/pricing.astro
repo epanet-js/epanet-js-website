@@ -2,12 +2,14 @@
 import Layout from "@layouts/Layout.astro";
 import Faq from "@components/faq.astro";
 import PricingSection from "@components/landing/pricing";
+import { useTranslations } from "@i18n/utils";
 
 export const prerender = true;
-const lang = "en";
+const lang = "es";
+const t = useTranslations(lang);
 ---
 
-<Layout title="Pricing" lang={lang}>
+<Layout title={t("page.pricing.title")} lang={lang}>
   <PricingSection lang={lang} client:load />
   <Faq lang={lang} />
 </Layout>

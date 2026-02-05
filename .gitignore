@@ -9,6 +9,7 @@
 .cache-loader
 /.astro
 /dist
+/.vercel
 
 # Misc
 .DS_Store
