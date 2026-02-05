@@ -51,13 +51,5 @@ export default defineConfig({
     "api/project-functions/enumerated-types/":
       "https://toolkit.epanetjs.com/project-functions/enumerated-types",
   },
-  integrations: [
-    tailwind(),
-    react(),
-    mdx(),
-    icon(),
-    sitemap({
-      filter: (page) => page !== "https://epanetjs.com/pricing/",
-    }),
-  ],
+  integrations: [tailwind(), react(), mdx(), icon(), sitemap({})],
 });

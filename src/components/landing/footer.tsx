@@ -34,7 +34,7 @@ export default function Footer() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
-        }
+        },
       );
 
       if (response.ok) {
@@ -137,7 +137,7 @@ export default function Footer() {
                   Features
                 </a>
                 <a
-                  href="/#pricing"
+                  href="/pricing"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Pricing
@@ -178,6 +178,13 @@ export default function Footer() {
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   GitHub
+                </a>
+                <a
+                  href="https://toolkit.epanetjs.com/"
+                  rel="noopener"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Toolkit
                 </a>
                 <a
                   href="/blog/"
@@ -279,7 +286,7 @@ export default function Footer() {
             </div>
 
             <div className="text-sm text-gray-400">
-              © {new Date().getFullYear()}  Iterating Inc. All rights reserved.
+              © {new Date().getFullYear()} Iterating Inc. All rights reserved.
             </div>
           </div>
         </div>
