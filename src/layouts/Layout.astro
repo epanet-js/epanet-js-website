@@ -91,6 +91,29 @@ const esUrl = new URL(esPath, Astro.site).toString();
     <!-- Enable this if you want to use Astro ViewTransitions  -->
     <ViewTransitions />
     <script src="https://ext.epanetjs.com/latest.js" async defer="defer"></script>
+    <script is:inline>
+  // Use a self-invoking function to avoid polluting global scope
+  (function() {
+    function init() {
+      
+      // Use event delegation: attach to document so it works for 
+      // elements added dynamically or by other libraries
+      document.addEventListener('click', (e) => {
+        const switcher = e.target.closest('[data-language-switcher]');
+        if (switcher) {
+          const locale = switcher.getAttribute('data-locale');
+          if (locale) {
+            document.cookie = `preferred_locale=${locale};path=/;max-age=31536000;SameSite=Lax`;
+          }
+        }
+      });
+    }
+
+    init();
+    // Re-run for View Transitions
+    document.addEventListener('astro:after-swap', init);
+  })();
+</script>
   </head>
   <body>
     <Navbar lang={lang} />
