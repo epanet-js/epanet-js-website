@@ -87,10 +87,10 @@ const currentLang = lang === "en" ? "EN" : "ES";
                 ))
               }
             </ul>
-            <div class="lg:hidden flex items-center mt-3 gap-4">
+            <div class="lg:hidden flex flex-col items-center mt-3 gap-4">
               <a
                 href={alternatePath}
-                class="flex lg:px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 font-medium items-center gap-1"
+                class="self-start flex lg:px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 font-medium items-center gap-1"
                 title={lang === "es" ? t("nav.language.en") : t("nav.language.es")}>
                 <span class="sr-only">{lang === "es" ? t("nav.language.en") : t("nav.language.es")}</span>
                 <Globe size={16} />
@@ -105,10 +105,16 @@ const currentLang = lang === "en" ? "EN" : "ES";
             <a
               href={alternatePath}
               class="flex lg:px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 font-medium items-center gap-1"
-              title={lang === "es" ? t("nav.language.en") : t("nav.language.es")}>
-              <span class="sr-only">{lang === "es" ? t("nav.language.en") : t("nav.language.es")}</span>
-              <Globe size={16} />
-              {currentLang}
+            >
+              <div class="relative group">
+                <div class="flex gap-2">
+                  <Globe size={16} className="h-5 w-5 text-gray-500 cursor-pointer" />
+                  {currentLang}
+                </div>
+                <div class="absolute z-20 top-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-4 py-2 w-max max-w-xs">
+                  {lang === "es" ? t("nav.language.en") : t("nav.language.es")}
+                </div>
+              </div>
             </a>
             <Link
               href="https://app.epanetjs.com"
