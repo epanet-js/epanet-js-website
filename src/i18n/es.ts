@@ -153,7 +153,7 @@ export const ui = {
   "pricing.pro.button": "Obtener Pro",
   "pricing.pro.popular": "Más popular",
 
-  "pricing.teams.name": "Equipos",
+  "pricing.teams.name": "Teams",
   "pricing.teams.titleDescription": "Para equipos que construyen juntos.",
   "pricing.teams.description": "Licencia compartida flotante",
   "pricing.teams.tooltip": "Mínimo 2 licencias",
@@ -165,7 +165,7 @@ export const ui = {
   "pricing.teams.comingSoon1": "Almacenamiento de equipo",
   "pricing.teams.comingSoon2": "Restauración a punto en el tiempo - 90 días",
   "pricing.teams.comingSoon3": "Compartir redes",
-  "pricing.teams.button": "Obtener Equipos",
+  "pricing.teams.button": "Obtener Teams",
   "pricing.teams.comingSoonBadge": "Próximamente",
 
   "pricing.questions.text": "¿Tienes preguntas? ",

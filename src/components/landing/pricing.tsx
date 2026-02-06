@@ -334,6 +334,7 @@ export default function Pricing({ lang = "en" }: PricingProps) {
         t("pricing.pro.comingSoon3"),
         t("pricing.pro.comingSoon4"),
       ],
+      comingSoonSubtitle: t("pricing.pro.comingSoonSubtitle"),
       buttonText: t("pricing.pro.button"),
       buttonVariant: "default" as const,
       buttonClassName:
