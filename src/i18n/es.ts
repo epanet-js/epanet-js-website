@@ -11,6 +11,8 @@ export const ui = {
   "nav.home": "Inicio",
   "nav.pricing": "Precios",
   "nav.blog": "Blog",
+  "nav.language.es": "Cambiar a español",
+  "nav.language.en": "Switch to English",
   "nav.launch": "Abrir epanet-js",
 
   // ── Hero ──
