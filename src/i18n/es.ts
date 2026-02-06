@@ -15,23 +15,23 @@ export const ui = {
 
   // ── Hero ──
   "hero.brand": "epanet-js",
-  "hero.titlePart1": "El EPANET que conoces — pero moderno, mejorado y ",
-  "hero.titleHighlight": "completamente en tu navegador.",
+  "hero.titlePart1": "El EPANET de siempre: moderno, mejorado y ",
+  "hero.titleHighlight": "directamente en tu navegador",
   "hero.description":
-    "Sin instalaciones. Sin almacenamiento forzado en la nube. Modelado de redes de agua rápido y local — con el motor en el que ya confías.",
-  "hero.cta": "Abrir epanet-js. Sin registro.",
-  "hero.ctaSecondary": "Reservar una demo",
+    "Sin instalaciones. Sin depender de la nube. Modela tus redes hidráulicas de forma rápida y local, con la seguridad del motor en el que confías",
+  "hero.cta": "Empezar a modelar. Sin registro",
+  "hero.ctaSecondary": "Solicitar demo",
 
   // ── User Dilemma ──
   "dilemma.title": "El dilema del usuario de EPANET",
   "dilemma.bullet1":
-    "EPANET clásico es potente — pero <strong>anticuado y poco ágil</strong>. Los atajos se convierten en tu flujo de trabajo — lento e incómodo.",
+    "El EPANET clásico es potente, pero también <strong>rígido y obsoleto</strong>. Acabas dependiendo de trucos y rodeos: un proceso lento e incómodo.",
   "dilemma.bullet2":
-    "Las plataformas conocidas parecen modernas, pero son <strong>caras y están cargadas de funciones</strong> que no necesitas para analizar tu red rápidamente.",
+    "Las grandes plataformas comerciales parecen modernas, pero son <strong>costosas y están saturadas de funciones</strong> que realmente no necesitas cuando sólo buscas analizar tu red con rapidez.",
   "dilemma.bullet3":
-    "Existen herramientas modernas en el navegador — pero <strong>obligan a subir tus datos a la nube</strong>, generando preocupaciones de privacidad y cumplimiento. Además, ofrecen poco para quienes hacen planificación y análisis a largo plazo.",
+    "Existen herramientas web modernas, pero <strong>te obligan a subir tus datos a la nube</strong>, lo que compromete la privacidad y el cumplimiento de normativas. Además, suelen quedarse cortas para quienes realizan planificación y análisis a largo plazo.",
   "dilemma.closing":
-    "No deberías tener que elegir entre velocidad, seguridad y precio justo solo para entender tus redes de agua.",
+    "No deberías tener que elegir entre velocidad, seguridad y un precio justo solo para poder comprender y gestionar tus redes hidráulicas.",
   "dilemma.imgAlt1": "Interfaz antigua de EPANET",
   "dilemma.imgAlt2": "Aplicación de modelado compleja",
 
@@ -39,94 +39,94 @@ export const ui = {
   "features.heading":
     "epanet-js te da control total con una experiencia EPANET local y basada en el navegador",
   "features.subheading":
-    "Modela de forma rápida y segura con guardado local de archivos y una interfaz más fluida — todo sobre el motor EPANET de confianza.",
+    "Modela con rapidez, seguridad con guardado local y una interaza más fluida —con la fiabilidad del motor EPANET de siempre.",
 
-  "features.dataControl.title": "Tus datos, tu control",
+  "features.dataControl.title": "Tus datos, bajo tu control",
   "features.dataControl.p1":
-    "epanet-js trabaja directamente con archivos en tu computadora y la nube es opcional. Por defecto, tus proyectos se ejecutan y guardan localmente — dándote control total, seguridad y privacidad.",
-  "features.dataControl.p2": "Usa la nube solo si y cuando la necesites.",
+    "epanet-js trabaja directamente con los archivos en tu equipo; la nube es totalmente opcional. Por defecto, tus proyectos se ejecutan y guardan en local, garantizándote privacidad y seguridad total.",
+  "features.dataControl.p2": "Usa la nube solo cuando tú decidas.",
 
   "features.enhanced.title": "El EPANET que conoces, mejorado",
   "features.enhanced.p1":
-    "epanet-js mantiene la funcionalidad principal que ya conoces, pero añade una experiencia más fluida y rápida con mejoras modernas como deshacer/rehacer, elevaciones automáticas, dibujo rápido de elementos y mapas base como vista satelital.",
+    "epanet-js conserva la potencia del original, pero con una experiencia mucho más ágil —con mejoras modernas como deshacer/rehacer, elevaciones automáticas, dibujo rápido de elementos y mapas base como vista satelital.",
   "features.enhanced.p2":
-    "Importa tu red o construye desde cero con herramientas intuitivas que facilitan actualizar, dibujar, conectar y editar.",
+    "Importa tu red o créala desde cero con herramientas intuitivas que facilitan dibujar, conectar y editar.",
   "features.enhanced.p3":
-    "Todo lo que necesitas para trabajar más rápido — sin tener que aprender una herramienta nueva.",
+    "Todo lo que necesitas para ser más productivo, sin curva de aprendizaje.",
 
   "features.built.title":
-    "Construido para trabajar, no para resolver problemas",
-  "features.built.item1Bold": "Dibuja visualmente.",
+    "Diseñado para trabajar, no para pelearte con el software",
+  "features.built.item1Bold": "Diseño visual e intuitivo.",
   "features.built.item1":
-    " Haz clic para agregar nodos, tuberías y embalses — con uniones y elevaciones automáticas.",
-  "features.built.item2Bold": "Ejecuta simulaciones al instante.",
-  "features.built.item2": " Shift+Enter y listo.",
-  "features.built.item3Bold": "Ve resultados rápido.",
+    " Añade nodos, tuberías y embalses con un solo clic. Las uniones y elevaciones se calculan automáticamente.",
+  "features.built.item2Bold": "Simulaciones al instante.",
+  "features.built.item2": " Pulsa Shift+Enter y obtén resultados. Así de simple.",
+  "features.built.item3Bold": "Visualización de datos inmediata.",
   "features.built.item3":
-    " Visualiza presiones, trayectorias de flujo y velocidad de un vistazo — todo codificado por colores.",
-  "features.built.item4Bold": "Equivócate sin empezar de cero.",
-  "features.built.item4": " ¡Por fin hay deshacer/rehacer!",
-  "features.built.item5Bold": "Usa superposiciones de mapas satelitales.",
-  "features.built.item5": " Dibuja y analiza tus redes sobre un mapa real.",
-  "features.built.item6Bold": "Compatible con archivos EPANET.",
+    " Revisa presiones, flujos y velocidades de un vistazo gracias a la codificación por colores.",
+  "features.built.item4Bold": "Experimenta sin miedo.",
+  "features.built.item4": " ¡Por fin existe el \"Deshacer/Rehacer\"! Olvídate de empezar de cero por un error.",
+  "features.built.item5Bold": "Mapas satelitales integrados.",
+  "features.built.item5": " Dibuja y analiza tus redes directamente sobre el terreno real.",
+  "features.built.item6Bold": "Compatibilidad nativa con EPANET.",
   "features.built.item6":
-    " Compatible con archivos .inp — sin necesidad de conversión.",
-  "features.built.item7Bold": "Funciona en Mac, Linux y Windows.",
+    " Abre y guarda archivos .inp directamente —sin necesidad de conversiones",
+  "features.built.item7Bold": "Multiplataforma.",
   "features.built.item7":
-    " Usa cualquier navegador moderno. Sin máquinas virtuales. Sin instalaciones.",
+    " Funciona en Mac, Linux y Windows. Solo necesitas un navegador moderno: adiós a las instalaciones y máquinas virtuales.",
 
-  "features.whoFor.title": "¿Para quién es epanet-js?",
-  "features.whoFor.utilities.bold": "Empresas de agua y consultoras",
+  "features.whoFor.title": "¿Para quién está pensado epanet-js?",
+  "features.whoFor.utilities.bold": "Consultoras y empresas de gestión de aguas",
   "features.whoFor.utilities":
-    "Construye rápido, ejecuta localmente. Todo lo que necesitas para hacer el trabajo, sin funciones innecesarias.",
-  "features.whoFor.educators.bold": "Educadores y profesores",
+    "Diseña rápido, ejecuta localmente. Todo lo que necesitas para hacer el trabajo, sin funciones innecesarias.",
+  "features.whoFor.educators.bold": "Profesores y educadores",
   "features.whoFor.educators":
-    "Enseña a nuevos modeladores los conceptos sin luchar con el software. Observa cómo los estudiantes dibujan redes reales y ejecutan simulaciones en minutos — no en horas.",
-  "features.whoFor.students.bold": "Estudiantes y nuevos ingenieros",
+    "Enseña conceptos hidráulicos, no informática. Tus alumnos podrán dibujar redes reales y simular en cuestión de minutos —no en horas.",
+  "features.whoFor.students.bold": "Estudiantes e ingenieros junior",
   "features.whoFor.students":
-    "Enfócate en aprender, no en las peculiaridades del software. Deshacer/rehacer, elevación automática, superposiciones visuales — diseñado para ayudarte a aprender modelado de agua rápidamente.",
+    "Céntrate en aprender ingeniería, no en descifrar un software antiguo. Con \"deshacer/rehacer\", elevaciones automáticas y una visualización clara, epanet-js está diseñado para ayudarte a aprender modelado hidráulico rápidamente.",
   "features.whoFor.imgAlt": "Área de estudio de red de agua",
 
   // ── Newsletter CTA (top) ──
-  "newsletterCta.heading": "Modela redes de agua al instante.",
+  "newsletterCta.heading": "Modela redes hidráulicas al instante",
   "newsletterCta.subheading":
-    "Sin configuración ni descargas — acceso instantáneo directo en tu navegador.",
-  "newsletterCta.button": "Comenzar a modelar ahora",
+    "Sin configuración ni descargas —accede directamente desde tu navegador.",
+  "newsletterCta.button": "Empezar a modelar",
 
   // ── Open Source ──
-  "opensource.heading1": "EPANET merece algo mejor — y tú también.",
+  "opensource.heading1": "EPANET se merece más. Tú también",
   "opensource.p1":
-    "EPANET fue un regalo para la industria — modelado de agua gratuito y de código abierto para todos. Pero los proveedores comerciales lo aprovecharon, bloquearon las mejoras y dejaron atrás a la comunidad.",
+    "EPANET fue un regalo para la industria —modelado hidráulico gratuito y de código abierto para todos. Sin embargo, los proveedores comerciales se aprovecharon de esa base, privatizaron las mejoras y dejaron de lado a la comunidad.",
   "opensource.p2":
-    "epanet-js es nuestra respuesta: una herramienta de modelado de agua más rápida, sencilla y asequible que protege tu privacidad y sostiene el futuro del código abierto del modelado de agua.",
+    "epanet-js es nuestra respuesta: una herramienta de modelado hidráulico más rápida, sencilla y accesible. Protegemos tu privacidad y aseguramos el futuro del código abierto en la ingeniería hidráulica.",
   "opensource.p3":
-    "Estamos orgullosos de ser parte del próximo capítulo — y apenas estamos comenzando.",
+    "Estamos orgullosos de escribir este nuevo capítulo... y esto es solo el principio.",
   "opensource.imgAlt1": "Logo de la EPA",
 
   "opensource.heading2": "Cuando apoyas epanet-js, apoyas EPANET.",
   "opensource.support.p1":
-    "Cuando adquieres más funciones en epanet-js, estás invirtiendo en el futuro del desarrollo de código abierto de EPANET.",
+    "Al adquirir las funciones avanzadas de epanet-js, estás invirtiendo en el desarrollo de código abierto de EPANET.",
   "opensource.support.p2":
     "Nuestro modelo de código abierto equilibra innovación y accesibilidad:",
   "opensource.support.item1Pre": "",
   "opensource.support.item1Link": "Código fuente",
   "opensource.support.item1Post": " público desde el primer día.",
   "opensource.support.item2Pre":
-    "Totalmente de código abierto (MIT) después de dos años bajo nuestra ",
+    "Todo nuestro código pasa automáticamente a licencia MIT después de dos años bajo nuestra ",
   "opensource.support.item2Link": "Licencia Funcional de Código Fuente (FSL)",
   "opensource.support.item2Post": ".",
   "opensource.support.p3":
-    "Cualquiera puede construir sobre nuestro código. El retraso de dos años para uso comercial nos da el incentivo para seguir avanzando — y eso impulsa el progreso para todos.",
+    "Cualquiera puede construir sobre nuestro código. Este periodo de dos años nos da los recursos para seguir innovando hoy, mientras aseguramos que la tecnología será libre para siempre.",
   "opensource.support.p4":
-    "Eso significa que cuando nos apoyas, apoyas un software de modelado hidráulico más accesible para toda la comunidad.",
+    "Tu apoyo hace que el modelado hidráulico sea más accesible para toda la comunidad.",
   "opensource.imgAlt2": "Código fuente de epanet-js en GitHub",
 
   // ── Pricing ──
   "pricing.heading":
     "Precios simples y transparentes para todo tipo de modelador.",
-  "pricing.subheading": "Elige el plan que mejor se adapte a ti",
-  "pricing.billedMonthly": "Facturación mensual",
-  "pricing.billedYearly": "Facturación anual",
+  "pricing.subheading": "Elige el plan que mejor se adapta a ti",
+  "pricing.billedMonthly": "Mensual",
+  "pricing.billedYearly": "Anual",
 
   "pricing.free.name": "Gratis",
   "pricing.free.titleDescription": "Para todos.",
@@ -140,15 +140,15 @@ export const ui = {
 
   "pricing.pro.name": "Pro",
   "pricing.pro.titleDescription":
-    "Para modeladores independientes y pequeñas empresas de agua.",
-  "pricing.pro.description": "Licencia individual nominativa",
+    "Para modeladores independientes y pequeñas consultoras.",
+  "pricing.pro.description": "Licencia personal",
   "pricing.pro.featureSubtitle": "Todo lo del plan gratuito, y además:",
   "pricing.pro.feature1": "Soporte profesional",
   "pricing.pro.feature2": "Capas personalizadas",
   "pricing.pro.comingSoonSubtitle": "Próximamente:",
   "pricing.pro.comingSoon1": "Escenarios",
   "pricing.pro.comingSoon2": "Almacenamiento en la nube",
-  "pricing.pro.comingSoon3": "Restauración a punto en el tiempo - 30 días",
+  "pricing.pro.comingSoon3": "Historial de restauración de 30 días",
   "pricing.pro.comingSoon4": "Análisis de demanda",
   "pricing.pro.button": "Obtener Pro",
   "pricing.pro.popular": "Más popular",
@@ -163,7 +163,7 @@ export const ui = {
   "pricing.teams.feature3": "Pago por factura",
   "pricing.teams.comingSoonSubtitle": "Próximamente:",
   "pricing.teams.comingSoon1": "Almacenamiento de equipo",
-  "pricing.teams.comingSoon2": "Restauración a punto en el tiempo - 90 días",
+  "pricing.teams.comingSoon2": "Historial de restauración de 90 días",
   "pricing.teams.comingSoon3": "Compartir redes",
   "pricing.teams.button": "Obtener Teams",
   "pricing.teams.comingSoonBadge": "Próximamente",
@@ -201,29 +201,29 @@ export const ui = {
   "faq.subheading": "Encuentra respuestas a preguntas comunes sobre epanet-js.",
   "faq.q1": "¿Qué es epanet-js?",
   "faq.a1":
-    "epanet-js es una herramienta moderna de modelado de redes de agua basada en el motor EPANET. Te permite construir, simular y analizar redes de distribución de agua directamente en tu navegador sin instalar ningún software.",
+    "epanet-js es una herramienta moderna de modelado hidráulico impulsada por el motor EPANET. Diseña, simula y analiza redes de distribución directamente en tu navegador, sin necesidad de instalar nada.",
   "faq.q2": "¿Mis datos están seguros con epanet-js?",
   "faq.a2":
-    "¡Sí! epanet-js utiliza un enfoque local-first, lo que significa que los datos de tu proyecto se guardan directamente en tu computadora, no en nuestros servidores. Esto asegura que los datos sensibles de tu red permanezcan privados y bajo tu control.",
-  "faq.a2Link": "Más información sobre el enfoque Local-First.",
+    "¡Sí! epanet-js sigue un enfoque local por defecto. Esto significa que los datos de tu proyecto se guardan directamente en tu equipo, nunca en nuestros servidores. Así garantizamos que la información sensible de tus redes se mantenga privada y bajo tu control.",
+  "faq.a2Link": "Más sobre la filosofía local por defecto.",
   "faq.q3": "¿Necesito crear una cuenta para usar epanet-js?",
   "faq.a3":
-    "No, puedes comenzar a usar epanet-js inmediatamente sin crear una cuenta ni iniciar sesión. Simplemente visita nuestro sitio web y abre la aplicación para empezar a modelar.",
+    "No. Puedes comenzar a usar epanet-js inmediatamente sin crear una cuenta ni iniciar sesión. Simplemente abre la aplicación para empezar a modelar.",
   "faq.q4": "¿Puedo importar archivos EPANET existentes?",
   "faq.a4":
     "Sí, epanet-js permite importar archivos .inp del EPANET de escritorio. Puedes migrar tus proyectos existentes a nuestra plataforma web sin problemas.",
   "faq.q5": "¿Funciona epanet-js en Mac?",
   "faq.a5":
-    "¡Sí! epanet-js funciona en todos los navegadores modernos, incluyendo Chrome, Firefox, Safari y Edge. Como se ejecuta en un navegador web, epanet-js funciona perfectamente en macOS, Windows y Linux. Es una excelente opción si has tenido problemas para instalar el EPANET tradicional en Mac. Para la mejor experiencia, recomendamos usar la última versión de tu navegador preferido.",
+    "¡Sí! epanet-js funciona en todos los navegadores modernos, incluyendo Chrome, Firefox, Safari y Edge. Como se ejecuta en un navegador web, epanet-js funciona perfectamente en macOS, Windows y Linux. Es una excelente opción si has tenido problemas para instalar el EPANET tradicional en Mac. Para una mejor experiencia, recomendamos usar la última versión de tu navegador preferido.",
   "faq.q6": "¿Es epanet-js de código abierto?",
   "faq.a6Pre":
-    "Sí, nuestro código fuente es público desde el primer día, pero hay un retraso de dos años desde que lanzamos una nueva versión hasta que se convierte en completamente de código abierto. Así es como impulsamos el desarrollo sostenible de código abierto para epanet-js y, por extensión, EPANET. Puedes ",
-  "faq.a6Link1": "conocer más sobre por qué lo hacemos",
+    "Sí. Nuestro código es público desde el primer día. Simplemente aplicamos un periodo de transición de dos años: pasado ese tiempo, cada versión se convierte automáticamente en código abierto total (MIT). Este modelo nos permite financiar un desarrollo sostenible para epanet-js y, a su vez, impulsar todo el ecosistema EPANET. Descubre ",
+  "faq.a6Link1": "por qué lo hacemos",
   "faq.a6Mid": " y ",
-  "faq.a6Link2": "cómo funciona la licencia FSL aquí.",
+  "faq.a6Link2": "cómo funciona la licencia FSL.",
   "faq.q7": "¿Cómo obtengo soporte si tengo preguntas?",
   "faq.a7":
-    "Ofrecemos diferentes opciones de soporte según tu plan. Los usuarios gratuitos pueden acceder a nuestros foros comunitarios y documentación, mientras que los usuarios de pago reciben soporte prioritario por correo electrónico. Los usuarios educativos tienen acceso a recursos especializados para uso en el aula.",
+    "El soporte se adapta a tu plan. La versión gratuita incluye acceso a la documentación y a los foros de la comunidad. Los usuarios de pago cuentan con soporte prioritario por email. Y los usuarios del plan educativo tienen acceso a recursos didácticos especiales para sus clases.",
 
   // ── Pricing page FAQ (faq.astro) ──
   "pricingFaq.heading": "Preguntas frecuentes",
@@ -231,82 +231,82 @@ export const ui = {
     "Encuentra respuestas a preguntas comunes sobre epanet-js",
   "pricingFaq.q1": "¿Qué es epanet-js?",
   "pricingFaq.a1":
-    "epanet-js es una herramienta moderna de modelado de redes de agua basada en el motor EPANET. Te permite construir, simular y analizar redes de distribución de agua directamente en tu navegador sin instalar ningún software.",
+    "epanet-js es una herramienta moderna de modelado hidráulico impulsada por el motor EPANET. Diseña, simula y analiza redes de distribución directamente en tu navegador, sin necesidad de instalar nada.",
   "pricingFaq.q2": "¿Mis datos están seguros con epanet-js?",
   "pricingFaq.a2":
-    "¡Sí! epanet-js utiliza un enfoque local-first, lo que significa que los datos de tu proyecto se guardan directamente en tu computadora, no en nuestros servidores. Esto asegura que los datos sensibles de tu red permanezcan privados y bajo tu control. Más información sobre el <a href='https://help.epanetjs.com/Understanding-the-local-first-approach-2a1e18c9f0f681d881d0c0f0b24ff032' class='text-blue-600 hover:text-blue-800 underline hover:no-underline transition-colors'>enfoque Local-First</a>.",
+    "¡Sí! epanet-js sigue un enfoque local por defecto. Esto significa que los datos de tu proyecto se guardan directamente en tu equipo, nunca en nuestros servidores. Así garantizamos que la información sensible de tus redes se mantenga privada y bajo tu control. Más sobre la filosofía <a href='https://help.epanetjs.com/Understanding-the-local-first-approach-2a1e18c9f0f681d881d0c0f0b24ff032' class='text-blue-600 hover:text-blue-800 underline hover:no-underline transition-colors'>local por defecto</a>.",
   "pricingFaq.q3": "¿Necesito crear una cuenta para usar epanet-js?",
   "pricingFaq.a3":
-    "No, puedes comenzar a usar epanet-js inmediatamente sin crear una cuenta ni iniciar sesión. Simplemente visita nuestro sitio web y abre la aplicación para empezar a modelar.",
+    "No. Puedes comenzar a usar epanet-js inmediatamente sin crear una cuenta ni iniciar sesión. Simplemente abre la aplicación para empezar a modelar.",
   "pricingFaq.q4": "¿Puedo importar archivos EPANET existentes?",
   "pricingFaq.a4":
     "Sí, epanet-js permite importar archivos .inp del EPANET de escritorio. Puedes migrar tus proyectos existentes a nuestra plataforma web sin problemas.",
   "pricingFaq.q5": "¿Funciona epanet-js en Mac?",
   "pricingFaq.a5":
-    "¡Sí! epanet-js funciona en todos los navegadores modernos, incluyendo Chrome, Firefox, Safari y Edge. Como se ejecuta en un navegador web, epanet-js funciona perfectamente en macOS, Windows y Linux. Es una excelente opción si has tenido problemas para instalar el EPANET tradicional en Mac. Para la mejor experiencia, recomendamos usar la última versión de tu navegador preferido.",
+    "¡Sí! epanet-js funciona en todos los navegadores modernos, incluyendo Chrome, Firefox, Safari y Edge. Como se ejecuta en un navegador web, epanet-js funciona perfectamente en macOS, Windows y Linux. Es una excelente opción si has tenido problemas para instalar el EPANET tradicional en Mac. Para una mejor experiencia, recomendamos usar la última versión de tu navegador preferido.",
   "pricingFaq.q6": "¿Es epanet-js de código abierto?",
   "pricingFaq.a6":
-    "Sí, nuestro código fuente es público desde el primer día, pero hay un retraso de dos años desde que lanzamos una nueva versión hasta que se convierte en completamente de código abierto. Así es como impulsamos el desarrollo sostenible de código abierto para epanet-js y, por extensión, EPANET. Puedes conocer <a href='https://epanetjs.com/#why-we-built-epanet-js' class='text-blue-600 hover:text-blue-800 underline hover:no-underline transition-colors'>más sobre por qué lo hacemos</a> y <a href='https://fsl.software/' class='text-blue-600 hover:text-blue-800 underline hover:no-underline transition-colors'>cómo funciona la licencia FSL aquí</a>.",
+    "Sí. Nuestro código es público desde el primer día. Simplemente aplicamos un periodo de transición de dos años: pasado ese tiempo, cada versión se convierte automáticamente en código abierto total (MIT). Este modelo nos permite financiar un desarrollo sostenible para epanet-js y, a su vez, impulsar todo el ecosistema EPANET. Descubre <a href='https://epanetjs.com/#why-we-built-epanet-js' class='text-blue-600 hover:text-blue-800 underline hover:no-underline transition-colors'>por qué lo hacemos</a> y <a href='https://fsl.software/' class='text-blue-600 hover:text-blue-800 underline hover:no-underline transition-colors'>cómo funciona la licencia FSL</a>.",
   "pricingFaq.q7": "¿Cómo obtengo soporte si tengo preguntas?",
   "pricingFaq.a7":
-    "Ofrecemos diferentes opciones de soporte según tu plan. Los usuarios gratuitos pueden acceder a nuestros foros comunitarios y documentación, mientras que los usuarios de pago reciben soporte prioritario por correo electrónico. Los usuarios educativos tienen acceso a recursos especializados para uso en el aula.",
+    "El soporte se adapta a tu plan. La versión gratuita incluye acceso a la documentación y a los foros de la comunidad. Los usuarios de pago cuentan con soporte prioritario por email. Y los usuarios del plan educativo tienen acceso a recursos didácticos especiales para sus clases.",
 
   // ── CTA Just Open ──
-  "ctaOpen.heading": "Solo abre tu navegador y modela.",
-  "ctaOpen.subheading": "Sin instalación. Sin registro. Sin nube obligatoria.",
-  "ctaOpen.button": "Abrir epanet-js ahora",
+  "ctaOpen.heading": "Abre tu navegador y empieza a modelar",
+  "ctaOpen.subheading": "Sin instalación. Sin registro. Sin depender de la nube.",
+  "ctaOpen.button": "Empezar a modelar",
 
   // ── Why We Built ──
-  "whyBuilt.heading": "Por qué construimos epanet-js",
+  "whyBuilt.heading": "Por qué creamos epanet-js",
   "whyBuilt.luke": "Luke Butler",
   "whyBuilt.sam": "Sam Payá",
   "whyBuilt.cofounder": "Cofundador",
   "whyBuilt.lukeAlt": "Luke Butler - Cofundador",
   "whyBuilt.samAlt": "Sam - Cofundador",
   "whyBuilt.p1":
-    "Quizás no lo sepas, pero durante décadas, la EPA de EE. UU. ha dado a la industria del agua un regalo extraordinario: el software gratuito y de código abierto de modelado hidráulico EPANET. Es muy probable que si has usado cualquier software comercial de modelado hidráulico hoy en día, esté construido sobre el motor EPANET.",
+    "Quizá no lo sepas, pero durante décadas, la EPA ha ofrecido al sector un recurso de valor incalculable: EPANET, el software de modelado hidráulico gratuito y de código abierto. De hecho, es muy probable que el software comercial que usas hoy esté basado en el motor de EPANET.",
   "whyBuilt.p2":
-    "El problema es que, en lugar de retribuir a sus raíces de código abierto como hacen otras industrias, los grandes proveedores de software tomaron el código abierto de EPANET, construyeron herramientas privadas sobre el motor y luego bloquearon esas mejoras detrás de patentes y licencias propietarias.",
+    "El problema es que, lejos de devolver el favor a la comunidad Open Source como hacen otras industrias, los grandes proveedores aprovecharon ese código libre, crearon herramientas privadas sobre el motor y blindaron sus mejoras con patentes y licencias cerradas.",
   "whyBuilt.p3":
-    "Algunos proveedores incluso presionaron a la EPA para que se enfocara solo en el motor — desalentando cualquier esfuerzo por mejorar la interfaz o la experiencia de usuario para todos los demás.",
+    "Algunos incluso presionaron a la EPA para que se limitase a desarrollar el motor, frenando así cualquier intento de mejorar la interfaz o la experiencia de usuario para el resto del mundo.",
   "whyBuilt.p4":
-    "Esos proveedores ahora te cobran precios exorbitantes por usar su software mientras EPANET se queda atrás — y las empresas de agua, ingenieros y educadores con presupuestos más pequeños sufren.",
+    "El resultado: hoy te cobran precios desorbitados por usar su software, mientras el EPANET original se queda obsoleto, perjudicando a empresas pequeñas, ingenieros y educadores.",
   "whyBuilt.p5":
-    "Creemos que esto está al revés — y estamos en una misión para cambiarlo. Nos enfocamos en crear una mejor experiencia para toda la comunidad de modelado hidráulico.",
+    "En epanet-js creemos que esto no debería ser así y nos hemos propuesto cambiarlo. Nuestra misión es mejorar la experiencia de toda la comunidad de modelado hidráulico.",
   "whyBuilt.p6":
-    "Por eso construimos epanet-js bajo una licencia FSL — porque queremos darte una opción de modelado de agua asequible y fácil de usar que cree un futuro sostenible para el desarrollo de código abierto de EPANET.",
-  "whyBuilt.p7": "Apoya a EPANET usando software que lo apoya de vuelta.",
+    "Por eso creamos epanet-js bajo licencia FSL: para ofrecerte una herramienta asequible y fácil de usar que, además, garantice un futuro sostenible para el desarrollo de EPANET.",
+  "whyBuilt.p7": "Apoya a EPANET usando un software que también invierte en él.",
 
   // ── Bottom CTA ──
   "bottomCta.heading": "Un futuro mejor para el modelado de agua.",
   "bottomCta.subheading":
-    "Simple, rápido y útil desde el primer momento — diseñado para abrir y usar.",
-  "bottomCta.button": "Abrir epanet-js ahora",
+    "Sencillo, rápido y eficaz desde el primer minuto. Diseñado para funcionar al instante, sin configuraciones.",
+  "bottomCta.button": "Empezar a modelar",
 
   // ── Middle CTA (newsletter form) ──
-  "middleCta.heading": "Mantente informado",
+  "middleCta.heading": "Mantente al día",
   "middleCta.subheading":
-    "Suscríbete a nuestro boletín para recibir actualizaciones, consejos y noticias sobre epanet-js y modelado de redes de agua.",
-  "middleCta.placeholder": "Ingresa tu correo electrónico",
-  "middleCta.button": "Suscribirse",
+    "Suscríbete para recibir actualizaciones, consejos y noticias sobre epanet-js y modelado hidráulico.",
+  "middleCta.placeholder": "Tu email aquí",
+  "middleCta.button": "Apuntarme",
   "middleCta.privacy":
-    "Respetamos tu privacidad. Cancela la suscripción en cualquier momento.",
+    "Respetamos tu privacidad. Puedes darte de baja cuando quieras.",
 
   // ── Footer ──
-  "footer.newsletter.heading": "Mantente informado",
+  "footer.newsletter.heading": "Mantente al día",
   "footer.newsletter.subheading":
-    "Suscríbete a nuestro boletín para recibir actualizaciones, consejos y noticias sobre epanet-js y modelado de redes de agua.",
-  "footer.newsletter.placeholder": "Ingresa tu correo electrónico",
-  "footer.newsletter.button": "Suscribirse",
-  "footer.newsletter.subscribing": "Suscribiendo...",
+    "Suscríbete para recibir actualizaciones, consejos y noticias sobre epanet-js y modelado hidráulico.",
+  "footer.newsletter.placeholder": "Tu email aquí",
+  "footer.newsletter.button": "Apuntarme",
+  "footer.newsletter.subscribing": "Apuntándote...",
   "footer.newsletter.success":
-    "¡Éxito! Revisa tu correo electrónico para confirmar tu suscripción.",
+    "¡Hecho! Revisa tu email para confirmar tu dirección.",
   "footer.newsletter.errorPrefix": "Ocurrió un error: ",
   "footer.newsletter.errorFallback": "Por favor, inténtalo más tarde.",
   "footer.newsletter.errorGeneric":
     "Ocurrió un error. Por favor, inténtalo más tarde.",
   "footer.newsletter.privacy":
-    "Respetamos tu privacidad. Cancela la suscripción en cualquier momento.",
+    "Respetamos tu privacidad. Puedes darte de baja cuando quieras.",
 
   "footer.product": "Producto",
   "footer.features": "Funciones",
