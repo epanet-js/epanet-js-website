@@ -11,9 +11,6 @@ export const onRequest = defineMiddleware((context, next) => {
     if (preferred === "es") {
       console.log("Redirecting to /es/");
       return context.redirect("/es/");
-    } else {
-      console.log("Redirecting to /");
-      return context.redirect("/");
     }
   }
   console.log("Not on root path");
