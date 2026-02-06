@@ -38,6 +38,12 @@ const currentPath = Astro.url.pathname;
 const alternateLang: Locale = lang === "es" ? "en" : "es";
 const alternatePath = localePath(currentPath, alternateLang);
 const currentLang = lang === "en" ? "EN" : "ES";
+
+// Routes that are English-only — hide language toggle there
+const englishOnlyRoutes = ["/blog", "/cookies-policy", "/privacy-policy", "/terms-conditions"];
+const isEnglishOnlyPage = englishOnlyRoutes.some(
+  (route) => currentPath === route || currentPath.startsWith(route + "/")
+);
 ---
 
 <StickyHeader
@@ -88,38 +94,42 @@ const currentLang = lang === "en" ? "EN" : "ES";
               }
             </ul>
             <div class="lg:hidden flex flex-col items-center mt-3 gap-4">
-              <a
-                href={alternatePath}
-                data-language-switcher
-                data-locale={alternateLang}
-                class="self-start flex lg:px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 font-medium items-center gap-1"
-                title={lang === "es" ? t("nav.language.en") : t("nav.language.es")}>
-                <span class="sr-only">{lang === "es" ? t("nav.language.en") : t("nav.language.es")}</span>
-                <Globe size={16} />
-                {currentLang}
-              </a>
+              {!isEnglishOnlyPage && (
+                <a
+                  href={alternatePath}
+                  data-language-switcher
+                  data-locale={alternateLang}
+                  class="self-start flex lg:px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 font-medium items-center gap-1"
+                  title={lang === "es" ? t("nav.language.en") : t("nav.language.es")}>
+                  <span class="sr-only">{lang === "es" ? t("nav.language.en") : t("nav.language.es")}</span>
+                  <Globe size={16} />
+                  {currentLang}
+                </a>
+              )}
               <Link href="https://app.epanetjs.com" size="md" block>{t("nav.launch")}</Link>
             </div>
           </MenuItems>
         </Astronav>
         <div>
           <div class="hidden lg:flex items-center gap-4">
-            <a
-              href={alternatePath}
-              data-language-switcher
-              data-locale={alternateLang}
-              class="flex lg:px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 font-medium items-center gap-1"
-            >
-              <div class="relative group">
-                <div class="flex gap-2">
-                  <Globe size={16} className="h-5 w-5 text-gray-500 cursor-pointer" />
-                  {currentLang}
+            {!isEnglishOnlyPage && (
+              <a
+                href={alternatePath}
+                data-language-switcher
+                data-locale={alternateLang}
+                class="flex lg:px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 font-medium items-center gap-1"
+              >
+                <div class="relative group">
+                  <div class="flex gap-2">
+                    <Globe size={16} className="h-5 w-5 text-gray-500 cursor-pointer" />
+                    {currentLang}
+                  </div>
+                  <div class="absolute z-20 top-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-4 py-2 w-max max-w-xs">
+                    {lang === "es" ? t("nav.language.en") : t("nav.language.es")}
+                  </div>
                 </div>
-                <div class="absolute z-20 top-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-4 py-2 w-max max-w-xs">
-                  {lang === "es" ? t("nav.language.en") : t("nav.language.es")}
-                </div>
-              </div>
-            </a>
+              </a>
+            )}
             <Link
               href="https://app.epanetjs.com"
               size="sm"
