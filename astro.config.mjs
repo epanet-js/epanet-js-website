@@ -10,7 +10,7 @@ import vercel from "@astrojs/vercel";
 export default defineConfig({
   site: "https://epanetjs.com",
   output: "server",
-  adapter: vercel({ edgeMiddleware: true }),
+  adapter: vercel(),
   i18n: {
     defaultLocale: "en",
     locales: ["en", "es"],
