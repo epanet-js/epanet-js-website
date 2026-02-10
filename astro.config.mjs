@@ -58,6 +58,8 @@ export default defineConfig({
       "https://toolkit.epanetjs.com/project-functions/rule-based-control",
     "api/project-functions/enumerated-types/":
       "https://toolkit.epanetjs.com/project-functions/enumerated-types",
+    "/blog/2023/01/04/epanet-js---the-water-distribution-modelling-engine-for-the-web":
+      "/blog/2023/01/04/epanet-js-toolkit---the-water-distribution-modelling-engine-for-the-web/",
   },
   integrations: [
     tailwind(),
