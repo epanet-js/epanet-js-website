@@ -162,7 +162,7 @@ In both systems, data is categorized by its technical type (Demand, Control, Phy
 
 A real-world project usually requires changes to pipes, demands, and controls simultaneously. However, the software forces you to split these changes into separate buckets (a Demand alternative, a Control alternative, etc.).
 
-Consequencely, each project in your scenario becomes tightly coupled with others in the same bucket. If you want to move “Project A” from Year 5 to Year 10, there is no easy way to move it. You have to open the Year 5 Demand alternative, unpick the Project A demands, move them to the Year 10 alternative, and then repeat the process for controls and pipes.
+Consequently, each project in your scenario becomes tightly coupled with others in the same bucket. If you want to move “Project A” from Year 5 to Year 10, there is no easy way to move it. You have to open the Year 5 Demand alternative, unpick the Project A demands, move them to the Year 10 alternative, and then repeat the process for controls and pipes.
 
 ## The epanet-js proposal
 
