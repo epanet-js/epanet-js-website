@@ -4,10 +4,18 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 import react from "@astrojs/react";
+import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://epanetjs.com",
+  output: "server",
+  adapter: vercel(),
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "es"],
+    routing: { prefixDefaultLocale: false },
+  },
   customCss: ["./src/styles/custom.css"],
   redirects: {
     "api/": "https://toolkit.epanetjs.com",
@@ -51,5 +59,16 @@ export default defineConfig({
     "api/project-functions/enumerated-types/":
       "https://toolkit.epanetjs.com/project-functions/enumerated-types",
   },
-  integrations: [tailwind(), react(), mdx(), icon(), sitemap({})],
+  integrations: [
+    tailwind(),
+    react(),
+    mdx(),
+    icon(),
+    sitemap({
+      i18n: {
+        defaultLocale: "en",
+        locales: { en: "en", es: "es" },
+      },
+    }),
+  ],
 });

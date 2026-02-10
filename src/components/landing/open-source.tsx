@@ -1,7 +1,15 @@
 import epanetLogoUrl from "@assets/landing/Seal_of_the_United_States_Environmental_Protection_Agency.svg?url";
 import sourceCodeUrl from "@assets/landing/github-open-source.webp?url";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
 
-export default function OpenSource() {
+interface Props {
+  lang?: Locale;
+}
+
+export default function OpenSource({ lang = "en" }: Props) {
+  const t = useTranslations(lang);
+
   return (
     <section
       id="features"
@@ -12,23 +20,10 @@ export default function OpenSource() {
         <div className="space-y-24 md:space-y-28 lg:space-y-32 py-8 md:py-10">
           <div className="grid items-center gap-8 lg:gap-0 lg:grid-cols-2">
             <div className="space-y-4 lg:pr-8">
-              <h2 className="text-2xl font-bold">
-                EPANET deserves better — and so do you.
-              </h2>
-              <p className="">
-                EPANET was a gift to the industry — free, open-source water
-                modeling for all. But commercial vendors built on it, locked
-                away improvements, and left the community behind.
-              </p>
-              <p className="">
-                epanet-js is our answer: a faster, simpler, affordable water
-                modeling tool that protects your privacy and sustains the
-                open-source future of water modeling.
-              </p>
-              <p className="">
-                We’re proud to be part of the next chapter — and we’re just
-                getting started.
-              </p>
+              <h2 className="text-2xl font-bold">{t("opensource.heading1")}</h2>
+              <p className="">{t("opensource.p1")}</p>
+              <p className="">{t("opensource.p2")}</p>
+              <p className="">{t("opensource.p3")}</p>
             </div>
 
             <div className={`flex items-center justify-center `}>
@@ -36,7 +31,7 @@ export default function OpenSource() {
                 <img
                   src={epanetLogoUrl}
                   className="object-contain w-full h-full"
-                  alt="EPA logo"
+                  alt={t("opensource.imgAlt1")}
                 />
               </div>
             </div>
@@ -53,56 +48,44 @@ export default function OpenSource() {
                     width={500}
                     height={300}
                     className="object-cover w-full h-full"
-                    alt="Source code of epanet-js on GitHub"
+                    alt={t("opensource.imgAlt2")}
                   />
                 </div>
               </div>
 
               <div className="space-y-4 lg:pl-8">
                 <h2 className="text-2xl font-bold">
-                  When you support epanet-js, you support EPANET.
+                  {t("opensource.heading2")}
                 </h2>
-                <p className="">
-                  When you purchase more features in epanet-js, you’re investing
-                  in the future of open-source EPANET development.
-                </p>
-                <p className="">
-                  Our open-source model balances innovation and accessibility:
-                </p>
+                <p className="">{t("opensource.support.p1")}</p>
+                <p className="">{t("opensource.support.p2")}</p>
                 <ul className=" space-y-2 [&>li]:before:content-['✓'] [&>li]:before:mr-2 ">
                   <li>
-                    Public{" "}
+                    {t("opensource.support.item1Pre")}
                     <a
                       href="https://github.com/epanet-js/epanet-js"
                       className="underline hover:text-gray-500"
                     >
-                      source code
-                    </a>{" "}
-                    from day one.
+                      {t("opensource.support.item1Link")}
+                    </a>
+                    {t("opensource.support.item1Post")}
                   </li>
                   <li>
-                    Fully open source (MIT) after two years under our{" "}
+                    {t("opensource.support.item2Pre")}
                     <a
                       href="https://fsl.software/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="underline hover:text-gray-500"
                     >
-                      Functional Source License (FSL)
+                      {t("opensource.support.item2Link")}
                     </a>
-                    .
+                    {t("opensource.support.item2Post")}
                   </li>
                 </ul>
-                <p className="">
-                  Anyone can build on our code. The two-year commercial-use
-                  delay gives us the incentive to keep pushing forward — and
-                  that fuels progress for everyone.
-                </p>
+                <p className="">{t("opensource.support.p3")}</p>
 
-                <p className="">
-                  That means when you support us, you support more affordable
-                  hydraulic modeling software for the entire community.
-                </p>
+                <p className="">{t("opensource.support.p4")}</p>
               </div>
             </div>
           </div>

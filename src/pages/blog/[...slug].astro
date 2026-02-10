@@ -7,6 +7,8 @@ import Container from "@components/container.astro";
 // --- CHANGE: Import your NEW local component ---
 import TableOfContents from "@components/TableOfContents.astro"; 
 
+export const prerender = true;
+
 // --- SERVER SIDE LOGIC ---
 export async function getStaticPaths() {
   const posts = await getCollection('blog');

@@ -1,8 +1,15 @@
 import { ArrowRight } from "lucide-react";
-
 import { Button } from "@components/ui/landing/button";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
 
-export default function CTAJustOpen() {
+interface Props {
+  lang?: Locale;
+}
+
+export default function CTAJustOpen({ lang = "en" }: Props) {
+  const t = useTranslations(lang);
+
   return (
     <section
       id="newsletter"
@@ -12,10 +19,10 @@ export default function CTAJustOpen() {
       <div className="flex flex-col items-center justify-center space-y-3 text-center">
         <div className="space-y-2">
           <h3 className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-white">
-            Just open your browser and model.
+            {t("ctaOpen.heading")}
           </h3>
           <p className="max-w-[600px] mx-auto text-gray-200 md:text-xl/relaxed">
-            No install. No login. No cloud required.
+            {t("ctaOpen.subheading")}
           </p>
         </div>
         <Button
@@ -25,7 +32,7 @@ export default function CTAJustOpen() {
           asChild
         >
           <a href="https://app.epanetjs.com">
-            Launch epanet-js now
+            {t("ctaOpen.button")}
             <ArrowRight className="ml-2 h-4 w-4" />
           </a>
         </Button>
