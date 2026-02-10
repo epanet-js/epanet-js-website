@@ -10,14 +10,14 @@ author: "Luke Butler"
 tags: [Progress report]
 ---
 
-**Scenarios, patterns, and a founding partner**
+**Scenarios, patterns, and a Founding Partner**
 
 It’s been a massive start to 2026. January was a busy month for the team, delivering not just new features but a fundamental shift in how epanet-js is built and supported.
 
 We are thrilled to announce the release of **Scenario Management** — our most requested and ambitious feature yet. This release marks the transition of epanet-js into a platform that can support professional, sustainable development while keeping the core experience open and accessible.
 
 <figure>
-  <img src="/assets/blog/progress-report/2026-01/01-scenario-hero.png" alt="Explore "what-if" scenarios without duplicating your model." />
+  <img src="/assets/blog/progress-report/2026-01/01-scenario-hero.png" alt="Explore 'what-if' scenarios without duplicating your model." />
   <figcaption>Explore "what-if" scenarios without duplicating your model.</figcaption>
 </figure>
 
@@ -43,19 +43,19 @@ Launch epanet-js. No login needed.
 </a>
 </div>
 
-## **Introducing scenario management**
+## **Introducing Scenario Management**
 
-We’ve just released the first version of scenario management in epanet-js. This feature allows you to explore changes to your network and see how your "what-if" ideas affect your model results without the mess of duplicating files.
+We’ve just released the first version of Scenario Management in epanet-js. This feature allows you to explore changes to your network and see how your "what-if" ideas affect your model results without the mess of duplicating files.
 
 ### How it works
 
-When you enable scenarios, your main model becomes the "Base" and is locked to preserve your history. You can then create child scenarios to test alternatives. From within a scenario, you can change parameters, draw new geometries, and adjust controls.
+When you enable scenarios, your main model becomes the "Main" scenario and is locked to preserve your history. You can then create child scenarios to test alternatives. From within a scenario, you can change parameters, draw new geometries, and adjust controls.
 
 We’ve designed the interface to make changes obvious:
 
-- **Visual tracking:** If you change a parameter (like pipe diameter), a **purple line** appears next to that property. Hovering over it shows the original value, so you never lose track of what changed.
-- **New assets:** Newly drawn assets get a purple indicator across their name and type in the panel.
-- **Comparison:** When you run a simulation, the **quick graph** will display two lines—one for the current scenario and one for the main scenario—making comparisons instant.
+- **Visual tracking:** If you change an attribute (like pipe diameter), an **indicator (a vertical purple line)** appears next to that attribute. Hovering over it shows the original value, so you never lose track of what changed.
+- **New assets:** Newly drawn assets also get a purple line indicator across their name and type in the panel.
+- **Comparison:** When you run a simulation, the **quick graph** will display two lines —one for the current scenario and one for the Main scenario— making comparisons instant.
 
 <figure>
 <div style="
@@ -128,9 +128,9 @@ See plans that support epanet-js
 
 ## **Welcome, Optimatics!**
 
-Over the last seven months, we’ve been open about one thing: we cannot build the future of hydraulic modeling alone. We need the wider ecosystem—utilities, modelers, and forward-thinking companies—to help us build tools that are easier to trust and use.
+Over the last seven months, we’ve been open about one thing: we cannot build the future of hydraulic modeling alone. We need the wider ecosystem —utilities, modelers, and forward-thinking companies— to help us build tools that are trustworthy and easier to use.
 
-That is why we are genuinely proud to share that **Optimatics** has joined us as our first **founding partner**.
+That is why we are genuinely proud to share that **Optimatics** has joined us as our first **Founding Partner**.
 
 <figure>
   <img src="/assets/blog/progress-report/2026-01/05-optimatics.png" style="box-sizing: border-box;
@@ -153,7 +153,7 @@ We are building epanet-js in the open because we want it to succeed for the whol
 
 ### Join the Founding Partner Program
 
-We are establishing a small group of **five founding partners** to help steer the development of epanet-js. These partners get direct access to the product team, early access to features, and unlimited licenses for their organization.
+We are establishing a small group of **five Founding Partners** to help steer the development of epanet-js. These partners get direct access to the product team, early access to features, and unlimited licenses for their organization.
 
 There are **4 spots remaining**. If your organization relies on hydraulic modeling and wants a direct line to the team building the next generation of tools, [read more about the program in our Help Center](https://help.epanetjs.com/Founding-Partner-program-2f6e18c9f0f680d8be27c05c0b5844bb).
 
@@ -248,7 +248,7 @@ If you missed it, the [full recording is available on YouTube](https://www.youtu
 
 ### 2,500 followers
 
-In just six months, over **2,500 people** have followed Iterating on LinkedIn. This incredible growth tells us there is a real appetite for change in hydraulic modeling. To everyone who has followed, shared, or contributed — thank you.
+In just six months, over **2,500 people** have followed <a href="https://ca.linkedin.com/company/iteratinginc">Iterating on LinkedIn</a>. This incredible growth tells us there is a real appetite for change in hydraulic modeling. To everyone who has followed, shared, or contributed —thank you.
 
 <figure>
   <img src="/assets/blog/progress-report/2026-01/04-followers.png" style="max-width:800px; width:100%;" />
@@ -259,7 +259,7 @@ In just six months, over **2,500 people** have followed Iterating on LinkedIn. T
 We’ve upgraded our website (migrating to Astro for better performance) and officially launched a **Spanish version** of the site. epanet-js is now bilingual, making our marketing and documentation accessible to a much wider audience. ¡Bienvenidos!
 
 <figure>
-  <img src="/assets/blog/progress-report/2026-01/03-website-spanish.png" style="max-width:800px; width:100%;" />
+  <img src="/assets/blog/progress-report/2026-01/03-website-spanish.png" style="max-width:800px; width:100%;" alt="Screenshot of epanet-js website in Spanish" />
 </figure>
 
 ## **Improvements and fixes**
