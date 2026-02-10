@@ -326,10 +326,13 @@ export default function Pricing({ lang = "en" }: PricingProps) {
         monthly: { price: 95, suffix: t("pricing.suffix.month") },
         annually: { price: 950, suffix: t("pricing.suffix.year") },
       },
-      features: [t("pricing.pro.feature1"), t("pricing.pro.feature2")],
+      features: [
+        t("pricing.pro.comingSoon1"),
+        t("pricing.pro.feature1"),
+        t("pricing.pro.feature2"),
+      ],
       featureSubtitle: t("pricing.pro.featureSubtitle"),
       comingSoonFeatures: [
-        t("pricing.pro.comingSoon1"),
         t("pricing.pro.comingSoon2"),
         t("pricing.pro.comingSoon3"),
         t("pricing.pro.comingSoon4"),
