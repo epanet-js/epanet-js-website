@@ -1,7 +1,7 @@
 ---
 draft: false
 title: "epanet-js February 2026 Progress Report"
-snippet: "Scenarios, patterns, and a founding Partner"
+snippet: "EPANET 2.3 and more compatibility improvements"
 image:
   {
     src: "/assets/blog/progress-report/2026-02/2026-02-00-epanet23-cover.png",
