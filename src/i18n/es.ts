@@ -141,8 +141,7 @@ export const ui = {
   "pricing.free.button": "Abrir epanet-js ahora",
 
   "pricing.pro.name": "Pro",
-  "pricing.pro.titleDescription":
-    "Para modeladores independientes y pequeñas consultoras.",
+  "pricing.pro.titleDescription": "Modelado avanzado y escenarios",
   "pricing.pro.description": "Licencia personal",
   "pricing.pro.featureSubtitle": "Todo lo del plan gratuito, y además:",
   "pricing.pro.feature1": "Soporte profesional",
@@ -156,12 +155,14 @@ export const ui = {
   "pricing.pro.popular": "Más popular",
 
   "pricing.teams.name": "Teams",
-  "pricing.teams.titleDescription": "Para equipos que construyen juntos.",
+  "pricing.teams.titleDescription": "Control centralizado y colaboración",
   "pricing.teams.description": "Licencia compartida flotante",
   "pricing.teams.tooltip": "Mínimo 2 licencias",
+  "pricing.teams.baseCost": "Costo base",
+  "pricing.teams.perUser": "Por usuario",
   "pricing.teams.featureSubtitle": "Todo lo del plan Pro, y además:",
   "pricing.teams.feature1": "Soporte prioritario",
-  "pricing.teams.feature2": "Descuentos por volumen",
+  "pricing.teams.feature2": "Gestión de asientos de autoservicio",
   "pricing.teams.feature3": "Pago por factura",
   "pricing.teams.comingSoonSubtitle": "Próximamente:",
   "pricing.teams.comingSoon1": "Almacenamiento de equipo",
@@ -196,7 +197,9 @@ export const ui = {
 
   "pricing.comingSoon": "Próximamente.",
   "pricing.suffix.month": "mes",
+  "pricing.suffix.monthShort": "mes",
   "pricing.suffix.year": "año",
+  "pricing.suffix.yearShort": "año",
 
   // ── FAQ ──
   "faq.heading": "Preguntas frecuentes",

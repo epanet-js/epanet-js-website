@@ -140,7 +140,7 @@ export const ui = {
   "pricing.free.button": "Launch epanet-js now",
 
   "pricing.pro.name": "Pro",
-  "pricing.pro.titleDescription": "For solo modelers and small utilities.",
+  "pricing.pro.titleDescription": "Advanced modeling & scenarios",
   "pricing.pro.description": "Individual named license",
   "pricing.pro.featureSubtitle": "Everything in free, and:",
   "pricing.pro.feature1": "Professional support",
@@ -149,22 +149,24 @@ export const ui = {
   "pricing.pro.comingSoon1": "Scenarios",
   "pricing.pro.comingSoon2": "Cloud storage",
   "pricing.pro.comingSoon3": "Point in time restore - 30 days",
-  "pricing.pro.comingSoon4": "Demand Analysis",
+  "pricing.pro.comingSoon4": "Demands analysis",
   "pricing.pro.button": "Get Pro",
   "pricing.pro.popular": "Most popular",
 
   "pricing.teams.name": "Teams",
-  "pricing.teams.titleDescription": "For teams that build together.",
+  "pricing.teams.titleDescription": "Centralized control & collaboration",
   "pricing.teams.description": "Floating shared license",
   "pricing.teams.tooltip": "Minimum 2 licenses",
+  "pricing.teams.baseCost": "Base cost",
+  "pricing.teams.perUser": "Per user",
   "pricing.teams.featureSubtitle": "Everything in Pro, and:",
   "pricing.teams.feature1": "Priority support",
-  "pricing.teams.feature2": "Volume discounts",
+  "pricing.teams.feature2": "Self-service seat management",
   "pricing.teams.feature3": "Pay by invoice",
   "pricing.teams.comingSoonSubtitle": "Coming soon:",
   "pricing.teams.comingSoon1": "Team storage",
   "pricing.teams.comingSoon2": "Point in time restore - 90 days",
-  "pricing.teams.comingSoon3": "Sharing of networks",
+  "pricing.teams.comingSoon3": "Sharing models",
   "pricing.teams.button": "Get Teams",
   "pricing.teams.comingSoonBadge": "Coming Soon",
 
@@ -193,7 +195,9 @@ export const ui = {
 
   "pricing.comingSoon": "Coming Soon.",
   "pricing.suffix.month": "month",
+  "pricing.suffix.monthShort": "mo",
   "pricing.suffix.year": "year",
+  "pricing.suffix.yearShort": "yr",
 
   // ── FAQ ──
   "faq.heading": "Frequently asked questions",

@@ -21,6 +21,9 @@ interface MainPricingCardProps {
   isPopular?: boolean;
   popularLabel?: string;
   tooltipText?: string;
+  userPrice?: number;
+  baseCostLabel?: string;
+  perUserLabel?: string;
   isPlanComingSoon?: boolean;
   comingSoonBadgeText?: string;
   comingSoonButtonText?: string;
@@ -45,6 +48,9 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
   isPopular,
   popularLabel = "Most popular",
   tooltipText,
+  userPrice,
+  baseCostLabel = "Base cost",
+  perUserLabel = "Per user",
   isPlanComingSoon,
   comingSoonBadgeText = "Coming Soon",
   comingSoonButtonText = "Coming Soon.",
@@ -93,27 +99,59 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
             </span>
           )}
         </h3>
-        <span className="text-base text-gray-900 ">{titleDescription}</span>
-        <span className="inline-block whitespace-nowrap leading-none">
-          <span className="text-4xl font-bold">${price}</span>
-          <span className="inline-block text-gray-500">
-            {" "}
-            {/* Removed -translate-y-px for simplicity */}/{suffix}
-          </span>
-        </span>
-        <div className="flex items-center gap-2">
-          <p className="text-base text-gray-900 min-h-[1.5rem]">
-            {description}
-          </p>
-          {tooltipText && (
-            <div className="relative group">
-              <InfoIcon className="h-5 w-5 text-gray-500 cursor-pointer" />
-              <div className="absolute z-20 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-4 py-2 w-max max-w-xs">
-                {tooltipText}
+        <span className="text-gray-600 text-sm mb-3">{titleDescription}</span>
+        {userPrice !== undefined ? (
+          <div className="flex items-baseline gap-4">
+            <div>
+              <div className="mb-1">
+                <strong className="text-4xl font-bold">${price}</strong>
+                <span className="text-sm text-gray-500">/{suffix}</span>
+              </div>
+              <p className="text-gray-500 text-sm">{baseCostLabel}</p>
+            </div>
+            <div className="flex gap-1">
+              <span className="text-xl font-bold text-gray-700 self-start">+</span>
+              <div>
+                <div className="mb-1">
+                  <strong className="text-xl font-bold">${userPrice}</strong>
+                  <span className="text-sm text-gray-500">/{suffix}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <p className="text-gray-500 text-sm whitespace-nowrap">{perUserLabel}</p>
+                  {tooltipText && (
+                    <div className="relative group">
+                      <InfoIcon className="h-5 w-5 text-gray-500 cursor-pointer" />
+                      <div className="absolute z-20 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-4 py-2 w-max max-w-xs">
+                        {tooltipText}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <>
+            <span className="inline-block whitespace-nowrap leading-none">
+              <span className="text-4xl font-bold">${price}</span>
+              <span className="inline-block text-gray-500">
+                {" "}
+                /{suffix}
+              </span>
+            </span>
+            <div className="flex items-center gap-2">
+              <p className="text-gray-500 text-sm">{description}</p>
+              {tooltipText && (
+                <div className="relative group">
+                  <InfoIcon className="h-5 w-5 text-gray-500 cursor-pointer" />
+                  <div className="absolute z-20 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-4 py-2 w-max max-w-xs">
+                    {tooltipText}
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
       {/* Features Section */}
       <div className="p-6 pt-0 flex-grow">
@@ -304,8 +342,8 @@ export default function Pricing({ lang = "en" }: PricingProps) {
       description: t("pricing.free.description"),
       titleDescription: t("pricing.free.titleDescription"),
       pricing: {
-        monthly: { price: 0, suffix: t("pricing.suffix.month") },
-        annually: { price: 0, suffix: t("pricing.suffix.year") },
+        monthly: { price: 0, suffix: t("pricing.suffix.monthShort") },
+        annually: { price: 0, suffix: t("pricing.suffix.yearShort") },
       },
       features: [
         t("pricing.free.feature1"),
@@ -323,8 +361,8 @@ export default function Pricing({ lang = "en" }: PricingProps) {
       description: t("pricing.pro.description"),
       titleDescription: t("pricing.pro.titleDescription"),
       pricing: {
-        monthly: { price: 95, suffix: t("pricing.suffix.month") },
-        annually: { price: 950, suffix: t("pricing.suffix.year") },
+        monthly: { price: 95, suffix: t("pricing.suffix.monthShort") },
+        annually: { price: 950, suffix: t("pricing.suffix.yearShort") },
       },
       features: [
         t("pricing.pro.comingSoon1"),
@@ -351,9 +389,11 @@ export default function Pricing({ lang = "en" }: PricingProps) {
       description: t("pricing.teams.description"),
       titleDescription: t("pricing.teams.titleDescription"),
       pricing: {
-        monthly: { price: 250, suffix: t("pricing.suffix.month") },
-        annually: { price: 2500, suffix: t("pricing.suffix.year") },
+        monthly: { price: 440, userPrice: 60, suffix: t("pricing.suffix.monthShort") },
+        annually: { price: 4400, userPrice: 600, suffix: t("pricing.suffix.yearShort") },
       },
+      baseCostLabel: t("pricing.teams.baseCost"),
+      perUserLabel: t("pricing.teams.perUser"),
       tooltipText: t("pricing.teams.tooltip"),
       features: [
         t("pricing.teams.feature1"),
@@ -381,7 +421,7 @@ export default function Pricing({ lang = "en" }: PricingProps) {
     personal: {
       name: t("pricing.personal.name"),
       price: 100,
-      suffix: t("pricing.suffix.year"),
+      suffix: t("pricing.suffix.yearShort"),
       description: t("pricing.personal.description"),
       limitations: [
         t("pricing.personal.limitation1"),
@@ -395,7 +435,7 @@ export default function Pricing({ lang = "en" }: PricingProps) {
     education: {
       name: t("pricing.education.name"),
       price: 0,
-      suffix: t("pricing.suffix.year"),
+      suffix: t("pricing.suffix.yearShort"),
       description: t("pricing.education.description"),
       limitations: [
         t("pricing.education.limitation1"),
@@ -486,6 +526,7 @@ export default function Pricing({ lang = "en" }: PricingProps) {
           <MainPricingCard
             {...planDetails.teams}
             price={planDetails.teams.pricing[billingCycle].price}
+            userPrice={planDetails.teams.pricing[billingCycle].userPrice}
             suffix={planDetails.teams.pricing[billingCycle].suffix}
             billingCycle={billingCycle}
             buttonText={planDetails.teams.buttonText}
