@@ -81,7 +81,7 @@ export default function Footer({ lang = "en" }: Props) {
           <div className="lg:col-span-4 space-y-6 lg:pr-12">
             {/* Logo */}
             <a href={prefix + "/"} className="flex items-center space-x-3">
-              <LogoIconAndWordmarkIcon size={150} />
+              <LogoIconAndWordmarkIcon size={150} negative={true} />
             </a>
             {/* Newsletter Form */}
             <div className="space-y-4">
