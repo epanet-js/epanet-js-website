@@ -2,7 +2,7 @@ import epanetLogo from "@assets/landing/epanetjs.svg?url";
 import { Button } from "@components/ui/landing/button";
 import { Input } from "@components/ui/landing/input";
 import { useState } from "react";
-import { LogoIconAndWordmarkIcon } from "./icons";
+import { IteratingLogoIcon, LogoIconAndWordmarkIcon } from "./icons";
 import { useTranslations } from "@i18n/utils";
 import type { Locale } from "@i18n/utils";
 
@@ -301,8 +301,12 @@ export default function Footer({ lang = "en" }: Props) {
               </a>
             </div>
 
-            <div className="text-sm text-gray-400">
-              &copy; {new Date().getFullYear()} {t("footer.copyright")}
+            <div className="flex items-center gap-1 text-sm text-gray-400">
+              &copy; {new Date().getFullYear()}
+              <a href="//iterating.ca" className="hover:text-white ml-1" target="_blank">
+                <IteratingLogoIcon size={72} />
+              </a>
+              {t("footer.copyright")}
             </div>
           </div>
         </div>

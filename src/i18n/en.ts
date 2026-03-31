@@ -328,7 +328,7 @@ export const ui = {
   "footer.privacy": "Privacy Policy",
   "footer.cookies": "Cookies Policy",
 
-  "footer.copyright": "Iterating Inc. All rights reserved.",
+  "footer.copyright": "All rights reserved.",
 
   // ── Pricing page title ──
   "page.pricing.title": "Pricing",

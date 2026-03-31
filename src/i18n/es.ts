@@ -332,7 +332,7 @@ export const ui = {
   "footer.privacy": "Política de privacidad",
   "footer.cookies": "Política de cookies",
 
-  "footer.copyright": "Iterating Inc. Todos los derechos reservados.",
+  "footer.copyright": "Todos los derechos reservados.",
 
   // ── Pricing page title ──
   "page.pricing.title": "Precios",
