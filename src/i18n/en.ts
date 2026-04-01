@@ -158,7 +158,7 @@ export const ui = {
   "pricing.teams.description": "Floating shared license",
   "pricing.teams.tooltip": "Minimum 2 licenses",
   "pricing.teams.baseCost": "Base cost",
-  "pricing.teams.perUser": "Per user",
+  "pricing.teams.perUser": "User",
   "pricing.teams.featureSubtitle": "Everything in Pro, and:",
   "pricing.teams.feature1": "Priority support",
   "pricing.teams.feature2": "Self-service seat management",

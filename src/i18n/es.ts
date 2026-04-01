@@ -159,7 +159,7 @@ export const ui = {
   "pricing.teams.description": "Licencia compartida flotante",
   "pricing.teams.tooltip": "Mínimo 2 licencias",
   "pricing.teams.baseCost": "Costo base",
-  "pricing.teams.perUser": "Por usuario",
+  "pricing.teams.perUser": "Usuario",
   "pricing.teams.featureSubtitle": "Todo lo del plan Pro, y además:",
   "pricing.teams.feature1": "Soporte prioritario",
   "pricing.teams.feature2": "Gestión de asientos de autoservicio",
