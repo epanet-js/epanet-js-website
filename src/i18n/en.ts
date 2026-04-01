@@ -149,7 +149,7 @@ export const ui = {
   "pricing.pro.comingSoon1": "Scenarios",
   "pricing.pro.comingSoon2": "Cloud storage",
   "pricing.pro.comingSoon3": "Point in time restore - 30 days",
-  "pricing.pro.comingSoon4": "Demands analysis",
+  "pricing.pro.comingSoon4": "Demand analysis",
   "pricing.pro.button": "Get Pro",
   "pricing.pro.popular": "Most popular",
 
