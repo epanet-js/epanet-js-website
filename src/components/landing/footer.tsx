@@ -303,8 +303,8 @@ export default function Footer({ lang = "en" }: Props) {
 
             <div className="flex items-center gap-1 text-sm text-gray-400">
               &copy; {new Date().getFullYear()}
-              <a href="//iterating.ca" className="hover:text-white ml-1" target="_blank">
-                <IteratingLogoIcon size={72} />
+              <a href="//iterating.ca" className="hover:text-white mx-1 relative top-[-2px]" target="_blank">
+                <IteratingLogoIcon size={128} />
               </a>
               {t("footer.copyright")}
             </div>
