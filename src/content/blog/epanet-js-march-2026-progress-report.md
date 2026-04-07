@@ -1,5 +1,5 @@
 ---
-draft: false
+draft: true
 title: "epanet-js March 2026 Progress Report"
 snippet: "Projections, custom elevations, and a new pricing model"
 image:
@@ -12,7 +12,7 @@ tags: [Progress report]
 
 **Projections, custom elevations, and a new pricing model**
 
-March was one of our biggest months yet. We've delivered a set of features that fundamentally change how you get your model onto a map — and how you work with elevation data once it's there.
+March was another big month for us. We've delivered a set of features that fundamentally change how you get your model onto a map — and how you work with elevation data once it's there.
 
 You can now project your network directly inside epanet-js, load your own high-resolution elevation data from GeoTIFF files, and manage customer points without needing a bulk import. We've also added new simulation capabilities from EPANET 2.3, including pressure unit selection and pump energy reporting.
 
@@ -35,6 +35,40 @@ border-radius: 0.375rem;
 text-decoration: none;
 ">
 Launch epanet-js. No login needed.
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M5 12h14"></path>
+<path d="m12 5 7 7-7 7"></path>
+</svg>
+</a>
+</div>
+
+## **Teams plan: a new pricing model**
+
+We've done something unheard of in hydraulic modeling software — we've reduced our price.
+
+We believe pricing shouldn't be the barrier to using high-quality hydraulic modelling tools. So we've moved from **$2,500 per user/year** to a new model:
+
+**$600 per user/year + $4,400 fixed cost**
+
+For most teams, this means a significant reduction — often more than half. For example, a team of five drops from $12,500/year to $7,400/year.
+
+Our goal at Iterating is simple: make epanet-js accessible, fairly priced, and sustainable, so more engineers, utilities, and teams can build, maintain, and understand their networks without being limited by cost. If we want better tools in this space, they need to be usable by more people.
+
+And of course, there's still the free version, which already supports thousands of users who don't need professional support or advanced features. No catch, no trick — just great open-source and sustainable hydraulic modelling software.
+
+<div style="text-align: center">
+<a href="https://epanetjs.com/pricing" style="
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+padding: 0.75rem 2rem;
+font-weight: 500;
+color: white;
+background-image: linear-gradient(to right, #2563eb, #9333ea);
+border-radius: 0.375rem;
+text-decoration: none;
+">
+See our updated pricing
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 <path d="M5 12h14"></path>
 <path d="m12 5 7 7-7 7"></path>
@@ -124,12 +158,6 @@ To get energy results, you need to define your energy settings first. You can se
 
 <!-- TODO: Screenshot — pump asset panel showing Energy Results section -->
 
-### **Emitter backflow control**
-
-A new toggle in the simulation options allows you to disable emitter backflow. In previous versions of EPANET, if an emitter experienced negative pressure, it could reverse — pulling flow back into the system instead of extracting demand. This was an undesired effect that could distort results.
-
-With this option enabled, emitters will not induce backflow under negative pressure conditions. This is another EPANET 2.3 capability now exposed in epanet-js.
-
 ## **Recent projects**
 
 We've added a **Recent Projects** list to help you get back to work faster. When you open epanet-js, you'll see up to ten of the models you've been working on. Click any of them to jump straight back in. You can also access recent projects from the toolbar via the new project dropdown.
@@ -140,42 +168,9 @@ This feature is currently available in Chrome and Edge.
 
 <!-- TODO: Screenshot/video — welcome screen with recent projects cards -->
 
-## **Teams plan: a new pricing model**
-
-We've done something unheard of in hydraulic modeling software — we've reduced our price.
-
-We believe pricing shouldn't be the barrier to using high-quality hydraulic modelling tools. So we've moved from **$2,500 per user/year** to a new model:
-
-**$600 per user/year + $4,400 fixed cost**
-
-For most teams, this means a significant reduction — often more than half. For example, a team of five drops from $12,500/year to $7,400/year.
-
-Our goal at Iterating is simple: make epanet-js accessible, fairly priced, and sustainable, so more engineers, utilities, and teams can build, maintain, and understand their networks without being limited by cost. If we want better tools in this space, they need to be usable by more people.
-
-And of course, there's still the free version, which already supports thousands of users who don't need professional support or advanced features. No catch, no trick — just great open-source and sustainable hydraulic modelling software.
-
-<div style="text-align: center">
-<a href="https://epanetjs.com/pricing" style="
-display: inline-flex;
-align-items: center;
-gap: 0.5rem;
-padding: 0.75rem 2rem;
-font-weight: 500;
-color: white;
-background-image: linear-gradient(to right, #2563eb, #9333ea);
-border-radius: 0.375rem;
-text-decoration: none;
-">
-See our updated pricing
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-<path d="M5 12h14"></path>
-<path d="m12 5 7 7-7 7"></path>
-</svg>
-</a>
-</div>
-
 ## **Improvements**
 
+- **Emitter backflow control:** A new toggle in the simulation options lets you disable emitter backflow. Previously, emitters under negative pressure could reverse and pull flow back into the system. With this option enabled, that no longer happens — another EPANET 2.3 capability now exposed in epanet-js.
 - **Disable default elevation source:** You can now toggle off the Mapbox global elevation layer entirely from the Map panel if you want to rely solely on your own data.
 - **Custom node and link colors:** In the Map tab, you can now pick the default color for junctions and pipes when no other visualization is applied. A color picker lets you choose whatever works best for your workflow.
 - **Collapsible asset panel sections:** The asset panel now uses an accordion pattern, letting you expand or collapse individual sections to focus on the data that matters.
@@ -194,15 +189,11 @@ See our updated pricing
 
 ## **A milestone for the EPANET ecosystem**
 
-A big moment for the EPANET community this month. Lew Rossman, the original creator of EPANET, has released a new user interface for EPANET as part of the version 2.3 release. The interface has been published through Open Water Analytics, alongside the many improvements to the EPANET engine contributed by the volunteer community over the past few years.
+Lew Rossman, the original creator of EPANET, has released a new user interface as part of the version 2.3 release through Open Water Analytics. It's the first new official interface in over two decades — a major step forward for the open EPANET ecosystem.
 
-It's the first new official interface from Lew in over two decades, and it's a major step forward for the open EPANET ecosystem.
+The new interface includes cross-platform support, integration with the EPANET 2.3 engine (pressure-dependent demands, FAVAD leakage), MSX water quality modelling, GIS and CAD import, web basemaps, and expanded reporting including energy audits and fire flow analysis.
 
-The new interface includes cross-platform support (Windows, Linux, and macOS), integration with the latest EPANET 2.3 engine with pressure-dependent demands and FAVAD leakage, full support for MSX multi-species water quality modelling, GIS and CAD data import, dynamic web basemaps, and expanded reporting tools including energy audits, variability plots, and fire flow analysis.
-
-What this really represents is **choice**. Hydraulic modellers now have more open tools than ever before. If you want a traditional desktop interface closely aligned with the official EPANET engine, Lew's new interface through Open Water Analytics is the natural place to start. If you prefer web-based workflows focused on collaboration and modern industry methods, platforms like epanet-js provide another path.
-
-Either way, it's an exciting time for open hydraulic modelling.
+What this represents is **choice**. If you want a traditional desktop interface closely aligned with the official engine, Lew's new UI is the natural starting point. If you prefer web-based workflows focused on collaboration, epanet-js provides another path. Either way, it's an exciting time for open hydraulic modelling.
 
 ## **Community and growth**
 
@@ -270,13 +261,13 @@ One of the most rewarding parts of this project is seeing how people all over th
           <img width="350" src="/assets/blog/progress-report/2026-03/community-alexander.png" alt="Alexander Baekelandt's LinkedIn post about epanet-js" loading="lazy" />
       </a>
   </figure>
+  <figure>
+      <a href="https://www.youtube.com/watch?v=e5whuYyFHck" target="_blank">
+          <!-- TODO: Screenshot/thumbnail of Estonian YouTube tutorial -->
+          <img width="350" src="/assets/blog/progress-report/2026-03/community-youtube-estonian.png" alt="Estonian tutorial video introducing epanet-js to students" loading="lazy" />
+      </a>
+  </figure>
 </div>
-
-### **epanet-js around the world**
-
-We also spotted a tutorial video created for Estonian students, introducing epanet-js as a web-based EPANET tool. It's another reminder of the global reach of the application and how it's being picked up in educational settings around the world.
-
-<iframe style="width: 100%; aspect-ratio: 16/9; height: auto;" width="688" height="380" src="https://www.youtube.com/embed/e5whuYyFHck" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## **What's next**
 
