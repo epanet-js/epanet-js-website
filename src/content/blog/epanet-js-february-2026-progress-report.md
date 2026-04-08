@@ -21,6 +21,7 @@ We are also excited to give our Founding Partners a permanent home on the epanet
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -122,6 +123,7 @@ Visualizing and understanding the connectivity in a complex network can be a hea
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -158,6 +160,7 @@ Next, we will be working on selecting your projection system directly in the app
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -193,6 +196,7 @@ In addition to the pump curves, you can also define pump efficiency curves insid
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -236,6 +240,7 @@ We've also added the calculated total volume; this is helpful when, for example,
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -276,6 +281,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -303,6 +309,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -330,6 +337,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -361,6 +369,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;

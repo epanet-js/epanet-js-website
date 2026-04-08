@@ -94,6 +94,7 @@ Your model stays in its original coordinate system — no conversion required. T
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -132,6 +133,7 @@ Custom elevation sources are available on all paid plans — Pro, Teams, Educati
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -169,6 +171,7 @@ Previously, customer points had to be bulk imported from GIS data. You can now m
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -237,6 +240,7 @@ This feature is currently available in all Chromium-based browsers; like Google 
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -299,6 +303,7 @@ We crossed **2,000 registered members** in March, and had our best month yet for
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;

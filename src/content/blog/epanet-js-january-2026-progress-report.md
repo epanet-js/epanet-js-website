@@ -60,6 +60,7 @@ We’ve designed the interface to make changes obvious:
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -168,6 +169,7 @@ You can also **lock the graph** in place, allowing you to click across different
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
@@ -210,6 +212,7 @@ Editing demands on junctions is now fully supported. You can modify the base dem
 <figure>
 <div style="
 width: 600px;
+max-width: 100%;
 box-sizing: border-box;
 border-style: solid;
 border-color: #e5e7eb;
