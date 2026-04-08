@@ -3,8 +3,11 @@ draft: true
 title: "epanet-js March 2026 Progress Report"
 snippet: "Projections, custom elevations, and a new pricing model"
 image:
-  { src: "/assets/blog/progress-report/2026-03/2026-03-00-cover.png", alt: "" }
-publishDate: "2026-04-6 08:15"
+  {
+    src: "/assets/blog/progress-report/2026-03/2026-03-00-projection.png",
+    alt: "",
+  }
+publishDate: "2026-04-8 08:15"
 category: "Progress report"
 author: "Luke Butler"
 tags: [Progress report]
@@ -17,8 +20,6 @@ March was another big month for us. We've delivered a set of features that funda
 You can now project your network directly inside epanet-js, load your own high-resolution elevation data from GeoTIFF files, and manage customer points without needing a bulk import. We've also added new simulation capabilities from EPANET 2.3, including pressure unit selection and pump energy reporting.
 
 And in a move we're proud of — we've significantly reduced the price of our Teams plan.
-
-<!-- TODO: Cover image — elevation data or projection workflow -->
 
 <!-- more -->
 
@@ -46,15 +47,17 @@ Launch epanet-js. No login needed.
 
 We've done something unheard of in hydraulic modeling software — we've reduced our price.
 
-We believe pricing shouldn't be the barrier to using high-quality hydraulic modelling tools. So we've moved from **$2,500 per user/year** to a new model:
-
-**$600 per user/year + $4,400 fixed cost**
+We believe pricing shouldn't be the barrier to using high-quality hydraulic modelling tools. So we've moved from **$2,500 per user/year** to a new model: **$600 per user/year + $4,400 fixed cost**
 
 For most teams, this means a significant reduction — often more than half. For example, a team of five drops from $12,500/year to $7,400/year.
 
 Our goal at Iterating is simple: make epanet-js accessible, fairly priced, and sustainable, so more engineers, utilities, and teams can build, maintain, and understand their networks without being limited by cost. If we want better tools in this space, they need to be usable by more people.
 
 And of course, there's still the free version, which already supports thousands of users who don't need professional support or advanced features. No catch, no trick — just great open-source and sustainable hydraulic modelling software.
+
+<figure>
+  <img src="/assets/blog/progress-report/2026-03/2026-03-01-pricing.png" style="max-width:800px; width:100%;" />
+</figure>
 
 <div style="text-align: center">
 <a href="https://epanetjs.com/pricing" style="
@@ -87,15 +90,30 @@ You can now load an INP file and project it directly inside epanet-js. When you 
 
 Your model stays in its original coordinate system — no conversion required. This is a major step toward making it as easy as possible to get your model up and running and understand where your assets sit in the real world.
 
-<!-- TODO: Video — projection workflow showing search by location and EPSG code -->
+<figure>
+<div style="
+width: 600px;
+box-sizing: border-box;
+border-style: solid;
+border-color: #e5e7eb;
+overflow: hidden;
+border-radius: .75rem;
+border-width: 1px;
+--tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+--tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
+>
 
-### **Start a new project on a grid**
+<iframe
+  src="https://player.mux.com/jlB8RK5p2goREaRp5c01YH8E7ReV4iuvipH6g00ZlCCwM?autoplay=true&muted=true&loop=true"
+  style="width: 100%; border: none; aspect-ratio: 1/1;"
+  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+  allowfullscreen
+></iframe>
 
-In February, we introduced the XY Grid for viewing unprojected models. This month, you can now start a brand new project directly on the grid from the New Project flow — no need to load an existing file first.
+</div>
 
-If you start on the grid and later want to place your network on a map, you can switch to a projected view at any time.
-
-<!-- TODO: Screenshot — new project flow with grid option -->
+</figure>
 
 ## **Custom elevation sources**
 
@@ -115,7 +133,30 @@ Elevation lookups fall through the stack — if a point isn't covered by the top
 
 When you load a dataset, you can click the grid icon to see all the individual files within it. Hovering over a file shows its bounding box on the map, and clicking it navigates to that area — making it easy to verify coverage.
 
-<!-- TODO: Video — loading GeoTIFF, dragging layers, toggling Mapbox, hovering bounding boxes -->
+<figure>
+<div style="
+width: 600px;
+box-sizing: border-box;
+border-style: solid;
+border-color: #e5e7eb;
+overflow: hidden;
+border-radius: .75rem;
+border-width: 1px;
+--tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+--tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
+>
+
+<iframe
+  src="https://player.mux.com/6WDt8lMi02LU3oZ01KOZgPhK00JinA5yXd68SKk900gntx8?autoplay=true&muted=true&loop=true"
+  style="width: 100%; border: none; aspect-ratio: 1/1;"
+  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+  allowfullscreen
+></iframe>
+
+</div>
+
+</figure>
 
 ## **Customer point management**
 
@@ -128,7 +169,30 @@ Previously, customer points had to be bulk imported from GIS data. You can now m
 - **Reconnect:** Reassign a customer point to a different pipe.
 - **Delete:** Remove individual customer points as needed.
 
-<!-- TODO: Video/screenshot — adding and editing a customer point -->
+<figure>
+<div style="
+width: 600px;
+box-sizing: border-box;
+border-style: solid;
+border-color: #e5e7eb;
+overflow: hidden;
+border-radius: .75rem;
+border-width: 1px;
+--tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+--tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
+>
+
+<iframe
+  src="https://player.mux.com/KIxTJvN6AVsPnx02dcrLUW2yglK4tzUrmTDVuQQC6Ucg?autoplay=true&muted=true&loop=true"
+  style="width: 100%; border: none; aspect-ratio: 709/540;"
+  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+  allowfullscreen
+></iframe>
+
+</div>
+
+</figure>
 
 ## **Simulation upgrades**
 
@@ -142,7 +206,9 @@ Pressure can be set to any of the following: **psi**, **kPa**, **meters**, **fee
 
 This capability was made possible by the [EPANET 2.3 engine upgrade](/blog/2026/03/10/epanet-js-february-2026-progress-report/) we shipped in February.
 
-<!-- TODO: Screenshot — new project dialog showing pressure unit dropdown -->
+<figure>
+  <img src="/assets/blog/progress-report/2026-03/2026-03-02-pressure-units.png" style="max-width:800px; width:100%;" />
+</figure>
 
 ### **Pump energy reporting**
 
@@ -156,7 +222,9 @@ Energy consumption data is now available for pumps. When you select a pump, the 
 
 To get energy results, you need to define your energy settings first. You can set efficiency curves, energy prices, and price patterns either globally in the simulation settings or individually on each pump.
 
-<!-- TODO: Screenshot — pump asset panel showing Energy Results section -->
+<figure>
+  <img src="/assets/blog/progress-report/2026-03/2026-03-03-pump.png" style="max-width:800px; width:100%;" />
+</figure>
 
 ## **Recent projects**
 
@@ -164,9 +232,32 @@ We've added a **Recent Projects** list to help you get back to work faster. When
 
 epanet-js still works entirely with files on your own computer — no cloud, no data stored on our servers. This feature simply lets the browser remember your local file paths so you don't have to navigate through your folders every time.
 
-This feature is currently available in Chrome and Edge.
+This feature is currently available in all Chromium-based browsers; like Google Chrome or Microsoft Edge.
 
-<!-- TODO: Screenshot/video — welcome screen with recent projects cards -->
+<figure>
+<div style="
+width: 600px;
+box-sizing: border-box;
+border-style: solid;
+border-color: #e5e7eb;
+overflow: hidden;
+border-radius: .75rem;
+border-width: 1px;
+--tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+--tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
+>
+
+<iframe
+  src="https://player.mux.com/EjW1Boyb6ZwxcvOI01cIZmA6pqeTy1ThO3new9c4012024?autoplay=true&muted=true&loop=true"
+  style="width: 100%; border: none; aspect-ratio: 1/1;"
+  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+  allowfullscreen
+></iframe>
+
+</div>
+
+</figure>
 
 ## **Improvements**
 
@@ -176,8 +267,6 @@ This feature is currently available in Chrome and Edge.
 - **Collapsible asset panel sections:** The asset panel now uses an accordion pattern, letting you expand or collapse individual sections to focus on the data that matters.
 - **Tank and reservoir net flow:** When you select a tank or reservoir, a new **Net Flow** simulation result shows the amount of water entering or leaving at each time step.
 - **Improved dialog design:** We've refreshed the visual design of our modal dialogs for a cleaner, more consistent look.
-
-<!-- TODO: Before/after hover comparison for dialog design -->
 
 ## **Bug fixes**
 
@@ -195,11 +284,40 @@ The new interface includes cross-platform support, integration with the EPANET 2
 
 What this represents is **choice**. If you want a traditional desktop interface closely aligned with the official engine, Lew's new UI is the natural starting point. If you prefer web-based workflows focused on collaboration, epanet-js provides another path. Either way, it's an exciting time for open hydraulic modelling.
 
+<figure>
+  <img src="/assets/blog/progress-report/2026-03/2026-03-04-epanet-gui.png" style="max-width:800px; width:100%;" />
+</figure>
+
 ## **Community and growth**
 
 ### **2,000+ registered members**
 
 We crossed **2,000 registered members** in March, and had our best month yet for active users — **2,606 unique people** used the app. The growth continues to accelerate and it's incredibly encouraging to see the community expanding.
+
+<figure>
+<div style="
+width: 600px;
+box-sizing: border-box;
+border-style: solid;
+border-color: #e5e7eb;
+overflow: hidden;
+border-radius: .75rem;
+border-width: 1px;
+--tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+--tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
+>
+
+<iframe
+  src="https://player.mux.com/zp2Tamln01cZs01Vf7KDPxnCbxH01hGT9GQUR3oI3HEg00g?autoplay=true&muted=true&loop=true"
+  style="width: 100%; border: none; aspect-ratio: 1/1;"
+  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+  allowfullscreen
+></iframe>
+
+</div>
+
+</figure>
 
 ### **Optimatics UK User Conference**
 
@@ -207,7 +325,19 @@ Thanks to Optimatics for inviting us to speak at the Optimatics UK User Conferen
 
 Two themes kept coming up in conversations. The first was the potential for a much more innovative ecosystem around water models — when the core tools are open and accessible, utilities can use their models in many more ways. The second was about access — not every utility needs, or can afford, large commercial modelling platforms, and a strong open EPANET ecosystem can give engineers everywhere the ability to run professional hydraulic analyses without the traditional barriers.
 
-<!-- TODO: Photo from the Optimatics event -->
+<figure>
+  <img src="/assets/blog/progress-report/2026-03/2026-03-05-optimatics.jpg" style="box-sizing: border-box;
+                max-width:600px;
+                width:100%;
+                border-style: solid;
+                border-color: #e5e7eb;
+                overflow: hidden;
+                border-radius: .75rem;
+                border-width: 1px;
+                --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+                --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);" />
+</figure>
 
 ### **Community highlights**
 
@@ -234,37 +364,37 @@ One of the most rewarding parts of this project is seeing how people all over th
   <figure>
       <a href="https://www.linkedin.com/posts/ibrahimax_i-recently-tested-epanet-js-by-iterating-ugcPost-7434238130657955840-W653" target="_blank">
           <!-- TODO: Screenshot of Ibrahim's LinkedIn post -->
-          <img width="350" src="/assets/blog/progress-report/2026-03/community-ibrahim.png" alt="Ibrahim BENBOUSSAD's LinkedIn post about testing epanet-js" loading="lazy" />
+          <img width="350" src="/assets/blog/progress-report/2026-03/2026-03-06-01.png" alt="Ibrahim BENBOUSSAD's LinkedIn post about testing epanet-js" loading="lazy" />
       </a>
   </figure>
   <figure>
       <a href="https://www.linkedin.com/posts/marcnoblen_i-spent-my-weekend-diving-into-iterating-ugcPost-7436532511268208640-aR58" target="_blank">
           <!-- TODO: Screenshot of Marc's LinkedIn post -->
-          <img width="350" src="/assets/blog/progress-report/2026-03/community-marc.png" alt="Marc Noblen De La Cruz's LinkedIn post about epanet-js" loading="lazy" />
+          <img width="350" src="/assets/blog/progress-report/2026-03/2026-03-06-02.png" alt="Marc Noblen De La Cruz's LinkedIn post about epanet-js" loading="lazy" />
       </a>
   </figure>
   <figure>
       <a href="https://www.linkedin.com/posts/raamiz-missi-toure-b980a4358_epanet-hydraulique-epanet-ugcPost-7434271052215709696-tVBr" target="_blank">
           <!-- TODO: Screenshot of Raamiz's LinkedIn post -->
-          <img width="350" src="/assets/blog/progress-report/2026-03/community-raamiz.png" alt="Raamiz MISSI TOURE's LinkedIn post about EPANET" loading="lazy" />
+          <img width="350" src="/assets/blog/progress-report/2026-03/2026-03-06-03.png" alt="Raamiz MISSI TOURE's LinkedIn post about EPANET" loading="lazy" />
       </a>
   </figure>
   <figure>
       <a href="https://www.linkedin.com/posts/mfrankel923_tldr-hydraulic-modeling-is-cool-and-you-activity-7442226191949934593-c0jc" target="_blank">
           <!-- TODO: Screenshot of Matthew's LinkedIn post -->
-          <img width="350" src="/assets/blog/progress-report/2026-03/community-matthew.png" alt="Matthew Frankel's LinkedIn post about guest lecturing with epanet-js" loading="lazy" />
+          <img width="350" src="/assets/blog/progress-report/2026-03/2026-03-06-04.png" alt="Matthew Frankel's LinkedIn post about guest lecturing with epanet-js" loading="lazy" />
       </a>
   </figure>
   <figure>
       <a href="https://www.linkedin.com/feed/update/urn:li:activity:7427659970982219776/?actorCompanyId=107572754" target="_blank">
           <!-- TODO: Screenshot of Alexander's LinkedIn post -->
-          <img width="350" src="/assets/blog/progress-report/2026-03/community-alexander.png" alt="Alexander Baekelandt's LinkedIn post about epanet-js" loading="lazy" />
+          <img width="350" src="/assets/blog/progress-report/2026-03/2026-03-06-05.png" alt="Alexander Baekelandt's LinkedIn post about epanet-js" loading="lazy" />
       </a>
   </figure>
   <figure>
       <a href="https://www.youtube.com/watch?v=e5whuYyFHck" target="_blank">
           <!-- TODO: Screenshot/thumbnail of Estonian YouTube tutorial -->
-          <img width="350" src="/assets/blog/progress-report/2026-03/community-youtube-estonian.png" alt="Estonian tutorial video introducing epanet-js to students" loading="lazy" />
+          <img width="350" src="/assets/blog/progress-report/2026-03/2026-03-06-06.png" alt="Estonian tutorial video introducing epanet-js to students" loading="lazy" />
       </a>
   </figure>
 </div>
