@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "epanet-js March 2026 Progress Report"
 snippet: "Projections, custom elevations, and a new pricing model"
 image:
@@ -57,6 +57,7 @@ And of course, there's still the free version, which already supports thousands 
 
 <figure>
   <img src="/assets/blog/progress-report/2026-03/2026-03-01-pricing.png" style="max-width:800px; width:100%;" />
+  <figcaption>The new Teams pricing — lower per-user cost with a fixed base.</figcaption>
 </figure>
 
 <div style="text-align: center">
@@ -112,6 +113,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 ></iframe>
 
 </div>
+<figcaption style="margin-top: 1rem">Search by location or projection code to place your network on the map.</figcaption>
 
 </figure>
 
@@ -121,17 +123,11 @@ You can now manage your own elevation data in epanet-js by loading GeoTIFF files
 
 In the **Map** panel, under the **Elevations** section, click **Add new elevation data** to load a GeoTIFF. There is no practical file size limit — we've tested with files over 10 GB. The app reads directly from your disk and only loads the parts it needs, so even very large datasets work without issue.
 
-### **Layered fallback**
-
-You can add multiple elevation sources and drag them into your preferred priority order. The logical setup is:
-
-1. **Top:** Your highest-resolution local data (e.g., a LiDAR survey of a specific area).
-2. **Middle:** A more general regional dataset.
-3. **Bottom:** The default Mapbox global elevation layer.
-
-Elevation lookups fall through the stack — if a point isn't covered by the top layer, the next one is checked, and so on. You can also apply a vertical offset to any layer, and you can disable the default Mapbox source entirely using the visibility toggle.
+You can add multiple elevation sources and drag them into your preferred priority order, with highest-resolution data first and more general data below. Elevation lookups fall through the stack — if a point isn't covered by the top layer, the next one is checked, and so on. You can also apply a vertical offset to any layer, and you can disable the default Mapbox source entirely using the visibility toggle.
 
 When you load a dataset, you can click the grid icon to see all the individual files within it. Hovering over a file shows its bounding box on the map, and clicking it navigates to that area — making it easy to verify coverage.
+
+Custom elevation sources are available on all paid plans — Pro, Teams, Education, and Personal.
 
 <figure>
 <div style="
@@ -155,6 +151,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 ></iframe>
 
 </div>
+<figcaption style="margin-top: 1rem">Load GeoTIFF files and layer multiple elevation sources with automatic fallback.</figcaption>
 
 </figure>
 
@@ -191,6 +188,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 ></iframe>
 
 </div>
+<figcaption style="margin-top: 1rem">Add, edit, reconnect, and delete customer points directly on the map.</figcaption>
 
 </figure>
 
@@ -208,6 +206,7 @@ This capability was made possible by the [EPANET 2.3 engine upgrade](/blog/2026/
 
 <figure>
   <img src="/assets/blog/progress-report/2026-03/2026-03-02-pressure-units.png" style="max-width:800px; width:100%;" />
+  <figcaption>Choose pressure units independently from flow units when starting a new project.</figcaption>
 </figure>
 
 ### **Pump energy reporting**
@@ -224,6 +223,7 @@ To get energy results, you need to define your energy settings first. You can se
 
 <figure>
   <img src="/assets/blog/progress-report/2026-03/2026-03-03-pump.png" style="max-width:800px; width:100%;" />
+  <figcaption>Energy results for a pump — utilization, efficiency, power, and cost at a glance.</figcaption>
 </figure>
 
 ## **Recent projects**
@@ -256,6 +256,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 ></iframe>
 
 </div>
+<figcaption style="margin-top: 1rem">Jump back into any of your recent models straight from the welcome screen.</figcaption>
 
 </figure>
 
@@ -286,6 +287,7 @@ What this represents is **choice**. If you want a traditional desktop interface 
 
 <figure>
   <img src="/assets/blog/progress-report/2026-03/2026-03-04-epanet-gui.png" style="max-width:800px; width:100%;" />
+  <figcaption>The new EPANET 2.3 user interface from Lew Rossman and Open Water Analytics.</figcaption>
 </figure>
 
 ## **Community and growth**
@@ -316,6 +318,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 ></iframe>
 
 </div>
+<figcaption style="margin-top: 1rem">2,000+ registered members and 2,606 active users in March.</figcaption>
 
 </figure>
 
@@ -337,6 +340,7 @@ Two themes kept coming up in conversations. The first was the potential for a mu
                 --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
                 --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
                 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);" />
+  <figcaption>Talking open hydraulic modelling at the Optimatics UK User Conference.</figcaption>
 </figure>
 
 ### **Community highlights**
