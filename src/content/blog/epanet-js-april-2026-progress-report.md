@@ -1,13 +1,10 @@
 ---
-draft: true
+draft: false
 title: "epanet-js April 2026 Progress Report"
 snippet: "Water quality, new partners, growing team"
 image:
-  {
-    src: "/assets/blog/progress-report/2026-04/2026-04-00-water-quality.png",
-    alt: "",
-  }
-publishDate: "2026-05-7 08:15"
+  { src: "/assets/blog/progress-report/2026-04/2026-04-00-hero.webp", alt: "" }
+publishDate: "2026-05-8 08:15"
 category: "Progress report"
 author: "Luke Butler"
 tags: [Progress report]
@@ -70,9 +67,8 @@ border-width: 1px;
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 >
 
-<!-- TODO: replace Mux ID -->
 <iframe
-  src="https://player.mux.com/REPLACE_ME?autoplay=true&muted=true&loop=true"
+  src="https://player.mux.com/hwsi01WwPhjVcmg7tMaPqqbeyqg002omReWpLvOjposls?autoplay=true&muted=true&loop=true"
   style="width: 100%; border: none; aspect-ratio: 1/1;"
   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
   allowfullscreen
@@ -106,7 +102,7 @@ Thank you to Optimatics, Affinity Water, and AtkinsRéalis for being our first t
 And finally, a huge thank you to the thousands of users choosing to use epanet-js each month. To everyone who has shared thoughts, comments, and feedback: this is a community-led project at its heart, and we couldn't do it without you.
 
 <figure>
-  <img src="/assets/blog/progress-report/2026-04/2026-04-02-founding-partners.png" style="max-width:800px; width:100%;" />
+  <img src="/assets/blog/progress-report/2026-04/2026-04-02-welcome.webp" style="max-width:800px; width:100%;" />
   <figcaption>Optimatics, Affinity Water, and AtkinsRéalis on the welcome screen.</figcaption>
 </figure>
 
@@ -122,12 +118,22 @@ If your team would like to be involved, reach out at [founders@iterating.ca](mai
 
 ## **The team is growing**
 
-Iterating is now a team of five. César González Segura has joined as a product engineer, and Marcos Calatayud as a product designer. They're working alongside Luke, Sam, and Sandra (who [joined us back in October](/blog/2025/11/04/epanet-js-october-2025-progress-report/)).
+Iterating is now a team of five. César González Segura has joined as a product engineer, and Marcos Calatayud as a product designer. They're working alongside Luke, Sam, and Sandra (who joined us back in October).
 
 With more capacity on the team, we can move faster on the roadmap and deliver more features, both in epanet-js and across the EPANET engine work we have planned.
 
 <figure>
-  <img src="/assets/blog/progress-report/2026-04/2026-04-03-team.jpg" style="max-width:800px; width:100%;" />
+  <img src="/assets/blog/progress-report/2026-04/2026-04-03-team-photo-collage.webp" style="box-sizing: border-box;
+                max-width:800px;
+                width:100%;
+                border-style: solid;
+                border-color: #e5e7eb;
+                overflow: hidden;
+                border-radius: .75rem;
+                border-width: 1px;
+                --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+                --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);" />
   <figcaption>The Iterating team.</figcaption>
 </figure>
 
@@ -154,9 +160,8 @@ border-width: 1px;
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 >
 
-<!-- TODO: replace Mux ID -->
 <iframe
-  src="https://player.mux.com/REPLACE_ME?autoplay=true&muted=true&loop=true"
+  src="https://player.mux.com/1Zdsv597SfwQxLOFpzhhgGcsV0129S8dxxs7CccQXNJQ?autoplay=true&muted=true&loop=true"
   style="width: 100%; border: none; aspect-ratio: 1/1;"
   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
   allowfullscreen
@@ -190,9 +195,8 @@ border-width: 1px;
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 >
 
-<!-- TODO: replace Mux ID -->
 <iframe
-  src="https://player.mux.com/REPLACE_ME?autoplay=true&muted=true&loop=true"
+  src="https://player.mux.com/CrQTaSTa4k016n6TWjVXdFT9n6Ynuu9kA00vgP02jhF3rI?autoplay=true&muted=true&loop=true"
   style="width: 100%; border: none; aspect-ratio: 1/1;"
   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
   allowfullscreen
@@ -226,9 +230,8 @@ border-width: 1px;
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 >
 
-<!-- TODO: replace Mux ID -->
 <iframe
-  src="https://player.mux.com/REPLACE_ME?autoplay=true&muted=true&loop=true"
+  src="https://player.mux.com/edP01XlZ2kgSvviQMj1jTnxc8NGy1qtfAPAsoyZdJcug?autoplay=true&muted=true&loop=true"
   style="width: 100%; border: none; aspect-ratio: 1/1;"
   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
   allowfullscreen
@@ -241,16 +244,31 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 
 ### **Choose your map label**
 
-Map labels are no longer tied to the colour-by property. You can now pick any property (pressure, velocity, ID, or anything else) to display as the label, regardless of what the colours are mapped to.
+Map labels are no longer tied to the color-by property. You can now pick any property (pressure, velocity, ID, or anything else) to display as the label, regardless of what the colors are mapped to.
 
-### **Colour breaks across all timesteps**
+### **Color breaks across all timesteps**
 
 When you run an EPS simulation, the **Regenerate** button in the ramp editor now offers two options:
 
 - **Regenerate from current step:** calculates breaks from the timestep you're viewing.
-- **Regenerate from all data:** calculates breaks across the whole simulation, giving you a single colour scale that works for every timestep.
+- **Regenerate from all data:** calculates breaks across the whole simulation, giving you a single color scale that works for every timestep.
 
-By default, breaks are calculated from the first step. You can switch to "all steps" on demand for a more representative view across long simulations.
+By default, breaks are calculated from the first and last step. You can switch to "all steps" on demand for a more representative view across long simulations.
+
+<figure>
+  <img src="/assets/blog/progress-report/2026-04/2026-04-07-breaks.webp" style="box-sizing: border-box;
+                max-width:500px;
+                width:100%;
+                border-style: solid;
+                border-color: #e5e7eb;
+                overflow: hidden;
+                border-radius: .75rem;
+                border-width: 1px;
+                --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+                --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);" />
+  <figcaption>Pick how you generate color breaks.</figcaption>
+</figure>
 
 ## **Simulation playback**
 
@@ -271,9 +289,8 @@ border-width: 1px;
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 >
 
-<!-- TODO: replace Mux ID -->
 <iframe
-  src="https://player.mux.com/REPLACE_ME?autoplay=true&muted=true&loop=true"
+  src="https://player.mux.com/2xd8IGkAqnoUFKFRzYzldBzflmJucuzh600unSH6b01TU?autoplay=true&muted=true&loop=true"
   style="width: 100%; border: none; aspect-ratio: 1/1;"
   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
   allowfullscreen
@@ -305,9 +322,8 @@ border-width: 1px;
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 >
 
-<!-- TODO: replace Mux ID -->
 <iframe
-  src="https://player.mux.com/REPLACE_ME?autoplay=true&muted=true&loop=true"
+  src="https://player.mux.com/d6Lt2gAdp0100gDMukGKqF4Yg01R5WZnIlbGJTXqUjt6x00?autoplay=true&muted=true&loop=true"
   style="width: 100%; border: none; aspect-ratio: 1/1;"
   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
   allowfullscreen
@@ -339,7 +355,17 @@ The workshop afterwards was very productive, with a lot of practical input on bo
 Thank you to everyone who attended, and to all the speakers who covered both EPANET and SWMM. We're bringing all that feedback together now and will share more on the outcomes soon.
 
 <figure>
-  <img src="/assets/blog/progress-report/2026-04/2026-04-10-ewri.jpg" style="max-width:800px; width:100%;" />
+  <img src="/assets/blog/progress-report/2026-04/2026-04-10-ewri.webp" style="box-sizing: border-box;
+                max-width:600px;
+                width:100%;
+                border-style: solid;
+                border-color: #e5e7eb;
+                overflow: hidden;
+                border-radius: .75rem;
+                border-width: 1px;
+                --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+                --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);" />
   <figcaption>Luke with Hyoungmin at the EWRI Congress in Mobile, Alabama.</figcaption>
 </figure>
 
