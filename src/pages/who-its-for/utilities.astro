@@ -1,0 +1,112 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { Eye, Gauge, Lock, Unlock } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: Eye,
+    title: "Understand your system",
+    description:
+      "Build a clear, current picture of how your network behaves under real conditions.",
+  },
+  {
+    icon: Gauge,
+    title: "Run it better",
+    description:
+      "Test operational changes, check capacity, and answer everyday questions with evidence.",
+  },
+  {
+    icon: Lock,
+    title: "Own your data",
+    description:
+      "Local-first by default — your network data stays on your machine unless you choose otherwise.",
+  },
+  {
+    icon: Unlock,
+    title: "No lock-in",
+    description:
+      "EPANET-compatible and affordable. No proprietary formats holding your model hostage.",
+  },
+];
+
+const workflows = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) =>
+    [
+      "/solutions/model-build",
+      "/solutions/operational-modeling",
+      "/solutions/fire-flow",
+    ].includes(i.href),
+  );
+---
+
+<Layout
+  title="For utilities"
+  description="Take control of your network and your model. epanet-js helps utilities understand and run their water network with confidence."
+  lang={lang}>
+  <PageHero
+    eyebrow="For utilities"
+    title="Take control of your network and your model"
+    subtitle="Understand your system, run it better, and keep your data in your hands. epanet-js gives utilities a modern, affordable way to model the network they're responsible for.">
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture / photo: a utility team reviewing their live network model on screen."
+    />
+  </PageHero>
+
+  <ContentMediaRow
+    eyebrow="Understand"
+    title="A model that reflects your real network">
+    <p>
+      Bring in your GIS and asset data and build a model that mirrors what's
+      actually in the ground. See pressures, flows, and capacity at a glance and
+      stop relying on guesswork or out-of-date studies.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: a utility's network with colour-coded pressures across the service area."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow eyebrow="Operate" title="Make changes with confidence" reverse>
+    <p>
+      Test shutdowns, valve operations, and demand changes in the model before
+      you act in the field. Brief your operators with clear, visual answers and
+      reduce the risk of surprises.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: testing an operational change and reviewing the network response."
+    />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    eyebrow="Why utilities choose epanet-js"
+    heading="Built for the teams who run the network"
+    items={benefits}
+    columns={4}
+  />
+
+  <CardGrid
+    heading="Workflows for utilities"
+    subheading="The everyday jobs epanet-js helps your team get done."
+    items={workflows}
+    columns={3}
+  />
+
+  <CtaSection
+    heading="See epanet-js on your network"
+    subheading="Launch it free, or book a demo to talk through your utility's needs."
+  />
+</Layout>

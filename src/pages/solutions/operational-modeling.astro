@@ -1,0 +1,125 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { ShieldAlert, GitCompare, Users, Lightbulb } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: ShieldAlert,
+    title: "Reduce operational risk",
+    description:
+      "Test a change in the model before you make it in the field, so you avoid surprises and unintended consequences.",
+  },
+  {
+    icon: GitCompare,
+    title: "Compare what-if scenarios",
+    description:
+      "Try different valve, pump, and demand settings side by side and see which gives the best outcome.",
+  },
+  {
+    icon: Lightbulb,
+    title: "Plan interventions",
+    description:
+      "Work out the impact of shutdowns, rezoning, and operational changes ahead of time.",
+  },
+  {
+    icon: Users,
+    title: "Brief operators with evidence",
+    description:
+      "Turn model results into clear, visual answers your operations team can act on with confidence.",
+  },
+];
+
+const related = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) => i.href !== "/solutions/operational-modeling")
+  .slice(0, 3);
+---
+
+<Layout
+  title="Operational modeling"
+  description="Understand how your network responds before you make the change. Model operational changes and see system response in epanet-js."
+  lang={lang}>
+  <PageHero
+    eyebrow="Operational modeling"
+    title="Understand how your network responds — before you make the change"
+    subtitle="Valve operations, pump changes, shifting demands — model them first and see how the whole system reacts, so you act with confidence instead of guessing.">
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: closing a valve in the model and watching pressures and flows redistribute across the network."
+    />
+  </PageHero>
+
+  <ContentMediaRow
+    eyebrow="1. Set up the change"
+    title="Model the operation you're considering">
+    <p>
+      Adjust valves, pumps, tank levels, or demands to represent the change
+      you're thinking about — a planned shutdown, a rezoning, a new operating
+      regime. Setting it up takes minutes, not a rebuild.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: editing valve and pump settings to represent a planned operational change."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="2. See the response"
+    title="Watch the whole system react"
+    reverse>
+    <p>
+      Run the simulation and see how pressures, flows, and velocities respond
+      right across the network. The knock-on effects that are easy to miss on
+      paper become obvious on the map.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: colour-coded pressure and flow response after an operational change is applied."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="3. Compare"
+    title="Try options and choose the best one">
+    <p>
+      Test more than one approach and compare the results. Find the operation
+      that keeps pressures in range and service intact — before anyone touches a
+      valve in the field.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: two scenarios side by side comparing network response to different operational choices."
+    />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    eyebrow="Outcomes"
+    heading="What operational modeling gives you"
+    items={benefits}
+    columns={4}
+  />
+
+  <CardGrid
+    heading="Keep going"
+    subheading="Operational insight builds on a model you trust."
+    items={related}
+    columns={3}
+  />
+
+  <CtaSection
+    heading="Model the change before you make it"
+    subheading="See how your network responds. Launch epanet-js or book a demo."
+  />
+</Layout>

@@ -6,24 +6,40 @@ import UserDilemma from "@components/landing/user-dilemma";
 import OpenSource from "@components/landing/open-source";
 import Pricing from "@components/landing/pricing";
 import FrequentlyAskedQuestions from "@components/landing/faq.tsx";
-import CTAJustOpen from "@components/landing/cta-just-open.tsx";
 import WhyWeBuilt from "@components/landing/why-we-built.tsx";
 import BottomCTA from "@components/landing/bottom-cta.tsx";
 import MiddleCTA from "@components/landing/newsletter-cta";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import { solutions, whoItsFor } from "@config/navigation";
 
 export const prerender = false;
 const lang = "en";
+
+const allWorkflows = solutions.columns.flatMap((c) => c.items);
 ---
 
 <Layout footerMargin={false} lang={lang}>
   <Hero lang={lang} client:load />
+  <CardGrid
+    eyebrow="Solutions"
+    heading="Everything you need across the modeling lifecycle"
+    subheading="From building your model to running it every day — epanet-js helps you get to the answer faster. Most workflows are available now, with more on the way."
+    items={allWorkflows}
+    columns={4}
+  />
   <UserDilemma lang={lang} />
   <Features lang={lang} client:load />
+  <CardGrid
+    eyebrow="Who it's for"
+    heading="Built for your team"
+    subheading="Whatever your role in the water industry, epanet-js is built to help you do it better."
+    items={whoItsFor.columns[0].items}
+    columns={4}
+  />
   <MiddleCTA lang={lang} />
   <OpenSource lang={lang} />
   <Pricing lang={lang} client:load />
   <FrequentlyAskedQuestions lang={lang} client:load />
-  <CTAJustOpen lang={lang} />
   <WhyWeBuilt lang={lang} />
   <BottomCTA lang={lang} />
 </Layout>

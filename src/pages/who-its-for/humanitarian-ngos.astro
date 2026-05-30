@@ -1,0 +1,119 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { HandCoins, Globe, Rocket, Wrench } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: HandCoins,
+    title: "Low cost, high impact",
+    description:
+      "Affordable, with free options — so more of your funding goes to the communities you serve, not software.",
+  },
+  {
+    icon: Globe,
+    title: "Works anywhere",
+    description:
+      "Browser-based and lightweight. Run it on modest hardware in the field, on any operating system.",
+  },
+  {
+    icon: Rocket,
+    title: "Fast to deploy",
+    description:
+      "No installs or IT infrastructure. Open a browser and start modeling — get to results quickly.",
+  },
+  {
+    icon: Wrench,
+    title: "Capable, professional tools",
+    description:
+      "The same trusted EPANET engine and modern workflows the industry relies on — not a stripped-down version.",
+  },
+];
+
+const workflows = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) =>
+    [
+      "/solutions/model-build",
+      "/solutions/fire-flow",
+      "/solutions/operational-modeling",
+    ].includes(i.href),
+  );
+---
+
+<Layout
+  title="For humanitarian & NGOs"
+  description="The best tools to get the job done for humanitarian water work — affordable, browser-based, and ready to deploy anywhere."
+  lang={lang}>
+  <PageHero
+    eyebrow="For humanitarian & NGOs"
+    title="The best tools to get the job done for humanitarian water work"
+    subtitle="Designing and improving water supply for communities that need it most deserves capable, affordable tools. epanet-js gives humanitarian teams professional modeling that runs anywhere."
+    primaryCta={{ label: "Talk to us", href: "https://cal.com/epanet-js/" }}
+    secondaryCta={{ label: "Launch epanet-js", href: "https://app.epanetjs.com" }}>
+    <MediaPlaceholder
+      slot="media"
+      label="Photo / screen capture: a field engineer planning a community water supply on a laptop."
+    />
+  </PageHero>
+
+  <ContentMediaRow
+    eyebrow="Built for the field"
+    title="Capable tools that go where you go">
+    <p>
+      Humanitarian water work rarely happens in a comfortable office with a
+      powerful workstation. epanet-js runs in a browser on modest hardware, so
+      you can build and run real hydraulic models wherever the work takes you.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: a community water network being modeled in the browser on a laptop."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="Make funding count"
+    title="Professional modeling without the price tag"
+    reverse>
+    <p>
+      Commercial modeling software can cost more than an entire project budget.
+      epanet-js gives you affordable access to professional-grade tools — so
+      your resources reach the communities you serve.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: building and analysing a water supply design for a community project."
+    />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    eyebrow="Why NGOs choose epanet-js"
+    heading="Professional water modeling for humanitarian work"
+    items={benefits}
+    columns={4}
+  />
+
+  <CardGrid
+    heading="Workflows for humanitarian projects"
+    subheading="The jobs epanet-js helps you get done in the field."
+    items={workflows}
+    columns={3}
+  />
+
+  <CtaSection
+    heading="Doing humanitarian water work?"
+    subheading="Tell us about your project — we'd love to help you get set up."
+    primaryCta={{ label: "Talk to us", href: "https://cal.com/epanet-js/" }}
+    secondaryCta={{ label: "Launch epanet-js", href: "https://app.epanetjs.com" }}
+  />
+</Layout>

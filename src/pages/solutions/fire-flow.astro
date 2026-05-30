@@ -1,0 +1,121 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { CheckCircle2, TrendingUp, ClipboardCheck, MapPin } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: CheckCircle2,
+    title: "Defensible capacity answers",
+    description:
+      "Know the available fire flow at any hydrant or node, at the residual pressure you need to hold.",
+  },
+  {
+    icon: MapPin,
+    title: "Find the weak spots",
+    description:
+      "See exactly where your network falls short of capacity targets, mapped clearly across the system.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Prioritise reinforcement",
+    description:
+      "Use the results to focus upgrades and reinforcement where they'll have the biggest impact.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Support development reviews",
+    description:
+      "Answer 'can the network support this?' for new connections and developments with evidence.",
+  },
+];
+
+const related = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) => i.href !== "/solutions/fire-flow")
+  .slice(0, 3);
+---
+
+<Layout
+  title="Fire flow"
+  description="Know exactly where your network can deliver — and where it can't. A dedicated fire-flow tool for available flow and capacity analysis."
+  lang={lang}>
+  <PageHero
+    eyebrow="Fire flow"
+    title="Know exactly where your network can deliver — and where it can't"
+    subtitle="A dedicated fire-flow tool that tests hydrants and nodes for available flow at your target residual pressure, and shows you where capacity runs out.">
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: running a fire-flow test on a hydrant and reading the available-flow result at the target residual pressure."
+    />
+  </PageHero>
+
+  <ContentMediaRow eyebrow="1. Set up" title="Define the test that matters">
+    <p>
+      Pick the hydrants or nodes you care about and set your target residual
+      pressure. The dedicated fire-flow tool handles the rest — no manual demand
+      hacks or workarounds.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: the fire-flow setup panel with target residual pressure and selected test locations."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="2. Analyse"
+    title="Read available flow at every location"
+    reverse>
+    <p>
+      epanet-js calculates the available fire flow each location can deliver
+      while holding your residual pressure target. Results are presented clearly
+      so you can compare locations at a glance.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: available-flow results populating across multiple test locations."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow eyebrow="3. Act" title="Map capacity gaps across the network">
+    <p>
+      See where the network meets its targets and where it doesn't, colour-coded
+      on the map. Turn those gaps into a clear, prioritised list of where to
+      reinforce.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: map highlighting locations that pass vs. fail the fire-flow capacity target."
+    />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    eyebrow="Outcomes"
+    heading="What fire-flow analysis gives you"
+    items={benefits}
+    columns={4}
+  />
+
+  <CardGrid
+    heading="Keep going"
+    subheading="Fire flow is one part of understanding your network."
+    items={related}
+    columns={3}
+  />
+
+  <CtaSection
+    heading="Check your network's capacity"
+    subheading="Run a fire-flow analysis on your own model. Launch epanet-js or book a demo."
+  />
+</Layout>

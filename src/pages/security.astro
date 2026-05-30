@@ -1,0 +1,177 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import Container from "@components/container.astro";
+import {
+  HardDrive,
+  MapPin,
+  Lock,
+  Eye,
+  ServerCog,
+  FileCheck2,
+} from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const principles = [
+  {
+    icon: HardDrive,
+    title: "Local-first by default",
+    description:
+      "Models run and save directly in your browser, on your machine. Nothing is uploaded to our servers unless you explicitly choose to use the cloud.",
+  },
+  {
+    icon: MapPin,
+    title: "Your data, your control",
+    description:
+      "You decide where your data lives. We offer data-residency options and, for teams that need it, a self-hosted / on-premise deployment.",
+  },
+  {
+    icon: Lock,
+    title: "Encrypted in transit",
+    description:
+      "All traffic to and from epanet-js is served over HTTPS/TLS, so data moving between your browser and the application is encrypted.",
+  },
+  {
+    icon: Eye,
+    title: "Open and auditable",
+    description:
+      "Our source code is public from day one (FSL now, fully open MIT after two years), so our security can be independently reviewed.",
+  },
+  {
+    icon: FileCheck2,
+    title: "Privacy by design",
+    description:
+      "Our practices are aligned with GDPR. Because the default is local-first, the most sensitive data simply never leaves your control.",
+  },
+  {
+    icon: ServerCog,
+    title: "Self-hosting available",
+    description:
+      "Need full control? epanet-js can be run under your own infrastructure for complete ownership of your environment and data.",
+  },
+];
+---
+
+<Layout
+  title="Security"
+  description="Security and privacy by design. epanet-js is local-first by default, encrypted in transit, open and auditable, GDPR-aligned, with data-residency and self-hosting options."
+  lang={lang}>
+  <PageHero
+    eyebrow="Security & privacy"
+    title="Security and privacy by design"
+    subtitle="epanet-js is built so the most sensitive thing — your network data — stays in your control by default. Here's exactly how we approach security."
+    primaryCta={{ label: "Contact us", href: "mailto:support@epanetjs.com" }}
+    secondaryCta={{ label: "Read our privacy policy", href: "/privacy-policy" }}
+    align="center"
+  />
+
+  <BenefitGrid
+    eyebrow="Our principles"
+    heading="How we protect your data"
+    items={principles}
+    columns={3}
+  />
+
+  <ContentMediaRow
+    eyebrow="Local-first architecture"
+    title="The safest data is the data that never leaves">
+    <p>
+      Most web tools force your data into their cloud. epanet-js takes the
+      opposite approach: by default your projects are created, run, and saved
+      <strong>locally</strong>, in your own browser and on your own disk.
+    </p>
+    <p>
+      That means your network model — often sensitive critical-infrastructure
+      data — doesn't sit on our servers at all unless you make a deliberate
+      choice to use cloud features.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Diagram: data staying on the user's device by default, with an explicit, optional path to the cloud."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="Control & deployment"
+    title="Choose where your data lives"
+    reverse>
+    <p>
+      For organisations with specific requirements, epanet-js offers
+      <strong>data-residency options</strong> and a <strong>self-hosted /
+      on-premise</strong> deployment, so you can keep everything within your own
+      environment and governance.
+    </p>
+    <p>
+      If you have a security questionnaire or specific compliance needs, we're
+      happy to work through them with you directly.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Diagram: deployment options — managed cloud, chosen data region, or fully self-hosted on your own infrastructure."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="Transparency"
+    title="Open source you can inspect">
+    <p>
+      You don't have to take our word for how epanet-js works. Our source code
+      is public from day one under the Functional Source License, and becomes
+      fully open source (MIT) after two years.
+    </p>
+    <p>
+      Anyone can review how data is handled — a level of transparency that
+      closed, proprietary modeling software simply can't offer.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: the public epanet-js source repository."
+    />
+  </ContentMediaRow>
+
+  <section class="w-full py-12 md:py-16 bg-gray-50">
+    <Container>
+      <div class="max-w-3xl">
+        <p
+          class="text-sm font-semibold uppercase tracking-wide text-purple-500 mb-2">
+          Responsible disclosure
+        </p>
+        <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
+          Found a security issue?
+        </h2>
+        <p class="mt-4 text-muted-foreground md:text-lg">
+          We take security reports seriously. If you believe you've found a
+          vulnerability, please email us at <a
+            href="mailto:support@epanetjs.com"
+            class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline"
+            >support@epanetjs.com</a
+          > and we'll work with you to investigate and resolve it. For questions
+          about how we handle your data, see our <a
+            href="/privacy-policy"
+            class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline"
+            >Privacy Policy</a
+          > and <a
+            href="/cookies-policy"
+            class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline"
+            >Cookies Policy</a
+          >.
+        </p>
+      </div>
+    </Container>
+  </section>
+
+  <CtaSection
+    heading="Questions about security or compliance?"
+    subheading="Talk to us about your requirements, data residency, or self-hosting — we're glad to help."
+    primaryCta={{ label: "Book a call", href: "https://cal.com/epanet-js/" }}
+    secondaryCta={{ label: "Email us", href: "mailto:support@epanetjs.com" }}
+  />
+</Layout>

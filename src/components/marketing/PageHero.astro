@@ -1,0 +1,122 @@
+---
+import Container from "@components/container.astro";
+import Badge from "@components/ui/badge.astro";
+import ComingSoonBadge from "./ComingSoonBadge.astro";
+
+interface Cta {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  primaryCta?: Cta | null;
+  secondaryCta?: Cta | null;
+  comingSoon?: boolean;
+  align?: "left" | "center";
+}
+
+const {
+  eyebrow,
+  title,
+  subtitle,
+  comingSoon = false,
+  align = "left",
+} = Astro.props;
+
+const defaultPrimary: Cta = {
+  label: "Launch epanet-js",
+  href: "https://app.epanetjs.com",
+};
+const defaultSecondary: Cta = {
+  label: "Book a demo",
+  href: "https://cal.com/epanet-js/",
+};
+
+// `null` explicitly hides a CTA; `undefined` falls back to the default.
+const primaryCta =
+  Astro.props.primaryCta === undefined ? defaultPrimary : Astro.props.primaryCta;
+const secondaryCta =
+  Astro.props.secondaryCta === undefined
+    ? defaultSecondary
+    : Astro.props.secondaryCta;
+
+const hasMedia = Astro.slots.has("media");
+const isCentered = align === "center" || !hasMedia;
+---
+
+<section
+  class="w-full pt-12 pb-16 md:pt-20 md:pb-24 bg-gradient-to-br from-blue-50 via-purple-50 to-white overflow-hidden">
+  <Container>
+    <div
+      class:list={[
+        "grid gap-10 lg:gap-16 items-center",
+        hasMedia ? "lg:grid-cols-2" : "",
+      ]}>
+      <div
+        class:list={[
+          "flex flex-col space-y-6",
+          isCentered ? "text-center items-center mx-auto max-w-3xl" : "",
+        ]}>
+        <div class="space-y-4">
+          {
+            (eyebrow || comingSoon) && (
+              <div
+                class:list={[
+                  "flex items-center gap-2",
+                  isCentered && "justify-center",
+                ]}>
+                {eyebrow && <Badge color="purple">{eyebrow}</Badge>}
+                {comingSoon && <ComingSoonBadge />}
+              </div>
+            )
+          }
+          <h1
+            class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-5xl/none">
+            {title}
+          </h1>
+          {
+            subtitle && (
+              <p class="text-muted-foreground md:text-xl max-w-[600px]">
+                {subtitle}
+              </p>
+            )
+          }
+        </div>
+        {
+          (primaryCta || secondaryCta) && (
+            <div
+              class:list={[
+                "flex flex-col gap-3 sm:flex-row",
+                isCentered && "justify-center",
+              ]}>
+              {primaryCta && (
+                <a
+                  href={primaryCta.href}
+                  class="inline-flex items-center justify-center rounded-md px-7 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-colors">
+                  {primaryCta.label}
+                </a>
+              )}
+              {secondaryCta && (
+                <a
+                  href={secondaryCta.href}
+                  class="inline-flex items-center justify-center rounded-md px-7 py-3 text-sm font-medium text-gray-700 border border-gray-300 hover:bg-gray-50 transition-colors">
+                  {secondaryCta.label}
+                </a>
+              )}
+            </div>
+          )
+        }
+      </div>
+      {
+        hasMedia && (
+          <div class="w-full">
+            <slot name="media" />
+          </div>
+        )
+      }
+    </div>
+  </Container>
+</section>

@@ -9,6 +9,9 @@ export const ui = {
 
   // ── Navbar ──
   "nav.home": "Home",
+  "nav.solutions": "Solutions",
+  "nav.whoItsFor": "Who it's for",
+  "nav.resources": "Resources",
   "nav.pricing": "Pricing",
   "nav.blog": "Blog",
   "nav.language.es": "Cambiar a español",
@@ -17,10 +20,10 @@ export const ui = {
 
   // ── Hero ──
   "hero.brand": "epanet-js",
-  "hero.titlePart1": "The EPANET you know — but modern, enhanced, and ",
-  "hero.titleHighlight": "entirely in your browser.",
+  "hero.titlePart1": "The fastest, easiest way to ",
+  "hero.titleHighlight": "build and use hydraulic models.",
   "hero.description":
-    "No installs. No forced cloud storage. Just fast, local-first water modeling — powered by the engine you already trust.",
+    "From GIS data to a running model in minutes — then calibrate, plan, and operate your water network with confidence. Powered by the EPANET engine you trust, modernised for the way you work today.",
   "hero.cta": "Launch epanet-js. No login needed.",
   "hero.ctaSecondary": "Book a demo",
 
@@ -39,9 +42,9 @@ export const ui = {
 
   // ── Features ──
   "features.heading":
-    "epanet-js gives you full control with a local-first, browser-based EPANET experience",
+    "Work faster, with more confidence, from first model to daily use",
   "features.subheading":
-    "Model quickly and securely with local-first file-saving and a faster, smoother interface — all on top of the trusted EPANET engine.",
+    "An intuitive, modern interface that gets you to answers quickly — local-first and secure, all on top of the trusted EPANET engine.",
 
   "features.dataControl.title": "Your data, your control",
   "features.dataControl.p1":

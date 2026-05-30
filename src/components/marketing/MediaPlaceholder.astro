@@ -1,0 +1,39 @@
+---
+import { Play, Image as ImageIcon } from "lucide-react";
+
+interface Props {
+  label: string;
+  aspect?: "video" | "square" | "wide";
+  kind?: "video" | "image";
+  class?: string;
+}
+
+const { label, aspect = "video", kind = "video", class: className } = Astro.props;
+
+const aspectClass = {
+  video: "aspect-video",
+  square: "aspect-square",
+  wide: "aspect-[3/1]",
+}[aspect];
+
+const Icon = kind === "video" ? Play : ImageIcon;
+const kindLabel = kind === "video" ? "Video" : "Image";
+---
+
+<div
+  class:list={[
+    "w-full rounded-xl border-2 border-dashed border-purple-200 bg-gradient-to-br from-blue-50 to-purple-100 flex items-center justify-center p-6 text-center",
+    aspectClass,
+    className,
+  ]}>
+  <div class="flex flex-col items-center gap-3 max-w-md">
+    <div
+      class="flex items-center justify-center w-12 h-12 rounded-full bg-white/70 text-purple-600 shadow-sm">
+      <Icon size={22} />
+    </div>
+    <p class="text-xs font-semibold uppercase tracking-wide text-purple-500">
+      {kindLabel} placeholder
+    </p>
+    <p class="text-sm text-gray-600">{label}</p>
+  </div>
+</div>

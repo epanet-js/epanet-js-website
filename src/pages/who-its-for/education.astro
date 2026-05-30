@@ -1,0 +1,121 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { MonitorOff, Timer, GraduationCap, BookOpen } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: MonitorOff,
+    title: "Zero-install classrooms",
+    description:
+      "Runs in any browser on any OS. No lab installs, no Mac headaches, no IT tickets before week one.",
+  },
+  {
+    icon: Timer,
+    title: "Fast to first model",
+    description:
+      "Students draw a real network and run a simulation in minutes — so class time goes to concepts, not setup.",
+  },
+  {
+    icon: BookOpen,
+    title: "Learn the real thing",
+    description:
+      "Built on the same EPANET engine the industry uses, so students learn skills that transfer directly to work.",
+  },
+  {
+    icon: GraduationCap,
+    title: "Free for education",
+    description:
+      "Free access for students and teachers for non-commercial learning and coursework.",
+  },
+];
+
+const workflows = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) =>
+    [
+      "/solutions/model-build",
+      "/solutions/fire-flow",
+      "/solutions/operational-modeling",
+    ].includes(i.href),
+  );
+---
+
+<Layout
+  title="For education"
+  description="Learn on the real tools the industry uses. epanet-js gives students and educators zero-install, browser-based water modeling — free for education."
+  lang={lang}>
+  <PageHero
+    eyebrow="For students & educators"
+    title="Learn on the real tools the industry uses"
+    subtitle="Teach and learn water modeling without fighting software. epanet-js runs in any browser, gets students to a working model in minutes, and is free for education."
+    primaryCta={{
+      label: "Use your school email",
+      href: "https://app.epanetjs.com",
+    }}>
+    <MediaPlaceholder
+      slot="media"
+      label="Photo / screen capture: students building water network models in a computer lab or on laptops."
+    />
+  </PageHero>
+
+  <ContentMediaRow
+    eyebrow="For educators"
+    title="Spend class time teaching, not troubleshooting">
+    <p>
+      No installations, no virtual machines, no per-machine licensing. Every
+      student opens a browser and starts modeling. Watch them draw real networks
+      and run simulations in minutes instead of losing the first lab to setup.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: a class of students each working in epanet-js in the browser."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="For students"
+    title="Focus on the concepts, not the quirks"
+    reverse>
+    <p>
+      Undo/redo, automatic elevations, and visual map overlays remove the
+      friction that gets in the way of learning. Make mistakes, experiment
+      freely, and build intuition for how water networks behave.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: a student experimenting with a network and instantly seeing results."
+    />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    eyebrow="Why education chooses epanet-js"
+    heading="Real tools, ready for the classroom"
+    items={benefits}
+    columns={4}
+  />
+
+  <CardGrid
+    heading="Great for coursework"
+    subheading="Workflows students can explore as they learn."
+    items={workflows}
+    columns={3}
+  />
+
+  <CtaSection
+    heading="Bring epanet-js to your classroom"
+    subheading="Students and teachers get free access. Sign in with your school email to get started."
+    primaryCta={{ label: "Use your school email", href: "https://app.epanetjs.com" }}
+    secondaryCta={{ label: "Talk to us", href: "https://cal.com/epanet-js/" }}
+  />
+</Layout>
