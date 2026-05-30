@@ -1,6 +1,5 @@
 ---
 import { Dropdown as NavDropdown, DropdownItems } from "astro-navbar";
-import ComingSoonBadge from "@components/marketing/ComingSoonBadge.astro";
 import type { NavColumn } from "@config/navigation";
 
 interface Props {
@@ -66,11 +65,8 @@ const gridCols = colCount >= 2 ? "lg:grid-cols-2" : "lg:grid-cols-1";
                         </span>
                       )}
                       <span class="flex flex-col">
-                        <span class="flex items-center gap-2">
-                          <span class="text-sm font-medium text-gray-800 group-hover/item:text-indigo-600">
-                            {item.label}
-                          </span>
-                          {item.comingSoon && <ComingSoonBadge />}
+                        <span class="text-sm font-medium text-gray-800 group-hover/item:text-indigo-600">
+                          {item.label}
                         </span>
                         {item.description && (
                           <span class="text-xs text-gray-500 leading-snug">

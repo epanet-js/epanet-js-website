@@ -7,7 +7,6 @@ interface FaqItem {
 }
 
 interface Props {
-  eyebrow?: string;
   heading?: string;
   subheading?: string;
   items: FaqItem[];
@@ -15,7 +14,6 @@ interface Props {
 }
 
 const {
-  eyebrow,
   heading = "Frequently asked questions",
   subheading,
   items,
@@ -27,13 +25,8 @@ const {
   <Container>
     <div class="max-w-3xl mx-auto">
       {
-        (eyebrow || heading || subheading) && (
+        (heading || subheading) && (
           <div class="mb-8 md:mb-10">
-            {eyebrow && (
-              <p class="text-sm font-semibold uppercase tracking-wide text-purple-500 mb-2">
-                {eyebrow}
-              </p>
-            )}
             {heading && (
               <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
                 {heading}
