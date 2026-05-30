@@ -26,19 +26,19 @@ const benefits = [
     icon: Network,
     title: "The whole network, one run",
     description:
-      "Test every hydrant and junction together instead of editing demands one location at a time.",
+      "Thousands of simulations in your browser, hundreds of nodes a second, instead of editing demands one location at a time.",
   },
   {
     icon: AlertTriangle,
     title: "Catch hidden constraints",
     description:
-      "Design checks flag low pressures and high velocities elsewhere, so a pass at the hydrant is a real pass.",
+      "The designed check flags low pressures and high velocities elsewhere, so a pass at the hydrant is a real pass.",
   },
   {
     icon: ClipboardCheck,
     title: "Built for planning enquiries",
     description:
-      "Right-click any point for an instant capacity curve, then export straight to GIS or CSV.",
+      "Right-click any point for an instant pressure and flow curve, then export straight to GIS or CSV.",
   },
 ];
 
@@ -51,27 +51,27 @@ const faqs = [
   {
     question: "What's the difference between the two tools?",
     answer:
-      "The <strong>fire flow analysis</strong> tests many locations across the network at once and reports available or design fire flow for each. The <strong>pressure and flow analysis</strong> focuses on a single point and gives a full pressure-versus-flow curve. Use the first to find weak spots system-wide, and the second to understand one location in depth.",
+      "The <strong>fire flow analysis</strong> tests many locations across the network at once and reports available, needed, or designed fire flow for each. The <strong>pressure and flow analysis</strong> focuses on a single point and gives a full pressure-versus-flow curve. Use the first to find weak spots system-wide, and the second to understand one location in depth.",
   },
   {
-    question: "What does \"available fire flow\" mean?",
+    question: "What is \"available fire flow\"?",
     answer:
-      "It's the maximum flow a location can deliver while still holding a minimum residual pressure that you set. It answers how much capacity a hydrant or node actually has.",
+      "The maximum flow the network can supply at a location before pressure drops below the minimum residual you set. It answers how much capacity a hydrant or node actually has.",
   },
   {
-    question: "Can I test against a required flow rate?",
+    question: "What is \"needed fire flow\"?",
     answer:
-      "Yes. Set a design flow, such as 500 gpm, and the analysis reports the residual pressure the network holds while delivering it, so you can check it against your requirement.",
+      "If you have a required flow in mind, such as 500 gpm, the needed check delivers exactly that and reports the actual residual pressure the network holds while doing it, so you can compare it against your standard.",
   },
   {
-    question: "Does it check the rest of the network, not just the test point?",
+    question: "What is \"designed fire flow\"?",
     answer:
-      "Yes. The design fire flow check looks at minimum pressures and maximum velocities across the network, so a result that passes at the hydrant doesn't hide a problem upstream.",
+      "The system-wide check. It confirms that pulling fire flow at one node doesn't push pressures too low or velocities too high anywhere else in the network, so a result that passes at the hydrant doesn't hide a problem upstream.",
   },
   {
-    question: "Can I run it across every hydrant?",
+    question: "How fast is it, and can I run every hydrant?",
     answer:
-      "Yes. The fire flow analysis works through every hydrant or junction you have represented and reports a result for each, mapped across the network.",
+      "Yes. The fire flow analysis runs a rapid series of simulations — hundreds of nodes a second, thousands of runs — entirely in your browser, and reports a result for each hydrant or junction mapped across the network.",
   },
   {
     question: "Can I export the results?",
@@ -81,19 +81,19 @@ const faqs = [
   {
     question: "Do I have to change demands to run a fire flow test?",
     answer:
-      "No. Both tools handle the test setup for you, so there are no manual demand edits or workarounds to manage.",
+      "No. Both tools handle the test setup for you, so there are no manual demand edits or workarounds to manage. Because the engine supports pressure-dependent demands and emitters, the results reflect how the network really behaves under stress.",
   },
 ];
 ---
 
 <Layout
   title="Fire flow"
-  description="Test the fire flow capacity of every hydrant in your network, check available flow against your residual pressure target, and read a full pressure and flow curve for any point."
+  description="Test the fire flow capacity of every hydrant in your network with available, needed, and designed checks, and read a full pressure and flow curve for any point. Thousands of simulations, in your browser."
   lang={lang}>
   <PageHero
     eyebrow="Fire flow"
     title="Test the capacity of your network, hydrant by hydrant"
-    subtitle="Run fire flow across every hydrant and junction, check available flow against your residual pressure target, and map where capacity runs short. Then dig into any single point with a full pressure and flow curve.">
+    subtitle="Run fire flow across every hydrant and junction, check available, needed, and designed flow against your residual pressure target, and map where capacity runs short. Then dig into any single point with a full pressure and flow curve.">
     <MediaPlaceholder
       slot="media"
       label="Screen capture: a fire flow analysis sweeping the network, with each hydrant colored by available flow at the target residual pressure."
@@ -105,57 +105,74 @@ const faqs = [
     title="Capacity questions arrive constantly, and they're hard to answer by hand">
     <p>
       Can the network support a new development? Will this hydrant deliver the
-      required fire flow at an acceptable residual pressure? Where does the
-      system run short, and what would it take to fix it? Questions like these
-      come in from planners, fire departments, and developers all the time, and
-      answering them by editing EPANET demands one location at a time is slow and
-      easy to get wrong.
+      required fire flow at an acceptable residual pressure? Where does the system
+      run short, and what would it take to fix it? Questions like these come in
+      from planners, fire departments, and developers all the time, and answering
+      them by editing EPANET demands one location at a time is slow and easy to
+      get wrong.
     </p>
     <p>
       epanet-js gives you two purpose-built tools for this. A <strong>fire flow
       analysis</strong> tests the whole network at once, and a <strong>pressure
-      and flow analysis</strong> lets you dig into any single point. Together
+      and flow analysis</strong> lets you dig into any single point. Between them
       they answer almost every capacity question you'll be asked.
     </p>
   </ProseSection>
 
   <ContentMediaRow
     eyebrow="Fire flow analysis"
-    title="Test every hydrant and junction in one run">
+    title="Three checks, on every hydrant in the network">
     <p>
       Point the fire flow analysis at your hydrants, junctions, or whatever you
-      use to represent demand points, and it works through them one by one. For
-      each location it can answer three different questions:
+      use to represent demand points, and it works through them rapidly. For each
+      location it can answer three different questions:
     </p>
     <ul class="list-disc space-y-3 pl-5 marker:text-purple-400">
       <li>
-        <strong>Available fire flow</strong> — the default. The maximum flow the
-        location can deliver while holding a minimum residual pressure you set.
-        This is the “how much have I got?” answer.
+        <strong>Available fire flow</strong> — the maximum flow the network can
+        supply at a location before pressure drops below the minimum residual you
+        set. This is the “how much have I got?” answer.
       </li>
       <li>
-        <strong>Design fire flow</strong> — set a target flow rate, say 500 gpm,
-        and the analysis reports the residual pressure the network can hold while
-        delivering it. This is the “does it meet the requirement?” answer.
+        <strong>Needed fire flow</strong> — set a required flow, say 500 gpm, and
+        the analysis delivers exactly that and reports the actual residual
+        pressure the network holds. This is the “does it meet the requirement?”
+        answer.
       </li>
       <li>
-        <strong>Design fire flow with system limits</strong> — the same
-        target-flow test, checked against wider constraints across the network,
-        including minimum pressures and maximum velocities, so a pass at the
-        hydrant doesn't hide a problem somewhere else.
+        <strong>Designed fire flow</strong> — the system-wide check. It confirms
+        that pulling fire flow at one node doesn't violate pressure or velocity
+        limits anywhere else in the network, so a pass at the hydrant doesn't hide
+        a problem somewhere upstream.
       </li>
     </ul>
     <MediaPlaceholder
       slot="media"
       kind="image"
-      label="Screenshot: the fire flow setup with a residual pressure target and a choice of available, design, or design-with-limits mode."
+      label="Screenshot: the fire flow setup with a residual pressure target and a choice of available, needed, or designed mode."
     />
   </ContentMediaRow>
 
   <PullQuote>
-    Instead of editing demands by hand for one hydrant at a time, you test the
-    whole network in a single run.
+    A faster way to run fire flow: hundreds of simulations a second, all in your
+    browser.
   </PullQuote>
+
+  <ProseSection eyebrow="How it runs" title="Thousands of simulations, no setup">
+    <p>
+      Fire flow has always meant running the model again and again, one location
+      at a time. epanet-js does it as a rapid series of simulations behind a
+      single action, processing hundreds of nodes a second and thousands of runs
+      in total, entirely in your browser. There's no batch to configure and no
+      demand hacking to keep track of — you choose the check, set your residual
+      target, and read the result for every hydrant at once.
+    </p>
+    <p>
+      Because it runs on the EPANET 2.3 engine with pressure-dependent demands
+      and emitters, the numbers reflect how the network actually behaves when you
+      draw a large flow, not a simplified fixed-demand approximation.
+    </p>
+  </ProseSection>
 
   <ContentMediaRow
     eyebrow="Pressure and flow analysis"
@@ -164,8 +181,8 @@ const faqs = [
     <p>
       Sometimes you don't need the whole network. You need to understand one
       location in depth. Right-click a point and the pressure and flow analysis
-      builds a hydraulic curve for it: across a range of flows, 0, 5, 10, 15, 20
-      L/s and up, it shows how far the pressure drops. In a few seconds you can
+      builds a hydraulic curve for it: across a range of flows — 0, 5, 10, 15, 20
+      L/s and up — it shows how far the pressure drops. In a few seconds you can
       read exactly how much capacity is there and where it gives out.
     </p>
     <p>
@@ -233,6 +250,37 @@ const faqs = [
       One tool, working on the same model, answers for all of them. There are no
       separate spreadsheets and no one-off demand hacks to keep track of.
     </p>
+  </ProseSection>
+
+  <ProseSection
+    eyebrow="See it in practice"
+    title="Watch a fire flow analysis end to end">
+    <p>
+      The clearest way to see fire flow at work is to follow it on a real
+      network. Our worked examples take raw GIS data all the way through to a
+      running model and a fire flow test, with the files included so you can
+      build it yourself:
+    </p>
+    <ul class="list-disc space-y-2 pl-5 marker:text-purple-400">
+      <li>
+        <a
+          href="https://help.epanetjs.com/Worked-example-2-Roseberry-AU-2f7e18c9f0f680cebb07c46ae0690645"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+          >Worked example: Roseberry, AU</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://help.epanetjs.com/Worked-example-1-Wheelwright-KY-1c7e18c9f0f680d088b5d45bdece1e67"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+          >Worked example: Wheelwright, KY</a
+        >
+      </li>
+    </ul>
   </ProseSection>
 
   <CardGrid
