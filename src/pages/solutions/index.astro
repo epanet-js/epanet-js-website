@@ -1,27 +1,115 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import PullQuote from "@components/marketing/PullQuote.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
-import { solutions } from "@config/navigation";
+import { solutions, whoItsFor } from "@config/navigation";
+import { Cpu, Lock, MonitorOff, Unlock } from "lucide-react";
 
 export const prerender = true;
 const lang = "en";
 
 const liveColumn = solutions.columns.find((c) => c.heading === "Available now");
 const soonColumn = solutions.columns.find((c) => c.heading === "Coming soon");
+
+const benefits = [
+  {
+    icon: Cpu,
+    title: "The engine you trust",
+    description:
+      "Built on EPANET 2.3, the same engine the industry has relied on for decades. Open any .inp file and keep your work.",
+  },
+  {
+    icon: Lock,
+    title: "Local-first and private",
+    description:
+      "Models run and save on your machine by default. Nothing leaves your control unless you choose the cloud.",
+  },
+  {
+    icon: MonitorOff,
+    title: "Nothing to install",
+    description:
+      "Runs in any modern browser on Mac, Windows, and Linux. No installs, no IT tickets, no waiting.",
+  },
+  {
+    icon: Unlock,
+    title: "Open and affordable",
+    description:
+      "Public source from day one under an FSL license, with a free tier and fair pricing. No proprietary lock-in.",
+  },
+];
+
+const faqs = [
+  {
+    question: "What is epanet-js?",
+    answer:
+      "A modern hydraulic modeling tool that runs in your browser, built on the trusted EPANET engine. It covers the whole lifecycle of a model — building, demand, calibration, operations, and planning — in one place.",
+  },
+  {
+    question: "Is it free?",
+    answer:
+      "There's a free tier you can use without even logging in, and free access for education. Paid plans add professional features and team licensing. See <a href=\"/pricing\">pricing</a> for the details.",
+  },
+  {
+    question: "Which workflows are available now?",
+    answer:
+      "Model building, calibration, fire flow, and operational modeling are live today. Flow balance, master planning, and field planning are on the way — follow them on our <a href=\"https://roadmap.epanetjs.com\" target=\"_blank\" rel=\"noopener noreferrer\">public roadmap</a>.",
+  },
+  {
+    question: "Does it use the real EPANET engine?",
+    answer:
+      "Yes. epanet-js runs the EPANET 2.3 engine, including pressure-dependent demands and FAVAD leakage, and opens standard EPANET <strong>.inp</strong> files so your existing models come straight in.",
+  },
+  {
+    question: "Do I need to install anything?",
+    answer:
+      "No. It runs in any modern browser on Mac, Windows, and Linux. There's nothing to install and nothing for IT to approve.",
+  },
+  {
+    question: "Is my data private?",
+    answer:
+      "By default, models run and save locally in your browser — nothing is uploaded unless you choose to use the cloud. Read more on the <a href=\"/security\">security page</a>.",
+  },
+];
 ---
 
 <Layout
   title="Solutions"
-  description="One tool for the whole hydraulic modeling lifecycle — build, calibrate, plan, and operate your water network with epanet-js."
+  description="One tool for the whole hydraulic modeling lifecycle — build, balance demand, calibrate, operate, and plan your water network with epanet-js, on the trusted EPANET engine."
   lang={lang}>
   <PageHero
     eyebrow="Solutions"
     title="One tool for the whole hydraulic modeling lifecycle"
-    subtitle="From building your first model to running it every day, epanet-js helps you get to the answer faster. Explore what you can do — most workflows are available now, with more on the way."
+    subtitle="From building your first model to running it every day, epanet-js helps you get to the answer faster. Most workflows are available now, with more on the way."
     align="center"
   />
+
+  <ProseSection
+    eyebrow="Why one tool"
+    title="The whole lifecycle of a model, in one place"
+    align="center">
+    <p>
+      Most teams juggle a different tool for every stage of modeling: one to
+      build the network, a spreadsheet to balance demand, something else to
+      calibrate, and a separate package to plan ahead. The handoffs between them
+      are where time is lost and errors creep in.
+    </p>
+    <p>
+      epanet-js brings the stages together. You build the model, load and balance
+      demand, plan the field campaign, calibrate against what you measure,
+      operate day to day, and plan years ahead — all on one model, without
+      exporting between tools or stitching results together by hand.
+    </p>
+  </ProseSection>
+
+  <PullQuote>
+    One model carries from the first pipe you draw to the master plan you defend
+    years later.
+  </PullQuote>
 
   {
     liveColumn && (
@@ -48,8 +136,79 @@ const soonColumn = solutions.columns.find((c) => c.heading === "Coming soon");
     )
   }
 
+  <ProseSection
+    eyebrow="How it fits together"
+    title="Each workflow feeds the next">
+    <p>
+      The workflows aren't separate products — they're stages of the same job.
+      <a href="/solutions/model-build" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Model building</a>
+      turns your GIS into a running network.
+      <a href="/solutions/flow-balance" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Flow balance</a>
+      loads it with demand that reflects how water is really used.
+      <a href="/solutions/field-planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Field planning</a>
+      designs the measurement campaign, and
+      <a href="/solutions/calibration" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">calibration</a>
+      tunes the model against what you bring back.
+    </p>
+    <p>
+      From there, a model you trust earns its keep:
+      <a href="/solutions/fire-flow" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">fire flow</a>
+      answers capacity questions,
+      <a href="/solutions/operational-modeling" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">operational modeling</a>
+      tests changes before you make them, and
+      <a href="/solutions/master-planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">master planning</a>
+      stages the investment years ahead. Start anywhere, and the rest is right
+      where you left off.
+    </p>
+  </ProseSection>
+
+  <BenefitGrid
+    eyebrow="Why teams choose epanet-js"
+    heading="Trusted, private, and open"
+    items={benefits}
+    columns={4}
+  />
+
+  <ProseSection
+    eyebrow="Built to last"
+    title="On the EPANET you know, kept open for everyone">
+    <p>
+      EPANET was a gift to the water industry: free, open-source modeling for
+      all. epanet-js builds on that engine and keeps the spirit, with source
+      that's public from day one and becomes fully open after two years. The aim
+      is a tool that's accessible, fairly priced, and sustainable, so more teams
+      can build and understand their networks without being limited by cost.
+    </p>
+    <p>
+      That approach has drawn a growing community — more than 2,000 registered
+      members, founding partners spanning utilities and global consultancies, and
+      a workshop with the US EPA at the 2026 World Environmental &amp; Water
+      Resources Congress.
+    </p>
+  </ProseSection>
+
   <CtaSection
     heading="See it on your own network"
     subheading="Launch epanet-js free in your browser, or book a demo to see how it fits your workflow."
+    dark={false}
+  />
+
+  <CardGrid
+    eyebrow="Who it's for"
+    heading="Built for everyone who works with water networks"
+    subheading="However you work with the network, there's a path that fits."
+    items={whoItsFor.columns[0].items}
+    columns={4}
+  />
+
+  <FaqList
+    eyebrow="FAQ"
+    subheading="The questions people ask most about what epanet-js can do."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Start with the workflow you need today"
+    subheading="Launch epanet-js free — no login, no install — or book a demo to walk through the lifecycle with us."
   />
 </Layout>
