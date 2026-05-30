@@ -1,41 +1,44 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
 import { solutions } from "@config/navigation";
-import { Zap, FileCheck, MonitorOff, Layers } from "lucide-react";
+import { Clock, Database, Mountain, ShieldCheck } from "lucide-react";
 
 export const prerender = true;
 const lang = "en";
 
 const benefits = [
   {
-    icon: Zap,
-    title: "Days to minutes",
+    icon: Clock,
+    title: "Hours, not weeks",
     description:
-      "Get from raw data to a running model in minutes instead of spending days wrangling files and fixing geometry.",
+      "A complete, connected, running model in an afternoon, built from data that used to take a project to assemble.",
   },
   {
-    icon: FileCheck,
-    title: "No data conversion",
+    icon: Database,
+    title: "Any data, any size",
     description:
-      "Open .inp files directly and bring in GIS layers as-is. No proprietary conversion step, no lossy exports.",
+      "Shapefile, GeoJSON, and EPANET .inp files today, on networks from a few hundred pipes to several hundred thousand junctions.",
   },
   {
-    icon: Layers,
-    title: "Smart automation",
+    icon: Mountain,
+    title: "Accurate from the start",
     description:
-      "Auto-junctions, auto-elevations, and snapping handle the tedious parts so you can focus on the network.",
+      "Worldwide elevation is built in, and you can load your own DEM whenever you need survey-grade ground levels.",
   },
   {
-    icon: MonitorOff,
-    title: "No installs",
+    icon: ShieldCheck,
+    title: "A model you can defend",
     description:
-      "Runs in any modern browser on Mac, Windows, or Linux. Nothing to install, nothing for IT to approve.",
+      "A guided review tells you what is connected, what crosses, and what has been checked before you rely on a result.",
   },
 ];
 
@@ -43,92 +46,280 @@ const related = solutions.columns
   .flatMap((c) => c.items)
   .filter((i) => i.href !== "/solutions/model-build")
   .slice(0, 3);
+
+const faqs = [
+  {
+    question: "What file formats can I import?",
+    answer:
+      "Shapefile and GeoJSON today, with more GIS formats on the way. You can also open any EPANET <strong>.inp</strong> file, from version 2.3 back through earlier releases.",
+  },
+  {
+    question: "Is there a limit on how large my network can be?",
+    answer:
+      "There is no practical ceiling. Networks from a few hundred pipes up to several hundred thousand junctions open, edit, and run.",
+  },
+  {
+    question: "Where do node elevations come from?",
+    answer:
+      "Elevations are assigned automatically from a worldwide digital elevation model, so every node has a ground level anywhere on earth. When you need higher accuracy, import your own DEM and the model uses your survey data instead.",
+  },
+  {
+    question: "I inherited a model with no coordinate system. Can I still use it?",
+    answer:
+      "Yes. A guided process lets you line the network up against a basemap, try coordinate systems, and watch it snap into place. Once it is georeferenced you can work against real-world imagery and bring in new GIS data alongside it.",
+  },
+  {
+    question: "Do I have to clean my data before I import it?",
+    answer:
+      "No. epanet-js does the connection and snapping work as the data comes in, then guides you through anything that needs a human decision in the Network Review panel.",
+  },
+  {
+    question: "Can I draw a network from scratch?",
+    answer:
+      "Yes. Trace your network over satellite or street imagery and junctions, snapping, and intersection detection are handled as you draw.",
+  },
+  {
+    question: "Do I need to install anything?",
+    answer:
+      "No. epanet-js runs in any modern browser on Mac, Windows, and Linux. There is nothing to install and nothing for IT to approve.",
+  },
+];
 ---
 
 <Layout
   title="Model building"
-  description="Turn your GIS and asset data into a working hydraulic model — fast. Import .inp, Shapefile, and GeoJSON or draw over a satellite basemap."
+  description="Build a working hydraulic model from the GIS and asset data you already have. Import Shapefile, GeoJSON, and EPANET .inp, draw over a real-world basemap, and run in the browser."
   lang={lang}>
   <PageHero
     eyebrow="Model building"
-    title="Turn your GIS and asset data into a working model — fast"
-    subtitle="Import what you already have, build visually on a real-world basemap, and run a simulation in minutes. The fastest way to go from data to a model you can trust.">
+    title="Build a working hydraulic model from the data you already have"
+    subtitle="Bring in your GIS, trace what your records don't cover on a real-world map, and run a simulation the same day. Model building in epanet-js takes you from raw data to a model you can trust in hours, not weeks.">
     <MediaPlaceholder
       slot="media"
-      label="Screen capture: importing a GIS layer and watching it become a connected, running model in seconds."
+      label="Screen capture: GIS layers dropped in and assembling into a connected, color-coded model that runs on screen."
     />
   </PageHero>
 
-  <ContentMediaRow eyebrow="1. Import" title="Bring in the data you already have">
+  <ProseSection
+    eyebrow="Why it matters"
+    title="The slow part of modeling isn't the analysis. It's getting to a model.">
     <p>
-      Start from your existing work. epanet-js opens EPANET <strong>.inp</strong>
-      files directly and imports <strong>GIS vector data</strong> — Shapefile and
-      GeoJSON — so your pipes, nodes, and attributes come in without a clumsy conversion
-      step.
+      For most teams the hardest part of hydraulic modeling isn't running a
+      simulation. It's getting to a complete, connected network in the first
+      place. The source data is scattered across GIS exports, asset registers,
+      record drawings, and spreadsheets, and stitching it together by hand is
+      slow, repetitive work that can stretch a model out for weeks.
     </p>
     <p>
-      No GIS layer? Trace your network by hand over a satellite or street
-      basemap. Either way, auto-junctions and automatic elevations do the
-      tedious setup for you.
+      epanet-js is built to take that work off your hands. As your data comes
+      in, we connect it, snap it, and elevate it, then show you a clear review
+      of anything that still needs a human decision. What you get at the end is
+      a model that's ready to run, not a project that drags on.
+    </p>
+  </ProseSection>
+
+  <PullQuote>
+    Getting to a complete, connected network used to take weeks. In epanet-js it
+    takes an afternoon.
+  </PullQuote>
+
+  <ContentMediaRow
+    eyebrow="Start from your data"
+    title="Bring in the GIS you already have">
+    <p>
+      Most networks already exist somewhere in GIS. epanet-js reads
+      <strong>Shapefile</strong> and <strong>GeoJSON</strong> directly, with more
+      formats on the way, so your pipes, nodes, and attributes come in the way you
+      exported them. There's no proprietary conversion step and nothing lost in
+      translation.
+    </p>
+    <p>
+      Already have an EPANET model? Open any <strong>.inp</strong> file, from EPANET
+      2.3 back through every earlier version, and pick up where it left off.
+    </p>
+    <p>
+      Size isn't a constraint. Whether your network is a few hundred pipes or
+      several hundred thousand junctions, it opens, edits, and runs.
     </p>
     <MediaPlaceholder
       slot="media"
       kind="image"
-      label="Diagram: the three ways in — .inp file, GIS (Shapefile / GeoJSON), and draw-on-basemap — all flowing into one model."
+      label="Diagram: Shapefile, GeoJSON, and .inp flowing into a single connected model on a basemap."
     />
   </ContentMediaRow>
 
   <ContentMediaRow
-    eyebrow="2. Build"
-    title="Edit visually, with modern tools"
+    eyebrow="Fill the gaps"
+    title="Draw what your records don't cover"
     reverse>
     <p>
-      Draw, connect, and edit elements with an interface built for speed. Click
-      to add nodes, pipes, and reservoirs, snap to existing geometry, and adjust
-      properties without hunting through dialog boxes.
+      Not every pipe is in GIS. Where data is missing, trace the network by hand
+      over satellite or street imagery. As you draw, junctions are created and
+      snapped for you, intersections and tees are detected, and segments are
+      merged so the network stays connected without manual tidying.
     </p>
     <p>
-      Made a mistake? <strong>Undo and redo</strong> are finally here. Work
-      against real-world imagery so what you build matches what's in the ground.
+      Undo and redo are there throughout, which is something the EPANET workflow
+      has gone without for far too long. Work against real-world imagery so what
+      you draw matches what's in the ground.
     </p>
     <MediaPlaceholder
       slot="media"
-      label="Screen capture: drawing and connecting pipes over satellite imagery, with undo/redo in action."
+      label="Screen capture: drawing pipes over satellite imagery with junctions snapping into place and undo/redo in use."
     />
   </ContentMediaRow>
 
-  <ContentMediaRow eyebrow="3. Run" title="Simulate instantly and see results">
+  <ContentMediaRow
+    eyebrow="Elevations"
+    title="Accurate ground levels, anywhere in the world">
     <p>
-      Press <strong>Shift + Enter</strong> and you're done — the trusted EPANET
-      engine runs your model right in the browser.
+      Elevation is one of the most tedious parts of model setup, and one of the
+      easiest to get wrong. epanet-js assigns elevations automatically from a
+      worldwide digital elevation model, so every node has a ground level the
+      moment it's placed, no matter where your network sits.
     </p>
     <p>
-      Review pressures, flow paths, and velocities at a glance, all colour-coded
-      on the map. Spot problems immediately and keep iterating.
+      Need more precision? Import your own DEM and the model uses your survey or
+      LiDAR data instead, giving you high-accuracy levels exactly where it
+      counts.
     </p>
     <MediaPlaceholder
       slot="media"
       kind="image"
-      label="Screenshot: colour-coded pressure and flow results displayed on the network map."
+      label="Screenshot: nodes picking up elevations from terrain, with a panel to load a custom DEM."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="Existing models"
+    title="Put an inherited model back on the map"
+    reverse>
+    <p>
+      Picking up a model with no coordinates, or an unknown projection, is a
+      common headache. epanet-js gives you a guided way to find the right
+      coordinate system: line the network up against a basemap, try projections,
+      and watch it drop into place.
+    </p>
+    <p>
+      Once it's georeferenced you can work against real-world imagery, bring in
+      new GIS layers alongside it, and treat an old model like a living one
+      again.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: an un-georeferenced network being aligned to a basemap as the correct projection is found."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="Clean as you build"
+    title="The cleanup that used to be manual, handled for you">
+    <p>
+      Most of the time spent building a model goes into the connection work that
+      nobody enjoys. epanet-js does that as the data arrives: dangling nodes are
+      resolved, pipes that don't quite meet are snapped together, and missing
+      attributes like diameters are flagged rather than left to fail quietly.
+    </p>
+    <p>
+      What can't be decided automatically goes to a <strong>Network Review</strong>
+      panel that walks you through it, one decision at a time:
+    </p>
+    <ul class="list-disc space-y-2 pl-5 marker:text-purple-400">
+      <li>
+        <strong>Crossing pipes</strong> — find places where pipes cross without a
+        connection and decide whether they should join.
+      </li>
+      <li>
+        <strong>Proximity checks</strong> — catch pipes that overshoot or
+        undershoot a junction and tidy the geometry.
+      </li>
+      <li>
+        <strong>Connectivity trace</strong> — confirm the whole network is
+        interconnected, with nothing stranded or isolated.
+      </li>
+    </ul>
+    <p>
+      Instead of hunting for these problems yourself, you work through a clear
+      list of decisions and know exactly what's been checked.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: the Network Review panel listing crossing pipes, proximity issues, and a connectivity trace with recommendations."
+    />
+  </ContentMediaRow>
+
+  <PullQuote>
+    You don't have to trust that the import worked. The review panel shows you
+    exactly what needs a decision, and why.
+  </PullQuote>
+
+  <ContentMediaRow
+    eyebrow="Run it"
+    title="Simulate in the browser, read results on the map"
+    reverse>
+    <p>
+      Press <strong>Shift + Enter</strong> and the trusted EPANET engine runs
+      your model right in the browser. Pressures, flows, and velocities are
+      colored across the network so you can read it at a glance, spot problems,
+      and keep iterating.
+    </p>
+    <p>
+      It all happens locally, in a tab, with nothing sent to a server unless you
+      choose to. That makes it fast to run and private by default.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: pressing Shift + Enter and watching color-coded pressure and flow results appear on the map."
     />
   </ContentMediaRow>
 
   <BenefitGrid
     eyebrow="Outcomes"
-    heading="Why teams build models in epanet-js"
+    heading="What model building gives you"
     items={benefits}
     columns={4}
   />
 
+  <CtaSection
+    heading="Build your first model today"
+    subheading="Open epanet-js in your browser, bring in your GIS, and run a simulation in minutes. No login, nothing to install."
+    dark={false}
+  />
+
+  <ProseSection
+    eyebrow="One ecosystem"
+    title="Model building is one part of the whole picture">
+    <p>
+      A model is rarely finished the moment the network is drawn. You still have
+      to load it with demand, balance the flows, calibrate it against the field,
+      and keep it current as the system changes. epanet-js is built so those
+      steps live together in one place.
+    </p>
+    <p>
+      Model building flows straight into flow balance, pressure and flow
+      calibration, and field testing, without exporting to another tool,
+      dropping into a spreadsheet, or stitching results together by hand.
+      Building the model is the start of the work, and the whole package is
+      designed so the next step is always right where you left off.
+    </p>
+  </ProseSection>
+
   <CardGrid
-    heading="Keep going"
-    subheading="Once your model is built, take it further."
+    heading="Where to next"
+    subheading="Once your model is built, keep going."
     items={related}
     columns={3}
   />
 
+  <FaqList
+    eyebrow="FAQ"
+    subheading="The questions teams ask most about building a model in epanet-js."
+    items={faqs}
+  />
+
   <CtaSection
-    heading="Build your first model in minutes"
-    subheading="Launch epanet-js free — no login, no install — and import your data right now."
+    heading="From data to a model you can trust"
+    subheading="See how fast model building can be. Launch epanet-js free, or book a demo to walk through it with us."
   />
 </Layout>
