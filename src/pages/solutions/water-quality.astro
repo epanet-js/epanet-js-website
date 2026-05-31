@@ -1,0 +1,41 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+
+export const prerender = true;
+const lang = "en";
+---
+
+<Layout
+  title="Water quality"
+  description="Model water quality across your network: water age, source tracing, and chlorine and other constituents, on the EPANET engine."
+  lang={lang}>
+  <PageHero
+    title="Model water quality across your network"
+    subtitle="Track water age, trace sources, and follow chlorine and other constituents through the system.">
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: water age or chlorine concentration color-coded across the network over a simulation."
+    />
+  </PageHero>
+
+  <ProseSection title="See where the water goes, and how old it is">
+    <p>
+      epanet-js runs the standard EPANET water quality analyses, including water
+      age, source tracing, and chemical constituents such as chlorine, with MSX
+      for multi-species reactions.
+    </p>
+    <p>
+      This page is a work in progress. We'll add detail on each analysis and how
+      to read the results soon.
+    </p>
+  </ProseSection>
+
+  <CtaSection
+    heading="Check the quality of your network"
+    subheading="Launch epanet-js free and run a water quality analysis, or book a demo to see it on your model."
+  />
+</Layout>

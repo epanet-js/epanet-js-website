@@ -47,7 +47,7 @@ const benefits = [
 
 const related = solutions.columns
   .flatMap((c) => c.items)
-  .filter((i) => i.href !== "/solutions/flow-balance")
+  .filter((i) => i.href !== "/solutions/demand-analysis")
   .slice(0, 3);
 
 const faqs = [
@@ -62,14 +62,14 @@ const faqs = [
       "Each customer point is connected to the nearest suitable pipe using rules you set, such as a maximum pipe diameter and a search distance, so demand attaches to distribution mains rather than large transmission lines. You can reconnect any point by hand, and see the total customer demand on both the junction and the pipe.",
   },
   {
-    question: "What is flow balance adding on top of that?",
+    question: "What is demand analysis adding on top of that?",
     answer:
       "A layer that reconciles the demand you've allocated against what your meters actually record. It brings DMA inflow and consumption together so each zone balances, and surfaces the difference as leakage rather than leaving it buried.",
   },
   {
     question: "How is leakage handled?",
     answer:
-      "Pressure matters for leakage, so the engine's emitter and pressure-dependent demand support let you represent leakage that rises and falls with pressure, instead of a fixed number. Flow balance builds on that to keep the zonal picture honest.",
+      "Pressure matters for leakage, so the engine's emitter and pressure-dependent demand support let you represent leakage that rises and falls with pressure, instead of a fixed number. Demand analysis builds on that to keep the zonal picture honest.",
   },
   {
     question: "When will the balancing tools be available?",
@@ -80,7 +80,7 @@ const faqs = [
 ---
 
 <Layout
-  title="Flow balance"
+  title="Demand analysis"
   description="Build an accurate picture of demand across your network. Allocate consumption to customers, apply demand profiles, and reconcile metered inflow against use so every zone balances. Coming soon to epanet-js."
   lang={lang}>
   <PageHero
@@ -104,7 +104,7 @@ const faqs = [
       result inherits the error, however careful the rest of the work.
     </p>
     <p>
-      Flow balance is about making that demand picture accurate and keeping it
+      Demand analysis is about making that demand picture accurate and keeping it
       honest, so the loading on your network is something you can trust rather
       than something you've assumed.
     </p>
@@ -158,7 +158,7 @@ const faqs = [
   <ContentMediaRow
     title="Reconcile inflow with consumption, zone by zone">
     <p>
-      This is where flow balance is heading. With demand allocated and profiled,
+      This is where demand analysis is heading. With demand allocated and profiled,
       the next step is to bring it together with what your meters record:
       reconcile the metered inflow into each DMA against the consumption assigned
       inside it, so every zone adds up.
@@ -185,7 +185,7 @@ const faqs = [
       flat allowance.
     </p>
     <p>
-      Flow balance builds on that to keep the zonal reconciliation realistic, so
+      Demand analysis builds on that to keep the zonal reconciliation realistic, so
       the water you can't account for is modeled the way it actually behaves.
     </p>
     <MediaPlaceholder
@@ -195,13 +195,13 @@ const faqs = [
   </ContentMediaRow>
 
   <BenefitGrid
-    heading="Flow balance, the epanet-js way"
+    heading="Demand analysis, the epanet-js way"
     items={benefits}
     columns={4}
   />
 
   <CtaSection
-    heading="Want flow balance for your network?"
+    heading="Want demand analysis for your network?"
     subheading="Tell us how you handle demand and zonal balance today — it helps us build the right thing."
     primaryCta={comingSoonPrimary}
     secondaryCta={comingSoonSecondary}
@@ -217,8 +217,8 @@ const faqs = [
       loading carries through to
       <a href="/solutions/operational-modeling" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">operational modeling</a>
       and
-      <a href="/solutions/master-planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">master planning</a>.
-      That's why flow balance lives in the same tool, not a separate spreadsheet.
+      <a href="/solutions/planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">planning</a>.
+      That's why demand analysis lives in the same tool, not a separate spreadsheet.
     </p>
   </ProseSection>
 
@@ -235,7 +235,7 @@ const faqs = [
   />
 
   <CtaSection
-    heading="Help shape flow balance"
+    heading="Help shape demand analysis"
     subheading="Tell us how you build and balance demand today. Launch epanet-js to use the demand tools now, or talk to us about what's next."
     primaryCta={comingSoonPrimary}
     secondaryCta={comingSoonSecondary}

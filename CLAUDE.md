@@ -36,10 +36,11 @@ Match the established voice. The site should not read as AI-generated. Reference
   - Founding partners: Optimatics, Affinity Water, AtkinsRéalis. **Anglian Water** is a partner the owner mentioned but it is **not yet announced publicly** — name it in prose only, never with a quote, until confirmed public.
 - **Pricing:** keep qualitative ("free tier", "free for education", "affordable per-seat", "no lock-in") and link to `/pricing`. Don't hardcode dollar figures that will drift.
 
-## Coming-soon treatment
+## Solutions menu & coming-soon treatment
 
-- Roadmap workflows (flow balance, master planning, field planning) keep a subtle "Coming soon" signal via the **column heading** in the mega-menu and the `ComingSoonBadge` on the page hero / `CardGrid` cards.
-- Do **not** add a per-item "Coming soon" badge inside the mega-menu — the column heading already conveys it.
+- The Solutions mega-menu is organized into two **lifecycle groups** in `navigation.ts`: **"Build your model"** (model building, field planning, demand analysis, calibration) and **"Use your model"** (model import, planning, operational modeling, water quality, fire flow, valve criticality). It is grouped by workflow and does **not** signal what is available now vs. coming. Don't add "Coming soon" badges or availability labels to the menu or the nav-driven `CardGrid`s.
+- Slugs of note: demand analysis lives at `/solutions/demand-analysis` (formerly "flow balance"), planning at `/solutions/planning` (formerly "master planning"). Keep the "master plan" noun (a deliverable) but call the workflow "planning".
+- Some solution pages are intentionally **barebones** and will be filled in later: `model-import`, `water-quality`, `valve-criticality`. Don't pad them with invented detail.
 
 ## Git
 

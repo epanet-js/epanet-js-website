@@ -13,8 +13,8 @@ import { Cpu, Lock, MonitorOff, Unlock } from "lucide-react";
 export const prerender = true;
 const lang = "en";
 
-const liveColumn = solutions.columns.find((c) => c.heading === "Available now");
-const soonColumn = solutions.columns.find((c) => c.heading === "Coming soon");
+const buildColumn = solutions.columns.find((c) => c.heading === "Build your model");
+const useColumn = solutions.columns.find((c) => c.heading === "Use your model");
 
 const benefits = [
   {
@@ -55,9 +55,9 @@ const faqs = [
       "There's a free tier you can use without even logging in, and free access for education. Paid plans add professional features and team licensing. See <a href=\"/pricing\">pricing</a> for the details.",
   },
   {
-    question: "Which workflows are available now?",
+    question: "What can I do with it?",
     answer:
-      "Model building, calibration, fire flow, and operational modeling are live today. Flow balance, master planning, and field planning are on the way — follow them on our <a href=\"https://roadmap.epanetjs.com\" target=\"_blank\" rel=\"noopener noreferrer\">public roadmap</a>.",
+      "The workflows fall into two groups. To get to a model: model building, field planning, demand analysis, and calibration. To work with one: model import, planning, operational modeling, water quality, fire flow, and valve criticality. Explore them all under <a href=\"/solutions\">solutions</a>.",
   },
   {
     question: "Does it use the real EPANET engine?",
@@ -110,22 +110,22 @@ const faqs = [
   </PullQuote>
 
   {
-    liveColumn && (
+    buildColumn && (
       <CardGrid
-        heading="Get the job done today"
-        subheading="Live workflows you can use right now, built on the trusted EPANET engine."
-        items={liveColumn.items}
+        heading="Build your model"
+        subheading="Everything you need to get to a model you can trust."
+        items={buildColumn.items}
         columns={4}
       />
     )
   }
 
   {
-    soonColumn && (
+    useColumn && (
       <CardGrid
-        heading="On the roadmap"
-        subheading="Where epanet-js is heading next. Tell us what matters most for your work."
-        items={soonColumn.items}
+        heading="Use your model"
+        subheading="Put your model to work, from everyday operations to long-term planning."
+        items={useColumn.items}
         columns={3}
         class="pt-0"
       />
@@ -138,7 +138,7 @@ const faqs = [
       The workflows aren't separate products — they're stages of the same job.
       <a href="/solutions/model-build" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Model building</a>
       turns your GIS into a running network.
-      <a href="/solutions/flow-balance" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Flow balance</a>
+      <a href="/solutions/demand-analysis" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Demand analysis</a>
       loads it with demand that reflects how water is really used.
       <a href="/solutions/field-planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Field planning</a>
       designs the measurement campaign, and
@@ -151,7 +151,7 @@ const faqs = [
       answers capacity questions,
       <a href="/solutions/operational-modeling" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">operational modeling</a>
       tests changes before you make them, and
-      <a href="/solutions/master-planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">master planning</a>
+      <a href="/solutions/planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">planning</a>
       stages the investment years ahead. Start anywhere, and the rest is right
       where you left off.
     </p>
