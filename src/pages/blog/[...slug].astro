@@ -5,7 +5,8 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 
 // --- CHANGE: Import your NEW local component ---
-import TableOfContents from "@components/TableOfContents.astro"; 
+import TableOfContents from "@components/TableOfContents.astro";
+import AccessBadge from "@components/AccessBadge.astro";
 
 export const prerender = true;
 
@@ -67,7 +68,7 @@ const ogImageUrl = `/og/${customSlug}.png`;
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
       <article class="lg:col-span-9 prose prose-lg max-w-none prose-headings:scroll-mt-24">
-        <Content />
+        <Content components={{ AccessBadge }} />
       </article>
 
       <aside class="hidden lg:block lg:col-span-3">
