@@ -307,7 +307,7 @@ Pipe material and installation year are optional attributes that let you enrich 
 
 <AccessBadge tier="paid" />
 
-You can now import zone polygons from GeoJSON straight onto the map. Adjacent zones are automatically given distinct colors, so neighbouring areas never share a shade, and any polygons that share the same name are merged into a single zone. Zones are saved as part of the new .ejsdb project file.
+You can now import zone polygons from GIS data straight onto the map. Adjacent zones are automatically given distinct colors, so neighbouring areas never share a shade, and any polygons that share the same name are merged into a single zone. Zones are saved as part of the new .ejsdb project file.
 
 This is just the foundation. Zones might look like a small feature today, but we have big plans for them. Soon you'll be able to assign a selection of assets to a zone and make zones a much more dynamic part of the model — bulk-allocate customer points knowing every customer is correctly connected within its zone, and set default demands and patterns at the zone level for the assets inside to inherit, so you can test a different demand or pattern by changing it once and watching the whole zone update. You'll also get zone-level statistics such as minimum and maximum pressure; because those are tied to the assets in the zone's selection list, other assets crossing the area won't throw off the numbers.
 
@@ -319,7 +319,7 @@ This is just the foundation. Zones might look like a small feature today, but we
                 width:100%;"
   />
   <figcaption>
-    Import zone polygons from GeoJSON; adjacent zones are automatically given
+    Import zone polygons from GIS data; adjacent zones are automatically given
     distinct colors.
   </figcaption>
 </figure>
@@ -379,6 +379,7 @@ It's still an experimental language, but it's a meaningful step toward making hi
 - **Edit first demand from the data table:** You can now set a junction's first demand directly in the data tables.
 - **Sticky label column:** The asset label column is now pinned to the left of the data tables. When scrolling horizontally through wide tables, the label stays fixed so you always know which asset each row belongs to.
 - **Default demand on import:** Set a default demand value when importing customer points.
+- **Import customer points from Shapefiles:** You can now import customer points from Shapefiles, in addition to GeoJSON.
 
 ## **Fixes**
 
