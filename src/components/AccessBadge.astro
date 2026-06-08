@@ -9,7 +9,7 @@ const { tier } = Astro.props;
 
 const styles: Record<Tier, string> = {
   priority: "bg-blue-50   text-blue-700   ring-blue-200",
-  paid:     "bg-indigo-50 text-indigo-700 ring-indigo-200",
+  paid:     "bg-purple-50 text-purple-700 ring-purple-200",
 };
 
 const defaultLabel: Record<Tier, string> = {
@@ -20,7 +20,7 @@ const defaultLabel: Record<Tier, string> = {
 
 <span
   class:list={[
-    "not-prose block w-max -mt-4 items-center rounded-full px-3 py-2",
+    "not-prose block w-max -mt-2 items-center rounded-full px-3 py-2",
     "text-sm font-medium leading-none ring-1 ring-inset",
     styles[tier],
   ]}
