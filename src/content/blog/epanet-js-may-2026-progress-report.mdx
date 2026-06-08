@@ -18,7 +18,7 @@ Alongside those, we've shipped time-series custom graphs, full data export (asse
 
 And we're turning one. Join us at the end of the month for a live Office Hours session to celebrate epanet-js's first anniversary — details just below.
 
-<!-- more -->
+{/* more */}
 
 <div style="text-align: center">
 <a href="https://app.epanetjs.com" style="
@@ -66,7 +66,8 @@ When you open one of these features on the free plan, you'll see a gentle nudge 
 This month, HGL profiles and time-series custom graphs are available through priority access.
 
 <figure>
-  <!-- TODO: screenshot of the priority access modal -->
+  
+  {/* TODO: screenshot of the priority access modal */} 
   <img src="/assets/blog/progress-report/2026-05/2026-05-01-priority-access.webp" style="box-sizing: border-box;
                 max-width:500px;
                 width:100%;
@@ -83,7 +84,7 @@ This month, HGL profiles and time-series custom graphs are available through pri
 
 ## **HGL profile**
 
-_Priority access_
+<AccessBadge tier="priority" />
 
 This is one of the two big ones this month. The HGL profile tool lets you visualise the hydraulic grade line and terrain along any path in your network, making it easy to spot pressure issues at a glance — and we've put a lot of work into making it both powerful and genuinely intuitive.
 
@@ -108,7 +109,7 @@ border-width: 1px;
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 >
 
-<!-- TODO: Mux video of the HGL profile tool -->
+{/* TODO: Mux video of the HGL profile tool */}
 <iframe
   src="https://player.mux.com/TODO?autoplay=true&muted=true&loop=true"
   style="width: 100%; border: none; aspect-ratio: 1/1;"
@@ -147,7 +148,7 @@ border-width: 1px;
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 >
 
-<!-- TODO: Mux video of the asset data tables -->
+{/* TODO: Mux video of the asset data tables */}
 <iframe
   src="https://player.mux.com/TODO?autoplay=true&muted=true&loop=true"
   style="width: 100%; border: none; aspect-ratio: 1/1;"
@@ -162,7 +163,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 
 ## **Time-series custom graphs**
 
-_Priority access_
+<AccessBadge tier="priority" />
 
 Time-series custom graphs let you visualise how hydraulic values change over time for any combination of selected nodes and links, giving you a detailed view of your network's behaviour across an extended period simulation. Pick the assets you're interested in, choose a property — pressure, head, flow, velocity, headloss, status, or water quality — and the values are plotted together on a single chart, with nodes and links on separate Y-axes so the scales stay readable.
 
@@ -183,7 +184,7 @@ border-width: 1px;
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 >
 
-<!-- TODO: Mux video of time-series custom graphs -->
+{/* TODO: Mux video of time-series custom graphs */}
 <iframe
   src="https://player.mux.com/TODO?autoplay=true&muted=true&loop=true"
   style="width: 100%; border: none; aspect-ratio: 1/1;"
@@ -205,7 +206,7 @@ Getting your data out of epanet-js is now much easier. Two new export tools cove
 Export asset data lets you download your network's assets and their properties in the format you prefer — GeoJSON, CSV, Shapefile, or XLSX — ready to use in other tools. You can optionally include simulation results for the current timestep, and export either your whole network or just the assets you've selected.
 
 <figure>
-  <!-- TODO: screenshot of the export asset data dialog -->
+  {/* TODO: screenshot of the export asset data dialog */}
   <img src="/assets/blog/progress-report/2026-05/2026-05-05-export-assets.webp" style="box-sizing: border-box;
                 max-width:800px;
                 width:100%;
@@ -227,7 +228,7 @@ Export simulation results lets you download the full time-series output from an 
 Large exports show a warning with an estimated file size before you commit, and long-running exports can be cancelled at any point.
 
 <figure>
-  <!-- TODO: screenshot of the export simulation results dialog -->
+  {/* TODO: screenshot of the export simulation results dialog */}
   <img src="/assets/blog/progress-report/2026-05/2026-05-06-export-results.webp" style="box-sizing: border-box;
                 max-width:800px;
                 width:100%;
@@ -249,7 +250,7 @@ Until now, epanet-js worked directly with standard .inp files. That's still full
 The .ejsdb format stores everything a standard .inp can, plus the data that doesn't fit in the EPANET format — customer points and custom fields among them.
 
 <figure>
-  <!-- TODO: screenshot illustrating the .ejsdb project file (e.g. save dialog or file) -->
+  {/* TODO: screenshot illustrating the .ejsdb project file (e.g. save dialog or file) */}
   <img src="/assets/blog/progress-report/2026-05/2026-05-07-ejsdb.webp" style="box-sizing: border-box;
                 max-width:800px;
                 width:100%;
@@ -269,11 +270,12 @@ The .ejsdb format stores everything a standard .inp can, plus the data that does
 A couple of additions to help you enrich and organise your models.
 
 ### **Pipe material and installation year**
+<AccessBadge tier="paid" />
 
 Pipe material and installation year are optional attributes that let you enrich your pipe data with asset-management information, beyond what's needed for hydraulic simulation. Set a material such as PVC or ductile iron on any pipe — picking an existing value or creating a new one — and record an installation year to track the age of your network. Both attributes are visible and editable in the asset panel, in the data tables, and through batch editing on multi-pipe selections.
 
 <figure>
-  <!-- TODO: screenshot of pipe material & installation year in the asset panel -->
+  {/* TODO: screenshot of pipe material & installation year in the asset panel */}
   <img src="/assets/blog/progress-report/2026-05/2026-05-08-pipe-material.webp" style="box-sizing: border-box;
                 max-width:500px;
                 width:100%;
@@ -289,6 +291,7 @@ Pipe material and installation year are optional attributes that let you enrich 
 </figure>
 
 ### **Zones**
+<AccessBadge tier="paid" />
 
 You can now import zone polygons from GeoJSON straight onto the map. Adjacent zones are automatically given distinct colors, so neighbouring areas never share a shade, and any polygons that share the same name are merged into a single zone. Zones are saved as part of the new .ejsdb project file.
 
@@ -309,7 +312,7 @@ border-width: 1px;
 box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow);"
 >
 
-<!-- TODO: Mux video (or swap for an <img> webp) of zones imported and coloured on the map -->
+{/* TODO: Mux video (or swap for an <img> webp) of zones imported and coloured on the map */}
 <iframe
   src="https://player.mux.com/TODO?autoplay=true&muted=true&loop=true"
   style="width: 100%; border: none; aspect-ratio: 1/1;"
@@ -327,7 +330,7 @@ box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0
 We heard from a lot of users that junctions could be hard to see in larger or rural networks, so we've added more control over how they appear on the map. In the node symbology under the Map tab, you can now adjust the size of junctions — setting a minimum size, a maximum size, and the zoom range over which they're visible — so your network stays easy to read at any zoom level.
 
 <figure>
-  <!-- TODO: screenshot of the node symbology controls in the Map tab -->
+  {/* TODO: screenshot of the node symbology controls in the Map tab */}
   <img src="/assets/blog/progress-report/2026-05/2026-05-09-junction-size.webp" style="box-sizing: border-box;
                 max-width:500px;
                 width:100%;
@@ -349,7 +352,7 @@ Indonesia is one of our fastest-growing user bases — more than 180 people used
 It's still an experimental language, but it's a meaningful step toward making high-quality, open-source hydraulic modelling accessible to more teams around the world. As always, it's a community effort, and it's great to see engineers everywhere stepping up to help improve the tools for everyone.
 
 <figure>
-  <!-- TODO: screenshot of the app running in Bahasa Indonesia -->
+  {/* TODO: screenshot of the app running in Bahasa Indonesia */}
   <img src="/assets/blog/progress-report/2026-05/2026-05-10-indonesian.webp" style="box-sizing: border-box;
                 max-width:800px;
                 width:100%;
@@ -386,7 +389,7 @@ It's still an experimental language, but it's a meaningful step toward making hi
 Sandra and Sam took epanet-js to VLCTechFest, where they spoke about the challenges of building a hydraulic modelling application for the web. EPANET has over 30 years of history as a desktop tool, and we've turned it into an open-source, local-first web app where everything runs directly on the user's machine. The talk dug into what that actually takes — running heavy calculations off the main thread, managing large volumes of data in the browser, recreating "native" workflows on the web, and choosing a file format that holds up — along with what's still genuinely hard, and what it takes to build something that works completely offline.
 
 <figure>
-  <!-- TODO: photo of Sandra and Sam presenting at VLCTechFest -->
+  {/* TODO: photo of Sandra and Sam presenting at VLCTechFest */}
   <img src="/assets/blog/progress-report/2026-05/2026-05-11-vlctechfest.webp" style="box-sizing: border-box;
                 max-width:600px;
                 width:100%;
