@@ -1,0 +1,55 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+
+export const prerender = true;
+const lang = "en";
+
+const liveColumn = solutions.columns.find((c) => c.heading === "Available now");
+const soonColumn = solutions.columns.find((c) => c.heading === "Coming soon");
+---
+
+<Layout
+  title="Solutions"
+  description="One tool for the whole hydraulic modeling lifecycle — build, calibrate, plan, and operate your water network with epanet-js."
+  lang={lang}>
+  <PageHero
+    eyebrow="Solutions"
+    title="One tool for the whole hydraulic modeling lifecycle"
+    subtitle="From building your first model to running it every day, epanet-js helps you get to the answer faster. Explore what you can do — most workflows are available now, with more on the way."
+    align="center"
+  />
+
+  {
+    liveColumn && (
+      <CardGrid
+        eyebrow="Available now"
+        heading="Get the job done today"
+        subheading="Live workflows you can use right now, built on the trusted EPANET engine."
+        items={liveColumn.items}
+        columns={4}
+      />
+    )
+  }
+
+  {
+    soonColumn && (
+      <CardGrid
+        eyebrow="Coming soon"
+        heading="On the roadmap"
+        subheading="Where epanet-js is heading next. Tell us what matters most for your work."
+        items={soonColumn.items}
+        columns={3}
+        class="pt-0"
+      />
+    )
+  }
+
+  <CtaSection
+    heading="See it on your own network"
+    subheading="Launch epanet-js free in your browser, or book a demo to see how it fits your workflow."
+  />
+</Layout>

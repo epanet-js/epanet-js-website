@@ -1,0 +1,135 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { ShieldCheck, Clock, Eye, UserCheck } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: ShieldCheck,
+    title: "Models you can trust",
+    description:
+      "A calibrated model that matches observed pressures and flows — so the decisions you make from it hold up.",
+  },
+  {
+    icon: Clock,
+    title: "Faster than manual tuning",
+    description:
+      "Smart tools do the heavy lifting of searching for likely parameters, turning days of trial-and-error into a focused review.",
+  },
+  {
+    icon: Eye,
+    title: "Transparent and auditable",
+    description:
+      "Every suggested change is explained and recorded. You can see why a value was chosen, not just what it became.",
+  },
+  {
+    icon: UserCheck,
+    title: "You keep the judgement",
+    description:
+      "Engineering stays in the loop. Accept, adjust, or reject any recommendation — the tool assists, you decide.",
+  },
+];
+
+const related = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) => i.href !== "/solutions/calibration")
+  .slice(0, 3);
+---
+
+<Layout
+  title="Calibration"
+  description="Make your model match reality with smart, assisted calibration — and an engineer in the loop for every decision."
+  lang={lang}>
+  <PageHero
+    eyebrow="Calibration"
+    title="Make your model match reality — with smart tools and an engineer in the loop"
+    subtitle="Calibration is where models earn trust. epanet-js breaks the problem into manageable pieces, suggests the most likely calibration, and keeps you in control of every decision.">
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: observed vs. simulated pressures converging as assisted calibration is applied across the network."
+    />
+  </PageHero>
+
+  <ContentMediaRow
+    eyebrow="1. Compare"
+    title="Bring in observed pressures and flows">
+    <p>
+      Load the measurements you've collected from the field — pressures and
+      flows — and see them side by side with your model's results. Divergence is
+      highlighted clearly on the map so you know exactly where reality and model
+      disagree.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: map view highlighting where modeled values diverge from observed field measurements."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="2. Assisted calibration"
+    title="Smart tools find the most likely fit"
+    reverse>
+    <p>
+      Rather than tuning the whole network at once, epanet-js breaks it into
+      smaller, manageable parts and searches for the most likely calibration for
+      each. An AI assistant proposes the choices — roughness, demands, and more
+      — that best explain what you're seeing.
+    </p>
+    <p>
+      It's the difference between staring at a blank slate and starting from a
+      well-reasoned first draft.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: the network split into zones with suggested parameter adjustments surfaced for each."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="3. Engineering in the loop"
+    title="You stay in control of every decision">
+    <p>
+      The assistant suggests; you decide. Review each recommendation, see the
+      reasoning behind it, and accept, adjust, or reject it. Nothing changes
+      without your sign-off.
+    </p>
+    <p>
+      The result is a calibrated model you can defend — fast to produce, but
+      grounded in your engineering judgement.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: a review panel showing a suggested change, its rationale, and accept / adjust / reject controls."
+    />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    eyebrow="Outcomes"
+    heading="Why calibration is different in epanet-js"
+    items={benefits}
+    columns={4}
+  />
+
+  <CardGrid
+    heading="Keep going"
+    subheading="A calibrated model unlocks everything downstream."
+    items={related}
+    columns={3}
+  />
+
+  <CtaSection
+    heading="Calibrate with confidence"
+    subheading="See assisted calibration on your own network. Launch epanet-js or book a demo."
+  />
+</Layout>

@@ -3,11 +3,13 @@
 import Container from "@components/container.astro";
 import Link from "@components/ui/link.astro";
 import Dropdown from "./dropdown.astro";
+import MegaMenu from "./mega-menu.astro";
 import { StickyHeader, Astronav, MenuItems, MenuIcon } from "astro-navbar";
 import { LogoIconAndWordmarkIcon } from "@components/landing/icons";
 import { Globe } from "lucide-react";
 import { useTranslations, localePath } from "@i18n/utils";
 import type { Locale } from "@i18n/utils";
+import { solutions, whoItsFor, resources } from "@config/navigation";
 
 interface Props {
   lang?: Locale;
@@ -24,12 +26,28 @@ const menuitems = [
     path: prefix + "/",
   },
   {
+    type: "mega",
+    title: t("nav.solutions"),
+    columns: solutions.columns,
+    hubHref: solutions.hubHref,
+    width: "lg",
+  },
+  {
+    type: "mega",
+    title: t("nav.whoItsFor"),
+    columns: whoItsFor.columns,
+    hubHref: whoItsFor.hubHref,
+    width: "sm",
+  },
+  {
     title: t("nav.pricing"),
     path: prefix + "/pricing",
   },
   {
-    title: t("nav.blog"),
-    path: "/blog",  // Blog stays English-only
+    type: "mega",
+    title: t("nav.resources"),
+    columns: resources.columns,
+    width: "sm",
   },
 ];
 
@@ -72,6 +90,16 @@ const isEnglishOnlyPage = englishOnlyRoutes.some(
               {
                 menuitems.map((item, index) => (
                   <>
+                    {item.type === "mega" && (
+                      <MegaMenu
+                        title={item.title}
+                        columns={item.columns}
+                        hubHref={item.hubHref}
+                        width={item.width}
+                        lastItem={index === menuitems.length - 1}
+                      />
+                    )}
+
                     {item.children && (
                       <Dropdown
                         title={item.title}
@@ -80,7 +108,7 @@ const isEnglishOnlyPage = englishOnlyRoutes.some(
                       />
                     )}
 
-                    {!item.children && (
+                    {!item.type && !item.children && (
                       <li>
                         <a
                           href={item.path}

@@ -1,0 +1,104 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { MapPin, Crosshair, ClipboardList, Workflow } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: Crosshair,
+    title: "Measure the right things",
+    description:
+      "Plan where to record pressures and flows so your field data actually constrains the model.",
+  },
+  {
+    icon: MapPin,
+    title: "Smart monitoring locations",
+    description:
+      "Identify the locations that tell you the most about how your network behaves.",
+  },
+  {
+    icon: ClipboardList,
+    title: "A clear field plan",
+    description:
+      "Turn the analysis into a practical, shareable plan your field crews can follow.",
+  },
+  {
+    icon: Workflow,
+    title: "Feeds straight into calibration",
+    description:
+      "Collect the data that makes calibration and model building faster and more trustworthy.",
+  },
+];
+
+const related = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) => i.href !== "/solutions/field-planning")
+  .slice(0, 3);
+---
+
+<Layout
+  title="Field planning"
+  description="Design a field data-collection plan to support building a trustworthy hydraulic model. Coming soon to epanet-js."
+  lang={lang}>
+  <PageHero
+    eyebrow="Field planning"
+    title="Design the field campaign that makes your model trustworthy"
+    subtitle="Plan the field data collection that supports building and calibrating your model — so you measure the right things, in the right places, the first time."
+    comingSoon
+    primaryCta={{ label: "Talk to us", href: "https://cal.com/epanet-js/" }}
+    secondaryCta={{ label: "Launch epanet-js", href: "https://app.epanetjs.com" }}>
+    <MediaPlaceholder
+      slot="media"
+      label="Concept: recommended monitoring locations highlighted across a network ahead of a field data campaign."
+    />
+  </PageHero>
+
+  <ContentMediaRow
+    eyebrow="The challenge"
+    title="Good models start with good field data">
+    <p>
+      A calibration is only as strong as the measurements behind it. Deciding
+      where to put loggers, what to measure, and when, makes the difference
+      between a campaign that constrains your model and one that wastes effort.
+    </p>
+    <p>
+      Field planning in epanet-js is designed to help you plan that campaign
+      deliberately, before crews go out.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Concept diagram: a network with proposed monitoring points and the data each will capture."
+    />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    eyebrow="What it will do"
+    heading="Field planning, the epanet-js way"
+    items={benefits}
+    columns={4}
+  />
+
+  <CardGrid
+    heading="Available now"
+    subheading="While field planning is in development, explore what you can do today."
+    items={related}
+    columns={3}
+  />
+
+  <CtaSection
+    heading="Planning a field campaign?"
+    subheading="Tell us how you plan field data collection today — it helps us build the right tools."
+    primaryCta={{ label: "Talk to us", href: "https://cal.com/epanet-js/" }}
+    secondaryCta={{ label: "Launch epanet-js", href: "https://app.epanetjs.com" }}
+  />
+</Layout>

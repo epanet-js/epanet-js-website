@@ -1,0 +1,134 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { Zap, FileCheck, MonitorOff, Layers } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: Zap,
+    title: "Days to minutes",
+    description:
+      "Get from raw data to a running model in minutes instead of spending days wrangling files and fixing geometry.",
+  },
+  {
+    icon: FileCheck,
+    title: "No data conversion",
+    description:
+      "Open .inp files directly and bring in GIS layers as-is. No proprietary conversion step, no lossy exports.",
+  },
+  {
+    icon: Layers,
+    title: "Smart automation",
+    description:
+      "Auto-junctions, auto-elevations, and snapping handle the tedious parts so you can focus on the network.",
+  },
+  {
+    icon: MonitorOff,
+    title: "No installs",
+    description:
+      "Runs in any modern browser on Mac, Windows, or Linux. Nothing to install, nothing for IT to approve.",
+  },
+];
+
+const related = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) => i.href !== "/solutions/model-build")
+  .slice(0, 3);
+---
+
+<Layout
+  title="Model building"
+  description="Turn your GIS and asset data into a working hydraulic model — fast. Import .inp, Shapefile, and GeoJSON or draw over a satellite basemap."
+  lang={lang}>
+  <PageHero
+    eyebrow="Model building"
+    title="Turn your GIS and asset data into a working model — fast"
+    subtitle="Import what you already have, build visually on a real-world basemap, and run a simulation in minutes. The fastest way to go from data to a model you can trust.">
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: importing a GIS layer and watching it become a connected, running model in seconds."
+    />
+  </PageHero>
+
+  <ContentMediaRow eyebrow="1. Import" title="Bring in the data you already have">
+    <p>
+      Start from your existing work. epanet-js opens EPANET <strong>.inp</strong>
+      files directly and imports <strong>GIS vector data</strong> — Shapefile and
+      GeoJSON — so your pipes, nodes, and attributes come in without a clumsy conversion
+      step.
+    </p>
+    <p>
+      No GIS layer? Trace your network by hand over a satellite or street
+      basemap. Either way, auto-junctions and automatic elevations do the
+      tedious setup for you.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Diagram: the three ways in — .inp file, GIS (Shapefile / GeoJSON), and draw-on-basemap — all flowing into one model."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    eyebrow="2. Build"
+    title="Edit visually, with modern tools"
+    reverse>
+    <p>
+      Draw, connect, and edit elements with an interface built for speed. Click
+      to add nodes, pipes, and reservoirs, snap to existing geometry, and adjust
+      properties without hunting through dialog boxes.
+    </p>
+    <p>
+      Made a mistake? <strong>Undo and redo</strong> are finally here. Work
+      against real-world imagery so what you build matches what's in the ground.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: drawing and connecting pipes over satellite imagery, with undo/redo in action."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow eyebrow="3. Run" title="Simulate instantly and see results">
+    <p>
+      Press <strong>Shift + Enter</strong> and you're done — the trusted EPANET
+      engine runs your model right in the browser.
+    </p>
+    <p>
+      Review pressures, flow paths, and velocities at a glance, all colour-coded
+      on the map. Spot problems immediately and keep iterating.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: colour-coded pressure and flow results displayed on the network map."
+    />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    eyebrow="Outcomes"
+    heading="Why teams build models in epanet-js"
+    items={benefits}
+    columns={4}
+  />
+
+  <CardGrid
+    heading="Keep going"
+    subheading="Once your model is built, take it further."
+    items={related}
+    columns={3}
+  />
+
+  <CtaSection
+    heading="Build your first model in minutes"
+    subheading="Launch epanet-js free — no login, no install — and import your data right now."
+  />
+</Layout>

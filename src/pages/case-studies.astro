@@ -1,0 +1,98 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import Container from "@components/container.astro";
+import Badge from "@components/ui/badge.astro";
+import { Building2, Briefcase, GraduationCap, HeartHandshake } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+// Placeholder case studies — replace with real stories as they become available.
+const studies = [
+  {
+    icon: Building2,
+    audience: "Utility",
+    title: "Utility cuts model build time from weeks to days",
+    summary:
+      "PLACEHOLDER — a water utility imports GIS and asset data into epanet-js, stands up a working model fast, and uses it to answer operational questions in-house.",
+  },
+  {
+    icon: Briefcase,
+    audience: "Consultant",
+    title: "Consultancy delivers a calibrated model on a tight deadline",
+    summary:
+      "PLACEHOLDER — an engineering consultant uses assisted calibration to produce a defensible, well-documented model for a client under time pressure.",
+  },
+  {
+    icon: GraduationCap,
+    audience: "Education",
+    title: "University runs a full water modeling course in the browser",
+    summary:
+      "PLACEHOLDER — a professor teaches hydraulic modeling with zero installs, getting students to their first working model within a single lab session.",
+  },
+  {
+    icon: HeartHandshake,
+    audience: "Humanitarian & NGO",
+    title: "NGO designs a community water supply in the field",
+    summary:
+      "PLACEHOLDER — a humanitarian team plans and analyses a community water network on modest hardware, on location, without expensive software.",
+  },
+];
+---
+
+<Layout
+  title="Case studies"
+  description="How teams use epanet-js in the real world — utilities, consultants, educators, and NGOs."
+  lang={lang}>
+  <PageHero
+    eyebrow="Case studies"
+    title="How teams use epanet-js"
+    subtitle="Real stories from the people building, calibrating, and operating water networks with epanet-js. New case studies are on the way — have one to share?"
+    primaryCta={{ label: "Share your story", href: "mailto:support@epanetjs.com" }}
+    secondaryCta={{ label: "Launch epanet-js", href: "https://app.epanetjs.com" }}
+    align="center"
+  />
+
+  <section class="w-full py-12 md:py-16">
+    <Container>
+      <div class="grid gap-6 sm:grid-cols-2">
+        {
+          studies.map((study) => (
+            <article class="flex flex-col rounded-xl border border-gray-200 shadow-sm overflow-hidden bg-white">
+              <div class="aspect-[16/9] w-full border-b-2 border-dashed border-purple-200 bg-gradient-to-br from-blue-50 to-purple-100 flex items-center justify-center">
+                <div class="flex flex-col items-center gap-2 text-center px-6">
+                  <div class="flex items-center justify-center w-12 h-12 rounded-full bg-white/70 text-purple-600 shadow-sm">
+                    <study.icon size={22} />
+                  </div>
+                  <p class="text-xs font-semibold uppercase tracking-wide text-purple-500">
+                    Image placeholder
+                  </p>
+                </div>
+              </div>
+              <div class="p-6 space-y-3">
+                <Badge color="purple">{study.audience}</Badge>
+                <h2 class="text-lg font-semibold text-gray-900">
+                  {study.title}
+                </h2>
+                <p class="text-sm text-muted-foreground">{study.summary}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+      <p class="mt-8 text-sm text-gray-500 text-center">
+        These are placeholder examples. Real case studies will be published here
+        as they're ready.
+      </p>
+    </Container>
+  </section>
+
+  <CtaSection
+    heading="Have a story to tell?"
+    subheading="If epanet-js has made a difference to your work, we'd love to feature it. Get in touch."
+    primaryCta={{ label: "Share your story", href: "mailto:support@epanetjs.com" }}
+    secondaryCta={{ label: "Book a call", href: "https://cal.com/epanet-js/" }}
+  />
+</Layout>

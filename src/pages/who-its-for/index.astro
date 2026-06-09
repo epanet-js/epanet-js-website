@@ -1,0 +1,29 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { whoItsFor } from "@config/navigation";
+
+export const prerender = true;
+const lang = "en";
+---
+
+<Layout
+  title="Who it's for"
+  description="Whatever your role — utility, consultant, educator, or NGO — epanet-js helps you get to the answer faster."
+  lang={lang}>
+  <PageHero
+    eyebrow="Who it's for"
+    title="Whatever your role, get to the answer faster"
+    subtitle="epanet-js is built for everyone who works with water networks — from utilities running the system every day to students learning the craft. Find your fit."
+    align="center"
+  />
+
+  <CardGrid items={whoItsFor.columns[0].items} columns={4} />
+
+  <CtaSection
+    heading="Ready to see it for your team?"
+    subheading="Launch epanet-js free in your browser, or book a demo tailored to how you work."
+  />
+</Layout>
