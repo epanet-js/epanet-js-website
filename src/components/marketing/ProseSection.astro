@@ -1,0 +1,37 @@
+---
+import Container from "@components/container.astro";
+
+interface Props {
+  title?: string;
+  align?: "left" | "center";
+  class?: string;
+}
+
+const { title, align = "left", class: className } = Astro.props;
+const isCentered = align === "center";
+---
+
+<section class:list={["w-full py-12 md:py-16", className]}>
+  <Container>
+    <div
+      class:list={[
+        "max-w-3xl",
+        isCentered && "mx-auto text-center",
+      ]}>
+      {
+        title && (
+          <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
+            {title}
+          </h2>
+        )
+      }
+      <div
+        class:list={[
+          "space-y-4 text-muted-foreground md:text-lg/relaxed",
+          title && "mt-5",
+        ]}>
+        <slot />
+      </div>
+    </div>
+  </Container>
+</section>

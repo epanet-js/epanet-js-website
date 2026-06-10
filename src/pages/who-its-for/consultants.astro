@@ -1,10 +1,13 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
 import { solutions } from "@config/navigation";
 import { Rocket, Sparkles, ShieldCheck, Wallet } from "lucide-react";
@@ -46,16 +49,46 @@ const workflows = solutions.columns
       "/solutions/model-build",
       "/solutions/calibration",
       "/solutions/fire-flow",
+      "/solutions/operational-modeling",
+      "/solutions/field-planning",
+      "/solutions/planning",
     ].includes(i.href),
   );
+
+const faqs = [
+  {
+    question: "Does client data stay confidential?",
+    answer:
+      "Yes. epanet-js is local-first, so a client's network data stays on your machine and is never uploaded unless you choose to. That makes confidentiality the default, not an add-on. See <a href=\"/security\">security</a>.",
+  },
+  {
+    question: "Can I exchange models with clients on other tools?",
+    answer:
+      "Yes. epanet-js opens and works with standard EPANET <strong>.inp</strong> files, so you can take a client's existing model in and hand a model back without a proprietary format getting in the way.",
+  },
+  {
+    question: "How does licensing work for a consultancy?",
+    answer:
+      "Teams use shared, per-seat licensing with self-service seat management and invoicing, so you can scale up for a big project and back down afterward. The full breakdown is on the <a href=\"/pricing\">pricing page</a>.",
+  },
+  {
+    question: "Are the calibrated models defensible?",
+    answer:
+      "That's the point of assisted calibration. Every suggested change is recorded with its reasoning and the alternatives considered, so your deliverable comes with a clear, auditable trail. See <a href=\"/solutions/calibration\">calibration</a>.",
+  },
+  {
+    question: "How quickly can I get a new starter productive?",
+    answer:
+      "There's nothing to install and the interface is modern, so a new engineer can open a browser and be building a real model the same day, rather than spending a week learning the software's quirks.",
+  },
+];
 ---
 
 <Layout
   title="For consultants"
-  description="Build models faster and deliver more for every client. epanet-js gives consultants a fast, modern, local-first modeling tool."
+  description="Build models faster and deliver more for every client. epanet-js gives consultants a fast, modern, local-first modeling tool with defensible assisted calibration and EPANET-compatible interchange."
   lang={lang}>
   <PageHero
-    eyebrow="For consultants"
     title="Build models faster, deliver more for every client"
     subtitle="Spend less time fighting software and more time delivering insight. epanet-js helps consultants turn data into trustworthy models — fast — while keeping client data private.">
     <MediaPlaceholder
@@ -64,11 +97,36 @@ const workflows = solutions.columns
     />
   </PageHero>
 
-  <ContentMediaRow eyebrow="Faster delivery" title="From data to model in minutes">
+  <ProseSection
+    title="Your margin is the time between data and insight">
     <p>
-      Import a client's GIS or .inp file, build on a real-world basemap, and run
-      simulations instantly. The speed to a working model means you can take on
-      more projects without adding overhead.
+      On a fixed-fee project, every hour spent wrangling files, fixing geometry,
+      and fighting an installation is an hour that doesn't bill. The faster you
+      get to a working, trustworthy model, the more of the project goes to the
+      analysis clients actually pay for.
+    </p>
+    <p>
+      epanet-js is built to compress that setup time and keep the work
+      defensible, so you can take on more projects, deliver them with confidence,
+      and protect your margins while you do it.
+    </p>
+  </ProseSection>
+
+  <PullQuote>
+    The faster you get to a working model, the more of the project goes to the
+    insight your client is paying for.
+  </PullQuote>
+
+  <ContentMediaRow title="From data to model in minutes">
+    <p>
+      Import a client's GIS or <strong>.inp</strong> file, build on a real-world
+      basemap, and run simulations instantly. Auto-junctions, automatic
+      elevations, and the Network Review handle the tedious setup, so a job that
+      used to take days of file-wrangling is done in an afternoon.
+    </p>
+    <p>
+      The speed to a working model is the speed to a model you can start charging
+      for.
     </p>
     <MediaPlaceholder
       slot="media"
@@ -78,13 +136,17 @@ const workflows = solutions.columns
   </ContentMediaRow>
 
   <ContentMediaRow
-    eyebrow="Better outcomes"
     title="Calibrated models you can defend"
     reverse>
     <p>
-      Assisted calibration helps you produce models that match field
-      observations, with a transparent record of every decision — so your
-      deliverables stand up to scrutiny and your clients trust the results.
+      Assisted calibration produces models that match field observations, and it
+      records every decision: the options considered, their likelihood, and why a
+      value was chosen. Your deliverable arrives with a transparent, auditable
+      trail rather than a black-box result.
+    </p>
+    <p>
+      When a client or a reviewer asks how you arrived at a number, the answer is
+      already documented.
     </p>
     <MediaPlaceholder
       slot="media"
@@ -92,12 +154,48 @@ const workflows = solutions.columns
     />
   </ContentMediaRow>
 
+  <ContentMediaRow title="Client data that stays with you">
+    <p>
+      Consultants hold data that isn't theirs to expose. Because epanet-js is
+      local-first, a client's network stays on your machine and is never uploaded
+      unless you choose to — so confidentiality is the default, and the answer to
+      a security questionnaire is a short one.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Diagram: client data kept local on the consultant's machine, with optional cloud."
+    />
+  </ContentMediaRow>
+
+  <PullQuote>
+    As one of the largest engineering consultancies in the world, AtkinsRéalis
+    brings the perspective of large-scale projects and complex digital workflows.
+  </PullQuote>
+
   <BenefitGrid
-    eyebrow="Why consultants choose epanet-js"
     heading="Tooling that respects your time and your margins"
     items={benefits}
     columns={4}
   />
+
+  <CtaSection
+    heading="Win more work with faster models"
+    subheading="Launch epanet-js free, or book a demo to see it on a real project."
+    dark={false}
+  />
+
+  <ProseSection
+    title="Trusted by leading consultancies">
+    <p>
+      epanet-js is built in the open with the firms that rely on it.
+      <strong>AtkinsRéalis</strong>, one of the largest engineering consultancies
+      in the world, is a founding partner, and their input helps make sure
+      epanet-js holds up under the most demanding real-world applications. Around
+      them is a community of more than 2,000 registered members shaping where it
+      goes next.
+    </p>
+  </ProseSection>
 
   <CardGrid
     heading="Workflows for consultants"
@@ -106,8 +204,13 @@ const workflows = solutions.columns
     columns={3}
   />
 
+  <FaqList
+    subheading="The questions consultants ask most about epanet-js."
+    items={faqs}
+  />
+
   <CtaSection
-    heading="Win more work with faster models"
-    subheading="Launch epanet-js free, or book a demo to see it on a real project."
+    heading="Deliver more for every client"
+    subheading="See how much faster a project starts in epanet-js. Launch it free, or book a demo on a real project."
   />
 </Layout>

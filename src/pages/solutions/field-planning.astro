@@ -1,41 +1,47 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
 import { solutions } from "@config/navigation";
-import { MapPin, Crosshair, ClipboardList, Workflow } from "lucide-react";
+import { Crosshair, MapPin, ClipboardList, Workflow } from "lucide-react";
 
 export const prerender = true;
 const lang = "en";
+
+const comingSoonPrimary = { label: "Talk to us", href: "https://cal.com/epanet-js/" };
+const comingSoonSecondary = { label: "Launch epanet-js", href: "https://app.epanetjs.com" };
 
 const benefits = [
   {
     icon: Crosshair,
     title: "Measure the right things",
     description:
-      "Plan where to record pressures and flows so your field data actually constrains the model.",
+      "Plan where to record pressures and flows so the data you collect actually constrains the model.",
   },
   {
     icon: MapPin,
-    title: "Smart monitoring locations",
+    title: "Optimized placement",
     description:
-      "Identify the locations that tell you the most about how your network behaves.",
+      "Let a search find the monitoring locations that tell you the most about how your network behaves.",
   },
   {
     icon: ClipboardList,
     title: "A clear field plan",
     description:
-      "Turn the analysis into a practical, shareable plan your field crews can follow.",
+      "Turn the analysis into a practical, shareable plan your field crews can follow on the ground.",
   },
   {
     icon: Workflow,
     title: "Feeds straight into calibration",
     description:
-      "Collect the data that makes calibration and model building faster and more trustworthy.",
+      "Collect the measurements that make calibration faster and the resulting model more trustworthy.",
   },
 ];
 
@@ -43,62 +49,195 @@ const related = solutions.columns
   .flatMap((c) => c.items)
   .filter((i) => i.href !== "/solutions/field-planning")
   .slice(0, 3);
+
+const faqs = [
+  {
+    question: "What can I plan today?",
+    answer:
+      "Acoustic logger placement. The logger optimization tool lets you drop loggers on the map and see their listening range instantly, or run an automatic search that finds the layout giving the best coverage for the least cost. It's available now on our <a href=\"https://utils.epanetjs.com/\" target=\"_blank\" rel=\"noopener noreferrer\">utilities site</a>.",
+  },
+  {
+    question: "How does the automatic optimization work?",
+    answer:
+      "A genetic algorithm searches thousands of placement combinations and converges on layouts that maximize coverage while minimizing the number of loggers, so you get strong coverage without over-deploying.",
+  },
+  {
+    question: "Will it cover pressure and flow loggers too?",
+    answer:
+      "That's where it's heading. The same placement thinking extends to pressure and flow monitoring: choosing the locations whose measurements most reduce uncertainty in the model, so a calibration campaign is designed rather than guessed.",
+  },
+  {
+    question: "How does this connect to calibration?",
+    answer:
+      "Directly. A field plan defines what to measure and where; the data you bring back is exactly what <a href=\"/solutions/calibration\">calibration</a> uses to tune the model. Planning the campaign well is what makes the calibration that follows fast and trustworthy.",
+  },
+  {
+    question: "When will field planning be built into epanet-js?",
+    answer:
+      "Logger optimization runs as a utility today, and the plan is to bring this capability natively into epanet-js alongside the model. Tell us how you plan field campaigns now, and follow progress on our <a href=\"https://roadmap.epanetjs.com\" target=\"_blank\" rel=\"noopener noreferrer\">public roadmap</a>.",
+  },
+];
 ---
 
 <Layout
   title="Field planning"
-  description="Design a field data-collection plan to support building a trustworthy hydraulic model. Coming soon to epanet-js."
+  description="Design the field data campaign that makes your model trustworthy. Plan logger coverage, optimize monitoring placement, and collect the measurements that feed calibration. Coming soon to epanet-js."
   lang={lang}>
   <PageHero
-    eyebrow="Field planning"
     title="Design the field campaign that makes your model trustworthy"
-    subtitle="Plan the field data collection that supports building and calibrating your model — so you measure the right things, in the right places, the first time."
+    subtitle="Plan where to place loggers and what to measure so you constrain the model with the right data, in the right places, the first time. The campaign that makes the calibration that follows fast and defensible."
     comingSoon
-    primaryCta={{ label: "Talk to us", href: "https://cal.com/epanet-js/" }}
-    secondaryCta={{ label: "Launch epanet-js", href: "https://app.epanetjs.com" }}>
+    primaryCta={comingSoonPrimary}
+    secondaryCta={comingSoonSecondary}>
     <MediaPlaceholder
       slot="media"
       label="Concept: recommended monitoring locations highlighted across a network ahead of a field data campaign."
     />
   </PageHero>
 
-  <ContentMediaRow
-    eyebrow="The challenge"
+  <ProseSection
     title="Good models start with good field data">
     <p>
-      A calibration is only as strong as the measurements behind it. Deciding
-      where to put loggers, what to measure, and when, makes the difference
-      between a campaign that constrains your model and one that wastes effort.
+      A calibration is only as strong as the measurements behind it. Where you
+      put loggers, what you measure, and when, decides whether a campaign
+      constrains your model or wastes a week of crew time on data that tells you
+      nothing new.
     </p>
     <p>
-      Field planning in epanet-js is designed to help you plan that campaign
-      deliberately, before crews go out.
+      Field planning is about making those choices deliberately, before anyone
+      goes out. Plan the campaign well and the calibration that follows is
+      faster, cheaper, and far more trustworthy.
+    </p>
+  </ProseSection>
+
+  <PullQuote>
+    A logger in the wrong place tells you what you already knew. The value is in
+    measuring where the model is least certain.
+  </PullQuote>
+
+  <ContentMediaRow
+    title="Plan logger coverage on the map">
+    <p>
+      Field planning starts with the tool you can use today. Drop acoustic
+      loggers onto the network and see each one's listening range immediately, so
+      coverage is something you can see and shape rather than estimate. Test
+      deployment ideas on the fly, moving loggers until the gaps close.
+    </p>
+    <p>
+      It turns logger planning from a spreadsheet exercise into a visual one,
+      where the coverage you're buying is right there on the map.
     </p>
     <MediaPlaceholder
       slot="media"
       kind="image"
-      label="Concept diagram: a network with proposed monitoring points and the data each will capture."
+      label="Screenshot: acoustic loggers placed on a network with their listening ranges drawn as coverage circles."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Optimize placement automatically"
+    reverse>
+    <p>
+      Placing loggers by hand is fine for a few. For a real network, the number
+      of possible layouts is enormous. An automatic search — a genetic algorithm
+      — works through thousands of combinations and finds the layouts that
+      maximize coverage while keeping the number of loggers down.
+    </p>
+    <p>
+      You get strong, defensible coverage without over-deploying, and a starting
+      point you can adjust with local knowledge. The logger optimization tool is
+      live on our utilities site today.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: the optimizer searching placement combinations and converging on a layout that maximizes coverage for the fewest loggers."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Measure what the model is least sure about">
+    <p>
+      The same placement thinking extends beyond acoustic loggers to pressure and
+      flow monitoring for calibration. Rather than spreading sensors evenly,
+      field planning is heading toward choosing the locations whose measurements
+      most reduce uncertainty in the model — the points where new data changes
+      what you know.
+    </p>
+    <p>
+      That turns a calibration campaign into something designed against the
+      model, not assembled from habit and hydrant access.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Concept: a network with proposed pressure and flow monitoring points ranked by how much each constrains the model."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="From plan to data to a calibrated model"
+    reverse>
+    <p>
+      Field planning is the first step in a loop that runs through the whole tool:
+      plan the campaign, send crews to the chosen locations, bring the
+      measurements back in, and calibrate against them. Because it all lives in
+      one place, the plan you make here lines up exactly with the data
+      calibration expects.
+    </p>
+    <p>
+      No exporting coordinates to one tool, results to another, and reconciling
+      them by hand. The campaign and the model are part of the same workflow.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Concept diagram: the loop from field plan to collected data to calibrated model, all within epanet-js."
     />
   </ContentMediaRow>
 
   <BenefitGrid
-    eyebrow="What it will do"
     heading="Field planning, the epanet-js way"
     items={benefits}
     columns={4}
   />
 
+  <CtaSection
+    heading="Planning a field campaign?"
+    subheading="Tell us how you plan field data collection today — it helps us build the right tools."
+    primaryCta={comingSoonPrimary}
+    secondaryCta={comingSoonSecondary}
+    dark={false}
+  />
+
+  <ProseSection
+    title="The campaign and the model, in one place">
+    <p>
+      Field planning exists to serve
+      <a href="/solutions/calibration" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">calibration</a>:
+      the measurements you plan here are the observed pressures and flows it tunes
+      against. Plan the campaign on the same network you'll calibrate, and the
+      data comes back ready to use. You can try logger optimization today on the
+      <a href="https://utils.epanetjs.com/" target="_blank" rel="noopener noreferrer" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">utilities site</a>,
+      and follow the native version on our
+      <a href="https://roadmap.epanetjs.com" target="_blank" rel="noopener noreferrer" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">public roadmap</a>.
+    </p>
+  </ProseSection>
+
   <CardGrid
     heading="Available now"
-    subheading="While field planning is in development, explore what you can do today."
+    subheading="While field planning comes into the app, explore what you can do today."
     items={related}
     columns={3}
   />
 
+  <FaqList
+    subheading="What's available today, and what's coming, for planning field campaigns."
+    items={faqs}
+  />
+
   <CtaSection
-    heading="Planning a field campaign?"
-    subheading="Tell us how you plan field data collection today — it helps us build the right tools."
-    primaryCta={{ label: "Talk to us", href: "https://cal.com/epanet-js/" }}
-    secondaryCta={{ label: "Launch epanet-js", href: "https://app.epanetjs.com" }}
+    heading="Help shape field planning"
+    subheading="Tell us how you design field campaigns today. Try logger optimization now, or talk to us about what's next."
+    primaryCta={comingSoonPrimary}
+    secondaryCta={comingSoonSecondary}
   />
 </Layout>

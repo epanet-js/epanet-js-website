@@ -1,13 +1,16 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
 import { solutions } from "@config/navigation";
-import { ShieldAlert, GitCompare, Users, Lightbulb } from "lucide-react";
+import { ShieldAlert, GitCompare, Lightbulb, History } from "lucide-react";
 
 export const prerender = true;
 const lang = "en";
@@ -17,25 +20,25 @@ const benefits = [
     icon: ShieldAlert,
     title: "Reduce operational risk",
     description:
-      "Test a change in the model before you make it in the field, so you avoid surprises and unintended consequences.",
+      "Test a change in the model before you make it in the field, and avoid the surprises that come from acting on a hunch.",
   },
   {
     icon: GitCompare,
     title: "Compare what-if scenarios",
     description:
-      "Try different valve, pump, and demand settings side by side and see which gives the best outcome.",
+      "Try different valve, pump, and demand settings against the same baseline and see which keeps the network in range.",
   },
   {
     icon: Lightbulb,
     title: "Plan interventions",
     description:
-      "Work out the impact of shutdowns, rezoning, and operational changes ahead of time.",
+      "Work out the impact of shutdowns, rezoning, and operating changes ahead of time, not while the crew is on site.",
   },
   {
-    icon: Users,
-    title: "Brief operators with evidence",
+    icon: History,
+    title: "Keep a defensible record",
     description:
-      "Turn model results into clear, visual answers your operations team can act on with confidence.",
+      "Each scenario captures what changed and why, so you can reproduce the analysis and explain the decision later.",
   },
 ];
 
@@ -43,59 +46,125 @@ const related = solutions.columns
   .flatMap((c) => c.items)
   .filter((i) => i.href !== "/solutions/operational-modeling")
   .slice(0, 3);
+
+const faqs = [
+  {
+    question: "What kinds of changes can I model?",
+    answer:
+      "Valve and pump operations, tank levels, demand changes, and operational controls, plus taking assets in or out of service by switching their active topology. That covers most of what an operator or planner needs to test.",
+  },
+  {
+    question: "Can I compare a change against the current network?",
+    answer:
+      "Yes. Each what-if is set up against a baseline, so you can run a change and read the difference directly, or line up several options and pick the one that keeps pressures and service in range.",
+  },
+  {
+    question: "What does pressure-dependent analysis add here?",
+    answer:
+      "Switching from demand-driven to pressure-driven analysis shows how the network actually behaves during low-pressure events, rather than assuming demand is always met. That's what makes it useful for resilience and shutdown work.",
+  },
+  {
+    question: "Can I reproduce an analysis I ran months ago?",
+    answer:
+      "That's the point of working in scenarios. A scenario keeps a record of what was changed, so if someone later asks why a decision was made, the original analysis is still there to show.",
+  },
+  {
+    question: "How is this different from editing the INP directly?",
+    answer:
+      "Editing the file in place means duplicating models and losing track of what changed. Scenarios let you test against a fixed baseline, compare cleanly, and keep one project instead of a folder of near-identical copies. See the <a href=\"/blog\">scenarios request for comments</a> for how we're building this.",
+  },
+  {
+    question: "What about long-term, staged planning?",
+    answer:
+      "Short-term operational what-ifs and long-horizon staging share the same foundation. For multi-year programs of upgrades, see <a href=\"/solutions/planning\">planning</a>.",
+  },
+];
 ---
 
 <Layout
   title="Operational modeling"
-  description="Understand how your network responds before you make the change. Model operational changes and see system response in epanet-js."
+  description="Model valve and pump operations, shutdowns, rezoning, and demand changes before you make them. See how the whole network responds, compare options against a baseline, and keep a record you can defend."
   lang={lang}>
   <PageHero
-    eyebrow="Operational modeling"
-    title="Understand how your network responds — before you make the change"
-    subtitle="Valve operations, pump changes, shifting demands — model them first and see how the whole system reacts, so you act with confidence instead of guessing.">
+    title="Understand how your network responds before you make the change"
+    subtitle="Valve operations, pump changes, shutdowns, shifting demands. Model them first and watch how the whole system reacts, so you act on evidence instead of a hunch, and keep a record of why.">
     <MediaPlaceholder
       slot="media"
       label="Screen capture: closing a valve in the model and watching pressures and flows redistribute across the network."
     />
   </PageHero>
 
+  <ProseSection
+    title="The riskiest changes are the ones you can't take back">
+    <p>
+      Closing a valve, switching a pump regime, or rezoning a supply area can do
+      exactly what you intended and still cause a pressure problem three streets
+      away. On a live network those knock-on effects are expensive to discover
+      and hard to undo.
+    </p>
+    <p>
+      Operational modeling lets you make the change in the model first. You see
+      the whole system response, find the side effects before they happen, and
+      walk into the field knowing what to expect.
+    </p>
+  </ProseSection>
+
+  <PullQuote>
+    Make the change in the model first. The knock-on effects that are easy to
+    miss on paper are obvious on the map.
+  </PullQuote>
+
   <ContentMediaRow
-    eyebrow="1. Set up the change"
     title="Model the operation you're considering">
     <p>
-      Adjust valves, pumps, tank levels, or demands to represent the change
-      you're thinking about — a planned shutdown, a rezoning, a new operating
-      regime. Setting it up takes minutes, not a rebuild.
+      Represent the change you have in mind in minutes, not a rebuild. Adjust the
+      assets and logic that drive how the network behaves:
     </p>
+    <ul class="list-disc space-y-2 pl-5 marker:text-purple-400">
+      <li>Open, close, or throttle <strong>valves</strong>, and change <strong>pump</strong> operation.</li>
+      <li>Set <strong>tank levels</strong> and shift <strong>demands</strong> for the conditions you're testing.</li>
+      <li>Edit <strong>controls</strong> — the rules for when pumps switch and valves change status.</li>
+      <li>Take assets in or out of service through their <strong>active topology</strong>, for a shutdown or a temporary backfeed.</li>
+    </ul>
     <MediaPlaceholder
       slot="media"
       kind="image"
-      label="Screenshot: editing valve and pump settings to represent a planned operational change."
+      label="Screenshot: editing valve, pump, and control settings to represent a planned operational change."
     />
   </ContentMediaRow>
 
   <ContentMediaRow
-    eyebrow="2. See the response"
     title="Watch the whole system react"
     reverse>
     <p>
-      Run the simulation and see how pressures, flows, and velocities respond
-      right across the network. The knock-on effects that are easy to miss on
-      paper become obvious on the map.
+      Run the simulation and see pressures, flows, and velocities respond right
+      across the network, color-coded on the map. The effects that are easy to
+      miss on a schematic become obvious in context.
+    </p>
+    <p>
+      For shutdowns and other low-pressure conditions, switch to
+      pressure-dependent analysis to see how the network really behaves when it
+      can't fully meet demand, instead of assuming every customer is satisfied.
+      It's the honest view for resilience work.
     </p>
     <MediaPlaceholder
       slot="media"
-      label="Screen capture: colour-coded pressure and flow response after an operational change is applied."
+      label="Screen capture: color-coded pressure and flow response after an operational change, with a low-pressure area standing out."
     />
   </ContentMediaRow>
 
   <ContentMediaRow
-    eyebrow="3. Compare"
-    title="Try options and choose the best one">
+    title="Try options against the same baseline">
     <p>
-      Test more than one approach and compare the results. Find the operation
-      that keeps pressures in range and service intact — before anyone touches a
-      valve in the field.
+      A single result tells you what happens. Comparing tells you what to do. Set
+      up each option as a scenario against the same baseline network, run them,
+      and read the differences side by side, so you can choose the operation that
+      holds pressures in range and keeps service intact.
+    </p>
+    <p>
+      Because every scenario starts from the same fixed baseline, the comparison
+      is clean: you're seeing the effect of the change, not the drift of a model
+      that's been edited in a dozen places.
     </p>
     <MediaPlaceholder
       slot="media"
@@ -104,22 +173,84 @@ const related = solutions.columns
     />
   </ContentMediaRow>
 
+  <PullQuote>
+    Choose the operation that keeps pressures in range before anyone touches a
+    valve in the field.
+  </PullQuote>
+
+  <ContentMediaRow
+    title="Keep an answer you can stand behind later"
+    reverse>
+    <p>
+      Operational decisions get questioned, sometimes months after the fact.
+      Working in scenarios means each analysis keeps a record of what was changed
+      and why, against a known baseline, so you can reproduce it and explain it
+      without reconstructing it from memory.
+    </p>
+    <p>
+      When an investigation leads to a permanent change in how the network is
+      run, you fold it back into the main model and carry on, with the original
+      analysis preserved.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: a scenario's change record listing the edits, the baseline it was built on, and the result."
+    />
+  </ContentMediaRow>
+
   <BenefitGrid
-    eyebrow="Outcomes"
     heading="What operational modeling gives you"
     items={benefits}
     columns={4}
   />
 
+  <CtaSection
+    heading="Model the change before you make it"
+    subheading="See how your network responds to the operation you're considering. Launch epanet-js, or book a demo."
+    dark={false}
+  />
+
+  <ProseSection
+    title="The everyday questions it answers">
+    <p>
+      Operational modeling is the tool for the questions that land on an
+      operator's desk without warning: a <strong>burst or shutdown plan</strong>
+      and where to isolate, a <strong>valve closure</strong> and who loses
+      pressure, a <strong>temporary rezoning or backfeed</strong> to keep supply
+      up during works, a <strong>development enquiry</strong> about a new
+      connection, or a <strong>seasonal operating strategy</strong> for summer
+      demand. Each one is a change you can test in minutes and answer with
+      evidence.
+    </p>
+  </ProseSection>
+
+  <ProseSection
+    title="Built on a model you've already calibrated">
+    <p>
+      Operational modeling is most useful on a model you trust, which is why it
+      sits next to <a href="/solutions/calibration" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">calibration</a>
+      and builds on the same network. For long-horizon, staged programs rather
+      than day-to-day operations, the same scenario foundation carries through to
+      <a href="/solutions/planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">planning</a>.
+      You can follow how scenario management is taking shape on our
+      <a href="https://roadmap.epanetjs.com" target="_blank" rel="noopener noreferrer" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">public roadmap</a>.
+    </p>
+  </ProseSection>
+
   <CardGrid
-    heading="Keep going"
+    heading="Where to next"
     subheading="Operational insight builds on a model you trust."
     items={related}
     columns={3}
   />
 
+  <FaqList
+    subheading="The questions teams ask most about operational modeling in epanet-js."
+    items={faqs}
+  />
+
   <CtaSection
-    heading="Model the change before you make it"
-    subheading="See how your network responds. Launch epanet-js or book a demo."
+    heading="Act with confidence, not guesswork"
+    subheading="See how the network responds before you make the call. Launch epanet-js free, or book a demo to walk through it with us."
   />
 </Layout>

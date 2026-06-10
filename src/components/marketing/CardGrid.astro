@@ -4,7 +4,6 @@ import ComingSoonBadge from "./ComingSoonBadge.astro";
 import type { NavItem } from "@config/navigation";
 
 interface Props {
-  eyebrow?: string;
   heading?: string;
   subheading?: string;
   items: NavItem[];
@@ -14,7 +13,6 @@ interface Props {
 }
 
 const {
-  eyebrow,
   heading,
   subheading,
   items,
@@ -59,13 +57,8 @@ const colsClass = {
   ) : (
     <section class:list={["w-full py-12 md:py-16", className]}>
       <Container>
-        {(eyebrow || heading || subheading) && (
+        {(heading || subheading) && (
           <div class="max-w-2xl mb-10 md:mb-12">
-            {eyebrow && (
-              <p class="text-sm font-semibold uppercase tracking-wide text-purple-500 mb-2">
-                {eyebrow}
-              </p>
-            )}
             {heading && (
               <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
                 {heading}

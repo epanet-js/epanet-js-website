@@ -1,13 +1,16 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
 import { solutions } from "@config/navigation";
-import { ShieldCheck, Clock, Eye, UserCheck } from "lucide-react";
+import { ShieldCheck, Clock, FileText, UserCheck } from "lucide-react";
 
 export const prerender = true;
 const lang = "en";
@@ -17,25 +20,25 @@ const benefits = [
     icon: ShieldCheck,
     title: "Models you can trust",
     description:
-      "A calibrated model that matches observed pressures and flows — so the decisions you make from it hold up.",
+      "A model that matches observed pressures and flows, so the decisions you make from it hold up to scrutiny.",
   },
   {
     icon: Clock,
     title: "Faster than manual tuning",
     description:
-      "Smart tools do the heavy lifting of searching for likely parameters, turning days of trial-and-error into a focused review.",
+      "The search work that used to take days of trial and error becomes a focused review of well-reasoned options.",
   },
   {
-    icon: Eye,
-    title: "Transparent and auditable",
+    icon: FileText,
+    title: "Every decision documented",
     description:
-      "Every suggested change is explained and recorded. You can see why a value was chosen, not just what it became.",
+      "Each piece of the network keeps a record of the options considered, their likelihood, and why a value was chosen.",
   },
   {
     icon: UserCheck,
-    title: "You keep the judgement",
+    title: "You keep the judgment",
     description:
-      "Engineering stays in the loop. Accept, adjust, or reject any recommendation — the tool assists, you decide.",
+      "Accept, adjust, or reject any recommendation. The tools assist and explain; the engineer decides.",
   },
 ];
 
@@ -43,93 +46,275 @@ const related = solutions.columns
   .flatMap((c) => c.items)
   .filter((i) => i.href !== "/solutions/calibration")
   .slice(0, 3);
+
+const faqs = [
+  {
+    question: "What does the calibration adjust?",
+    answer:
+      "Pipe roughness, demands, and asset status and controls. These are the parameters that most often explain the gap between a model and the field, and they're adjusted within ranges you set so the result stays physically sensible.",
+  },
+  {
+    question: "What field data can it calibrate against?",
+    answer:
+      "Pressure logger time series, metered flows and DMA inflows, SCADA, and one-off hydrant or field tests. The more of your network the observations cover, the more the calibration has to work with.",
+  },
+  {
+    question: "Is it fully automatic?",
+    answer:
+      "No, and that's deliberate. The tools do the searching and propose the most likely values, but every change is yours to accept, adjust, or reject. Nothing is applied without your sign-off.",
+  },
+  {
+    question: "What is the \"AI\" part, exactly?",
+    answer:
+      "For each piece of the network, several search methods — evolutionary, probabilistic, and gradient-based — try many parameter combinations and each returns candidates with a likelihood. A language model weighs those candidates against the evidence, selects the most defensible option or hands the call to you, and records the reasoning. It's an assistant that does the legwork and shows its working, not a black box.",
+  },
+  {
+    question: "Can I override a recommendation?",
+    answer:
+      "Always. You can change any value, pick a different option from the ones considered, or set your own. Because every alternative is recorded, you can see what else was on the table before you decide.",
+  },
+  {
+    question: "How is this different from calibrating by hand?",
+    answer:
+      "Manual calibration means changing a parameter, re-running, and eyeing the result, over and over. Here the combinations are searched and scored for you, broken into manageable pieces, and presented with reasoning, so your time goes into judgment rather than trial and error.",
+  },
+  {
+    question: "Do I need good demand before I calibrate?",
+    answer:
+      "It helps. Calibration is strongest when it starts from a sound demand picture, which is what <a href=\"/solutions/demand-analysis\">demand analysis</a> is for, and from a deliberate field campaign, which is what <a href=\"/solutions/field-planning\">field planning</a> is for.",
+  },
+];
 ---
 
 <Layout
   title="Calibration"
-  description="Make your model match reality with smart, assisted calibration — and an engineer in the loop for every decision."
+  description="Calibrate your hydraulic model against pressure loggers, DMA inflow, SCADA, and field tests. Assisted search proposes the most likely roughness, demand, and status changes, with an engineer in control of every decision."
   lang={lang}>
   <PageHero
-    eyebrow="Calibration"
-    title="Make your model match reality — with smart tools and an engineer in the loop"
-    subtitle="Calibration is where models earn trust. epanet-js breaks the problem into manageable pieces, suggests the most likely calibration, and keeps you in control of every decision.">
+    title="Calibrate your model against the field, with an engineer in control"
+    subtitle="epanet-js breaks the network into manageable pieces, searches for the parameters that best explain your observed data, and proposes the most likely calibration. You review the reasoning and decide. Fast to produce, and grounded in your judgment.">
     <MediaPlaceholder
       slot="media"
-      label="Screen capture: observed vs. simulated pressures converging as assisted calibration is applied across the network."
+      label="Screen capture: observed and simulated pressures converging across a DMA as assisted calibration is reviewed and applied."
     />
   </PageHero>
 
-  <ContentMediaRow
-    eyebrow="1. Compare"
-    title="Bring in observed pressures and flows">
+  <ProseSection
+    title="Calibration is where a model earns its trust">
     <p>
-      Load the measurements you've collected from the field — pressures and
-      flows — and see them side by side with your model's results. Divergence is
-      highlighted clearly on the map so you know exactly where reality and model
-      disagree.
+      A model that hasn't been checked against reality is a hypothesis. Once it
+      matches the pressures and flows you actually measure, it becomes something
+      you can plan and operate from. That's why calibration is the step that
+      decides whether a model gets used or sits on a shelf.
     </p>
+    <p>
+      It's also the step people dread. Done by hand, calibration is days of
+      changing a roughness value, re-running, squinting at the difference, and
+      starting again. epanet-js keeps the engineering judgment exactly where it
+      belongs, with you, and takes on the repetitive search that makes the work
+      so slow.
+    </p>
+  </ProseSection>
+
+  <PullQuote>
+    The judgment stays with the engineer. What changes is how much trial and
+    error stands between you and a model that matches the field.
+  </PullQuote>
+
+  <ContentMediaRow
+    title="Bring in what you measured in the field">
+    <p>
+      Calibration starts from observed data. Load the measurements you've
+      collected and see them next to your model's results, with the gaps
+      highlighted on the map so you know exactly where reality and model
+      disagree. The tools work with the data you already have:
+    </p>
+    <ul class="list-disc space-y-2 pl-5 marker:text-purple-400">
+      <li><strong>Pressure logger</strong> time series from across the network.</li>
+      <li><strong>Metered flows and DMA inflows</strong> for each zone.</li>
+      <li><strong>SCADA</strong> pressures, flows, tank levels, and pump states.</li>
+      <li><strong>Hydrant and field tests</strong>, including fire-flow readings.</li>
+    </ul>
     <MediaPlaceholder
       slot="media"
       kind="image"
-      label="Screenshot: map view highlighting where modeled values diverge from observed field measurements."
+      label="Screenshot: map highlighting where modeled values diverge from observed logger and SCADA measurements."
     />
   </ContentMediaRow>
 
   <ContentMediaRow
-    eyebrow="2. Assisted calibration"
-    title="Smart tools find the most likely fit"
+    title="Break the network into pieces you can actually solve"
     reverse>
     <p>
-      Rather than tuning the whole network at once, epanet-js breaks it into
-      smaller, manageable parts and searches for the most likely calibration for
-      each. An AI assistant proposes the choices — roughness, demands, and more
-      — that best explain what you're seeing.
+      Calibrating a whole network at once is a problem with too many unknowns.
+      epanet-js splits it the way an engineer would, by zone and DMA, into small
+      pieces that each have their own inflow and their own local pressures to
+      match.
     </p>
     <p>
-      It's the difference between staring at a blank slate and starting from a
-      well-reasoned first draft.
+      Working piece by piece keeps every part of the search constrained by real
+      evidence, so one bad assumption in a single zone can't quietly ripple
+      across the whole model.
     </p>
     <MediaPlaceholder
       slot="media"
-      label="Screen capture: the network split into zones with suggested parameter adjustments surfaced for each."
+      label="Screen capture: the network divided into DMAs, with one zone selected and its observed-versus-simulated fit shown."
     />
   </ContentMediaRow>
 
   <ContentMediaRow
-    eyebrow="3. Engineering in the loop"
-    title="You stay in control of every decision">
+    title="Try many combinations, and score each one">
     <p>
-      The assistant suggests; you decide. Review each recommendation, see the
-      reasoning behind it, and accept, adjust, or reject it. Nothing changes
-      without your sign-off.
+      For each piece, epanet-js searches for the parameters that best explain the
+      observations, adjusting <strong>roughness</strong>, <strong>demands</strong>,
+      and <strong>status and controls</strong> within the ranges you allow. It
+      doesn't rely on a single technique:
     </p>
+    <ul class="list-disc space-y-2 pl-5 marker:text-purple-400">
+      <li>
+        <strong>Evolutionary search</strong> explores thousands of combinations
+        to find layouts that fit.
+      </li>
+      <li>
+        <strong>Probabilistic inference</strong> finds the most likely values and
+        expresses how confident the fit is.
+      </li>
+      <li>
+        <strong>Gradient methods</strong> close in on the parameters that minimize
+        the error between observed and simulated.
+      </li>
+    </ul>
     <p>
-      The result is a calibrated model you can defend — fast to produce, but
-      grounded in your engineering judgement.
+      Each method returns its candidates with a likelihood, so every option
+      arrives with a measure of how well it actually explains the data.
     </p>
     <MediaPlaceholder
       slot="media"
       kind="image"
-      label="Screenshot: a review panel showing a suggested change, its rationale, and accept / adjust / reject controls."
+      label="Screenshot: candidate parameter sets for a zone, each with a likelihood score and the resulting fit to observations."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="An assistant that weighs the options and shows its working"
+    reverse>
+    <p>
+      Candidates from different methods don't always agree. A language model
+      weighs them against the evidence, settles on the most defensible choice, or
+      hands the decision to you when the call is genuinely yours to make. Then it
+      moves up the network to the next piece and does it again.
+    </p>
+    <p>
+      Crucially, it writes everything down: the options considered, their
+      likelihoods, and the reason a value was chosen. The calibration isn't a
+      single number that appears from nowhere. It's a documented chain of
+      decisions you can read, question, and change.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: a decision panel showing the chosen parameters, the alternatives, their likelihoods, and the written rationale."
+    />
+  </ContentMediaRow>
+
+  <PullQuote>
+    Every option and every decision is written down, so the calibration is
+    something you can read, question, and change.
+  </PullQuote>
+
+  <ContentMediaRow
+    title="Engineering stays in the loop, on every change">
+    <p>
+      The assistant proposes; you decide. Review each recommendation alongside
+      the reasoning and the alternatives, then accept it, adjust the value, or
+      reject it outright. Nothing is applied to your model without your sign-off.
+    </p>
+    <p>
+      What you end up with is a calibrated model you can defend in a review:
+      quick to produce, matched to the field, and backed by a record of exactly
+      how it was reached.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Screenshot: a review queue of suggested changes with accept, adjust, and reject controls and the rationale for each."
     />
   </ContentMediaRow>
 
   <BenefitGrid
-    eyebrow="Outcomes"
     heading="Why calibration is different in epanet-js"
     items={benefits}
     columns={4}
   />
 
+  <CtaSection
+    heading="Calibrate with confidence"
+    subheading="See assisted calibration on your own network, with the engineer in control of every decision."
+    dark={false}
+  />
+
+  <ProseSection
+    title="Calibration is only as good as what feeds it">
+    <p>
+      A calibration is built on two foundations: a sound picture of demand and a
+      deliberate set of field measurements. epanet-js is designed so both live in
+      the same place. Demand allocation and balancing happen in
+      <a href="/solutions/demand-analysis" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">demand analysis</a>,
+      the measurement campaign is designed in
+      <a href="/solutions/field-planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">field planning</a>,
+      and the calibrated model flows straight into
+      <a href="/solutions/operational-modeling" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">operational modeling</a>
+      and
+      <a href="/solutions/planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">planning</a>.
+    </p>
+    <p>
+      Because the engine supports pressure-dependent demand and emitter-based
+      leakage, the behavior you're calibrating against is the behavior the
+      network really shows under stress, not a simplified approximation.
+    </p>
+  </ProseSection>
+
+  <ProseSection
+    title="Follow a model from raw data to a calibrated result">
+    <p>
+      Our worked examples take a network from raw GIS through demand allocation
+      and analysis, with the files included so you can build it yourself:
+    </p>
+    <ul class="list-disc space-y-2 pl-5 marker:text-purple-400">
+      <li>
+        <a
+          href="https://help.epanetjs.com/Worked-example-2-Roseberry-AU-2f7e18c9f0f680cebb07c46ae0690645"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+          >Worked example: Roseberry, AU</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://roadmap.epanetjs.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+          >Follow calibration on the public roadmap</a
+        >
+      </li>
+    </ul>
+  </ProseSection>
+
   <CardGrid
-    heading="Keep going"
+    heading="Where to next"
     subheading="A calibrated model unlocks everything downstream."
     items={related}
     columns={3}
   />
 
+  <FaqList
+    subheading="The questions teams ask most about calibration in epanet-js."
+    items={faqs}
+  />
+
   <CtaSection
-    heading="Calibrate with confidence"
-    subheading="See assisted calibration on your own network. Launch epanet-js or book a demo."
+    heading="A calibrated model you can defend"
+    subheading="See how assisted calibration fits your workflow. Launch epanet-js free, or book a demo to walk through it with us."
   />
 </Layout>

@@ -1,0 +1,248 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import PullQuote from "@components/marketing/PullQuote.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { CalendarRange, TrendingUp, Network, Wallet } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const comingSoonPrimary = { label: "Talk to us", href: "https://cal.com/epanet-js/" };
+const comingSoonSecondary = { label: "Launch epanet-js", href: "https://app.epanetjs.com" };
+
+const benefits = [
+  {
+    icon: CalendarRange,
+    title: "Plan over the long term",
+    description:
+      "Understand how your network performs years ahead as demand grows and the system evolves around it.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Test growth scenarios",
+    description:
+      "Model new developments and rising demand to see where and when the network stops keeping up.",
+  },
+  {
+    icon: Network,
+    title: "Stage the upgrades",
+    description:
+      "Lay out reinforcements across five-year horizons and move projects between them without redrawing anything.",
+  },
+  {
+    icon: Wallet,
+    title: "Support capital planning",
+    description:
+      "Compare combinations of capital works and timing to build a defensible, prioritized investment plan.",
+  },
+];
+
+const related = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) => i.href !== "/solutions/planning")
+  .slice(0, 3);
+
+const faqs = [
+  {
+    question: "What is a scenario, in this context?",
+    answer:
+      "A structured variation on your baseline network that lets you test changes without duplicating the model. For planning, scenarios stack into stages, so you can represent the network as it will be in five, ten, or twenty years. See the <a href=\"/blog\">scenarios request for comments</a> for the full design.",
+  },
+  {
+    question: "How does staging work?",
+    answer:
+      "You draw all your future infrastructure once and leave it disabled, then enable the right pieces in each stage's scenario. Year 5 turns on the first wave of upgrades and growth, Year 10 adds the next, and so on, all from one project.",
+  },
+  {
+    question: "Can I move a project to a different year?",
+    answer:
+      "Yes — that's the core of it. Each capital project is a self-contained change set, so if a pump upgrade slips from year 5 to year 10 you move that change set between stages. No duplication, no redrawing, and no risk of leaving inconsistent edits behind.",
+  },
+  {
+    question: "Can I compare different investment pathways?",
+    answer:
+      "That's the point of working this way. By moving change sets between stages you can test sequencing — bring a transfer main forward, delay a pump, or try a different pathway entirely — and compare how each plays out before committing capital.",
+  },
+  {
+    question: "Is planning available now?",
+    answer:
+      "The scenario foundation it's built on is in active development, and you can already test scenario management on our demo models. Planning is the next layer. Tell us how you plan today, and follow progress on our <a href=\"https://roadmap.epanetjs.com\" target=\"_blank\" rel=\"noopener noreferrer\">public roadmap</a>.",
+  },
+];
+---
+
+<Layout
+  title="Planning"
+  description="Plan your water network years ahead. Draw future infrastructure, stage upgrades across five-year horizons, move capital projects between stages, and compare investment pathways. Coming soon to epanet-js."
+  lang={lang}>
+  <PageHero
+    title="Plan your network years ahead"
+    subtitle="Draw the network as it will grow, stage the upgrades across the years, and move capital projects between stages to find the most efficient plan. Long-horizon planning that stays in one project instead of a folder of copies."
+    comingSoon
+    primaryCta={comingSoonPrimary}
+    secondaryCta={comingSoonSecondary}>
+    <MediaPlaceholder
+      slot="media"
+      label="Concept: a network evolving across staged horizons, with future demand and reinforcements switching on stage by stage."
+    />
+  </PageHero>
+
+  <ProseSection
+    title="The long view is the most valuable, and the hardest to model">
+    <p>
+      Planning decides what gets built and when, often over twenty years
+      and hundreds of millions in capital. It accounts for growth, new
+      developments, and shifting demand, and the decisions it produces shape a
+      utility for a generation.
+    </p>
+    <p>
+      It's also where modeling tools tend to fall apart. The work usually means
+      duplicating the model for every stage and every option, until no one is
+      sure which file represents what. Planning in epanet-js is designed
+      to keep the whole horizon in one place.
+    </p>
+  </ProseSection>
+
+  <PullQuote>
+    Keep the whole planning horizon in one project, instead of a folder of
+    near-identical copies no one can quite tell apart.
+  </PullQuote>
+
+  <ContentMediaRow
+    title="Draw everything once, switch it on when it's needed">
+    <p>
+      Start from a canvas of the future. Draw all your planned infrastructure,
+      the new mains, pumps, tanks, and whole zones, and leave it disabled through
+      its active topology. Nothing is live yet, but it's all there, ready to be
+      brought into service when the plan calls for it.
+    </p>
+    <p>
+      One drawing holds every future asset, so you're never recreating the same
+      pipeline across a dozen separate models.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Concept: a master-plan canvas with future mains, pumps, and zones drawn but switched off."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Lay the plan out across the years"
+    reverse>
+    <p>
+      Build a stage for each horizon (Year 5, Year 10, Year 20) as a scenario
+      that enables the right slice of your future network and the demand growth
+      that comes with it. Each stage inherits the one before, so the network
+      grows the way it will in reality, one wave of upgrades at a time.
+    </p>
+    <p>
+      Run any stage to see how the network performs at that point in the future,
+      with the demand and infrastructure it will actually have.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: stepping through Year 5, Year 10, and Year 20 stages as upgrades and demand switch on."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Move projects between years to find the best plan">
+    <p>
+      The hardest part of planning is timing: what to build, and when.
+      Each capital project, whether a trunk main upgrade, a bigger pump, or a new
+      reservoir, is a self-contained change set, so you can move it from one
+      stage to another to test the sequence.
+    </p>
+    <p>
+      If a pump upgrade slips from year 5 to year 10, you move that one change
+      set. No duplication, no redrawing, and no half-applied edits left behind.
+      Bring a transfer main forward, delay a reinforcement, or try a different
+      pathway entirely, and compare what each does to performance and cost.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      kind="image"
+      label="Concept: dragging a capital-project change set from the Year 5 stage to the Year 10 stage."
+    />
+  </ContentMediaRow>
+
+  <PullQuote>
+    Move a pump upgrade from year 5 to year 10 by dragging one change set. No
+    duplication, no redrawing.
+  </PullQuote>
+
+  <ContentMediaRow
+    title="Turn the analysis into a defensible program"
+    reverse>
+    <p>
+      With projects you can sequence freely and stages you can run on demand,
+      planning becomes a search for the right combination: which capital
+      works, in which order, at which time, keep the network performing for the
+      least investment.
+    </p>
+    <p>
+      The output is a staged, prioritized program backed by evidence: the
+      foundation of a master plan you can take to a board and defend.
+    </p>
+    <MediaPlaceholder
+      slot="media"
+      label="Concept: a phased capital program with projects placed across horizons and their performance impact shown."
+    />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    heading="Planning, the epanet-js way"
+    items={benefits}
+    columns={4}
+  />
+
+  <CtaSection
+    heading="Planning for the long term?"
+    subheading="Tell us about your planning process — it helps shape what we build."
+    primaryCta={comingSoonPrimary}
+    secondaryCta={comingSoonSecondary}
+    dark={false}
+  />
+
+  <ProseSection
+    title="The same foundation as your everyday work">
+    <p>
+      Planning and day-to-day operations share the same scenario
+      foundation: the difference is horizon, not tool. The short-term what-ifs in
+      <a href="/solutions/operational-modeling" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">operational modeling</a>
+      and the multi-year staging here are two ends of the same capability, both
+      built on a network you've already
+      <a href="/solutions/calibration" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">calibrated</a>.
+      You can follow how scenario management is developing on our
+      <a href="https://roadmap.epanetjs.com" target="_blank" rel="noopener noreferrer" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">public roadmap</a>.
+    </p>
+  </ProseSection>
+
+  <CardGrid
+    heading="Available now"
+    subheading="While planning is in development, explore what you can do today."
+    items={related}
+    columns={3}
+  />
+
+  <FaqList
+    subheading="How staged, long-horizon planning will work in epanet-js."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Help shape planning"
+    subheading="Tell us how you plan capital works today. Launch epanet-js to start building, or talk to us about what's next."
+    primaryCta={comingSoonPrimary}
+    secondaryCta={comingSoonSecondary}
+  />
+</Layout>

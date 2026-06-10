@@ -1,0 +1,41 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+
+export const prerender = true;
+const lang = "en";
+---
+
+<Layout
+  title="Model import"
+  description="Bring an existing hydraulic model into epanet-js from any platform and keep working on the open EPANET engine."
+  lang={lang}>
+  <PageHero
+    title="Bring your existing model into epanet-js"
+    subtitle="Import a model you already have and pick up where you left off, on the open EPANET engine.">
+    <MediaPlaceholder
+      slot="media"
+      label="Screen capture: an existing model imported into epanet-js and placed on a real-world basemap."
+    />
+  </PageHero>
+
+  <ProseSection title="Start from the model you already have">
+    <p>
+      epanet-js opens standard EPANET <strong>.inp</strong> files and helps you
+      place a model with no coordinates onto the map, so work done in another
+      tool is ready to continue here in minutes.
+    </p>
+    <p>
+      This page is a work in progress. We'll add detail on the formats and
+      platforms we support, and how each import is handled, soon.
+    </p>
+  </ProseSection>
+
+  <CtaSection
+    heading="Bring your model across"
+    subheading="Launch epanet-js free and open your model, or book a demo to talk through your migration."
+  />
+</Layout>
