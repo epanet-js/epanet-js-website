@@ -111,7 +111,13 @@ const junctionColor = (passes: boolean) =>
   <g stroke="#ffffff" stroke-width="1">
     {
       junctions.map(([x, y, passes]) => (
-        <circle cx={x} cy={y} r="3.5" fill={junctionColor(passes)} />
+        <circle
+          cx={x}
+          cy={y}
+          r="3.5"
+          fill={junctionColor(passes)}
+          class={variant === "passfail" && !passes ? "nm-pulse" : undefined}
+        />
       ))
     }
   </g>
@@ -127,10 +133,38 @@ const junctionColor = (passes: boolean) =>
   {
     markers && (
       <g fill="none" stroke="#8b5cf6" stroke-width="2.5">
-        {markerPoints.map(([x, y]) => (
-          <circle cx={x} cy={y} r="8" />
+        {markerPoints.map(([x, y], i) => (
+          <circle
+            cx={x}
+            cy={y}
+            r="8"
+            class="nm-pulse"
+            style={`animation-delay: ${i * 0.4}s`}
+          />
         ))}
       </g>
     )
   }
 </svg>
+
+<style>
+  .nm-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: nm-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes nm-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nm-pulse {
+      animation: none;
+    }
+  }
+</style>

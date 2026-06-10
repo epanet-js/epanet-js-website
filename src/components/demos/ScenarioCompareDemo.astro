@@ -69,22 +69,23 @@ import AppWindow from "./AppWindow.astro";
   .sc-line {
     stroke-dasharray: 100;
     stroke-dashoffset: 100;
-    animation: sc-draw 7s infinite both;
+    animation: sc-draw 6s linear infinite both;
   }
   .sc-line-scenario {
-    animation-delay: 0.8s;
+    animation-delay: 0.7s;
   }
   @keyframes sc-draw {
     0% {
       stroke-dashoffset: 100;
     }
-    30% {
+    45% {
       stroke-dashoffset: 0;
     }
-    92% {
+    90% {
       stroke-dashoffset: 0;
       opacity: 1;
     }
+    96%,
     100% {
       stroke-dashoffset: 0;
       opacity: 0;

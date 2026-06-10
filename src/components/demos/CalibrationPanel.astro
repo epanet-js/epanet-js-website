@@ -82,18 +82,18 @@ const { class: className } = Astro.props;
 
 <style>
   .cal-sim-before {
-    animation: cal-fade-out 6s infinite;
+    animation: cal-fade-out 5s ease-in-out infinite;
   }
   .cal-sim-after {
-    animation: cal-fade-in 6s infinite;
+    animation: cal-fade-in 5s ease-in-out infinite;
   }
   @keyframes cal-fade-out {
     0%,
-    35% {
+    20% {
       opacity: 1;
     }
-    55%,
-    90% {
+    45%,
+    75% {
       opacity: 0;
     }
     100% {
@@ -102,11 +102,11 @@ const { class: className } = Astro.props;
   }
   @keyframes cal-fade-in {
     0%,
-    35% {
+    20% {
       opacity: 0;
     }
-    55%,
-    90% {
+    45%,
+    75% {
       opacity: 1;
     }
     100% {

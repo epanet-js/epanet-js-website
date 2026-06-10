@@ -42,7 +42,7 @@ const results = [
           results.map((row, i) => (
             <tr
               class="ff-row border-t border-gray-50 text-gray-600"
-              style={`animation-delay: ${0.4 + i * 0.5}s`}>
+              style={`animation-delay: ${0.3 + i * 0.55}s`}>
               <td class="px-3 py-1 font-medium text-gray-700">{row.junction}</td>
               <td class="px-1 py-1 text-right tabular-nums">{row.flow}</td>
               <td class="px-3 py-1 text-right">
@@ -66,38 +66,39 @@ const results = [
 
 <style>
   .ff-row {
-    animation: ff-row-in 9s infinite both;
+    animation: ff-row-in 7s infinite both;
   }
   @keyframes ff-row-in {
     0% {
       opacity: 0;
-      transform: translateY(3px);
+      transform: translateY(4px);
     }
-    4% {
+    7% {
       opacity: 1;
       transform: translateY(0);
     }
-    94% {
+    90% {
       opacity: 1;
     }
+    96%,
     100% {
       opacity: 0;
     }
   }
   .ff-progress-bar {
     width: 0;
-    animation: ff-progress 9s infinite;
+    animation: ff-progress 7s infinite;
   }
   @keyframes ff-progress {
     0% {
       width: 0;
       opacity: 1;
     }
-    32% {
+    38% {
       width: 100%;
       opacity: 1;
     }
-    40% {
+    48% {
       opacity: 0;
     }
     100% {
