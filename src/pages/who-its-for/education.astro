@@ -3,7 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -97,12 +97,8 @@ const faqs = [
   <PageHero
     title="Learn on the real tools the industry uses"
     subtitle="Teach and learn water modeling without fighting software. epanet-js runs in any browser, gets students to a working model in minutes, and is free for education."
-    primaryCta={schoolCta}>
-    <MediaPlaceholder
-      slot="media"
-      label="Photo / screen capture: students building water network models in a computer lab or on laptops."
-    />
-  </PageHero>
+    primaryCta={schoolCta}
+  />
 
   <ProseSection
     title="The software shouldn't be the hardest part of the course">
@@ -135,10 +131,10 @@ const faqs = [
       Because everyone is on the same browser-based tool, a demo on your screen is
       a demo on theirs, whatever hardware they brought to class.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screenshot: a class of students each working in epanet-js in the browser."
+      src="/assets/blog/progress-report/2026-04/2026-04-02-welcome.webp"
+      alt="The epanet-js welcome screen in the browser, with demo networks ready to open."
     />
   </ContentMediaRow>
 
@@ -154,9 +150,9 @@ const faqs = [
       Running a simulation is a keystroke, and the results are color-coded on the
       map, so the link between a change and its effect is immediate and visible.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: a student experimenting with a network and instantly seeing results."
+      src="/assets/blog/progress-report/2025-10/ctrl-draw.mp4"
     />
   </ContentMediaRow>
 
@@ -171,10 +167,10 @@ const faqs = [
       Graduates arrive at their first job already fluent in a tool the industry
       uses, not needing to relearn the craft on different software.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screenshot: a real EPANET model running in the browser, matching professional workflows."
+      src="/assets/images/epanet-js-app.png"
+      alt="A real EPANET model running in the browser with color-coded simulation results."
     />
   </ContentMediaRow>
 
@@ -188,10 +184,6 @@ const faqs = [
       It's part of the same goal behind the whole project: make good water
       modeling usable by more people, starting with the ones learning the craft.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: signing in with a school email and unlocking free educational access."
-    />
   </ContentMediaRow>
 
   <BenefitGrid

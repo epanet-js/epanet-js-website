@@ -3,7 +3,9 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
+import CalibrationPanel from "@components/demos/CalibrationPanel.astro";
+import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -90,12 +92,8 @@ const faqs = [
   lang={lang}>
   <PageHero
     title="Build models faster, deliver more for every client"
-    subtitle="Spend less time fighting software and more time delivering insight. epanet-js helps consultants turn data into trustworthy models — fast — while keeping client data private.">
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture / photo: a consultant presenting model results to a client."
-    />
-  </PageHero>
+    subtitle="Spend less time fighting software and more time delivering insight. epanet-js helps consultants turn data into trustworthy models — fast — while keeping client data private."
+  />
 
   <ProseSection
     title="Your margin is the time between data and insight">
@@ -128,15 +126,15 @@ const faqs = [
       The speed to a working model is the speed to a model you can start charging
       for.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screenshot: importing a client dataset and producing a running model quickly."
+      src="/assets/blog/progress-report/2025-07/model-build-quick.mp4"
     />
   </ContentMediaRow>
 
   <ContentMediaRow
     title="Calibrated models you can defend"
+    caption="Illustrative concept"
     reverse>
     <p>
       Assisted calibration produces models that match field observations, and it
@@ -148,10 +146,7 @@ const faqs = [
       When a client or a reviewer asks how you arrived at a number, the answer is
       already documented.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: assisted calibration producing a defensible, well-documented model."
-    />
+    <CalibrationPanel slot="media" class="w-full max-w-[300px] mx-auto" />
   </ContentMediaRow>
 
   <ContentMediaRow title="Client data that stays with you">
@@ -161,11 +156,7 @@ const faqs = [
       unless you choose to — so confidentiality is the default, and the answer to
       a security questionnaire is a short one.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Diagram: client data kept local on the consultant's machine, with optional cloud."
-    />
+    <LocalFirstDiagram slot="media" />
   </ContentMediaRow>
 
   <PullQuote>

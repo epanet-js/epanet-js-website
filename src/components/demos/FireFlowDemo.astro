@@ -1,0 +1,118 @@
+---
+// Fire flow analysis demo: pass/fail map with a floating results panel,
+// rows populating as the analysis "runs". Labels mirror the real tool.
+import AppWindow from "./AppWindow.astro";
+
+const results = [
+  { junction: "J1", flow: "41.2", passes: true },
+  { junction: "J107", flow: "47.2", passes: true },
+  { junction: "J67", flow: "30.9", passes: false },
+  { junction: "J288", flow: "27.3", passes: true },
+];
+---
+
+<AppWindow
+  variant="passfail"
+  label="Fire flow analysis in epanet-js: results panel showing available flow per junction with pass and fail status over a network map.">
+  <div
+    class="absolute top-2 right-2 w-[230px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div class="px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">Fire flow analysis</p>
+      <div class="flex items-center justify-between mt-1.5">
+        <span class="text-[10px] text-gray-500">Minimum pressure (m)</span>
+        <span
+          class="text-[10px] text-gray-700 border border-gray-200 rounded px-1.5 py-0.5 bg-white">
+          15
+        </span>
+      </div>
+      <div class="ff-progress mt-2 h-0.5 rounded-full bg-gray-100 overflow-hidden">
+        <div class="ff-progress-bar h-full bg-violet-500"></div>
+      </div>
+    </div>
+    <table class="w-full text-[10px]">
+      <thead>
+        <tr class="text-left text-gray-400">
+          <th class="font-medium px-3 py-1">Junction</th>
+          <th class="font-medium px-1 py-1 text-right">Available (l/s)</th>
+          <th class="font-medium px-3 py-1 text-right">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          results.map((row, i) => (
+            <tr
+              class="ff-row border-t border-gray-50 text-gray-600"
+              style={`animation-delay: ${0.4 + i * 0.5}s`}>
+              <td class="px-3 py-1 font-medium text-gray-700">{row.junction}</td>
+              <td class="px-1 py-1 text-right tabular-nums">{row.flow}</td>
+              <td class="px-3 py-1 text-right">
+                <span
+                  class:list={[
+                    "inline-block rounded-full px-1.5 py-px font-medium",
+                    row.passes
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-600",
+                  ]}>
+                  {row.passes ? "Pass" : "Fail"}
+                </span>
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</AppWindow>
+
+<style>
+  .ff-row {
+    animation: ff-row-in 9s infinite both;
+  }
+  @keyframes ff-row-in {
+    0% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    4% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    94% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  .ff-progress-bar {
+    width: 0;
+    animation: ff-progress 9s infinite;
+  }
+  @keyframes ff-progress {
+    0% {
+      width: 0;
+      opacity: 1;
+    }
+    32% {
+      width: 100%;
+      opacity: 1;
+    }
+    40% {
+      opacity: 0;
+    }
+    100% {
+      width: 100%;
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ff-row,
+    .ff-progress-bar {
+      animation: none;
+    }
+    .ff-progress-bar {
+      width: 100%;
+      opacity: 0;
+    }
+  }
+</style>

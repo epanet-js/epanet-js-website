@@ -1,0 +1,136 @@
+---
+// A small illustrative water network drawn in the style of the epanet-js map
+// view: navy pipes and junctions over a light basemap.
+
+interface Props {
+  variant?: "plain" | "pressure" | "passfail";
+  markers?: boolean;
+  class?: string;
+}
+
+const { variant = "plain", markers = false, class: className } = Astro.props;
+
+// Pipes as [x1, y1, x2, y2, zone] where zone drives the pressure coloring
+// (source side stays blue, extremities trend amber/red).
+type Zone = "high" | "good" | "low" | "critical";
+const pipes: [number, number, number, number, Zone][] = [
+  [40, 50, 90, 70, "high"],
+  [90, 70, 150, 60, "high"],
+  [90, 70, 100, 130, "high"],
+  [150, 60, 210, 75, "good"],
+  [100, 130, 160, 140, "good"],
+  [160, 140, 150, 60, "good"],
+  [100, 130, 110, 195, "good"],
+  [230, 150, 210, 75, "good"],
+  [160, 140, 170, 200, "good"],
+  [210, 75, 270, 65, "low"],
+  [110, 195, 170, 200, "low"],
+  [170, 200, 240, 210, "low"],
+  [240, 210, 230, 150, "low"],
+  [230, 150, 160, 140, "low"],
+  [310, 160, 330, 80, "low"],
+  [270, 65, 330, 80, "critical"],
+  [240, 210, 300, 220, "critical"],
+  [300, 220, 310, 160, "low"],
+  [300, 220, 350, 230, "critical"],
+  [310, 160, 360, 150, "critical"],
+];
+
+// Junctions as [x, y, passes] where `passes` drives the pass/fail coloring.
+const junctions: [number, number, boolean][] = [
+  [90, 70, true],
+  [150, 60, true],
+  [210, 75, true],
+  [270, 65, true],
+  [330, 80, false],
+  [100, 130, true],
+  [160, 140, true],
+  [110, 195, true],
+  [170, 200, true],
+  [240, 210, true],
+  [230, 150, true],
+  [300, 220, true],
+  [310, 160, true],
+  [350, 230, false],
+  [360, 150, false],
+];
+
+const markerPoints: [number, number][] = [
+  [100, 130],
+  [270, 65],
+  [240, 210],
+  [310, 160],
+];
+
+const pressureColor: Record<Zone, string> = {
+  high: "#3b82f6",
+  good: "#22c55e",
+  low: "#f59e0b",
+  critical: "#ef4444",
+};
+
+const pipeColor = (zone: Zone) =>
+  variant === "pressure" ? pressureColor[zone] : "#3730a3";
+
+const junctionColor = (passes: boolean) =>
+  variant === "passfail" ? (passes ? "#22c55e" : "#ef4444") : "#312e81";
+---
+
+<svg
+  viewBox="0 0 400 300"
+  class:list={["w-full h-full", className]}
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true">
+  <!-- basemap -->
+  <rect width="400" height="300" fill="#f3f4f6"></rect>
+  <g stroke="#ffffff" stroke-width="6" fill="none" opacity="0.9">
+    <path d="M-10 100 C 80 90, 180 110, 410 95"></path>
+    <path d="M-10 230 C 120 215, 260 245, 410 225"></path>
+    <path d="M70 -10 C 80 90, 60 200, 75 310"></path>
+    <path d="M250 -10 C 240 100, 265 220, 255 310"></path>
+    <path d="M340 -10 L 330 310"></path>
+  </g>
+  <g fill="#e7e8ea">
+    <rect x="105" y="15" width="60" height="32" rx="3"></rect>
+    <rect x="290" y="30" width="38" height="28" rx="3"></rect>
+    <rect x="120" y="240" width="70" height="36" rx="3"></rect>
+    <rect x="285" y="255" width="40" height="30" rx="3"></rect>
+    <rect x="20" y="150" width="38" height="44" rx="3"></rect>
+  </g>
+
+  <!-- pipes -->
+  <g stroke-width="2.5" stroke-linecap="round">
+    {
+      pipes.map(([x1, y1, x2, y2, zone]) => (
+        <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={pipeColor(zone)} />
+      ))
+    }
+  </g>
+
+  <!-- junctions -->
+  <g stroke="#ffffff" stroke-width="1">
+    {
+      junctions.map(([x, y, passes]) => (
+        <circle cx={x} cy={y} r="3.5" fill={junctionColor(passes)} />
+      ))
+    }
+  </g>
+
+  <!-- tank -->
+  <path
+    d="M40 42 L48 56 L32 56 Z"
+    fill="#312e81"
+    stroke="#ffffff"
+    stroke-width="1"></path>
+
+  <!-- monitoring point markers -->
+  {
+    markers && (
+      <g fill="none" stroke="#8b5cf6" stroke-width="2.5">
+        {markerPoints.map(([x, y]) => (
+          <circle cx={x} cy={y} r="8" />
+        ))}
+      </g>
+    )
+  }
+</svg>

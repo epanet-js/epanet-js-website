@@ -2,7 +2,6 @@
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
 
 export const prerender = true;
@@ -15,12 +14,8 @@ const lang = "en";
   lang={lang}>
   <PageHero
     title="Model water quality across your network"
-    subtitle="Track water age, trace sources, and follow chlorine and other constituents through the system.">
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: water age or chlorine concentration color-coded across the network over a simulation."
-    />
-  </PageHero>
+    subtitle="Track water age, trace sources, and follow chlorine and other constituents through the system."
+  />
 
   <ProseSection title="See where the water goes, and how old it is">
     <p>

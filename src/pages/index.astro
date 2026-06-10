@@ -12,7 +12,10 @@ import MiddleCTA from "@components/landing/newsletter-cta";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
+import CalibrationReviewDemo from "@components/demos/CalibrationReviewDemo.astro";
+import FireFlowDemo from "@components/demos/FireFlowDemo.astro";
+import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
@@ -120,10 +123,9 @@ const securityBenefits = [
     <p>
       <a href="/solutions/model-build" class={linkClass}>Explore model building →</a>
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screen capture: raw GIS dropped in and assembling into a connected, color-coded model that runs on screen."
+      src="/assets/blog/progress-report/2025-07/model-build-quick.mp4"
     />
   </ContentMediaRow>
 
@@ -139,10 +141,10 @@ const securityBenefits = [
     <p>
       <a href="/solutions/calibration" class={linkClass}>Explore calibration →</a>
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: observed and simulated pressures converging across a zone as assisted calibration is reviewed."
-    />
+    <div slot="media">
+      <CalibrationReviewDemo framed />
+      <p class="mt-2 text-xs text-gray-400">Illustrative concept</p>
+    </div>
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -155,11 +157,7 @@ const securityBenefits = [
     <p>
       <a href="/solutions/fire-flow" class={linkClass}>Explore fire flow →</a>
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Screenshot: hydrants colored by available fire flow, with a pressure-and-flow curve for a selected point."
-    />
+    <FireFlowDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -173,9 +171,9 @@ const securityBenefits = [
     <p>
       <a href="/solutions/operational-modeling" class={linkClass}>Explore operational modeling →</a>
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: closing a valve in the model and watching pressures and flows redistribute across the network."
+      src="/assets/blog/progress-report/2025-12/time-control.mp4"
     />
   </ContentMediaRow>
 
@@ -222,10 +220,10 @@ const securityBenefits = [
     <p>
       <a href="/who-its-for/utilities" class={linkClass}>For utilities →</a>
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Photo / screen capture: a utility team reviewing their live network model on screen."
+      src="/assets/images/epanet-js-app.png"
+      alt="epanet-js in the browser showing a network with color-coded simulation results and the asset properties panel."
     />
   </ContentMediaRow>
 
@@ -241,10 +239,7 @@ const securityBenefits = [
     <p>
       <a href="/who-its-for/consultants" class={linkClass}>For consultants →</a>
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture / photo: a consultant presenting model results to a client."
-    />
+    <LocalFirstDiagram slot="media" />
   </ContentMediaRow>
 
   <ProseSection>
@@ -329,10 +324,10 @@ const securityBenefits = [
       fire flow analysis, start to finish. It's the everyday epanet-js workflow,
       on a real dataset you can download and follow.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Case study placeholder: the Roseberry network built and analyzed end to end."
+      src="/assets/landing/study-area.webp"
+      alt="A water network built over satellite imagery of its real study area in epanet-js."
     />
   </ContentMediaRow>
 

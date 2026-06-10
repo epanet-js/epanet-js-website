@@ -3,7 +3,10 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import CalibrationReviewDemo from "@components/demos/CalibrationReviewDemo.astro";
+import CalibrationPanel from "@components/demos/CalibrationPanel.astro";
+import NetworkMap from "@components/demos/NetworkMap.astro";
+import LegendPanel from "@components/demos/LegendPanel.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -93,10 +96,10 @@ const faqs = [
   <PageHero
     title="Calibrate your model against the field, with an engineer in control"
     subtitle="epanet-js breaks the network into manageable pieces, searches for the parameters that best explain your observed data, and proposes the most likely calibration. You review the reasoning and decide. Fast to produce, and grounded in your judgment.">
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: observed and simulated pressures converging across a DMA as assisted calibration is reviewed and applied."
-    />
+    <div slot="media">
+      <CalibrationReviewDemo framed />
+      <p class="mt-2 text-xs text-gray-400">Illustrative concept</p>
+    </div>
   </PageHero>
 
   <ProseSection
@@ -122,7 +125,8 @@ const faqs = [
   </PullQuote>
 
   <ContentMediaRow
-    title="Bring in what you measured in the field">
+    title="Bring in what you measured in the field"
+    caption="Illustrative concept">
     <p>
       Calibration starts from observed data. Load the measurements you've
       collected and see them next to your model's results, with the gaps
@@ -135,11 +139,21 @@ const faqs = [
       <li><strong>SCADA</strong> pressures, flows, tank levels, and pump states.</li>
       <li><strong>Hydrant and field tests</strong>, including fire-flow readings.</li>
     </ul>
-    <MediaPlaceholder
+    <div
       slot="media"
-      kind="image"
-      label="Screenshot: map highlighting where modeled values diverge from observed logger and SCADA measurements."
-    />
+      class="relative aspect-[16/10] w-full rounded-xl border border-gray-200 shadow-lg overflow-hidden bg-gray-100">
+      <NetworkMap variant="pressure" class="absolute inset-0" />
+      <LegendPanel
+        title="Divergence (m)"
+        entries={[
+          { color: "#3b82f6", label: "< 1" },
+          { color: "#22c55e", label: "1 – 3" },
+          { color: "#f59e0b", label: "3 – 5" },
+          { color: "#ef4444", label: "> 5" },
+        ]}
+        class="absolute top-2 left-2"
+      />
+    </div>
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -156,10 +170,6 @@ const faqs = [
       evidence, so one bad assumption in a single zone can't quietly ripple
       across the whole model.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: the network divided into DMAs, with one zone selected and its observed-versus-simulated fit shown."
-    />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -188,11 +198,6 @@ const faqs = [
       Each method returns its candidates with a likelihood, so every option
       arrives with a measure of how well it actually explains the data.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Screenshot: candidate parameter sets for a zone, each with a likelihood score and the resulting fit to observations."
-    />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -210,10 +215,6 @@ const faqs = [
       single number that appears from nowhere. It's a documented chain of
       decisions you can read, question, and change.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: a decision panel showing the chosen parameters, the alternatives, their likelihoods, and the written rationale."
-    />
   </ContentMediaRow>
 
   <PullQuote>
@@ -222,7 +223,8 @@ const faqs = [
   </PullQuote>
 
   <ContentMediaRow
-    title="Engineering stays in the loop, on every change">
+    title="Engineering stays in the loop, on every change"
+    caption="Illustrative concept">
     <p>
       The assistant proposes; you decide. Review each recommendation alongside
       the reasoning and the alternatives, then accept it, adjust the value, or
@@ -233,11 +235,7 @@ const faqs = [
       quick to produce, matched to the field, and backed by a record of exactly
       how it was reached.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Screenshot: a review queue of suggested changes with accept, adjust, and reject controls and the rationale for each."
-    />
+    <CalibrationPanel slot="media" class="w-full max-w-[300px] mx-auto" />
   </ContentMediaRow>
 
   <BenefitGrid

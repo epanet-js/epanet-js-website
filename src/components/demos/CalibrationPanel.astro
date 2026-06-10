@@ -1,0 +1,127 @@
+---
+// The calibration assistant panel: a suggested parameter change with
+// accept/adjust/reject controls and an observed-vs-simulated graph that
+// converges as the change is applied.
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden",
+    className,
+  ]}>
+  <div
+    class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+    <p class="text-[11px] font-semibold text-gray-700">Calibration assistant</p>
+    <p class="text-[10px] text-gray-400">Suggestion 2 of 7</p>
+  </div>
+  <div class="px-3 py-2.5 space-y-2">
+    <p class="text-[10px] text-gray-500">Zone B · 14 pipes</p>
+    <div class="flex items-center justify-between text-[11px]">
+      <span class="text-gray-600">Roughness</span>
+      <span class="tabular-nums">
+        <span class="line-through text-gray-400">110</span>
+        <span aria-hidden="true" class="text-gray-400 mx-1">→</span>
+        <span class="font-semibold text-violet-600">95</span>
+      </span>
+    </div>
+    <div>
+      <svg viewBox="0 0 200 60" class="w-full" aria-hidden="true">
+        <g stroke="#f3f4f6" stroke-width="1">
+          <line x1="0" y1="15" x2="200" y2="15"></line>
+          <line x1="0" y1="30" x2="200" y2="30"></line>
+          <line x1="0" y1="45" x2="200" y2="45"></line>
+        </g>
+        <polyline
+          points="0,38 25,30 50,40 75,26 100,36 125,24 150,34 175,26 200,32"
+          fill="none"
+          stroke="#9ca3af"
+          stroke-width="1.5"></polyline>
+        <polyline
+          class="cal-sim cal-sim-before"
+          points="0,22 25,14 50,24 75,10 100,20 125,8 150,18 175,10 200,16"
+          fill="none"
+          stroke="#8b5cf6"
+          stroke-width="1.5"></polyline>
+        <polyline
+          class="cal-sim cal-sim-after"
+          points="0,36 25,28 50,38 75,24 100,34 125,22 150,32 175,24 200,30"
+          fill="none"
+          stroke="#8b5cf6"
+          stroke-width="1.5"></polyline>
+      </svg>
+      <div class="flex gap-3 text-[9px] text-gray-400 mt-1">
+        <span class="flex items-center gap-1">
+          <span class="w-2.5 h-0.5 bg-gray-400"></span> Observed
+        </span>
+        <span class="flex items-center gap-1">
+          <span class="w-2.5 h-0.5 bg-violet-500"></span> Simulated
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="flex gap-1.5 px-3 pb-2.5">
+    <span
+      class="rounded bg-violet-600 text-white text-[10px] font-medium px-2.5 py-1">
+      Accept
+    </span>
+    <span
+      class="rounded border border-gray-200 text-gray-600 text-[10px] px-2.5 py-1">
+      Adjust
+    </span>
+    <span
+      class="rounded border border-gray-200 text-gray-600 text-[10px] px-2.5 py-1">
+      Reject
+    </span>
+  </div>
+</div>
+
+<style>
+  .cal-sim-before {
+    animation: cal-fade-out 6s infinite;
+  }
+  .cal-sim-after {
+    animation: cal-fade-in 6s infinite;
+  }
+  @keyframes cal-fade-out {
+    0%,
+    35% {
+      opacity: 1;
+    }
+    55%,
+    90% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes cal-fade-in {
+    0%,
+    35% {
+      opacity: 0;
+    }
+    55%,
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cal-sim {
+      animation: none;
+    }
+    .cal-sim-before {
+      opacity: 0;
+    }
+    .cal-sim-after {
+      opacity: 1;
+    }
+  }
+</style>

@@ -3,7 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -103,9 +103,9 @@ const faqs = [
   <PageHero
     title="Build a working hydraulic model from the data you already have"
     subtitle="Bring in your GIS, trace what your records don't cover on a real-world map, review and clean the network, and run a simulation the same day. Model building in epanet-js takes you from raw data to a model you can trust in hours, not weeks.">
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: raw utility GIS dropped in and assembling into a connected, color-coded model that runs on screen."
+      src="/assets/blog/progress-report/2025-07/model-build-quick.mp4"
     />
   </PageHero>
 
@@ -152,10 +152,10 @@ const faqs = [
       Size isn't a constraint. Whether your network is a few hundred pipes or
       several hundred thousand junctions, it opens, edits, and runs.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Diagram: Shapefile, GeoJSON, CAD, and .inp flowing into a single connected model on a basemap."
+      src="/assets/blog/progress-report/2026-04/2026-04-02-welcome.webp"
+      alt="The epanet-js welcome screen with options to start a project, open a model, or import from GIS, and demo networks ready to explore."
     />
   </ContentMediaRow>
 
@@ -175,9 +175,9 @@ const faqs = [
       point to a different pipe, or remove it. Color-code junctions by actual
       demand to spot high-demand areas and check your allocation at a glance.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: customer points importing from GeoJSON, allocating to the nearest pipe, with junctions color-coded by demand."
+      src="/assets/blog/progress-report/2025-08/cust-import.mp4"
     />
   </ContentMediaRow>
 
@@ -212,10 +212,9 @@ const faqs = [
       Undo and redo work throughout, which is something the EPANET workflow has
       gone without for far too long.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screen capture: drawing pipes over satellite imagery, with auto-split, snapping, and undo/redo in use."
+      src="/assets/blog/progress-report/2025-10/ctrl-draw.mp4"
     />
   </ContentMediaRow>
 
@@ -237,10 +236,6 @@ const faqs = [
       directly from disk and only loads the parts it needs, so even datasets over
       10 GB work without issue.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Screenshot: the Elevations panel with multiple GeoTIFF sources layered in priority order over the default global source."
-    />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -268,10 +263,10 @@ const faqs = [
       a network has no real-world coordinates at all, work against an XY Grid
       instead of a basemap.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screen capture: the projection finder placing an un-georeferenced INP onto a basemap by searching a location."
+      src="/assets/blog/progress-report/2026-03/2026-03-00-projection.png"
+      alt="The network projection finder in epanet-js listing likely coordinate systems for a searched location, with the network placed on the basemap."
     />
   </ContentMediaRow>
 
@@ -312,10 +307,9 @@ const faqs = [
         intentional.
       </li>
     </ul>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screenshot: the Network Review panel listing orphan assets, proximity candidates, crossing pipes, and a connectivity trace."
+      src="/assets/blog/progress-report/2025-10/03-orphan-assets.mp4"
     />
   </ContentMediaRow>
 
@@ -337,9 +331,9 @@ const faqs = [
       It's a fast way to sanity-check that the model behaves the way the real
       system does before you rely on a result.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: a boundary trace spreading from a selection and stopping at PRVs and closed pipes to outline a zone."
+      src="/assets/blog/progress-report/2025-10/06-connectivity-trace.mp4"
     />
   </ContentMediaRow>
 
@@ -357,9 +351,10 @@ const faqs = [
       It all happens locally, in a tab, with nothing sent to a server unless you
       choose to. That makes it fast to run and private by default.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: pressing Shift + Enter and watching color-coded pressure and flow results appear on the map."
+      src="/assets/images/epanet-js-app.png"
+      alt="Color-coded pressure and flow results on the network map in epanet-js, with the legend and asset panel open."
     />
   </ContentMediaRow>
 

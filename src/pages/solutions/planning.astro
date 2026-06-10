@@ -3,7 +3,8 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
+import ScenarioCompareDemo from "@components/demos/ScenarioCompareDemo.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -89,9 +90,9 @@ const faqs = [
     comingSoon
     primaryCta={comingSoonPrimary}
     secondaryCta={comingSoonSecondary}>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Concept: a network evolving across staged horizons, with future demand and reinforcements switching on stage by stage."
+      src="/assets/blog/progress-report/2025-11/topology.mp4"
     />
   </PageHero>
 
@@ -128,15 +129,11 @@ const faqs = [
       One drawing holds every future asset, so you're never recreating the same
       pipeline across a dozen separate models.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Concept: a master-plan canvas with future mains, pumps, and zones drawn but switched off."
-    />
   </ContentMediaRow>
 
   <ContentMediaRow
     title="Lay the plan out across the years"
+    caption="Concept preview — in development"
     reverse>
     <p>
       Build a stage for each horizon (Year 5, Year 10, Year 20) as a scenario
@@ -148,10 +145,7 @@ const faqs = [
       Run any stage to see how the network performs at that point in the future,
       with the demand and infrastructure it will actually have.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: stepping through Year 5, Year 10, and Year 20 stages as upgrades and demand switch on."
-    />
+    <ScenarioCompareDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -168,11 +162,6 @@ const faqs = [
       Bring a transfer main forward, delay a reinforcement, or try a different
       pathway entirely, and compare what each does to performance and cost.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Concept: dragging a capital-project change set from the Year 5 stage to the Year 10 stage."
-    />
   </ContentMediaRow>
 
   <PullQuote>
@@ -193,10 +182,6 @@ const faqs = [
       The output is a staged, prioritized program backed by evidence: the
       foundation of a master plan you can take to a board and defend.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Concept: a phased capital program with projects placed across horizons and their performance impact shown."
-    />
   </ContentMediaRow>
 
   <BenefitGrid

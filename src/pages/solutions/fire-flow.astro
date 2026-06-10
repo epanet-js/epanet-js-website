@@ -3,7 +3,8 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
+import FireFlowDemo from "@components/demos/FireFlowDemo.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -93,9 +94,9 @@ const faqs = [
   <PageHero
     title="Test the capacity of your network, hydrant by hydrant"
     subtitle="Run fire flow across every hydrant and junction, check available, needed, and designed flow against your residual pressure target, and map where capacity runs short. Then dig into any single point with a full pressure and flow curve.">
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: a fire flow analysis sweeping the network, with each hydrant colored by available flow at the target residual pressure."
+      src="/assets/blog/progress-report/2025-11/fire-flow-poc.mp4"
     />
   </PageHero>
 
@@ -143,10 +144,10 @@ const faqs = [
         a problem somewhere upstream.
       </li>
     </ul>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screenshot: the fire flow setup with a residual pressure target and a choice of available, needed, or designed mode."
+      src="/assets/blog/progress-report/2025-11/fire-flow.png"
+      alt="The fire flow analysis panel in epanet-js with flow rate and minimum pressure settings, a design fire flow option, and a results table with pass and fail statuses."
     />
   </ContentMediaRow>
 
@@ -186,10 +187,6 @@ const faqs = [
       shows up visually, you can see how velocity and flow change through the
       system and pick out the critical assets that constrain it.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: right-clicking a node to produce a pressure-versus-flow curve, with the affected pipes highlighted on the map."
-    />
   </ContentMediaRow>
 
   <PullQuote>
@@ -210,11 +207,7 @@ const faqs = [
       them wherever your work lives: a report, a GIS layer, a capacity register,
       or a response to a developer.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Screenshot: the network color-coded by available capacity, with an export menu for GIS and CSV."
-    />
+    <FireFlowDemo slot="media" />
   </ContentMediaRow>
 
   <BenefitGrid

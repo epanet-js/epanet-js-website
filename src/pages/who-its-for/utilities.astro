@@ -3,7 +3,8 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
+import DeploymentOptionsDiagram from "@components/demos/DeploymentOptionsDiagram.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -96,9 +97,10 @@ const faqs = [
   <PageHero
     title="Take control of your network and your model"
     subtitle="Understand your system, run it better, and keep your data in your hands. epanet-js gives utilities a modern, affordable way to model the network they're responsible for.">
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture / photo: a utility team reviewing their live network model on screen."
+      src="/assets/images/epanet-js-app.png"
+      alt="epanet-js in the browser showing a utility network with color-coded simulation results."
     />
   </PageHero>
 
@@ -135,10 +137,10 @@ const faqs = [
       See pressures, flows, and capacity color-coded across the service area, and
       stop relying on guesswork or out-of-date studies.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screenshot: a utility's network with color-coded pressures across the service area."
+      src="/assets/landing/Complex.webp"
+      alt="A large, complex water network model with color-coded results across the service area."
     />
   </ContentMediaRow>
 
@@ -153,9 +155,9 @@ const faqs = [
       Because the work happens against a model you keep current, the answer you
       give today is one you can reproduce and defend tomorrow.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: testing an operational change and reviewing the network response."
+      src="/assets/blog/progress-report/2025-12/time-control.mp4"
     />
   </ContentMediaRow>
 
@@ -170,11 +172,7 @@ const faqs = [
       It's a simple principle: the safest data is the data that never leaves your
       control.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Diagram: local-first by default, with optional cloud and self-hosted deployment."
-    />
+    <DeploymentOptionsDiagram slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow title="Built on EPANET, open and affordable" reverse>
@@ -188,9 +186,10 @@ const faqs = [
       adopt the tool widely without the budget conversation that usually limits
       modeling to a single seat.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: opening an existing .inp model and continuing work without conversion."
+      src="/assets/blog/progress-report/2026-04/2026-04-02-welcome.webp"
+      alt="The epanet-js welcome screen with the option to open an existing model and demo networks ready to explore."
     />
   </ContentMediaRow>
 
