@@ -3,7 +3,10 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
+import NetworkMap from "@components/demos/NetworkMap.astro";
+import LegendPanel from "@components/demos/LegendPanel.astro";
+import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -97,12 +100,8 @@ const faqs = [
     title="The best tools to get the job done for humanitarian water work"
     subtitle="Designing and improving water supply for communities that need it most deserves capable, affordable tools. epanet-js gives humanitarian teams professional modeling that runs anywhere."
     primaryCta={talkCta}
-    secondaryCta={launchCta}>
-    <MediaPlaceholder
-      slot="media"
-      label="Photo / screen capture: a field engineer planning a community water supply on a laptop."
-    />
-  </PageHero>
+    secondaryCta={launchCta}
+  />
 
   <ProseSection
     title="The communities that need it most deserve capable tools">
@@ -136,10 +135,10 @@ const faqs = [
       It loads in a browser and runs locally, so a basic laptop and a modest
       connection are enough to get to results.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screenshot: a community water network being modeled in the browser on a laptop."
+      src="/assets/landing/study-area.webp"
+      alt="A community water network modeled over satellite imagery in epanet-js."
     />
   </ContentMediaRow>
 
@@ -152,10 +151,6 @@ const faqs = [
       version, you're not trading cost for capability. You get professional
       results on a humanitarian budget.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: building and analyzing a water supply design for a community project."
-    />
   </ContentMediaRow>
 
   <ContentMediaRow title="Design and check a real supply">
@@ -165,11 +160,15 @@ const faqs = [
       delivers: pressures where they're needed and enough capacity for fire flow
       and growth. The same workflows the industry uses, available to your team.
     </p>
-    <MediaPlaceholder
+    <div
       slot="media"
-      kind="image"
-      label="Screenshot: a community supply design checked for pressure and capacity on the map."
-    />
+      class="relative aspect-[16/10] w-full rounded-xl border border-gray-200 shadow-lg overflow-hidden bg-gray-100">
+      <NetworkMap variant="pressure" class="absolute inset-0" />
+      <LegendPanel
+        title="Pressure (m)"
+        class="absolute top-2 left-2"
+      />
+    </div>
   </ContentMediaRow>
 
   <ContentMediaRow title="Open, local-first, and free of lock-in" reverse>
@@ -179,10 +178,7 @@ const faqs = [
       format any EPANET tool can read. A project handed over to a local partner or
       a community team isn't trapped behind a license they can't afford.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Diagram: local-first, open-source, EPANET-compatible — models that stay with the people who need them."
-    />
+    <LocalFirstDiagram slot="media" />
   </ContentMediaRow>
 
   <BenefitGrid

@@ -3,7 +3,8 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
+import ScenarioCompareDemo from "@components/demos/ScenarioCompareDemo.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -88,9 +89,9 @@ const faqs = [
   <PageHero
     title="Understand how your network responds before you make the change"
     subtitle="Valve operations, pump changes, shutdowns, shifting demands. Model them first and watch how the whole system reacts, so you act on evidence instead of a hunch, and keep a record of why.">
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: closing a valve in the model and watching pressures and flows redistribute across the network."
+      src="/assets/blog/progress-report/2025-12/time-control.mp4"
     />
   </PageHero>
 
@@ -126,10 +127,10 @@ const faqs = [
       <li>Edit <strong>controls</strong> — the rules for when pumps switch and valves change status.</li>
       <li>Take assets in or out of service through their <strong>active topology</strong>, for a shutdown or a temporary backfeed.</li>
     </ul>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screenshot: editing valve, pump, and control settings to represent a planned operational change."
+      src="/assets/blog/progress-report/2026-02/2026-02-02-PCV.png"
+      alt="Editing pressure control valve settings in the epanet-js asset panel."
     />
   </ContentMediaRow>
 
@@ -147,9 +148,10 @@ const faqs = [
       can't fully meet demand, instead of assuming every customer is satisfied.
       It's the honest view for resilience work.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: color-coded pressure and flow response after an operational change, with a low-pressure area standing out."
+      src="/assets/images/epanet-js-app.png"
+      alt="Color-coded pressure and flow results across the network in epanet-js after a simulation."
     />
   </ContentMediaRow>
 
@@ -166,11 +168,7 @@ const faqs = [
       is clean: you're seeing the effect of the change, not the drift of a model
       that's been edited in a dozen places.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Screenshot: two scenarios side by side comparing network response to different operational choices."
-    />
+    <ScenarioCompareDemo slot="media" />
   </ContentMediaRow>
 
   <PullQuote>
@@ -192,9 +190,10 @@ const faqs = [
       run, you fold it back into the main model and carry on, with the original
       analysis preserved.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: a scenario's change record listing the edits, the baseline it was built on, and the result."
+      src="/assets/blog/progress-report/2026-01/01-scenario-hero.png"
+      alt="A scenario in epanet-js compared against the main model, with the scenario switcher and a quick graph of results."
     />
   </ContentMediaRow>
 

@@ -3,7 +3,9 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
+import NetworkMap from "@components/demos/NetworkMap.astro";
+import LegendPanel from "@components/demos/LegendPanel.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -89,10 +91,17 @@ const faqs = [
     comingSoon
     primaryCta={comingSoonPrimary}
     secondaryCta={comingSoonSecondary}>
-    <MediaPlaceholder
-      slot="media"
-      label="Concept: recommended monitoring locations highlighted across a network ahead of a field data campaign."
-    />
+    <div slot="media">
+      <div class="relative aspect-[16/10] w-full rounded-xl border border-gray-200 shadow-lg overflow-hidden bg-gray-100">
+        <NetworkMap markers class="absolute inset-0" />
+        <LegendPanel
+          title="Field campaign"
+          entries={[{ color: "#8b5cf6", label: "Proposed monitoring point" }]}
+          class="absolute top-2 left-2"
+        />
+      </div>
+      <p class="mt-2 text-xs text-gray-400">Concept preview — in development</p>
+    </div>
   </PageHero>
 
   <ProseSection
@@ -127,10 +136,9 @@ const faqs = [
       It turns logger planning from a spreadsheet exercise into a visual one,
       where the coverage you're buying is right there on the map.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screenshot: acoustic loggers placed on a network with their listening ranges drawn as coverage circles."
+      src="/assets/blog/progress-report/2025-11/acoustic-logger.mp4"
     />
   </ContentMediaRow>
 
@@ -148,10 +156,6 @@ const faqs = [
       point you can adjust with local knowledge. The logger optimization tool is
       live on our utilities site today.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: the optimizer searching placement combinations and converging on a layout that maximizes coverage for the fewest loggers."
-    />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -167,11 +171,6 @@ const faqs = [
       That turns a calibration campaign into something designed against the
       model, not assembled from habit and hydrant access.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Concept: a network with proposed pressure and flow monitoring points ranked by how much each constrains the model."
-    />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -188,10 +187,6 @@ const faqs = [
       No exporting coordinates to one tool, results to another, and reconciling
       them by hand. The campaign and the model are part of the same workflow.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Concept diagram: the loop from field plan to collected data to calibrated model, all within epanet-js."
-    />
   </ContentMediaRow>
 
   <BenefitGrid

@@ -2,7 +2,9 @@
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
+import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
+import DeploymentOptionsDiagram from "@components/demos/DeploymentOptionsDiagram.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
 import Container from "@components/container.astro";
@@ -88,11 +90,7 @@ const principles = [
       data — doesn't sit on our servers at all unless you make a deliberate
       choice to use cloud features.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Diagram: data staying on the user's device by default, with an explicit, optional path to the cloud."
-    />
+    <LocalFirstDiagram slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -108,10 +106,7 @@ const principles = [
       If you have a security questionnaire or specific compliance needs, we're
       happy to work through them with you directly.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Diagram: deployment options — managed cloud, chosen data region, or fully self-hosted on your own infrastructure."
-    />
+    <DeploymentOptionsDiagram slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -125,10 +120,10 @@ const principles = [
       Anyone can review how data is handled — a level of transparency that
       closed, proprietary modeling software simply can't offer.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screenshot: the public epanet-js source repository."
+      src="/assets/landing/github-open-source.webp"
+      alt="The public epanet-js source repository on GitHub."
     />
   </ContentMediaRow>
 

@@ -1,0 +1,60 @@
+---
+// Security page diagram: your model stays on your device; the cloud is an
+// explicit, optional step.
+import { Cloud, FileText, Laptop } from "lucide-react";
+import NetworkMap from "./NetworkMap.astro";
+---
+
+<div
+  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  role="img"
+  aria-label="Diagram: your model and data stay on your device by default, with an optional, opt-in path to the cloud.">
+  <div class="flex items-center justify-center gap-3 sm:gap-5">
+    <!-- device -->
+    <div class="w-44 sm:w-52 shrink-0">
+      <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
+        <div class="relative aspect-[16/10] bg-gray-100">
+          <NetworkMap class="absolute inset-0" />
+          <span
+            class="absolute bottom-1.5 left-1.5 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[9px] font-medium text-gray-600">
+            <FileText size={9} className="text-gray-400" />
+            my-network.inp
+          </span>
+        </div>
+      </div>
+      <div class="h-1.5 mx-6 rounded-b-lg bg-gray-300"></div>
+      <p
+        class="flex items-center justify-center gap-1.5 mt-2 text-[11px] font-medium text-gray-700">
+        <Laptop size={12} className="text-gray-400" />
+        Your model, on your device
+      </p>
+    </div>
+
+    <!-- optional path to cloud -->
+    <div class="flex flex-col items-center gap-1.5 min-w-0">
+      <svg viewBox="0 0 80 12" class="w-14 sm:w-20" aria-hidden="true">
+        <path
+          d="M2 6 H70"
+          fill="none"
+          stroke="#d1d5db"
+          stroke-width="2"
+          stroke-dasharray="5 4"></path>
+        <path d="M70 1.5 L78 6 L70 10.5 Z" fill="#d1d5db"></path>
+      </svg>
+      <span
+        class="rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[9px] font-medium text-gray-500 whitespace-nowrap">
+        Optional · opt-in
+      </span>
+    </div>
+
+    <!-- cloud -->
+    <div
+      class="flex flex-col items-center gap-1.5 rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-5 sm:px-6 shrink-0">
+      <Cloud size={24} className="text-gray-400" />
+      <p class="text-[11px] font-medium text-gray-600 whitespace-nowrap">
+        Cloud sync
+      </p>
+      <p class="text-[10px] text-gray-400">Off by default</p>
+    </div>
+  </div>
+</div>

@@ -3,7 +3,8 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
+import Media from "@components/marketing/Media.astro";
+import DemandAllocationDemo from "@components/demos/DemandAllocationDemo.astro";
 import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -89,10 +90,10 @@ const faqs = [
     comingSoon
     primaryCta={comingSoonPrimary}
     secondaryCta={comingSoonSecondary}>
-    <MediaPlaceholder
-      slot="media"
-      label="Concept: demand allocated across a network, with consumption profiles balanced against metered DMA inflow."
-    />
+    <div slot="media">
+      <DemandAllocationDemo />
+      <p class="mt-2 text-xs text-gray-400">Concept preview — in development</p>
+    </div>
   </PageHero>
 
   <ProseSection
@@ -128,10 +129,9 @@ const faqs = [
       <li><strong>Reconnect</strong> any customer to a different pipe by hand when local knowledge says so.</li>
       <li>See the <strong>total customer demand</strong> on each junction and each pipe, with the full list behind it.</li>
     </ul>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      kind="image"
-      label="Screenshot: customer points allocated to the nearest suitable pipe, with the customer-demand total shown on a junction."
+      src="/assets/blog/progress-report/2025-08/cust-import.mp4"
     />
   </ContentMediaRow>
 
@@ -149,9 +149,10 @@ const faqs = [
       Then color-code the network by actual demand to spot high-demand areas and
       confirm your allocation looks right before you rely on it.
     </p>
-    <MediaPlaceholder
+    <Media
       slot="media"
-      label="Screen capture: assigning demand patterns from the library and visualizing actual demand color-coded across junctions."
+      src="/assets/blog/progress-report/2026-01/02-patterns.png"
+      alt="The demand patterns editor in epanet-js, with a daily profile plotted over 24 hours."
     />
   </ContentMediaRow>
 
@@ -168,11 +169,6 @@ const faqs = [
       rather than rounded away, it becomes a number you can act on, and a check
       that keeps the whole demand picture honest.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      kind="image"
-      label="Concept diagram: metered DMA inflow reconciled against allocated consumption, with the residual shown as leakage."
-    />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -188,10 +184,6 @@ const faqs = [
       Demand analysis builds on that to keep the zonal reconciliation realistic, so
       the water you can't account for is modeled the way it actually behaves.
     </p>
-    <MediaPlaceholder
-      slot="media"
-      label="Concept: leakage modeled with emitters, rising and falling with pressure across a zone."
-    />
   </ContentMediaRow>
 
   <BenefitGrid

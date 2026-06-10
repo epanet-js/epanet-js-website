@@ -13,9 +13,12 @@ Guidance for working in this repository (epanet-js marketing website).
 
 ## Marketing pages & components
 
-- Reusable marketing components live in `src/components/marketing/`: `PageHero`, `ProseSection`, `ContentMediaRow`, `MediaPlaceholder`, `PullQuote`, `BenefitGrid`, `CardGrid`, `FaqList`, `CtaSection`, `ComingSoonBadge`. Compose pages from these.
+- Reusable marketing components live in `src/components/marketing/`: `PageHero`, `ProseSection`, `ContentMediaRow`, `Media`, `PullQuote`, `BenefitGrid`, `CardGrid`, `FaqList`, `CtaSection`, `ComingSoonBadge`. Compose pages from these.
 - Navigation, solutions, audiences, and resources are a **single source of truth** in `src/config/navigation.ts`. The mega-menu, footer, and on-page `CardGrid`s all read from it — update the config, not each consumer.
-- Media is represented with `MediaPlaceholder` (labelled). Do not fabricate screenshots/GIFs; leave a placeholder describing the intended shot.
+- Media slots are filled one of three ways, in order of preference:
+  1. **Real screen captures** via `Media` (`src`, optional `alt`/`poster`). Source from `public/assets/` — the blog progress reports hold real app footage. Never misrepresent what a capture shows.
+  2. **App-styled demo components** from `src/components/demos/` (`FireFlowDemo`, `CalibrationReviewDemo`/`CalibrationPanel`, `ScenarioCompareDemo`, `DemandAllocationDemo`, `NetworkMap`+`LegendPanel`, `AppWindow`, `LocalFirstDiagram`, `DeploymentOptionsDiagram`). These mimic the real app UI (white panels, violet accent, exact labels/units) with subtle CSS-only animation. Anything depicting an unshipped feature must carry a caption: "Illustrative concept" or "Concept preview — in development" (use the `caption` prop on `ContentMediaRow`, or a `<p class="mt-2 text-xs text-gray-400">` under the media in a hero slot).
+  3. **No media.** `ContentMediaRow` and `PageHero` both render cleanly without a media slot (single-column / centered). Prefer this over a stretch: do not fabricate screenshots and do not use stock-photo-style asks ("a consultant presenting to a client").
 
 ## Writing style (important — avoid "AI slop")
 

@@ -1,0 +1,24 @@
+---
+// Assisted calibration demo. `framed` places the panel over the app map;
+// otherwise the panel renders on its own.
+import AppWindow from "./AppWindow.astro";
+import CalibrationPanel from "./CalibrationPanel.astro";
+
+interface Props {
+  framed?: boolean;
+}
+
+const { framed = false } = Astro.props;
+---
+
+{
+  framed ? (
+    <AppWindow
+      variant="pressure"
+      label="Assisted calibration in epanet-js: a review panel suggesting a roughness change, with observed and simulated pressures converging.">
+      <CalibrationPanel class="absolute top-2 right-2 w-[250px] max-w-[72%]" />
+    </AppWindow>
+  ) : (
+    <CalibrationPanel class="w-full max-w-[300px] mx-auto" />
+  )
+}

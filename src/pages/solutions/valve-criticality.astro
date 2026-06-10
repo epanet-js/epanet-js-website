@@ -2,7 +2,6 @@
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
-import MediaPlaceholder from "@components/marketing/MediaPlaceholder.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
 
 export const prerender = true;
@@ -15,12 +14,8 @@ const lang = "en";
   lang={lang}>
   <PageHero
     title="Find the valves that matter most"
-    subtitle="Understand which valves isolate each part of the network, and where a shutdown leaves customers at risk.">
-    <MediaPlaceholder
-      slot="media"
-      label="Screen capture: the network colored by the customers affected when each isolation valve is closed."
-    />
-  </PageHero>
+    subtitle="Understand which valves isolate each part of the network, and where a shutdown leaves customers at risk."
+  />
 
   <ProseSection title="Know the impact before you close a valve">
     <p>
