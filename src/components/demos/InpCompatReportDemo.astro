@@ -1,0 +1,274 @@
+---
+// INP import compatibility report: a panel that checks off network elements
+// as my-network.inp loads and flags rule-based controls for review.
+// `framed` overlays the panel on the app map; otherwise it stands alone.
+import { FileText, CheckCircle2, TriangleAlert } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+
+interface Props {
+  framed?: boolean;
+  class?: string;
+}
+
+const { framed = false, class: className } = Astro.props;
+
+const rows = [
+  { label: "Junctions", value: "1,284", warn: false },
+  { label: "Pipes", value: "1,407", warn: false },
+  { label: "Demand patterns", value: "6", warn: false },
+  { label: "Rule-based controls", value: "2 need review", warn: true },
+];
+
+const rowDelay = (i: number) => 1.2 + i * 0.5;
+
+const label =
+  "INP import in epanet-js: a compatibility report for my-network.inp listing 1,284 junctions, 1,407 pipes, and 6 demand patterns imported, with 2 rule-based controls flagged for review.";
+---
+
+{
+  framed ? (
+    <AppWindow variant="plain" label={label} class={className}>
+      <div class="absolute top-2 right-2 w-[250px] max-w-[72%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+        <div class="px-3 pt-2.5 pb-2 border-b border-gray-100">
+          <div class="flex items-center justify-between">
+            <p class="flex items-center gap-1.5 text-[11px] font-semibold text-gray-700">
+              <FileText size={12} className="text-gray-400" />
+              my-network.inp
+            </p>
+            <p class="text-[10px] text-gray-400">Import report</p>
+          </div>
+          <div class="mt-2 h-0.5 rounded-full bg-gray-100 overflow-hidden">
+            <div class="inp-progress-bar h-full bg-violet-500" />
+          </div>
+        </div>
+        <div>
+          {rows.map((row, i) => (
+            <div
+              class="inp-row border-t border-gray-50 first:border-t-0 px-3 py-1.5"
+              style={`animation-delay: ${rowDelay(i)}s`}>
+              <div
+                class:list={[
+                  "flex items-center justify-between text-[10px]",
+                  row.warn ? "inp-breathe text-amber-600" : "text-gray-600",
+                ]}>
+                <span>{row.label}</span>
+                <span
+                  class:list={[
+                    "flex items-center gap-1 font-medium tabular-nums",
+                    !row.warn && "text-gray-700",
+                  ]}>
+                  {row.value}
+                  <span
+                    class="inp-check inline-flex"
+                    style={`animation-delay: ${rowDelay(i)}s`}>
+                    {row.warn ? (
+                      <TriangleAlert size={11} className="text-amber-500" />
+                    ) : (
+                      <CheckCircle2 size={11} className="text-green-500" />
+                    )}
+                  </span>
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div
+          class="inp-row flex gap-1.5 px-3 pt-1.5 pb-2.5 border-t border-gray-50"
+          style="animation-delay: 3.2s">
+          <span class="inp-open rounded bg-violet-600 text-white text-[10px] font-medium px-2.5 py-1">
+            Open model
+          </span>
+          <span class="rounded border border-gray-200 text-gray-600 text-[10px] px-2.5 py-1">
+            View report
+          </span>
+        </div>
+      </div>
+    </AppWindow>
+  ) : (
+    <div
+      class:list={[
+        "w-full max-w-[300px] mx-auto bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+        className,
+      ]}
+      role="img"
+      aria-label={label}>
+      <div class="px-3 pt-2.5 pb-2 border-b border-gray-100">
+        <div class="flex items-center justify-between">
+          <p class="flex items-center gap-1.5 text-[11px] font-semibold text-gray-700">
+            <FileText size={12} className="text-gray-400" />
+            my-network.inp
+          </p>
+          <p class="text-[10px] text-gray-400">Import report</p>
+        </div>
+        <div class="mt-2 h-0.5 rounded-full bg-gray-100 overflow-hidden">
+          <div class="inp-progress-bar h-full bg-violet-500" />
+        </div>
+      </div>
+      <div>
+        {rows.map((row, i) => (
+          <div
+            class="inp-row border-t border-gray-50 first:border-t-0 px-3 py-1.5"
+            style={`animation-delay: ${rowDelay(i)}s`}>
+            <div
+              class:list={[
+                "flex items-center justify-between text-[10px]",
+                row.warn ? "inp-breathe text-amber-600" : "text-gray-600",
+              ]}>
+              <span>{row.label}</span>
+              <span
+                class:list={[
+                  "flex items-center gap-1 font-medium tabular-nums",
+                  !row.warn && "text-gray-700",
+                ]}>
+                {row.value}
+                <span
+                  class="inp-check inline-flex"
+                  style={`animation-delay: ${rowDelay(i)}s`}>
+                  {row.warn ? (
+                    <TriangleAlert size={11} className="text-amber-500" />
+                  ) : (
+                    <CheckCircle2 size={11} className="text-green-500" />
+                  )}
+                </span>
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div
+        class="inp-row flex gap-1.5 px-3 pt-1.5 pb-2.5 border-t border-gray-50"
+        style="animation-delay: 3.2s">
+        <span class="inp-open rounded bg-violet-600 text-white text-[10px] font-medium px-2.5 py-1">
+          Open model
+        </span>
+        <span class="rounded border border-gray-200 text-gray-600 text-[10px] px-2.5 py-1">
+          View report
+        </span>
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .inp-progress-bar {
+    width: 0;
+    animation: inp-progress 6s infinite;
+  }
+  @keyframes inp-progress {
+    0% {
+      width: 0;
+      opacity: 1;
+    }
+    22% {
+      width: 100%;
+      opacity: 1;
+    }
+    30% {
+      opacity: 0;
+    }
+    100% {
+      width: 100%;
+      opacity: 0;
+    }
+  }
+  .inp-row {
+    animation: inp-row-in 6s infinite both;
+  }
+  @keyframes inp-row-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    7% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  .inp-check {
+    transform-origin: center;
+    animation: inp-check-pop 6s infinite both;
+  }
+  @keyframes inp-check-pop {
+    0%,
+    7% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    11% {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+    14% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    92% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  .inp-breathe {
+    animation: inp-breathe 2s ease-in-out infinite;
+  }
+  @keyframes inp-breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.65;
+    }
+  }
+  .inp-open {
+    animation: inp-open-pulse 6s infinite;
+  }
+  @keyframes inp-open-pulse {
+    0%,
+    66% {
+      filter: brightness(1);
+    }
+    70% {
+      filter: brightness(1.2);
+    }
+    75%,
+    100% {
+      filter: brightness(1);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .inp-progress-bar,
+    .inp-row,
+    .inp-check,
+    .inp-breathe,
+    .inp-open {
+      animation: none;
+    }
+    .inp-progress-bar {
+      width: 100%;
+      opacity: 0;
+    }
+    .inp-row {
+      opacity: 1;
+      transform: none;
+    }
+    .inp-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .inp-breathe {
+      opacity: 1;
+    }
+    .inp-open {
+      filter: none;
+    }
+  }
+</style>

@@ -16,11 +16,19 @@ import NetworkMap from "./NetworkMap.astro";
 interface Props {
   variant?: "plain" | "pressure" | "passfail";
   markers?: boolean;
+  /** Skip the built-in NetworkMap so the slot supplies the whole map stack. */
+  bare?: boolean;
   label?: string;
   class?: string;
 }
 
-const { variant = "plain", markers = false, label, class: className } = Astro.props;
+const {
+  variant = "plain",
+  markers = false,
+  bare = false,
+  label,
+  class: className,
+} = Astro.props;
 
 const tools = [Spline, Circle, Triangle, RectangleHorizontal];
 ---
@@ -56,7 +64,15 @@ const tools = [Spline, Circle, Triangle, RectangleHorizontal];
 
   <!-- map canvas + floating panels -->
   <div class="relative aspect-[16/10] bg-gray-100 overflow-hidden">
-    <NetworkMap variant={variant} markers={markers} class="absolute inset-0" />
+    {
+      !bare && (
+        <NetworkMap
+          variant={variant}
+          markers={markers}
+          class="absolute inset-0"
+        />
+      )
+    }
     <slot />
   </div>
 

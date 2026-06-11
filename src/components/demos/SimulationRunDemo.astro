@@ -1,0 +1,205 @@
+---
+// Simulation run demo: a "Running EPANET 2.3" toast with a progress hairline,
+// then the network recolors by pressure and the result legend appears. The
+// loop reads as the model being re-run.
+import { Zap } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import NetworkMap from "./NetworkMap.astro";
+import LegendPanel from "./LegendPanel.astro";
+---
+
+<AppWindow
+  variant="plain"
+  label="Running a simulation in epanet-js: the network recolors by pressure when the simulation finishes, with a legend.">
+  <!-- pressure result layer fading in over the plain base map -->
+  <div class="sr-result absolute inset-0">
+    <NetworkMap variant="pressure" class="absolute inset-0" />
+  </div>
+
+  <!-- quiet pulse ring at a far junction while results hold -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <circle
+      cx="330"
+      cy="80"
+      r="7"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="2"
+      class="sr-pulse"></circle>
+  </svg>
+
+  <!-- run toast -->
+  <div
+    class="sr-toast absolute top-2 left-1/2 -translate-x-1/2 w-[180px] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div class="flex items-center gap-1.5 px-3 pt-2 pb-1.5">
+      <Zap size={11} className="text-violet-600 shrink-0" />
+      <span class="text-[10px] text-gray-600">Running EPANET 2.3</span>
+    </div>
+    <div class="h-0.5 bg-gray-100">
+      <div class="sr-progress h-full bg-violet-500"></div>
+    </div>
+  </div>
+
+  <!-- result legend -->
+  <div class="sr-legend absolute bottom-2 left-2">
+    <LegendPanel />
+  </div>
+</AppWindow>
+
+<style>
+  .sr-result {
+    opacity: 0;
+    animation: sr-result-in 7s ease-in-out infinite both;
+  }
+  @keyframes sr-result-in {
+    0%,
+    35% {
+      opacity: 0;
+    }
+    50%,
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .sr-toast {
+    animation: sr-toast-in 7s ease infinite both;
+  }
+  @keyframes sr-toast-in {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -6px);
+    }
+    6% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    38% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    46%,
+    100% {
+      opacity: 0;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  .sr-progress {
+    width: 0;
+    animation: sr-progress 7s infinite both;
+  }
+  @keyframes sr-progress {
+    0% {
+      width: 0;
+    }
+    35%,
+    100% {
+      width: 100%;
+    }
+  }
+
+  .sr-legend {
+    opacity: 0;
+    animation: sr-legend-in 7s ease infinite both;
+  }
+  @keyframes sr-legend-in {
+    0%,
+    45% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    55% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+  }
+
+  .sr-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    animation: sr-pulse-ring 7s ease-out infinite both;
+  }
+  @keyframes sr-pulse-ring {
+    0%,
+    55% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    58% {
+      opacity: 0.5;
+      transform: scale(0.7);
+    }
+    65% {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+    66% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    69% {
+      opacity: 0.5;
+      transform: scale(0.7);
+    }
+    76% {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+    77% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    80% {
+      opacity: 0.5;
+      transform: scale(0.7);
+    }
+    87%,
+    100% {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sr-result,
+    .sr-toast,
+    .sr-progress,
+    .sr-legend,
+    .sr-pulse {
+      animation: none;
+    }
+    .sr-result {
+      opacity: 1;
+    }
+    .sr-toast {
+      opacity: 0;
+    }
+    .sr-progress {
+      width: 100%;
+    }
+    .sr-legend {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .sr-pulse {
+      opacity: 0;
+    }
+  }
+</style>

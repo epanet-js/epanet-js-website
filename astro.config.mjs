@@ -67,6 +67,8 @@ export default defineConfig({
     mdx(),
     icon(),
     sitemap({
+      // Internal animation gallery; noindex and kept out of the sitemap.
+      filter: (page) => page !== "https://epanetjs.com/demos/",
       i18n: {
         defaultLocale: "en",
         locales: { en: "en", es: "es" },
