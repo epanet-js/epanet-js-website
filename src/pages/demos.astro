@@ -9,10 +9,12 @@ import Badge from "@components/ui/badge.astro";
 
 import AppWindow from "@components/demos/AppWindow.astro";
 import AssetSearchDemo from "@components/demos/AssetSearchDemo.astro";
+import BrowserAppDemo from "@components/demos/BrowserAppDemo.astro";
 import CalibrationPanel from "@components/demos/CalibrationPanel.astro";
 import CalibrationReviewDemo from "@components/demos/CalibrationReviewDemo.astro";
 import CalibrationScatterDemo from "@components/demos/CalibrationScatterDemo.astro";
 import ChlorineBoosterDemo from "@components/demos/ChlorineBoosterDemo.astro";
+import CloudOptionalDemo from "@components/demos/CloudOptionalDemo.astro";
 import ControlRuleDemo from "@components/demos/ControlRuleDemo.astro";
 import CustomerPointsDemo from "@components/demos/CustomerPointsDemo.astro";
 import DataTableDemo from "@components/demos/DataTableDemo.astro";
@@ -21,15 +23,19 @@ import DemandCategoriesDemo from "@components/demos/DemandCategoriesDemo.astro";
 import DemandScalingDemo from "@components/demos/DemandScalingDemo.astro";
 import DeploymentOptionsDiagram from "@components/demos/DeploymentOptionsDiagram.astro";
 import ElevationDemo from "@components/demos/ElevationDemo.astro";
+import EncryptedTransitDemo from "@components/demos/EncryptedTransitDemo.astro";
 import EpsPlaybackDemo from "@components/demos/EpsPlaybackDemo.astro";
 import FieldDataImportDemo from "@components/demos/FieldDataImportDemo.astro";
+import FileTransferDemo from "@components/demos/FileTransferDemo.astro";
 import FireFlowDemo from "@components/demos/FireFlowDemo.astro";
 import FlushingPlanDemo from "@components/demos/FlushingPlanDemo.astro";
 import GisImportDemo from "@components/demos/GisImportDemo.astro";
 import HydrantTestPlanDemo from "@components/demos/HydrantTestPlanDemo.astro";
 import InpCompatReportDemo from "@components/demos/InpCompatReportDemo.astro";
 import LegendPanel from "@components/demos/LegendPanel.astro";
+import LicenseTimelineDemo from "@components/demos/LicenseTimelineDemo.astro";
 import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
+import LocalFirstFlowDemo from "@components/demos/LocalFirstFlowDemo.astro";
 import LoggerPlacementDemo from "@components/demos/LoggerPlacementDemo.astro";
 import NetworkDrawDemo from "@components/demos/NetworkDrawDemo.astro";
 import NetworkMap from "@components/demos/NetworkMap.astro";
@@ -50,7 +56,9 @@ import SelectionBatchEditDemo from "@components/demos/SelectionBatchEditDemo.ast
 import ShutdownPlanDemo from "@components/demos/ShutdownPlanDemo.astro";
 import SimulationRunDemo from "@components/demos/SimulationRunDemo.astro";
 import SourceTraceDemo from "@components/demos/SourceTraceDemo.astro";
+import SustainableOpenSourceDemo from "@components/demos/SustainableOpenSourceDemo.astro";
 import TankOperationsDemo from "@components/demos/TankOperationsDemo.astro";
+import TeamAccessDemo from "@components/demos/TeamAccessDemo.astro";
 import TimeSeriesPlotDemo from "@components/demos/TimeSeriesPlotDemo.astro";
 import TraceDemo from "@components/demos/TraceDemo.astro";
 import ValveCriticalityDemo from "@components/demos/ValveCriticalityDemo.astro";
@@ -575,6 +583,73 @@ const sections: DemoSection[] = [
         frame: "diagram",
         usedOn: ["/security", "/who-its-for/utilities"],
         component: DeploymentOptionsDiagram,
+      },
+      {
+        name: "BrowserAppDemo",
+        description:
+          "The URL types out, the app loads in the browser tab, and the no-install, no-login, runs-on-your-device chips land.",
+        useOn:
+          "Homepage, /security, and /who-its-for/utilities (IT requirements).",
+        frame: "diagram",
+        component: BrowserAppDemo,
+      },
+      {
+        name: "LocalFirstFlowDemo",
+        description:
+          "The app arrives from the cloud, the .inp stays on the device, and the connection drops without stopping the simulation.",
+        useOn: "/security and audience pages explaining local-first.",
+        frame: "diagram",
+        component: LocalFirstFlowDemo,
+      },
+      {
+        name: "FileTransferDemo",
+        description:
+          "A model file moves between two machines the traditional way, email, network drive, or USB, with no cloud in the path.",
+        useOn: "/security and /who-its-for/humanitarian-ngos.",
+        frame: "diagram",
+        component: FileTransferDemo,
+      },
+      {
+        name: "CloudOptionalDemo",
+        description:
+          "One model syncing from a cloud, ours or yours, down to three devices and back.",
+        useOn: "/security and collaboration content.",
+        frame: "diagram",
+        concept: true,
+        component: CloudOptionalDemo,
+      },
+      {
+        name: "EncryptedTransitDemo",
+        description:
+          "Traffic between the browser and the application shuttles through a TLS lock in both directions.",
+        useOn: "/security (encrypted in transit row).",
+        frame: "diagram",
+        component: EncryptedTransitDemo,
+      },
+      {
+        name: "TeamAccessDemo",
+        description:
+          "A member list with per-person roles, an invite going out, and a role change applying.",
+        useOn: "/pricing and /security.",
+        frame: "panel",
+        concept: true,
+        component: TeamAccessDemo,
+      },
+      {
+        name: "LicenseTimelineDemo",
+        description:
+          "Source code public from day one under the FSL, becoming fully open MIT two years on.",
+        useOn: "/security (open and auditable row) and open-source content.",
+        frame: "diagram",
+        component: LicenseTimelineDemo,
+      },
+      {
+        name: "SustainableOpenSourceDemo",
+        description:
+          "The open-source cycle: people use the app, some pay for advanced features, and developers reinvest in the app.",
+        useOn: "Open-source story content and /pricing.",
+        frame: "diagram",
+        component: SustainableOpenSourceDemo,
       },
     ],
   },
