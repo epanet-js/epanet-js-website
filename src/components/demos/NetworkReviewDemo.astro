@@ -1,0 +1,353 @@
+---
+// Network review demo: a checklist of model checks (orphan assets, pipe
+// proximity, crossing pipes, connectivity) with the map flagging each issue
+// in turn and a count ticking down as one is resolved.
+import AppWindow from "./AppWindow.astro";
+
+const checks: {
+  label: string;
+  value: string;
+  resolvedValue?: string;
+  sel?: string;
+}[] = [
+  { label: "Orphan assets", value: "3", resolvedValue: "2", sel: "nr-sel-1" },
+  { label: "Pipe proximity", value: "5", sel: "nr-sel-2" },
+  { label: "Crossing pipes", value: "2" },
+  { label: "Connectivity", value: "1 subnetwork" },
+];
+---
+
+<AppWindow
+  variant="plain"
+  label="Network review in epanet-js: a checklist of model issues with the map highlighting each one.">
+  <!-- review checklist (top-left) -->
+  <div
+    class="absolute top-2 left-2 w-[185px] max-w-[60%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div class="px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <div class="flex items-baseline justify-between">
+        <p class="text-[11px] font-semibold text-gray-700">Network review</p>
+        <p class="text-[10px] text-gray-400">4 checks</p>
+      </div>
+      <div class="mt-1.5 h-0.5 rounded-full bg-gray-100 overflow-hidden">
+        <div class="nr-progress-bar h-full bg-violet-500"></div>
+      </div>
+    </div>
+    <div class="py-1">
+      {
+        checks.map((check, i) => (
+          <div
+            class="nr-row relative"
+            style={`animation-delay: ${0.1 + i * 0.25}s`}>
+            <div class="flex items-center justify-between gap-2 px-3 py-1 border-l-2 border-transparent text-[10px] text-gray-600">
+              <span>{check.label}</span>
+              {check.resolvedValue ? (
+                <span class="relative inline-block tabular-nums text-gray-700">
+                  <span class="nr-count-before">{check.value}</span>
+                  <span class="nr-count-after absolute inset-0">
+                    {check.resolvedValue}
+                  </span>
+                </span>
+              ) : (
+                <span class="tabular-nums text-gray-700">{check.value}</span>
+              )}
+            </div>
+            {check.sel && (
+              <div
+                class:list={[
+                  check.sel,
+                  "absolute inset-0 flex items-center justify-between gap-2 px-3 py-1 border-l-2 border-violet-500 bg-violet-50 text-[10px] font-medium text-violet-600",
+                ]}>
+                <span>{check.label}</span>
+                {check.resolvedValue ? (
+                  <span class="relative inline-block tabular-nums">
+                    <span class="nr-count-before">{check.value}</span>
+                    <span class="nr-count-after absolute inset-0">
+                      {check.resolvedValue}
+                    </span>
+                  </span>
+                ) : (
+                  <span class="tabular-nums">{check.value}</span>
+                )}
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- issue highlights over the map -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <circle
+      class="nr-ring nr-ring-1"
+      cx="330"
+      cy="80"
+      r="8"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="2.5"></circle>
+    <g class="nr-check">
+      <circle
+        cx="330"
+        cy="80"
+        r="7"
+        fill="#22c55e"
+        stroke="#ffffff"
+        stroke-width="1"></circle>
+      <path
+        d="M326.8 80.3 L329.3 82.8 L333.5 77.5"
+        fill="none"
+        stroke="#ffffff"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
+    </g>
+    <circle
+      class="nr-ring nr-ring-2"
+      cx="110"
+      cy="195"
+      r="8"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="2.5"></circle>
+  </svg>
+</AppWindow>
+
+<style>
+  .nr-row {
+    animation: nr-row-in 8s infinite both;
+  }
+  @keyframes nr-row-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    7% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .nr-progress-bar {
+    width: 0;
+    animation: nr-progress 8s infinite both;
+  }
+  @keyframes nr-progress {
+    0% {
+      width: 0;
+      opacity: 1;
+    }
+    13% {
+      width: 100%;
+      opacity: 1;
+    }
+    20% {
+      opacity: 0;
+    }
+    100% {
+      width: 100%;
+      opacity: 0;
+    }
+  }
+
+  .nr-sel-1 {
+    opacity: 0;
+    animation: nr-sel1 8s infinite both;
+  }
+  @keyframes nr-sel1 {
+    0%,
+    15% {
+      opacity: 0;
+    }
+    19%,
+    50% {
+      opacity: 1;
+    }
+    56%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .nr-sel-2 {
+    opacity: 0;
+    animation: nr-sel2 8s infinite both;
+  }
+  @keyframes nr-sel2 {
+    0%,
+    52% {
+      opacity: 0;
+    }
+    58%,
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .nr-count-before {
+    animation: nr-count-out 8s infinite both;
+  }
+  @keyframes nr-count-out {
+    0%,
+    37% {
+      opacity: 1;
+    }
+    43%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .nr-count-after {
+    opacity: 0;
+    animation: nr-count-in 8s infinite both;
+  }
+  @keyframes nr-count-in {
+    0%,
+    37% {
+      opacity: 0;
+    }
+    43%,
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .nr-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+  }
+  .nr-ring-1 {
+    animation:
+      nr-ring1-vis 8s both infinite,
+      nr-ring-pulse 1.8s ease-in-out infinite;
+  }
+  .nr-ring-2 {
+    animation:
+      nr-ring2-vis 8s both infinite,
+      nr-ring-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes nr-ring1-vis {
+    0%,
+    15% {
+      opacity: 0;
+    }
+    19%,
+    36% {
+      opacity: 1;
+    }
+    40%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes nr-ring2-vis {
+    0%,
+    54% {
+      opacity: 0;
+    }
+    59%,
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes nr-ring-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+  }
+
+  .nr-check {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    animation: nr-check-in 8s infinite both;
+  }
+  @keyframes nr-check-in {
+    0%,
+    37% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    41% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    45%,
+    90% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    96%,
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nr-row,
+    .nr-progress-bar,
+    .nr-sel-1,
+    .nr-sel-2,
+    .nr-count-before,
+    .nr-count-after,
+    .nr-ring-1,
+    .nr-ring-2,
+    .nr-check {
+      animation: none;
+    }
+    .nr-row {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .nr-progress-bar {
+      width: 100%;
+      opacity: 0;
+    }
+    .nr-sel-1 {
+      opacity: 1;
+    }
+    .nr-sel-2 {
+      opacity: 0;
+    }
+    .nr-count-before {
+      opacity: 1;
+    }
+    .nr-count-after {
+      opacity: 0;
+    }
+    .nr-ring-1 {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .nr-ring-2 {
+      opacity: 0;
+    }
+    .nr-check {
+      opacity: 0;
+    }
+  }
+</style>

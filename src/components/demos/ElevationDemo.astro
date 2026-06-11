@@ -1,0 +1,224 @@
+---
+// Automatic elevation assignment demo: a prioritized stack of elevation
+// sources populates in a panel while a sweep crosses the map and nodes pick
+// up ground-level tags. Labels mirror the real tool.
+import { CheckCircle2 } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+
+const sources = [
+  { name: "survey-2024.tif", resolution: "0.5 m" },
+  { name: "lidar-city.tif", resolution: "1 m" },
+  { name: "Global terrain", resolution: "30 m" },
+];
+
+// Elevation tags sit just above junctions from network-geometry.ts. The map
+// SVG (400x300 viewBox, xMidYMid slice) is center-cropped vertically inside
+// AppWindow's 16:10 canvas, so top% = y * 0.4 - 10 keeps the HTML chips
+// aligned with the rendered junctions (left maps straight through). The
+// northeast junctions sit under the sources panel (top-right, 200px wide),
+// so tagged nodes stay south and west of it.
+const tags = [
+  { x: 90, y: 70, label: "104.2 m" },
+  { x: 150, y: 60, label: "101.8 m" },
+  { x: 210, y: 75, label: "97.5 m" },
+  { x: 100, y: 130, label: "96.1 m" },
+  { x: 240, y: 210, label: "88.9 m" },
+  { x: 300, y: 220, label: "87.6 m" },
+];
+const leftPct = (x: number) => ((x / 400) * 100).toFixed(1);
+const topPct = (y: number) => (y * 0.4 - 10).toFixed(1);
+// Tags trail the sweep: delays proportional to x, spanning ~15-50% of 7s.
+const tagDelay = (x: number) => (1.05 + ((x - 90) / 240) * 2.31).toFixed(2);
+---
+
+<AppWindow
+  variant="plain"
+  label="Automatic elevation assignment in epanet-js: nodes picking up ground levels from prioritized elevation sources.">
+  <!-- sampling sweep across the map -->
+  <div
+    class="el-sweep absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-violet-400/15 to-transparent pointer-events-none">
+  </div>
+
+  <!-- per-node elevation tags -->
+  {
+    tags.map((tag) => (
+      <div
+        class="absolute -translate-x-1/2 -translate-y-full -mt-1.5 pointer-events-none"
+        style={`left: ${leftPct(tag.x)}%; top: ${topPct(tag.y)}%`}>
+        <div
+          class="el-tag bg-white/90 rounded px-1 py-px text-[9px] tabular-nums text-gray-600 shadow-sm border border-gray-100 whitespace-nowrap"
+          style={`animation-delay: ${tagDelay(tag.x)}s`}>
+          {tag.label}
+        </div>
+      </div>
+    ))
+  }
+
+  <!-- elevation sources panel -->
+  <div
+    class="absolute top-2 right-2 w-[200px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">Elevation sources</p>
+      <p class="text-[10px] text-gray-400">Priority order</p>
+    </div>
+    <div class="px-3 py-2 space-y-1.5">
+      {
+        sources.map((source, i) => (
+          <div
+            class="el-row flex items-center gap-1.5"
+            style={`animation-delay: ${0.3 + i * 0.45}s`}>
+            <span class="shrink-0 w-4 h-4 rounded bg-gray-100 text-[9px] text-gray-500 flex items-center justify-center">
+              {i + 1}
+            </span>
+            <span class="text-[10px] text-gray-700">{source.name}</span>
+            <span class="ml-auto text-[9px] text-gray-400 tabular-nums">
+              {source.resolution}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+    <div
+      class="el-footer flex items-center gap-1 px-3 py-2 border-t border-gray-100 text-[10px] text-gray-600">
+      <CheckCircle2 size={12} className="text-green-500 shrink-0" />
+      <span class="relative tabular-nums">
+        <span class="el-count-before">1,272</span>
+        <span class="el-count-after absolute inset-0">1,284</span>
+      </span>
+      <span>nodes elevated</span>
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  .el-row {
+    animation: el-row-in 7s infinite both;
+  }
+  @keyframes el-row-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    7% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    97%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .el-tag {
+    animation: el-tag-in 7s infinite both;
+  }
+  @keyframes el-tag-in {
+    0% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    7% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    97%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .el-sweep {
+    animation: el-sweep 7s linear infinite both;
+  }
+  @keyframes el-sweep {
+    0%,
+    8% {
+      transform: translateX(-120%);
+      opacity: 0;
+    }
+    13%,
+    43% {
+      opacity: 1;
+    }
+    48%,
+    100% {
+      transform: translateX(520%);
+      opacity: 0;
+    }
+  }
+  .el-footer {
+    animation: el-footer-in 7s infinite both;
+  }
+  @keyframes el-footer-in {
+    0%,
+    70% {
+      opacity: 0;
+    }
+    75%,
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .el-count-before {
+    animation: el-count-out 7s infinite both;
+  }
+  @keyframes el-count-out {
+    0%,
+    79% {
+      opacity: 1;
+    }
+    84%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .el-count-after {
+    animation: el-count-in 7s infinite both;
+  }
+  @keyframes el-count-in {
+    0%,
+    79% {
+      opacity: 0;
+    }
+    84%,
+    100% {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .el-row,
+    .el-tag,
+    .el-sweep,
+    .el-footer,
+    .el-count-before,
+    .el-count-after {
+      animation: none;
+    }
+    .el-row,
+    .el-tag {
+      opacity: 1;
+      transform: none;
+    }
+    .el-sweep {
+      opacity: 0;
+    }
+    .el-footer {
+      opacity: 1;
+    }
+    .el-count-before {
+      opacity: 0;
+    }
+    .el-count-after {
+      opacity: 1;
+    }
+  }
+</style>

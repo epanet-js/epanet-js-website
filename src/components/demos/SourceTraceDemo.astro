@@ -1,0 +1,421 @@
+---
+// Source trace demo: water from two treatment works spreads across the network,
+// WTP A in blue and WTP B in violet, meeting in a blend zone whose mix swings
+// over the day. A map chip shows the local share from each source.
+import AppWindow from "./AppWindow.astro";
+import LegendPanel from "./LegendPanel.astro";
+import { pipes, tankPoint } from "./network-geometry";
+
+type Segment = { x1: number; y1: number; x2: number; y2: number };
+
+// Pull a pipe from the shared geometry, optionally swapping its endpoints so
+// the dashoffset draw travels away from the source.
+const seg = (index: number, swap = false): Segment => {
+  const [x1, y1, x2, y2] = pipes[index];
+  return swap ? { x1: x2, y1: y2, x2: x1, y2: y1 } : { x1, y1, x2, y2 };
+};
+
+// Pipes supplied only by WTP A (the tank, top-left), ordered outward so the
+// stagger reads as water travelling away from the works.
+const traceA: Segment[] = [
+  seg(0), // (40,50) -> (90,70)
+  seg(1), // (90,70) -> (150,60)
+  seg(2), // (90,70) -> (100,130)
+  seg(4), // (100,130) -> (160,140)
+  seg(6), // (100,130) -> (110,195)
+  seg(5), // (160,140) -> (150,60)
+  seg(10), // (110,195) -> (170,200)
+];
+
+// Pipes supplied only by WTP B (second works, mid-right), ordered outward.
+const traceB: Segment[] = [
+  seg(19, true), // (360,150) -> (310,160)
+  seg(14), // (310,160) -> (330,80)
+  seg(17, true), // (310,160) -> (300,220)
+  seg(18), // (300,220) -> (350,230)
+  seg(15, true), // (330,80) -> (270,65)
+  seg(16, true), // (300,220) -> (240,210)
+];
+
+// Pipes carrying water from both works: a blue and a violet stroke are
+// stacked and counter-faded as the blend swings over the day.
+const blend: Segment[] = [
+  seg(3), // (150,60) -> (210,75)
+  seg(9), // (210,75) -> (270,65)
+  seg(7), // (230,150) -> (210,75)
+  seg(8), // (160,140) -> (170,200)
+  seg(11), // (170,200) -> (240,210)
+  seg(12), // (240,210) -> (230,150)
+  seg(13), // (230,150) -> (160,140)
+];
+
+// Map coordinates -> percentage offsets for HTML chips over the map.
+const at = (x: number, y: number) =>
+  `left: ${((x / 400) * 100).toFixed(2)}%; top: ${((y / 300) * 100).toFixed(2)}%`;
+
+const sourceAChip = at(tankPoint[0], 42); // above the tank glyph apex
+const sourceBChip = at(360, 156); // below the WTP B triangle base
+const blendChip = at(215, 110);
+
+const legendEntries = [
+  { color: "#3b82f6", label: "WTP A" },
+  { color: "#8b5cf6", label: "WTP B" },
+];
+---
+
+<AppWindow
+  variant="plain"
+  label="Source tracing in epanet-js: water from two treatment works blending mid-network, with the share shown per pipe.">
+  <!-- trace overlay: same viewBox as NetworkMap so strokes align exactly -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <!-- water from WTP A spreads from the tank -->
+    <g stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round" fill="none">
+      {
+        traceA.map(({ x1, y1, x2, y2 }, i) => (
+          <line
+            class="st-trace-a"
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            pathLength="100"
+            style={`animation-delay: ${(i * 0.25).toFixed(2)}s`}
+          />
+        ))
+      }
+    </g>
+
+    <!-- water from WTP B spreads from the second works -->
+    <g stroke="#8b5cf6" stroke-width="2.5" stroke-linecap="round" fill="none">
+      {
+        traceB.map(({ x1, y1, x2, y2 }, i) => (
+          <line
+            class="st-trace-b"
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            pathLength="100"
+            style={`animation-delay: ${(i * 0.34).toFixed(2)}s`}
+          />
+        ))
+      }
+    </g>
+
+    <!-- blend zone: blue under violet, the mix swinging once per cycle -->
+    <g stroke-width="2.5" stroke-linecap="round" fill="none">
+      {
+        blend.map(({ x1, y1, x2, y2 }) => (
+          <line
+            class="st-blend-blue"
+            stroke="#3b82f6"
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+          />
+        ))
+      }
+      {
+        blend.map(({ x1, y1, x2, y2 }) => (
+          <line
+            class="st-blend-violet"
+            stroke="#8b5cf6"
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+          />
+        ))
+      }
+    </g>
+
+    <!-- WTP B source marker -->
+    <path
+      class="st-ui"
+      d="M360 142 L368 156 L352 156 Z"
+      fill="#7c3aed"
+      stroke="#fff"
+      stroke-width="1"></path>
+  </svg>
+
+  <!-- source labels -->
+  <div
+    class="st-ui absolute -translate-x-1/2 -translate-y-full -mt-1.5 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[9px] font-medium text-gray-600 whitespace-nowrap"
+    style={sourceAChip}>
+    <span class="st-dot w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+    WTP A
+  </div>
+  <div
+    class="st-ui absolute -translate-x-1/2 mt-1.5 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[9px] font-medium text-gray-600 whitespace-nowrap"
+    style={sourceBChip}>
+    <span class="st-dot w-1.5 h-1.5 rounded-full bg-violet-500"></span>
+    WTP B
+  </div>
+
+  <!-- share readout in the blend zone -->
+  <div class="absolute -translate-x-1/2 -translate-y-1/2" style={blendChip}>
+    <div
+      class="st-card grid bg-white rounded-lg border border-gray-100 shadow-md px-2 py-1 text-[9px] font-medium text-gray-600 tabular-nums whitespace-nowrap">
+      <span class="st-val-a col-start-1 row-start-1">62% from WTP A</span>
+      <span class="st-val-b col-start-1 row-start-1">48% from WTP A</span>
+    </div>
+  </div>
+
+  <!-- source legend (bottom-left) -->
+  <div class="st-legend absolute bottom-2 left-2">
+    <LegendPanel title="Source" entries={legendEntries} />
+  </div>
+</AppWindow>
+
+<style>
+  /* traces draw outward from each works (A over 4-30%, B over 14-42%),
+     hold, then fade with the reset */
+  .st-trace-a,
+  .st-trace-b {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+  .st-trace-a {
+    animation: st-draw-a 8s linear infinite both;
+  }
+  .st-trace-b {
+    animation: st-draw-b 8s linear infinite both;
+  }
+  @keyframes st-draw-a {
+    0%,
+    4% {
+      stroke-dashoffset: 100;
+    }
+    11% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes st-draw-b {
+    0%,
+    14% {
+      stroke-dashoffset: 100;
+    }
+    21% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+
+  /* blend pipes appear once both waves arrive (~45%), then swing once from
+     blue-dominant to violet-dominant over 54-80% */
+  .st-blend-blue {
+    opacity: 0;
+    animation: st-blend-blue 8s ease-in-out infinite both;
+  }
+  .st-blend-violet {
+    opacity: 0;
+    animation: st-blend-violet 8s ease-in-out infinite both;
+  }
+  @keyframes st-blend-blue {
+    0%,
+    38% {
+      opacity: 0;
+    }
+    45%,
+    54% {
+      opacity: 1;
+    }
+    80%,
+    92% {
+      opacity: 0.35;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes st-blend-violet {
+    0%,
+    40% {
+      opacity: 0;
+    }
+    46%,
+    54% {
+      opacity: 0.3;
+    }
+    80%,
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* source marker, source labels: in early, out with the reset */
+  .st-ui {
+    animation: st-ui-in 8s ease-out infinite both;
+  }
+  @keyframes st-ui-in {
+    0% {
+      opacity: 0;
+    }
+    5% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .st-legend {
+    animation: st-legend-in 8s ease-out infinite both;
+  }
+  @keyframes st-legend-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    8% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* share readout pops in once the blend forms; its value crossfades in
+     sync with the swing */
+  .st-card {
+    animation: st-card-in 8s ease-out infinite both;
+  }
+  @keyframes st-card-in {
+    0%,
+    43% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    48% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .st-val-a {
+    animation: st-val-out 8s ease-in-out infinite both;
+  }
+  .st-val-b {
+    animation: st-val-in 8s ease-in-out infinite both;
+  }
+  @keyframes st-val-out {
+    0%,
+    54% {
+      opacity: 1;
+    }
+    80%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes st-val-in {
+    0%,
+    54% {
+      opacity: 0;
+    }
+    80%,
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* source dots breathe so the quieter parts of the cycle keep moving */
+  .st-dot {
+    animation: st-dot-breathe 2s ease-in-out infinite;
+  }
+  @keyframes st-dot-breathe {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.35);
+      opacity: 0.65;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .st-trace-a,
+    .st-trace-b,
+    .st-blend-blue,
+    .st-blend-violet,
+    .st-ui,
+    .st-legend,
+    .st-card,
+    .st-val-a,
+    .st-val-b,
+    .st-dot {
+      animation: none;
+    }
+    .st-trace-a,
+    .st-trace-b {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .st-blend-blue {
+      opacity: 1;
+    }
+    .st-blend-violet {
+      opacity: 0.5;
+    }
+    .st-ui {
+      opacity: 1;
+    }
+    .st-legend,
+    .st-card {
+      opacity: 1;
+      transform: none;
+    }
+    .st-val-a {
+      opacity: 1;
+    }
+    .st-val-b {
+      opacity: 0;
+    }
+    .st-dot {
+      transform: none;
+      opacity: 1;
+    }
+  }
+</style>

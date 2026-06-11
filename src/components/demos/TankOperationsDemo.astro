@@ -1,0 +1,206 @@
+---
+// Tank operations demo: 24 hours of tank T2 level traced against its high and
+// low setpoints, with a tank glyph tracking the level and pump PMP-1
+// switching on and off as the setpoints are hit.
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+    className,
+  ]}
+  role="img"
+  aria-label="Tank operations panel: 24 hours of tank T2 level cycling between the 2.0 and 4.5 meter setpoints as pump PMP-1 switches on and off.">
+  <div
+    class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+    <p class="text-[11px] font-semibold text-gray-700">Tank T2</p>
+    <p class="text-[10px] text-gray-400">24 h</p>
+  </div>
+  <div class="px-3 py-2.5">
+    <div class="grid grid-cols-[1fr_auto] gap-3 items-center">
+      <svg viewBox="0 0 170 90" class="w-full" aria-hidden="true">
+        <g stroke="#d1d5db" stroke-width="1" stroke-dasharray="3 2">
+          <line x1="0" y1="22" x2="170" y2="22"></line>
+          <line x1="0" y1="66" x2="170" y2="66"></line>
+        </g>
+        <text x="168" y="19" text-anchor="end" font-size="7" fill="#9ca3af">
+          4.5 m
+        </text>
+        <text x="168" y="63" text-anchor="end" font-size="7" fill="#9ca3af">
+          2.0 m
+        </text>
+        <polyline
+          class="to-trace"
+          pathLength="100"
+          points="4,30 52,64 88,24 132,62 166,28"
+          fill="none"
+          stroke="#8b5cf6"
+          stroke-width="1.5"></polyline>
+      </svg>
+      <div class="flex flex-col items-center gap-1.5">
+        <div
+          class="w-7 h-12 rounded-sm border-2 border-gray-300 relative overflow-hidden">
+          <div
+            class="to-fill absolute inset-x-0 bottom-0 h-full bg-violet-300 origin-bottom">
+          </div>
+        </div>
+        <div class="relative">
+          <span
+            class="to-pill-off block whitespace-nowrap rounded-full bg-gray-100 text-gray-500 text-[9px] font-medium px-2 py-0.5">
+            PMP-1 off
+          </span>
+          <span
+            class="to-pill-on absolute inset-0 flex items-center justify-center whitespace-nowrap rounded-full bg-green-100 text-green-700 text-[9px] font-medium px-2 py-0.5">
+            PMP-1 on
+          </span>
+        </div>
+      </div>
+    </div>
+    <p class="mt-2 text-[9px] text-gray-400">Level · setpoints 2.0 – 4.5 m</p>
+  </div>
+</div>
+
+<style>
+  .to-trace {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: to-draw 8s linear infinite both;
+  }
+  @keyframes to-draw {
+    0% {
+      stroke-dashoffset: 100;
+      opacity: 1;
+    }
+    78%,
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  .to-fill {
+    transform-origin: bottom;
+    animation: to-fill-track 8s linear infinite both;
+  }
+  /* Level hits the setpoints at 21% / 40% / 61% / 78% of the cycle, matching
+     the trace tip (vertices by path length over the 0-78% draw). The 78-92%
+     hold gets a low-amplitude settle so the panel never sits still. */
+  @keyframes to-fill-track {
+    0% {
+      transform: scaleY(0.62);
+      opacity: 0;
+    }
+    4% {
+      opacity: 1;
+    }
+    21% {
+      transform: scaleY(0.3);
+    }
+    40% {
+      transform: scaleY(0.72);
+    }
+    61% {
+      transform: scaleY(0.32);
+    }
+    78% {
+      transform: scaleY(0.68);
+    }
+    85% {
+      transform: scaleY(0.65);
+    }
+    92% {
+      transform: scaleY(0.68);
+      opacity: 1;
+    }
+    100% {
+      transform: scaleY(0.68);
+      opacity: 0;
+    }
+  }
+  .to-pill-on {
+    animation: to-pump-on 8s linear infinite both;
+  }
+  .to-pill-off {
+    animation: to-pump-off 8s linear infinite both;
+  }
+  @keyframes to-pump-on {
+    0%,
+    20% {
+      opacity: 0;
+    }
+    23%,
+    38% {
+      opacity: 1;
+    }
+    41%,
+    60% {
+      opacity: 0;
+    }
+    63%,
+    77% {
+      opacity: 1;
+    }
+    80%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes to-pump-off {
+    0% {
+      opacity: 0;
+    }
+    3%,
+    20% {
+      opacity: 1;
+    }
+    23%,
+    38% {
+      opacity: 0;
+    }
+    41%,
+    60% {
+      opacity: 1;
+    }
+    63%,
+    77% {
+      opacity: 0;
+    }
+    80%,
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .to-trace,
+    .to-fill,
+    .to-pill-on,
+    .to-pill-off {
+      animation: none;
+    }
+    .to-trace {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .to-fill {
+      transform: scaleY(0.6);
+      opacity: 1;
+    }
+    .to-pill-on {
+      opacity: 1;
+    }
+    .to-pill-off {
+      opacity: 0;
+    }
+  }
+</style>

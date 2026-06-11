@@ -1,0 +1,339 @@
+---
+// GIS import demo: a shapefile chip drops onto the map, pipes and junctions
+// draw in west to east over the basemap, and an import summary panel counts
+// the features before a green "all connected" confirmation.
+import { FileUp, CheckCircle2 } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import Basemap from "./Basemap.astro";
+import { pipes, junctions } from "./network-geometry";
+
+// Orient each pipe so it draws from its west endpoint, then sweep west to east.
+const drawnPipes = pipes
+  .map(([x1, y1, x2, y2]) =>
+    x1 <= x2 ? [x1, y1, x2, y2] : [x2, y2, x1, y1],
+  )
+  .sort((a, b) => a[0] - b[0]);
+
+const sortedJunctions = [...junctions].sort((a, b) => a[0] - b[0]);
+
+const pipeDelay = (i: number) => (0.56 + i * 0.1).toFixed(2);
+const nodeDelay = (i: number) => (1.0 + i * 0.12).toFixed(2);
+
+const summary = [
+  { label: "Pipes", value: "1,407" },
+  { label: "Junctions", value: "1,284" },
+  { label: "Demand patterns", value: "6" },
+];
+---
+
+<AppWindow
+  bare
+  label="GIS import in epanet-js: a shapefile loading onto the map as pipes and junctions appear, with an import summary panel.">
+  <!-- map: basemap plus the imported network drawing in -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <Basemap />
+
+    <g stroke="#3730a3" stroke-width="2.5" stroke-linecap="round">
+      {
+        drawnPipes.map(([x1, y1, x2, y2], i) => (
+          <line
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            pathLength="100"
+            class="gis-pipe"
+            style={`animation-delay: ${pipeDelay(i)}s`}
+          />
+        ))
+      }
+    </g>
+
+    <g stroke="#ffffff" stroke-width="1">
+      {
+        sortedJunctions.map(([x, y], i) => (
+          <circle
+            cx={x}
+            cy={y}
+            r="3.5"
+            fill="#312e81"
+            class="gis-node"
+            style={`animation-delay: ${nodeDelay(i)}s`}
+          />
+        ))
+      }
+    </g>
+
+    <!-- tank at the supply point pops first -->
+    <path
+      d="M40 42 L48 56 L32 56 Z"
+      fill="#312e81"
+      stroke="#ffffff"
+      stroke-width="1"
+      class="gis-node"
+      style="animation-delay: 0.45s"></path>
+  </svg>
+
+  <!-- dropped file chip (top center) -->
+  <div class="absolute top-2 left-1/2 -translate-x-1/2">
+    <div
+      class="gis-chip flex items-center gap-1.5 bg-white rounded-lg border border-gray-100 shadow-md pl-1.5 pr-2.5 py-1.5">
+      <span
+        class="flex items-center justify-center w-5 h-5 rounded bg-violet-50 text-violet-600">
+        <FileUp size={12} />
+      </span>
+      <span class="text-[10px] font-medium text-gray-700">network.shp</span>
+      <span class="text-[9px] text-gray-400">2.1 MB</span>
+    </div>
+  </div>
+
+  <!-- import summary panel (top right) -->
+  <div
+    class="gis-panel absolute top-2 right-2 w-[190px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div class="px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <div class="flex items-baseline justify-between">
+        <p class="text-[11px] font-semibold text-gray-700">GIS import</p>
+        <p class="text-[10px] text-gray-400">network.shp</p>
+      </div>
+      <div class="mt-2 h-0.5 rounded-full bg-gray-100 overflow-hidden">
+        <div class="gis-progress-bar h-full bg-violet-500"></div>
+      </div>
+    </div>
+    <div class="py-1 text-[10px]">
+      {
+        summary.map((row, i) => (
+          <div
+            class="gis-row flex items-center justify-between px-3 py-1"
+            style={`animation-delay: ${(i * 0.35).toFixed(2)}s`}>
+            <span class="text-gray-500">{row.label}</span>
+            <span class="font-medium text-gray-700 tabular-nums">
+              {row.value}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+    <p
+      class="gis-footer flex items-center gap-1 px-3 py-1.5 border-t border-gray-100 text-[10px] text-green-600">
+      <span class="gis-check inline-flex">
+        <CheckCircle2 size={11} />
+      </span>
+      All features connected
+    </p>
+  </div>
+</AppWindow>
+
+<style>
+  /* pipes draw west to east */
+  .gis-pipe {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: gis-pipe-draw 7s linear infinite both;
+  }
+  @keyframes gis-pipe-draw {
+    0% {
+      stroke-dashoffset: 100;
+      opacity: 1;
+    }
+    6% {
+      stroke-dashoffset: 0;
+    }
+    84% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    90%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+
+  /* junctions and tank pop in just behind the pipe front */
+  .gis-node {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: gis-node-pop 7s infinite both;
+  }
+  @keyframes gis-node-pop {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    4% {
+      transform: scale(1.25);
+    }
+    6% {
+      transform: scale(1);
+    }
+    84% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    90%,
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
+  }
+
+  /* shapefile chip drops in at the start of the cycle */
+  .gis-chip {
+    animation: gis-chip-in 7s infinite both;
+  }
+  @keyframes gis-chip-in {
+    0% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    8% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* summary panel appears once the file lands */
+  .gis-panel {
+    animation: gis-panel-in 7s infinite both;
+  }
+  @keyframes gis-panel-in {
+    0%,
+    6% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    12% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* hairline progress mirrors the pipes drawing in */
+  .gis-progress-bar {
+    width: 0;
+    animation: gis-progress 7s linear infinite both;
+  }
+  @keyframes gis-progress {
+    0%,
+    10% {
+      width: 0;
+      opacity: 1;
+    }
+    45% {
+      width: 100%;
+      opacity: 1;
+    }
+    54% {
+      opacity: 0;
+    }
+    100% {
+      width: 100%;
+      opacity: 0;
+    }
+  }
+
+  /* feature counts populate after the network finishes drawing */
+  .gis-row {
+    animation: gis-row-in 7s infinite both;
+  }
+  @keyframes gis-row-in {
+    0%,
+    45% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* connectivity confirmation lands last */
+  .gis-footer {
+    animation: gis-footer-in 7s infinite both;
+  }
+  @keyframes gis-footer-in {
+    0%,
+    68% {
+      opacity: 0;
+    }
+    74% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  .gis-check {
+    animation: gis-check-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes gis-check-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.12);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gis-pipe,
+    .gis-node,
+    .gis-chip,
+    .gis-panel,
+    .gis-progress-bar,
+    .gis-row,
+    .gis-footer,
+    .gis-check {
+      animation: none;
+    }
+    .gis-pipe {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .gis-node {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .gis-chip,
+    .gis-panel,
+    .gis-row {
+      opacity: 1;
+      transform: none;
+    }
+    .gis-footer {
+      opacity: 1;
+    }
+    .gis-progress-bar {
+      width: 100%;
+      opacity: 0;
+    }
+  }
+</style>
