@@ -1,0 +1,376 @@
+---
+// Pressure-driven leakage demo: a PRV outlet setting steps down twice, the
+// emitter-driven leakage estimate falls with it, and the downstream pipes
+// shift from amber toward green as zone pressure drops.
+import AppWindow from "./AppWindow.astro";
+import { pipes } from "./network-geometry";
+
+// The zone downstream of PRV-12: everything past junction [210, 75].
+const zonePipes = pipes.slice(9);
+
+const tints = [
+  { color: "#f59e0b", cls: "pl-tint-a" },
+  { color: "#84cc16", cls: "pl-tint-b" },
+  { color: "#22c55e", cls: "pl-tint-c" },
+];
+---
+
+<AppWindow
+  variant="plain"
+  label="Pressure management in epanet-js: a PRV setting stepping down while the estimated leakage falls and the downstream zone recolors from amber to green.">
+  <!-- zone tint overlay: three stacked copies crossfade as pressure drops -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <g stroke-width="2.5" stroke-linecap="round" fill="none">
+      {
+        tints.map((tint) =>
+          zonePipes.map(([x1, y1, x2, y2]) => (
+            <line
+              class={tint.cls}
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              stroke={tint.color}
+            />
+          )),
+        )
+      }
+    </g>
+    <!-- PRV-12 at the zone inlet -->
+    <g class="pl-prv">
+      <rect
+        x="204"
+        y="69"
+        width="12"
+        height="12"
+        rx="2"
+        fill="#ffffff"
+        stroke="#8b5cf6"
+        stroke-width="1.5"></rect>
+      <path d="M207 72 L213 78 M213 72 L207 78" stroke="#8b5cf6" stroke-width="1.2"
+      ></path>
+    </g>
+  </svg>
+
+  <!-- pressure management panel -->
+  <div
+    class="pl-panel absolute top-2 right-2 w-[200px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">
+        Pressure management
+      </p>
+      <p class="text-[10px] text-gray-400">PRV-12</p>
+    </div>
+    <div class="px-3 py-2 space-y-1.5 text-[10px]">
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500">Outlet setting</span>
+        <span class="relative font-medium tabular-nums">
+          <span class="pl-set-1 text-gray-700">52 m</span>
+          <span class="pl-set-2 absolute inset-0 bg-white text-right">48 m</span>
+          <span class="pl-set-3 absolute inset-0 bg-white text-right">44 m</span>
+        </span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500">Est. leakage</span>
+        <span class="relative font-medium tabular-nums">
+          <span class="pl-leak-1 text-gray-700">6.1 l/s</span>
+          <span class="pl-leak-2 absolute inset-0 bg-white text-right">
+            5.4 l/s
+          </span>
+          <span class="pl-leak-3 absolute inset-0 bg-white text-right">
+            4.8 l/s
+          </span>
+        </span>
+      </div>
+    </div>
+    <p
+      class="pl-chip flex items-center gap-1 px-3 py-1.5 border-t border-gray-100 text-[10px] font-medium text-green-600">
+      Leakage −21%
+    </p>
+  </div>
+</AppWindow>
+
+<style>
+  .pl-tint-a {
+    animation: pl-tint-a 8s ease-in-out infinite both;
+  }
+  @keyframes pl-tint-a {
+    0%,
+    6% {
+      opacity: 0;
+    }
+    14% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .pl-tint-b {
+    animation: pl-tint-b 8s ease-in-out infinite both;
+  }
+  @keyframes pl-tint-b {
+    0%,
+    28% {
+      opacity: 0;
+    }
+    36% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .pl-tint-c {
+    animation: pl-tint-c 8s ease-in-out infinite both;
+  }
+  @keyframes pl-tint-c {
+    0%,
+    54% {
+      opacity: 0;
+    }
+    62% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .pl-prv {
+    animation: pl-prv-in 8s ease-out infinite both;
+  }
+  @keyframes pl-prv-in {
+    0%,
+    3% {
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .pl-panel {
+    animation: pl-panel-in 8s ease-out infinite both;
+  }
+  @keyframes pl-panel-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    6% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* outlet setting steps down; the incoming value flashes violet */
+  .pl-set-1 {
+    animation: pl-set-1 8s linear infinite both;
+  }
+  .pl-set-2 {
+    animation: pl-set-2 8s linear infinite both;
+  }
+  .pl-set-3 {
+    animation: pl-set-3 8s linear infinite both;
+  }
+  @keyframes pl-set-1 {
+    0%,
+    24% {
+      opacity: 1;
+    }
+    26%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pl-set-2 {
+    0%,
+    24% {
+      opacity: 0;
+    }
+    26% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    34% {
+      color: #374151;
+    }
+    50% {
+      opacity: 1;
+    }
+    52%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pl-set-3 {
+    0%,
+    50% {
+      opacity: 0;
+    }
+    52% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    60% {
+      color: #374151;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* leakage estimate follows each step a beat later */
+  .pl-leak-1 {
+    animation: pl-leak-1 8s linear infinite both;
+  }
+  .pl-leak-2 {
+    animation: pl-leak-2 8s linear infinite both;
+  }
+  .pl-leak-3 {
+    animation: pl-leak-3 8s linear infinite both;
+  }
+  @keyframes pl-leak-1 {
+    0%,
+    32% {
+      opacity: 1;
+    }
+    34%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pl-leak-2 {
+    0%,
+    32% {
+      opacity: 0;
+    }
+    34% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    42% {
+      color: #374151;
+    }
+    58% {
+      opacity: 1;
+    }
+    60%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pl-leak-3 {
+    0%,
+    58% {
+      opacity: 0;
+    }
+    60% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    68% {
+      color: #374151;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .pl-chip {
+    animation: pl-chip-in 8s ease-out infinite both;
+  }
+  @keyframes pl-chip-in {
+    0%,
+    70% {
+      opacity: 0;
+    }
+    76% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pl-tint-a,
+    .pl-tint-b,
+    .pl-tint-c,
+    .pl-prv,
+    .pl-panel,
+    .pl-set-1,
+    .pl-set-2,
+    .pl-set-3,
+    .pl-leak-1,
+    .pl-leak-2,
+    .pl-leak-3,
+    .pl-chip {
+      animation: none;
+    }
+    .pl-tint-a,
+    .pl-tint-b,
+    .pl-tint-c,
+    .pl-prv,
+    .pl-panel,
+    .pl-chip {
+      opacity: 1;
+      transform: none;
+    }
+    .pl-set-1,
+    .pl-set-2,
+    .pl-leak-1,
+    .pl-leak-2 {
+      opacity: 0;
+    }
+    .pl-set-3,
+    .pl-leak-3 {
+      opacity: 1;
+      color: #374151;
+    }
+  }
+</style>

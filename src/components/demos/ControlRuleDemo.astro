@@ -1,0 +1,247 @@
+---
+// Control rule demo: a rule types out, the tank level falls to its 2.0 m
+// setpoint, the setpoint line flashes at the trigger, and the pump pill
+// flips on while the level recovers.
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+    className,
+  ]}
+  role="img"
+  aria-label="Control rule panel: the rule IF T2 below 2.0 meters THEN PMP-1 ON, with the tank trace hitting the setpoint and the pump switching on at the trigger.">
+  <div
+    class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+    <p class="text-[11px] font-semibold text-gray-700">Control rules</p>
+    <p class="text-[10px] text-gray-400">RUL-3</p>
+  </div>
+  <div class="px-3 py-2.5">
+    <!-- the rule, revealed left to right -->
+    <div
+      class="relative overflow-hidden rounded-md border border-gray-100 bg-gray-50 px-2.5 py-1.5">
+      <p
+        class="flex flex-wrap items-center gap-x-1 gap-y-0.5 font-mono text-[10px] whitespace-nowrap">
+        <span class="text-gray-400">IF</span>
+        <span
+          class="rounded border border-violet-100 bg-violet-50 px-1 text-violet-700">
+          T2
+        </span>
+        <span class="text-gray-700">&lt; 2.0 m</span>
+        <span class="text-gray-400">THEN</span>
+        <span
+          class="rounded border border-violet-100 bg-violet-50 px-1 text-violet-700">
+          PMP-1
+        </span>
+        <span class="font-semibold text-green-600">ON</span>
+      </p>
+      <div class="crl-wipe absolute inset-0 bg-gray-50"></div>
+    </div>
+
+    <!-- tank level vs the setpoint -->
+    <svg viewBox="0 0 200 64" class="mt-2 w-full" aria-hidden="true">
+      <line
+        class="crl-setpoint"
+        x1="4"
+        y1="48"
+        x2="196"
+        y2="48"
+        stroke="#d1d5db"
+        stroke-width="1"
+        stroke-dasharray="3 2"></line>
+      <text x="196" y="45" text-anchor="end" font-size="6" fill="#9ca3af">
+        2.0 m
+      </text>
+      <polyline
+        class="crl-trace"
+        pathLength="100"
+        points="4,14 56,30 92,48 140,26 196,18"
+        fill="none"
+        stroke="#8b5cf6"
+        stroke-width="1.5"
+        stroke-linejoin="round"></polyline>
+      <circle class="crl-hit" cx="92" cy="48" r="2.5" fill="#8b5cf6"></circle>
+    </svg>
+
+    <!-- pump status at the trigger -->
+    <div
+      class="mt-1.5 flex items-center justify-between border-t border-gray-100 pt-2">
+      <span class="relative">
+        <span
+          class="crl-pill-off block whitespace-nowrap rounded-full bg-gray-100 px-2 py-0.5 text-[9px] font-medium text-gray-500">
+          PMP-1 off
+        </span>
+        <span
+          class="crl-pill-on absolute inset-0 flex items-center justify-center whitespace-nowrap rounded-full bg-green-100 px-2 py-0.5 text-[9px] font-medium text-green-700">
+          PMP-1 on
+        </span>
+      </span>
+      <span class="text-[9px] text-gray-400">Tank T2 · 24 h</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* the rule reads out left to right as the cover wipes away */
+  .crl-wipe {
+    transform-origin: right;
+    animation: crl-wipe 8s linear infinite both;
+  }
+  @keyframes crl-wipe {
+    0%,
+    6% {
+      transform: scaleX(1);
+    }
+    24% {
+      transform: scaleX(0);
+    }
+    96% {
+      transform: scaleX(0);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+
+  .crl-trace {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: crl-draw 8s linear infinite both;
+  }
+  @keyframes crl-draw {
+    0%,
+    28% {
+      stroke-dashoffset: 100;
+      opacity: 1;
+    }
+    78% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+
+  /* setpoint flashes violet as the level touches it (trace tip ~51%) */
+  .crl-setpoint {
+    animation: crl-setpoint-flash 8s linear infinite both;
+  }
+  @keyframes crl-setpoint-flash {
+    0%,
+    50% {
+      stroke: #d1d5db;
+    }
+    52%,
+    56% {
+      stroke: #8b5cf6;
+    }
+    60%,
+    100% {
+      stroke: #d1d5db;
+    }
+  }
+
+  .crl-hit {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: crl-hit-pop 8s ease-out infinite both;
+  }
+  @keyframes crl-hit-pop {
+    0%,
+    50% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    53% {
+      opacity: 1;
+      transform: scale(1.4);
+    }
+    56% {
+      transform: scale(1);
+    }
+    90% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .crl-pill-on {
+    animation: crl-pump-on 8s linear infinite both;
+  }
+  @keyframes crl-pump-on {
+    0%,
+    52% {
+      opacity: 0;
+    }
+    55% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .crl-pill-off {
+    animation: crl-pump-off 8s linear infinite both;
+  }
+  @keyframes crl-pump-off {
+    0% {
+      opacity: 0;
+    }
+    4%,
+    52% {
+      opacity: 1;
+    }
+    55%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .crl-wipe,
+    .crl-trace,
+    .crl-setpoint,
+    .crl-hit,
+    .crl-pill-on,
+    .crl-pill-off {
+      animation: none;
+    }
+    .crl-wipe {
+      transform: scaleX(0);
+    }
+    .crl-trace {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .crl-hit {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .crl-pill-on {
+      opacity: 1;
+    }
+    .crl-pill-off {
+      opacity: 0;
+    }
+  }
+</style>

@@ -1,0 +1,250 @@
+---
+// File transfer diagram: a model moves between two machines the
+// traditional way, by email, network drive, or USB, with no cloud in the
+// path. The second machine opens it and picks up where the first left off.
+import {
+  CheckCircle2,
+  Cloud,
+  FileText,
+  Laptop,
+  Monitor,
+  WifiOff,
+} from "lucide-react";
+import NetworkMap from "./NetworkMap.astro";
+---
+
+<div
+  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  role="img"
+  aria-label="Diagram: a model file moves between two computers by email, network drive, or USB, with no cloud involved.">
+  <!-- no cloud in the path -->
+  <div class="ftr-nocloud flex justify-center">
+    <span class="relative text-gray-300">
+      <Cloud size={22} />
+      <span
+        class="absolute -bottom-1 -right-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-white text-gray-400">
+        <WifiOff size={10} />
+      </span>
+    </span>
+  </div>
+
+  <div class="mt-2 flex items-center justify-center gap-2 sm:gap-3">
+    <!-- sending device -->
+    <div class="w-32 sm:w-40 shrink-0">
+      <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
+        <div class="relative aspect-[16/10] bg-gray-100">
+          <NetworkMap class="absolute inset-0" />
+        </div>
+      </div>
+      <div class="h-1.5 mx-5 rounded-b-lg bg-gray-300"></div>
+      <p
+        class="flex items-center justify-center gap-1.5 mt-2 text-[10px] font-medium text-gray-700">
+        <Monitor size={11} className="text-gray-400" />
+        Office desktop
+      </p>
+    </div>
+
+    <!-- transfer path -->
+    <div class="relative w-20 sm:w-28">
+      <svg viewBox="0 0 100 16" class="w-full" aria-hidden="true">
+        <path
+          d="M10 8 H90"
+          fill="none"
+          stroke="#d1d5db"
+          stroke-width="2"
+          stroke-dasharray="5 4"></path>
+        <path d="M10 3.5 L2 8 L10 12.5 Z" fill="#d1d5db"></path>
+        <path d="M90 3.5 L98 8 L90 12.5 Z" fill="#d1d5db"></path>
+      </svg>
+      <span
+        class="ftr-file absolute left-0 top-1/2 flex items-center gap-1 rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[9px] font-medium text-gray-600 shadow-sm">
+        <FileText size={9} className="text-violet-500" />
+        .inp
+      </span>
+      <span
+        class="ftr-pill absolute left-1/2 top-full mt-1.5 -translate-x-1/2 whitespace-nowrap rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[9px] font-medium text-gray-500">
+        Email · network drive · USB
+      </span>
+    </div>
+
+    <!-- receiving device -->
+    <div class="w-32 sm:w-40 shrink-0">
+      <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
+        <div class="relative aspect-[16/10] bg-gray-100">
+          <div class="ftr-screen2 absolute inset-0">
+            <NetworkMap class="absolute inset-0" />
+          </div>
+          <span
+            class="ftr-check absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-green-500 shadow-sm">
+            <CheckCircle2 size={11} />
+          </span>
+        </div>
+      </div>
+      <div class="h-1.5 mx-5 rounded-b-lg bg-gray-300"></div>
+      <p
+        class="flex items-center justify-center gap-1.5 mt-2 text-[10px] font-medium text-gray-700">
+        <Laptop size={11} className="text-gray-400" />
+        Site laptop
+      </p>
+    </div>
+  </div>
+
+  <p class="ftr-footer mt-4 text-center text-[10px] text-gray-400">
+    Share your model like any other file.
+  </p>
+</div>
+
+<style>
+  .ftr-nocloud {
+    animation: ftr-nocloud-in 8s ease-out infinite both;
+  }
+  @keyframes ftr-nocloud-in {
+    0%,
+    6% {
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    94% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* the .inp chip travels from one machine to the other */
+  .ftr-file {
+    animation: ftr-file-travel 8s ease-in-out infinite both;
+  }
+  @keyframes ftr-file-travel {
+    0%,
+    24% {
+      opacity: 0;
+      left: -6%;
+      transform: translateY(-50%);
+    }
+    30% {
+      opacity: 1;
+    }
+    52% {
+      opacity: 1;
+      left: 70%;
+      transform: translateY(-50%);
+    }
+    58%,
+    100% {
+      opacity: 0;
+      left: 78%;
+      transform: translateY(-50%);
+    }
+  }
+
+  .ftr-pill {
+    animation: ftr-pill-in 8s ease-out infinite both;
+  }
+  @keyframes ftr-pill-in {
+    0%,
+    58% {
+      opacity: 0;
+      transform: translate(-50%, 2px);
+    }
+    64% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    94% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* the receiving screen lights up when the file arrives */
+  .ftr-screen2 {
+    animation: ftr-screen2-on 8s ease-out infinite both;
+  }
+  @keyframes ftr-screen2-on {
+    0%,
+    54% {
+      opacity: 0;
+    }
+    60% {
+      opacity: 1;
+    }
+    94% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .ftr-check {
+    animation: ftr-check-in 8s ease-out infinite both;
+  }
+  @keyframes ftr-check-in {
+    0%,
+    62% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    67% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    70% {
+      transform: scale(1);
+    }
+    94% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .ftr-footer {
+    animation: ftr-footer-in 8s ease-out infinite both;
+  }
+  @keyframes ftr-footer-in {
+    0%,
+    68% {
+      opacity: 0;
+    }
+    74% {
+      opacity: 1;
+    }
+    94% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ftr-nocloud,
+    .ftr-file,
+    .ftr-pill,
+    .ftr-screen2,
+    .ftr-check,
+    .ftr-footer {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .ftr-file {
+      opacity: 0;
+    }
+    .ftr-pill {
+      transform: translate(-50%, 0);
+    }
+    .ftr-check {
+      transform: scale(1);
+    }
+  }
+</style>

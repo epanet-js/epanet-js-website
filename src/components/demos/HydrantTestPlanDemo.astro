@@ -1,0 +1,303 @@
+---
+// Hydrant test plan demo: a flow test laid out before going to the field.
+// The test hydrant pulses, observation points connect with dashed lines, and
+// each one gets its expected pressure drawdown so the informative tests
+// stand out.
+import AppWindow from "./AppWindow.astro";
+
+// Test hydrant at [240, 210]; observation junctions with expected drawdowns.
+const observations = [
+  { id: "J12", x: 170, y: 200, drawdown: "−8.4 m", chip: "left-[33%] top-[55%]" },
+  { id: "J67", x: 300, y: 220, drawdown: "−5.1 m", chip: "left-[77%] top-[62%]" },
+  { id: "J31", x: 230, y: 150, drawdown: "−2.9 m", chip: "left-[59%] top-[38%]" },
+];
+---
+
+<AppWindow
+  variant="plain"
+  label="Hydrant test planning in epanet-js: a test hydrant with three observation points, each showing its expected pressure drawdown.">
+  <!-- hydrant, observation rings, and connecting lines -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    {
+      observations.map((obs, i) => (
+        <line
+          class="ht-line"
+          x1="240"
+          y1="210"
+          x2={obs.x}
+          y2={obs.y}
+          stroke="#9ca3af"
+          stroke-width="1.2"
+          stroke-dasharray="4 3"
+          style={`animation-delay: ${(i * 0.64).toFixed(2)}s`}
+        />
+      ))
+    }
+    {
+      observations.map((obs, i) => (
+        <circle
+          class="ht-obs"
+          cx={obs.x}
+          cy={obs.y}
+          r="5.5"
+          fill="none"
+          stroke="#312e81"
+          stroke-width="2"
+          style={`animation-delay: ${(i * 0.96).toFixed(2)}s`}
+        />
+      ))
+    }
+    <g class="ht-hydrant">
+      <rect
+        x="235"
+        y="205"
+        width="10"
+        height="10"
+        rx="2"
+        fill="#8b5cf6"
+        stroke="#ffffff"
+        stroke-width="1.5"></rect>
+    </g>
+    <circle
+      class="ht-hydrant-pulse"
+      cx="240"
+      cy="210"
+      r="8"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="1.5"></circle>
+  </svg>
+
+  <!-- expected drawdown chips at the observation points -->
+  {
+    observations.map((obs, i) => (
+      <span
+        class:list={[
+          "ht-chip absolute whitespace-nowrap rounded border border-gray-200 bg-white px-1 py-px text-[9px] font-medium text-gray-700 shadow-sm",
+          obs.chip,
+        ]}
+        style={`animation-delay: ${(i * 0.96).toFixed(2)}s`}>
+        {obs.drawdown}
+      </span>
+    ))
+  }
+
+  <!-- test plan panel -->
+  <div
+    class="ht-panel absolute top-2 right-2 w-[180px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">Hydrant test plan</p>
+      <p class="text-[10px] text-gray-400">FH-7</p>
+    </div>
+    <div
+      class="flex items-center justify-between px-3 py-1.5 text-[10px] border-b border-gray-50">
+      <span class="text-gray-500">Test flow</span>
+      <span class="font-medium text-gray-700 tabular-nums">30 l/s</span>
+    </div>
+    <div class="py-1 text-[10px]">
+      {
+        observations.map((obs, i) => (
+          <div
+            class="ht-row flex items-center justify-between px-3 py-1"
+            style={`animation-delay: ${(i * 0.96).toFixed(2)}s`}>
+            <span class="text-gray-600">{obs.id}</span>
+            <span class="font-medium text-gray-700 tabular-nums">
+              {obs.drawdown}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  .ht-hydrant {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ht-hydrant-in 8s ease-out infinite both;
+  }
+  @keyframes ht-hydrant-in {
+    0%,
+    6% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    10% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    12% {
+      transform: scale(1);
+    }
+    92% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .ht-hydrant-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ht-pulse 1.8s ease-out infinite;
+  }
+  @keyframes ht-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    70%,
+    100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  /* dashed lines reach out to the observation points and march slowly */
+  .ht-line {
+    animation:
+      ht-line-in 8s ease-out infinite both,
+      ht-march 1.4s linear infinite;
+  }
+  @keyframes ht-line-in {
+    0%,
+    16% {
+      opacity: 0;
+    }
+    22% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ht-march {
+    0% {
+      stroke-dashoffset: 7;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .ht-obs {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ht-obs-in 8s ease-out infinite both;
+  }
+  @keyframes ht-obs-in {
+    0%,
+    30% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    34% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    36% {
+      transform: scale(1);
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .ht-chip {
+    animation: ht-chip-in 8s ease-out infinite both;
+  }
+  @keyframes ht-chip-in {
+    0%,
+    32% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    37% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .ht-panel {
+    animation: ht-panel-in 8s ease-out infinite both;
+  }
+  @keyframes ht-panel-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    6% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .ht-row {
+    animation: ht-row-in 8s ease-out infinite both;
+  }
+  @keyframes ht-row-in {
+    0%,
+    32% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    37% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ht-hydrant,
+    .ht-hydrant-pulse,
+    .ht-line,
+    .ht-obs,
+    .ht-chip,
+    .ht-panel,
+    .ht-row {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .ht-hydrant-pulse {
+      opacity: 0;
+    }
+  }
+</style>

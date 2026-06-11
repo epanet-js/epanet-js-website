@@ -1,0 +1,217 @@
+---
+// Observed overlay demo: field readings land over the simulated pressure
+// trace at a logger location, the residual gap in the afternoon shades
+// amber, and the mean error is read off.
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+// Observed readings as [x, y]; the last three in the afternoon sit below
+// the simulated trace, opening the residual gap.
+const observed: [number, number][] = [
+  [16, 35],
+  [40, 45],
+  [64, 43],
+  [88, 32],
+  [100, 37],
+  [124, 52],
+  [148, 60],
+  [180, 36],
+];
+---
+
+<div
+  class:list={[
+    "bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+    className,
+  ]}
+  role="img"
+  aria-label="Observed versus simulated panel: field readings landing over the simulated pressure trace with the afternoon residual gap shaded and a mean error of 1.3 meters.">
+  <div
+    class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+    <p class="text-[11px] font-semibold text-gray-700">
+      Observed vs simulated · J288
+    </p>
+    <p class="text-[10px] text-gray-400">24 h</p>
+  </div>
+  <div class="px-3 py-2.5">
+    <div class="relative">
+      <svg viewBox="0 0 200 78" class="w-full" aria-hidden="true">
+        <!-- residual gap between trace and the offset afternoon readings -->
+        <polygon
+          class="oo-residual"
+          points="100,30 124,44 148,52 148,60 124,52 100,37"
+          fill="#f59e0b"
+          opacity="0.22"></polygon>
+
+        <!-- simulated trace -->
+        <polyline
+          class="oo-trace"
+          pathLength="100"
+          points="4,30 28,40 52,50 76,36 100,30 124,44 148,52 172,38 196,30"
+          fill="none"
+          stroke="#8b5cf6"
+          stroke-width="1.5"
+          stroke-linejoin="round"></polyline>
+
+        <!-- observed readings -->
+        {
+          observed.map(([x, y], i) => (
+            <circle
+              class="oo-dot"
+              cx={x}
+              cy={y}
+              r="2.4"
+              fill="#312e81"
+              stroke="#ffffff"
+              stroke-width="1"
+              style={`animation-delay: ${(i * 0.22).toFixed(2)}s`}
+            />
+          ))
+        }
+      </svg>
+      <span
+        class="oo-chip absolute right-[2%] top-[58%] whitespace-nowrap rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[9px] font-medium text-gray-700 shadow-sm">
+        Mean error 1.3 m
+      </span>
+    </div>
+    <div class="mt-1.5 flex items-center gap-3 text-[9px] text-gray-400">
+      <span class="flex items-center gap-1">
+        <span class="inline-block h-0.5 w-3 rounded bg-violet-500"></span>
+        Simulated
+      </span>
+      <span class="flex items-center gap-1">
+        <span
+          class="inline-block h-1.5 w-1.5 rounded-full bg-indigo-900 ring-1 ring-white">
+        </span>
+        Observed
+      </span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .oo-trace {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: oo-draw 7s linear infinite both;
+  }
+  @keyframes oo-draw {
+    0%,
+    5% {
+      stroke-dashoffset: 100;
+      opacity: 1;
+    }
+    35% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+
+  /* readings drop onto the chart one at a time */
+  .oo-dot {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: oo-dot-land 7s ease-out infinite both;
+  }
+  @keyframes oo-dot-land {
+    0%,
+    38% {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.6);
+    }
+    42% {
+      opacity: 1;
+      transform: translateY(0) scale(1.2);
+    }
+    44% {
+      transform: translateY(0) scale(1);
+    }
+    90% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    96%,
+    100% {
+      opacity: 0;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .oo-residual {
+    animation: oo-residual-in 7s ease-in-out infinite both;
+  }
+  @keyframes oo-residual-in {
+    0%,
+    68% {
+      opacity: 0;
+    }
+    74% {
+      opacity: 0.22;
+    }
+    92% {
+      opacity: 0.22;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .oo-chip {
+    animation: oo-chip-in 7s ease-out infinite both;
+  }
+  @keyframes oo-chip-in {
+    0%,
+    76% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    82% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .oo-trace,
+    .oo-dot,
+    .oo-residual,
+    .oo-chip {
+      animation: none;
+    }
+    .oo-trace {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .oo-dot {
+      opacity: 1;
+      transform: none;
+    }
+    .oo-residual {
+      opacity: 0.22;
+    }
+    .oo-chip {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

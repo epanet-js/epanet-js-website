@@ -1,0 +1,321 @@
+---
+// Shutdown plan demo (concept): a planned main replacement. The two valves
+// to close highlight and shut, the isolated segment grays out while the
+// length and customers affected fill in, and a detour supply path draws
+// around the work.
+import { CheckCircle2 } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import { pipes } from "./network-geometry";
+
+// The main under repair: pipes 11 and 12, isolated at their outer ends.
+const isolated = [pipes[11], pipes[12]];
+
+// Valve positions at the isolation points (pipe midpoints).
+const valves = [
+  { x: 205, y: 205 },
+  { x: 235, y: 180 },
+];
+---
+
+<AppWindow
+  variant="plain"
+  label="Shutdown planning in epanet-js: two valves close, the isolated main grays out with its length and customers affected counted, and a detour supply path draws around it.">
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <!-- isolated segment grays out -->
+    <g class="shp-isolated">
+      {
+        isolated.map(([x1, y1, x2, y2]) => (
+          <line
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke="#d1d5db"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-dasharray="6 4"
+          />
+        ))
+      }
+      <circle cx="240" cy="210" r="3.5" fill="#9ca3af" stroke="#ffffff" stroke-width="1"
+      ></circle>
+    </g>
+
+    <!-- detour supply path around the isolation -->
+    <polyline
+      class="shp-detour"
+      pathLength="100"
+      points="170,200 160,140 230,150"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      opacity="0.9"></polyline>
+
+    <!-- valves pop in, then close -->
+    {
+      valves.map(({ x, y }, i) => (
+        <circle
+          class="shp-ring"
+          cx={x}
+          cy={y}
+          r="7"
+          fill="none"
+          stroke="#ef4444"
+          stroke-width="1.5"
+          style={`animation-delay: ${(i * 0.48).toFixed(2)}s`}
+        />
+      ))
+    }
+    {
+      valves.map(({ x, y }, i) => (
+        <rect
+          class={`shp-valve shp-valve-${i + 1}`}
+          x={x - 4}
+          y={y - 4}
+          width="8"
+          height="8"
+          rx="1.5"
+          stroke="#312e81"
+          stroke-width="1.5"
+        />
+      ))
+    }
+  </svg>
+
+  <!-- shutdown plan panel -->
+  <div
+    class="shp-panel absolute top-2 right-2 w-[190px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">Shutdown plan</p>
+      <p class="text-[10px] text-gray-400">Main repair</p>
+    </div>
+    <div class="py-1 text-[10px]">
+      {
+        [
+          { label: "Valves to close", value: "2" },
+          { label: "Isolated length", value: "412 m" },
+          { label: "Customers affected", value: "28" },
+        ].map((row, i) => (
+          <div
+            class="shp-row flex items-center justify-between px-3 py-1"
+            style={`animation-delay: ${(i * 0.7).toFixed(2)}s`}>
+            <span class="text-gray-500">{row.label}</span>
+            <span class="font-medium text-gray-700 tabular-nums">
+              {row.value}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+    <p
+      class="shp-footer flex items-center gap-1 px-3 py-1.5 border-t border-gray-100 text-[10px] text-green-600">
+      <CheckCircle2 size={11} />
+      Detour available
+    </p>
+  </div>
+</AppWindow>
+
+<style>
+  /* valves pop in white, then close red */
+  .shp-valve {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .shp-valve-1 {
+    animation: shp-valve-1 8s ease-out infinite both;
+  }
+  .shp-valve-2 {
+    animation: shp-valve-2 8s ease-out infinite both;
+  }
+  @keyframes shp-valve-1 {
+    0%, 8% { opacity: 0; transform: scale(0); fill: #ffffff; }
+    12% { opacity: 1; transform: scale(1.2); fill: #ffffff; }
+    14% { transform: scale(1); }
+    20% { fill: #ffffff; }
+    24% { fill: #ef4444; }
+    92% { opacity: 1; fill: #ef4444; }
+    98%, 100% { opacity: 0; fill: #ef4444; }
+  }
+  @keyframes shp-valve-2 {
+    0%, 14% { opacity: 0; transform: scale(0); fill: #ffffff; }
+    18% { opacity: 1; transform: scale(1.2); fill: #ffffff; }
+    20% { transform: scale(1); }
+    26% { fill: #ffffff; }
+    30% { fill: #ef4444; }
+    92% { opacity: 1; fill: #ef4444; }
+    98%, 100% { opacity: 0; fill: #ef4444; }
+  }
+
+  /* a ring flares as each valve shuts */
+  .shp-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: shp-ring-flare 8s ease-out infinite both;
+  }
+  @keyframes shp-ring-flare {
+    0%,
+    20% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    24% {
+      opacity: 0.8;
+      transform: scale(1);
+    }
+    32% {
+      opacity: 0;
+      transform: scale(2);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .shp-isolated {
+    animation: shp-isolated-in 8s ease-in-out infinite both;
+  }
+  @keyframes shp-isolated-in {
+    0%,
+    32% {
+      opacity: 0;
+    }
+    42% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .shp-detour {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: shp-detour-draw 8s linear infinite both;
+  }
+  @keyframes shp-detour-draw {
+    0%,
+    56% {
+      stroke-dashoffset: 100;
+      opacity: 0.9;
+    }
+    74% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 0.9;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+
+  .shp-panel {
+    animation: shp-panel-in 8s ease-out infinite both;
+  }
+  @keyframes shp-panel-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    6% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .shp-row {
+    animation: shp-row-in 8s ease-out infinite both;
+  }
+  @keyframes shp-row-in {
+    0%,
+    32% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    37% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .shp-footer {
+    animation: shp-footer-in 8s ease-out infinite both;
+  }
+  @keyframes shp-footer-in {
+    0%,
+    78% {
+      opacity: 0;
+    }
+    84% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shp-valve-1,
+    .shp-valve-2,
+    .shp-ring,
+    .shp-isolated,
+    .shp-detour,
+    .shp-panel,
+    .shp-row,
+    .shp-footer {
+      animation: none;
+    }
+    .shp-valve-1,
+    .shp-valve-2 {
+      opacity: 1;
+      transform: scale(1);
+      fill: #ef4444;
+    }
+    .shp-ring {
+      opacity: 0;
+    }
+    .shp-isolated,
+    .shp-panel,
+    .shp-row,
+    .shp-footer {
+      opacity: 1;
+      transform: none;
+    }
+    .shp-detour {
+      stroke-dashoffset: 0;
+      opacity: 0.9;
+    }
+  }
+</style>

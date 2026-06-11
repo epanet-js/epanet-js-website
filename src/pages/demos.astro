@@ -8,35 +8,63 @@ import Container from "@components/container.astro";
 import Badge from "@components/ui/badge.astro";
 
 import AppWindow from "@components/demos/AppWindow.astro";
+import AssetSearchDemo from "@components/demos/AssetSearchDemo.astro";
+import BrowserAppDemo from "@components/demos/BrowserAppDemo.astro";
 import CalibrationPanel from "@components/demos/CalibrationPanel.astro";
 import CalibrationReviewDemo from "@components/demos/CalibrationReviewDemo.astro";
+import CalibrationScatterDemo from "@components/demos/CalibrationScatterDemo.astro";
+import ChlorineBoosterDemo from "@components/demos/ChlorineBoosterDemo.astro";
+import CloudOptionalDemo from "@components/demos/CloudOptionalDemo.astro";
+import ControlRuleDemo from "@components/demos/ControlRuleDemo.astro";
 import CustomerPointsDemo from "@components/demos/CustomerPointsDemo.astro";
+import DataTableDemo from "@components/demos/DataTableDemo.astro";
 import DemandAllocationDemo from "@components/demos/DemandAllocationDemo.astro";
+import DemandCategoriesDemo from "@components/demos/DemandCategoriesDemo.astro";
+import DemandScalingDemo from "@components/demos/DemandScalingDemo.astro";
 import DeploymentOptionsDiagram from "@components/demos/DeploymentOptionsDiagram.astro";
 import ElevationDemo from "@components/demos/ElevationDemo.astro";
+import EncryptedTransitDemo from "@components/demos/EncryptedTransitDemo.astro";
 import EpsPlaybackDemo from "@components/demos/EpsPlaybackDemo.astro";
+import FieldDataImportDemo from "@components/demos/FieldDataImportDemo.astro";
+import FileTransferDemo from "@components/demos/FileTransferDemo.astro";
 import FireFlowDemo from "@components/demos/FireFlowDemo.astro";
+import FlushingPlanDemo from "@components/demos/FlushingPlanDemo.astro";
 import GisImportDemo from "@components/demos/GisImportDemo.astro";
+import HydrantTestPlanDemo from "@components/demos/HydrantTestPlanDemo.astro";
 import InpCompatReportDemo from "@components/demos/InpCompatReportDemo.astro";
 import LegendPanel from "@components/demos/LegendPanel.astro";
+import LicenseTimelineDemo from "@components/demos/LicenseTimelineDemo.astro";
 import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
+import LocalFirstFlowDemo from "@components/demos/LocalFirstFlowDemo.astro";
+import LoggerPlacementDemo from "@components/demos/LoggerPlacementDemo.astro";
 import NetworkDrawDemo from "@components/demos/NetworkDrawDemo.astro";
 import NetworkMap from "@components/demos/NetworkMap.astro";
 import NetworkReviewDemo from "@components/demos/NetworkReviewDemo.astro";
+import NightFlowDemo from "@components/demos/NightFlowDemo.astro";
+import ObservedOverlayDemo from "@components/demos/ObservedOverlayDemo.astro";
 import PatternEditorDemo from "@components/demos/PatternEditorDemo.astro";
 import PressureFlowCurveDemo from "@components/demos/PressureFlowCurveDemo.astro";
+import PressureLeakageDemo from "@components/demos/PressureLeakageDemo.astro";
 import ProfilePlotDemo from "@components/demos/ProfilePlotDemo.astro";
 import ProjectionFinderDemo from "@components/demos/ProjectionFinderDemo.astro";
 import PumpCurveDemo from "@components/demos/PumpCurveDemo.astro";
+import PumpScheduleDemo from "@components/demos/PumpScheduleDemo.astro";
+import ResultsExportDemo from "@components/demos/ResultsExportDemo.astro";
 import ScenarioCompareDemo from "@components/demos/ScenarioCompareDemo.astro";
 import ScenarioTreeDemo from "@components/demos/ScenarioTreeDemo.astro";
 import SelectionBatchEditDemo from "@components/demos/SelectionBatchEditDemo.astro";
+import ShutdownPlanDemo from "@components/demos/ShutdownPlanDemo.astro";
 import SimulationRunDemo from "@components/demos/SimulationRunDemo.astro";
 import SourceTraceDemo from "@components/demos/SourceTraceDemo.astro";
+import SustainableOpenSourceDemo from "@components/demos/SustainableOpenSourceDemo.astro";
 import TankOperationsDemo from "@components/demos/TankOperationsDemo.astro";
+import TeamAccessDemo from "@components/demos/TeamAccessDemo.astro";
+import TimeSeriesPlotDemo from "@components/demos/TimeSeriesPlotDemo.astro";
 import TraceDemo from "@components/demos/TraceDemo.astro";
 import ValveCriticalityDemo from "@components/demos/ValveCriticalityDemo.astro";
 import WaterAgeDemo from "@components/demos/WaterAgeDemo.astro";
+import WaterBalanceDemo from "@components/demos/WaterBalanceDemo.astro";
+import ZoneFitDemo from "@components/demos/ZoneFitDemo.astro";
 
 export const prerender = true;
 const lang = "en";
@@ -146,6 +174,102 @@ const sections: DemoSection[] = [
         concept: true,
         component: DemandAllocationDemo,
       },
+      {
+        name: "AssetSearchDemo",
+        description:
+          "Typing J288 into asset search: recent searches show, the map zooms to the junction, and it pulses with its label.",
+        useOn: "/solutions/model-build and homepage micro-interactions.",
+        frame: "window",
+        component: AssetSearchDemo,
+      },
+    ],
+  },
+  {
+    id: "demand",
+    title: "Demand analysis",
+    entries: [
+      {
+        name: "NightFlowDemo",
+        description:
+          "A 24-hour DMA inflow trace with the minimum night flow window highlighted and the leakage band shaded below it.",
+        useOn: "/solutions/demand-analysis (night flow row).",
+        frame: "panel",
+        component: NightFlowDemo,
+        previewClass: "w-full max-w-[340px] mx-auto",
+      },
+      {
+        name: "PressureLeakageDemo",
+        description:
+          "A PRV setting steps down twice and the estimated leakage falls with it, the downstream pipes shifting from amber to green.",
+        useOn: "/solutions/demand-analysis and /solutions/operational-modeling.",
+        frame: "window",
+        component: PressureLeakageDemo,
+      },
+      {
+        name: "DemandCategoriesDemo",
+        description:
+          "One junction's demand broken into domestic, commercial, and leakage categories, each with its assigned pattern, summing in a stacked bar.",
+        useOn: "/solutions/demand-analysis.",
+        frame: "window",
+        component: DemandCategoriesDemo,
+      },
+      {
+        name: "DemandScalingDemo",
+        description:
+          "Allocated demand falls short of metered inflow until a scaling factor closes the gap and the balance check turns green.",
+        useOn: "/solutions/demand-analysis (balance row).",
+        frame: "panel",
+        component: DemandScalingDemo,
+        previewClass: "w-full max-w-[340px] mx-auto",
+      },
+      {
+        name: "WaterBalanceDemo",
+        description:
+          "An annual water balance as a waterfall: system input split into billed water, unbilled use, and apparent and real losses, with NRW bracketed.",
+        useOn: "/solutions/demand-analysis and non-revenue water content.",
+        frame: "panel",
+        component: WaterBalanceDemo,
+        previewClass: "w-full max-w-[360px] mx-auto",
+      },
+    ],
+  },
+  {
+    id: "field-planning",
+    title: "Field planning",
+    entries: [
+      {
+        name: "LoggerPlacementDemo",
+        description:
+          "Proposed loggers drop onto the map one by one, each adding a coverage halo while the coverage figure climbs to 94%.",
+        useOn: "/solutions/field-planning hero.",
+        frame: "window",
+        component: LoggerPlacementDemo,
+      },
+      {
+        name: "HydrantTestPlanDemo",
+        description:
+          "A planned hydrant test: the test hydrant pulses, observation points get their expected drawdowns, and the plan panel lists each one.",
+        useOn: "/solutions/field-planning and /solutions/calibration.",
+        frame: "window",
+        component: HydrantTestPlanDemo,
+      },
+      {
+        name: "FieldDataImportDemo",
+        description:
+          "A logger CSV drops in and sparkline chips appear at each monitoring point, with a summary of loggers, duration, and interval.",
+        useOn: "/solutions/field-planning and /solutions/calibration.",
+        frame: "window",
+        component: FieldDataImportDemo,
+      },
+      {
+        name: "ObservedOverlayDemo",
+        description:
+          "Observed pressure readings land over the simulated trace, with the residual gap shaded and the mean error read off.",
+        useOn: "/solutions/calibration and /solutions/field-planning.",
+        frame: "panel",
+        component: ObservedOverlayDemo,
+        previewClass: "w-full max-w-[340px] mx-auto",
+      },
     ],
   },
   {
@@ -225,6 +349,28 @@ const sections: DemoSection[] = [
     ],
   },
   {
+    id: "calibration",
+    title: "Calibration",
+    entries: [
+      {
+        name: "CalibrationScatterDemo",
+        description:
+          "An observed-versus-simulated scatter pulls toward the 1:1 line as the model improves, the RMSE chip dropping from 4.8 to 1.2 m.",
+        useOn: "/solutions/calibration (fit row).",
+        frame: "panel",
+        component: CalibrationScatterDemo,
+      },
+      {
+        name: "ZoneFitDemo",
+        description:
+          "The network splits into three colored zones with a fit figure per zone, and the worst-fitting zone pulses for attention.",
+        useOn: "/solutions/calibration.",
+        frame: "window",
+        component: ZoneFitDemo,
+      },
+    ],
+  },
+  {
     id: "water-quality",
     title: "Water quality",
     entries: [
@@ -243,6 +389,23 @@ const sections: DemoSection[] = [
         useOn: "/solutions/water-quality.",
         frame: "window",
         component: SourceTraceDemo,
+      },
+      {
+        name: "ChlorineBoosterDemo",
+        description:
+          "Chlorine residual decays along the network until a booster lifts the tail back above the 0.2 mg/l minimum, the map tint following.",
+        useOn: "/solutions/water-quality.",
+        frame: "window",
+        component: ChlorineBoosterDemo,
+      },
+      {
+        name: "FlushingPlanDemo",
+        description:
+          "A unidirectional flushing sequence: three mains highlight in order, each hitting its velocity target as the checklist ticks off.",
+        useOn: "/solutions/water-quality and operations content.",
+        frame: "window",
+        concept: true,
+        component: FlushingPlanDemo,
       },
     ],
   },
@@ -329,6 +492,69 @@ const sections: DemoSection[] = [
         component: TankOperationsDemo,
         previewClass: "w-full max-w-[340px] mx-auto",
       },
+      {
+        name: "ControlRuleDemo",
+        description:
+          "A control rule types out, the tank level falls to its setpoint, and the pump pill flips on at the trigger.",
+        useOn: "/solutions/operational-modeling.",
+        frame: "panel",
+        component: ControlRuleDemo,
+        previewClass: "w-full max-w-[340px] mx-auto",
+      },
+      {
+        name: "PumpScheduleDemo",
+        description:
+          "Pump runs shift out of the peak tariff band on a 24-hour strip and the daily energy cost drops 23%.",
+        useOn: "/solutions/operational-modeling and energy content.",
+        frame: "panel",
+        component: PumpScheduleDemo,
+        previewClass: "w-full max-w-[360px] mx-auto",
+      },
+      {
+        name: "ShutdownPlanDemo",
+        description:
+          "Two valves close, the isolated main grays out while the length and customer counts fill in, and a detour path draws around it.",
+        useOn:
+          "/solutions/operational-modeling and /solutions/valve-criticality.",
+        frame: "window",
+        concept: true,
+        component: ShutdownPlanDemo,
+      },
+    ],
+  },
+  {
+    id: "reporting",
+    title: "Reporting & export",
+    entries: [
+      {
+        name: "TimeSeriesPlotDemo",
+        description:
+          "Three assets selected as chips, then their pressure, level, and flow traces draw on one shared 24-hour chart.",
+        useOn: "/solutions/operational-modeling and reporting content.",
+        frame: "panel",
+        concept: true,
+        component: TimeSeriesPlotDemo,
+        previewClass: "w-full max-w-[360px] mx-auto",
+      },
+      {
+        name: "DataTableDemo",
+        description:
+          "A sortable pipe table populates, re-sorts by diameter, and one cell edit updates the matching label on the map.",
+        useOn: "/solutions/model-build and reporting content.",
+        frame: "window",
+        concept: true,
+        component: DataTableDemo,
+      },
+      {
+        name: "ResultsExportDemo",
+        description:
+          "Export formats picked one after another, with GeoJSON, CSV, and XLSX files each checking off as ready.",
+        useOn:
+          "/solutions/model-import, reporting content, and /who-its-for/consultants.",
+        frame: "panel",
+        concept: true,
+        component: ResultsExportDemo,
+      },
     ],
   },
   {
@@ -357,6 +583,73 @@ const sections: DemoSection[] = [
         frame: "diagram",
         usedOn: ["/security", "/who-its-for/utilities"],
         component: DeploymentOptionsDiagram,
+      },
+      {
+        name: "BrowserAppDemo",
+        description:
+          "The URL types out, the app loads in the browser tab, and the no-install, no-login, runs-on-your-device chips land.",
+        useOn:
+          "Homepage, /security, and /who-its-for/utilities (IT requirements).",
+        frame: "diagram",
+        component: BrowserAppDemo,
+      },
+      {
+        name: "LocalFirstFlowDemo",
+        description:
+          "The app arrives from the cloud, the .inp stays on the device, and the connection drops without stopping the simulation.",
+        useOn: "/security and audience pages explaining local-first.",
+        frame: "diagram",
+        component: LocalFirstFlowDemo,
+      },
+      {
+        name: "FileTransferDemo",
+        description:
+          "A model file moves between two machines the traditional way, email, network drive, or USB, with no cloud in the path.",
+        useOn: "/security and /who-its-for/humanitarian-ngos.",
+        frame: "diagram",
+        component: FileTransferDemo,
+      },
+      {
+        name: "CloudOptionalDemo",
+        description:
+          "One model syncing from a cloud, ours or yours, down to three devices and back.",
+        useOn: "/security and collaboration content.",
+        frame: "diagram",
+        concept: true,
+        component: CloudOptionalDemo,
+      },
+      {
+        name: "EncryptedTransitDemo",
+        description:
+          "Traffic between the browser and the application shuttles through a TLS lock in both directions.",
+        useOn: "/security (encrypted in transit row).",
+        frame: "diagram",
+        component: EncryptedTransitDemo,
+      },
+      {
+        name: "TeamAccessDemo",
+        description:
+          "A member list with per-person roles, an invite going out, and a role change applying.",
+        useOn: "/pricing and /security.",
+        frame: "panel",
+        concept: true,
+        component: TeamAccessDemo,
+      },
+      {
+        name: "LicenseTimelineDemo",
+        description:
+          "Source code public from day one under the FSL, becoming fully open MIT two years on.",
+        useOn: "/security (open and auditable row) and open-source content.",
+        frame: "diagram",
+        component: LicenseTimelineDemo,
+      },
+      {
+        name: "SustainableOpenSourceDemo",
+        description:
+          "The open-source cycle: people use the app, some pay for advanced features, and developers reinvest in the app.",
+        useOn: "Open-source story content and /pricing.",
+        frame: "diagram",
+        component: SustainableOpenSourceDemo,
       },
     ],
   },
