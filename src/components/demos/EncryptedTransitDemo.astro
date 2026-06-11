@@ -1,0 +1,232 @@
+---
+// Encrypted transit diagram: traffic between the browser and the epanet-js
+// service shuttles through a TLS lock in both directions. Grounded in the
+// security page's "encrypted in transit" claim.
+import { Cloud, Laptop, Lock } from "lucide-react";
+---
+
+<div
+  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  role="img"
+  aria-label="Diagram: traffic between your browser and the epanet-js service is encrypted in transit over HTTPS and TLS.">
+  <div class="flex items-center justify-center gap-3 sm:gap-4">
+    <!-- browser -->
+    <div class="flex shrink-0 flex-col items-center gap-1.5">
+      <span
+        class="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+        <Laptop size={18} />
+      </span>
+      <p class="text-[10px] font-medium text-gray-600 whitespace-nowrap">
+        Your browser
+      </p>
+    </div>
+
+    <!-- encrypted connection -->
+    <div class="relative w-36 sm:w-52">
+      <svg viewBox="0 0 200 24" class="w-full" aria-hidden="true">
+        <line
+          class="enc-line"
+          pathLength="100"
+          x1="4"
+          y1="12"
+          x2="196"
+          y2="12"
+          stroke="#c4b5fd"
+          stroke-width="2"></line>
+        <circle class="enc-pkt enc-pkt-out" cx="4" cy="12" r="3" fill="#8b5cf6"
+        ></circle>
+        <circle
+          class="enc-pkt enc-pkt-back"
+          cx="196"
+          cy="12"
+          r="3"
+          fill="#6366f1"></circle>
+      </svg>
+      <span
+        class="enc-lock absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <span
+          class="flex h-7 w-7 items-center justify-center rounded-full border border-violet-200 bg-white text-violet-600 shadow-sm">
+          <Lock size={12} />
+        </span>
+      </span>
+      <span
+        class="enc-pill absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[9px] font-medium text-gray-500">
+        HTTPS · TLS
+      </span>
+    </div>
+
+    <!-- service -->
+    <div class="flex shrink-0 flex-col items-center gap-1.5">
+      <span
+        class="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+        <Cloud size={18} />
+      </span>
+      <p class="text-[10px] font-medium text-gray-600 whitespace-nowrap">
+        epanet-js
+      </p>
+    </div>
+  </div>
+  <p class="enc-footer mt-6 text-center text-[10px] text-gray-400">
+    All traffic encrypted in transit.
+  </p>
+</div>
+
+<style>
+  .enc-line {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: enc-line-draw 8s linear infinite both;
+  }
+  @keyframes enc-line-draw {
+    0%,
+    8% {
+      stroke-dashoffset: 100;
+      opacity: 1;
+    }
+    18% {
+      stroke-dashoffset: 0;
+    }
+    94% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+
+  .enc-lock {
+    animation: enc-lock-in 8s ease-out infinite both;
+  }
+  @keyframes enc-lock-in {
+    0%,
+    20% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.7);
+    }
+    25% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    28% {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    94% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .enc-pill {
+    animation: enc-pill-in 8s ease-out infinite both;
+  }
+  @keyframes enc-pill-in {
+    0%,
+    28% {
+      opacity: 0;
+      transform: translate(-50%, 2px);
+    }
+    34% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    94% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* packets shuttle in both directions while the connection is up; the
+     travel loop runs continuously and an 8s window gates visibility */
+  .enc-pkt-out {
+    animation:
+      enc-travel-out 2.6s linear infinite,
+      enc-pkt-vis 8s linear infinite both;
+  }
+  .enc-pkt-back {
+    animation:
+      enc-travel-back 2.6s linear infinite,
+      enc-pkt-vis 8s linear infinite both;
+    animation-delay: -1.3s, 0s;
+  }
+  @keyframes enc-travel-out {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(192px);
+    }
+  }
+  @keyframes enc-travel-back {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-192px);
+    }
+  }
+  @keyframes enc-pkt-vis {
+    0%,
+    32% {
+      opacity: 0;
+    }
+    36%,
+    88% {
+      opacity: 1;
+    }
+    92%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .enc-footer {
+    animation: enc-footer-in 8s ease-out infinite both;
+  }
+  @keyframes enc-footer-in {
+    0%,
+    38% {
+      opacity: 0;
+    }
+    44% {
+      opacity: 1;
+    }
+    94% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .enc-line,
+    .enc-lock,
+    .enc-pill,
+    .enc-pkt-out,
+    .enc-pkt-back,
+    .enc-footer {
+      animation: none;
+      opacity: 1;
+    }
+    .enc-line {
+      stroke-dashoffset: 0;
+    }
+    .enc-lock {
+      transform: translate(-50%, -50%);
+    }
+    .enc-pill {
+      transform: translate(-50%, 0);
+    }
+    .enc-pkt-out,
+    .enc-pkt-back {
+      opacity: 0;
+    }
+  }
+</style>

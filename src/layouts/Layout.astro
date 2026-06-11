@@ -14,9 +14,17 @@ interface Props {
   ogImage?: string;
   description?: string;
   lang?: Locale;
+  noindex?: boolean;
 }
 
-const { title, footerMargin = true, ogImage, description, lang = "en" } = Astro.props;
+const {
+  title,
+  footerMargin = true,
+  ogImage,
+  description,
+  lang = "en",
+  noindex = false,
+} = Astro.props;
 
 const t = useTranslations(lang);
 
@@ -59,6 +67,7 @@ const esUrl = new URL(esPath, Astro.site).toString();
       title={makeTitle}
       description={metaDescription}
       canonical={canonicalURL}
+      noindex={noindex}
       twitter={{
         creator: "@lukepbutler_",
         site: "@lukepbutler_",

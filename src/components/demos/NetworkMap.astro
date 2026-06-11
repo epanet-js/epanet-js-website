@@ -1,0 +1,104 @@
+---
+// A small illustrative water network drawn in the style of the epanet-js map
+// view: navy pipes and junctions over a light basemap.
+import Basemap from "./Basemap.astro";
+import {
+  pipes,
+  junctions,
+  markerPoints,
+  pressureColor,
+  type Zone,
+} from "./network-geometry";
+
+interface Props {
+  variant?: "plain" | "pressure" | "passfail";
+  markers?: boolean;
+  class?: string;
+}
+
+const { variant = "plain", markers = false, class: className } = Astro.props;
+
+const pipeColor = (zone: Zone) =>
+  variant === "pressure" ? pressureColor[zone] : "#3730a3";
+
+const junctionColor = (passes: boolean) =>
+  variant === "passfail" ? (passes ? "#22c55e" : "#ef4444") : "#312e81";
+---
+
+<svg
+  viewBox="0 0 400 300"
+  class:list={["w-full h-full", className]}
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true">
+  <Basemap />
+
+  <!-- pipes -->
+  <g stroke-width="2.5" stroke-linecap="round">
+    {
+      pipes.map(([x1, y1, x2, y2, zone]) => (
+        <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={pipeColor(zone)} />
+      ))
+    }
+  </g>
+
+  <!-- junctions -->
+  <g stroke="#ffffff" stroke-width="1">
+    {
+      junctions.map(([x, y, passes]) => (
+        <circle
+          cx={x}
+          cy={y}
+          r="3.5"
+          fill={junctionColor(passes)}
+          class={variant === "passfail" && !passes ? "nm-pulse" : undefined}
+        />
+      ))
+    }
+  </g>
+
+  <!-- tank -->
+  <path
+    d="M40 42 L48 56 L32 56 Z"
+    fill="#312e81"
+    stroke="#ffffff"
+    stroke-width="1"></path>
+
+  <!-- monitoring point markers -->
+  {
+    markers && (
+      <g fill="none" stroke="#8b5cf6" stroke-width="2.5">
+        {markerPoints.map(([x, y], i) => (
+          <circle
+            cx={x}
+            cy={y}
+            r="8"
+            class="nm-pulse"
+            style={`animation-delay: ${i * 0.4}s`}
+          />
+        ))}
+      </g>
+    )
+  }
+</svg>
+
+<style>
+  .nm-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: nm-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes nm-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nm-pulse {
+      animation: none;
+    }
+  }
+</style>

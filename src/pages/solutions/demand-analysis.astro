@@ -1,0 +1,235 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import Media from "@components/marketing/Media.astro";
+import DemandAllocationDemo from "@components/demos/DemandAllocationDemo.astro";
+import PullQuote from "@components/marketing/PullQuote.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { Target, BarChart3, Scale, Droplets } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const comingSoonPrimary = { label: "Talk to us", href: "https://cal.com/epanet-js/" };
+const comingSoonSecondary = { label: "Launch epanet-js", href: "https://app.epanetjs.com" };
+
+const benefits = [
+  {
+    icon: Target,
+    title: "Demand where it comes from",
+    description:
+      "Allocate consumption to the customers and meters that drive it, instead of spreading it evenly and hoping.",
+  },
+  {
+    icon: BarChart3,
+    title: "Profiles through the day",
+    description:
+      "Apply demand patterns so loading matches how water is really used across the morning and evening peaks.",
+  },
+  {
+    icon: Scale,
+    title: "Balanced across zones",
+    description:
+      "Reconcile metered inflow with allocated consumption so every DMA in your network adds up.",
+  },
+  {
+    icon: Droplets,
+    title: "Leakage in the picture",
+    description:
+      "Account for the water that doesn't reach a customer, so the gap between supply and use is explained, not ignored.",
+  },
+];
+
+const related = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) => i.href !== "/solutions/demand-analysis")
+  .slice(0, 3);
+
+const faqs = [
+  {
+    question: "What can I do for demand today?",
+    answer:
+      "A lot. You can import customer points from a GeoJSON, allocate them to the right pipes with rules you control, build and assign demand patterns, attach multiple demand categories to a junction, and color-code the network by actual demand to check your allocation at a glance.",
+  },
+  {
+    question: "How does customer allocation work?",
+    answer:
+      "Each customer point is connected to the nearest suitable pipe using rules you set, such as a maximum pipe diameter and a search distance, so demand attaches to distribution mains rather than large transmission lines. You can reconnect any point by hand, and see the total customer demand on both the junction and the pipe.",
+  },
+  {
+    question: "What is demand analysis adding on top of that?",
+    answer:
+      "A layer that reconciles the demand you've allocated against what your meters actually record. It brings DMA inflow and consumption together so each zone balances, and surfaces the difference as leakage rather than leaving it buried.",
+  },
+  {
+    question: "How is leakage handled?",
+    answer:
+      "Pressure matters for leakage, so the engine's emitter and pressure-dependent demand support let you represent leakage that rises and falls with pressure, instead of a fixed number. Demand analysis builds on that to keep the zonal picture honest.",
+  },
+  {
+    question: "When will the balancing tools be available?",
+    answer:
+      "The demand foundation — customer points, patterns, and actual-demand visualization — is in epanet-js now. The zonal balancing layer is in development. Tell us how you balance demand today and we'll build it around real workflows. You can follow progress on our <a href=\"https://roadmap.epanetjs.com\" target=\"_blank\" rel=\"noopener noreferrer\">public roadmap</a>.",
+  },
+];
+---
+
+<Layout
+  title="Demand analysis"
+  description="Build an accurate picture of demand across your network. Allocate consumption to customers, apply demand profiles, and reconcile metered inflow against use so every zone balances. Coming soon to epanet-js."
+  lang={lang}>
+  <PageHero
+    title="Build an accurate picture of demand across your network"
+    subtitle="Allocate consumption where it happens, profile it through the day, and reconcile what your meters record against what your model uses, so the loading on your network reflects how water is really used."
+    comingSoon
+    primaryCta={comingSoonPrimary}
+    secondaryCta={comingSoonSecondary}>
+    <div slot="media">
+      <DemandAllocationDemo />
+      <p class="mt-2 text-xs text-gray-400">Concept preview — in development</p>
+    </div>
+  </PageHero>
+
+  <ProseSection
+    title="Demand is where models drift from reality">
+    <p>
+      A model is only as good as the demand it's built on. Get consumption,
+      profiles, and zonal balance right and everything downstream — calibration,
+      planning, operations — stands on solid ground. Get them wrong and every
+      result inherits the error, however careful the rest of the work.
+    </p>
+    <p>
+      Demand analysis is about making that demand picture accurate and keeping it
+      honest, so the loading on your network is something you can trust rather
+      than something you've assumed.
+    </p>
+  </ProseSection>
+
+  <PullQuote>
+    Every result downstream inherits your demand. Get the loading right and the
+    rest of the model has a foundation to stand on.
+  </PullQuote>
+
+  <ContentMediaRow
+    title="Allocate demand where it comes from">
+    <p>
+      The best way to represent demand is to model it where it originates: your
+      individual customers. Today in epanet-js you can import a GeoJSON of your
+      customers and the import allocates each one to the right pipe using rules
+      you control:
+    </p>
+    <ul class="list-disc space-y-2 pl-5 marker:text-purple-400">
+      <li>Set a <strong>maximum pipe diameter</strong> and a <strong>search distance</strong> so customers connect to distribution mains, not transmission lines.</li>
+      <li><strong>Reconnect</strong> any customer to a different pipe by hand when local knowledge says so.</li>
+      <li>See the <strong>total customer demand</strong> on each junction and each pipe, with the full list behind it.</li>
+    </ul>
+    <Media
+      slot="media"
+      src="/assets/blog/progress-report/2025-08/cust-import.mp4"
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Profile demand through the day"
+    reverse>
+    <p>
+      Loading isn't constant, and your model shouldn't pretend it is. Build and
+      manage demand patterns directly in the app, assign them from a library, and
+      attach multiple demand categories to a single junction. Assign a pattern to
+      customer points as you import them, so time-varying consumption is there
+      from the start of the build.
+    </p>
+    <p>
+      Then color-code the network by actual demand to spot high-demand areas and
+      confirm your allocation looks right before you rely on it.
+    </p>
+    <Media
+      slot="media"
+      src="/assets/blog/progress-report/2026-01/02-patterns.png"
+      alt="The demand patterns editor in epanet-js, with a daily profile plotted over 24 hours."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Reconcile inflow with consumption, zone by zone">
+    <p>
+      This is where demand analysis is heading. With demand allocated and profiled,
+      the next step is to bring it together with what your meters record:
+      reconcile the metered inflow into each DMA against the consumption assigned
+      inside it, so every zone adds up.
+    </p>
+    <p>
+      Where the two don't match, the difference is meaningful. Treated as leakage
+      rather than rounded away, it becomes a number you can act on, and a check
+      that keeps the whole demand picture honest.
+    </p>
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Let pressure drive leakage"
+    reverse>
+    <p>
+      Leakage isn't a fixed quantity — it rises and falls with pressure. The
+      engine already supports emitters and pressure-dependent demand, so leakage
+      can be represented as something that responds to the network rather than a
+      flat allowance.
+    </p>
+    <p>
+      Demand analysis builds on that to keep the zonal reconciliation realistic, so
+      the water you can't account for is modeled the way it actually behaves.
+    </p>
+  </ContentMediaRow>
+
+  <BenefitGrid
+    heading="Demand analysis, the epanet-js way"
+    items={benefits}
+    columns={4}
+  />
+
+  <CtaSection
+    heading="Want demand analysis for your network?"
+    subheading="Tell us how you handle demand and zonal balance today — it helps us build the right thing."
+    primaryCta={comingSoonPrimary}
+    secondaryCta={comingSoonSecondary}
+    dark={false}
+  />
+
+  <ProseSection
+    title="The foundation everything else is built on">
+    <p>
+      Good demand is the starting point for the rest of the model.
+      <a href="/solutions/calibration" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Calibration</a>
+      is far stronger when it begins from a sound demand picture, and the same
+      loading carries through to
+      <a href="/solutions/operational-modeling" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">operational modeling</a>
+      and
+      <a href="/solutions/planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">planning</a>.
+      That's why demand analysis lives in the same tool, not a separate spreadsheet.
+    </p>
+  </ProseSection>
+
+  <CardGrid
+    heading="Available now"
+    subheading="While the balancing tools are in development, explore what you can do today."
+    items={related}
+    columns={3}
+  />
+
+  <FaqList
+    subheading="What's available today, and what's coming, for demand in epanet-js."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Help shape demand analysis"
+    subheading="Tell us how you build and balance demand today. Launch epanet-js to use the demand tools now, or talk to us about what's next."
+    primaryCta={comingSoonPrimary}
+    secondaryCta={comingSoonSecondary}
+  />
+</Layout>

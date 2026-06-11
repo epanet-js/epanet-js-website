@@ -1,0 +1,36 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+
+export const prerender = true;
+const lang = "en";
+---
+
+<Layout
+  title="Valve criticality"
+  description="Understand which valves isolate each part of your network, and where a closure leaves customers without supply."
+  lang={lang}>
+  <PageHero
+    title="Find the valves that matter most"
+    subtitle="Understand which valves isolate each part of the network, and where a shutdown leaves customers at risk."
+  />
+
+  <ProseSection title="Know the impact before you close a valve">
+    <p>
+      Valve criticality looks at which valves define each isolation area and what
+      a closure takes out of service, so you can see where a single valve carries
+      an outsized share of the risk.
+    </p>
+    <p>
+      This page is a work in progress. We'll add detail on how criticality is
+      assessed and presented soon.
+    </p>
+  </ProseSection>
+
+  <CtaSection
+    heading="Understand your network's weak points"
+    subheading="Launch epanet-js free, or book a demo to talk through valve criticality on your network."
+  />
+</Layout>

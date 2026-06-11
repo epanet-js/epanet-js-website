@@ -1,0 +1,227 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import Media from "@components/marketing/Media.astro";
+import NetworkMap from "@components/demos/NetworkMap.astro";
+import LegendPanel from "@components/demos/LegendPanel.astro";
+import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
+import PullQuote from "@components/marketing/PullQuote.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { HandCoins, Globe, Rocket, Wrench } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const talkCta = { label: "Talk to us", href: "https://cal.com/epanet-js/" };
+const launchCta = { label: "Launch epanet-js", href: "https://app.epanetjs.com" };
+
+const benefits = [
+  {
+    icon: HandCoins,
+    title: "Low cost, high impact",
+    description:
+      "Affordable, with free options, so more of your funding goes to the communities you serve, not software.",
+  },
+  {
+    icon: Globe,
+    title: "Works anywhere",
+    description:
+      "Browser-based and lightweight. Run it on modest hardware in the field, on any operating system.",
+  },
+  {
+    icon: Rocket,
+    title: "Fast to deploy",
+    description:
+      "No installs or IT infrastructure. Open a browser and start modeling to get to results quickly.",
+  },
+  {
+    icon: Wrench,
+    title: "Capable, professional tools",
+    description:
+      "The same trusted EPANET engine and modern workflows the industry relies on, not a stripped-down version.",
+  },
+];
+
+const workflows = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) =>
+    [
+      "/solutions/model-build",
+      "/solutions/fire-flow",
+      "/solutions/operational-modeling",
+    ].includes(i.href),
+  );
+
+const faqs = [
+  {
+    question: "Is there a free or low-cost option for nonprofits?",
+    answer:
+      "Yes. There's a free tier to start, and affordable plans beyond it. If you're doing humanitarian water work, <a href=\"https://cal.com/epanet-js/\" target=\"_blank\" rel=\"noopener noreferrer\">talk to us</a> about your project — and see <a href=\"/pricing\">pricing</a> for the options.",
+  },
+  {
+    question: "What hardware does it need?",
+    answer:
+      "Very little. epanet-js runs in a web browser on modest hardware — a basic laptop is plenty — on Mac, Windows, or Linux. There's nothing to install.",
+  },
+  {
+    question: "Does it need a fast, constant internet connection?",
+    answer:
+      "It loads in a browser and then runs locally on your machine, so you don't need a powerful workstation or a heavy, always-on connection to build and run a model.",
+  },
+  {
+    question: "Is it the full engine or a cut-down version?",
+    answer:
+      "The full one. epanet-js runs the EPANET 2.3 engine and opens standard <strong>.inp</strong> files — the same professional tooling used on commercial projects, not a simplified edition.",
+  },
+  {
+    question: "Can field staff use it without IT support?",
+    answer:
+      "Yes. With nothing to install and no license server to manage, anyone on the team can open a browser and start modeling, wherever they are.",
+  },
+  {
+    question: "Who owns the models and data?",
+    answer:
+      "You do. epanet-js is local-first, so your work stays on your machine, and it's open and EPANET-compatible, so your models are never locked into one vendor's format.",
+  },
+];
+---
+
+<Layout
+  title="For humanitarian & NGOs"
+  description="The best tools to get the job done for humanitarian water work — affordable, browser-based, built on the full EPANET engine, and ready to deploy on modest hardware anywhere."
+  lang={lang}>
+  <PageHero
+    title="The best tools to get the job done for humanitarian water work"
+    subtitle="Designing and improving water supply for communities that need it most deserves capable, affordable tools. epanet-js gives humanitarian teams professional modeling that runs anywhere."
+    primaryCta={talkCta}
+    secondaryCta={launchCta}
+  />
+
+  <ProseSection
+    title="The communities that need it most deserve capable tools">
+    <p>
+      Commercial modeling software can cost more than an entire project budget,
+      which puts professional hydraulic analysis out of reach for exactly the
+      work where it matters most. Too often the choice is between expensive
+      licenses and going without a proper model at all.
+    </p>
+    <p>
+      epanet-js is built to close that gap: professional-grade modeling on the
+      trusted EPANET engine, affordable and often free, light enough to run in
+      the field, so your resources reach the communities you serve.
+    </p>
+  </ProseSection>
+
+  <PullQuote>
+    Every dollar that doesn't go to a software license is a dollar that can reach
+    the community you're there to serve.
+  </PullQuote>
+
+  <ContentMediaRow
+    title="Capable tools that go where you go">
+    <p>
+      Humanitarian water work rarely happens in a comfortable office with a
+      powerful workstation. epanet-js runs in a browser on modest hardware, so
+      you can build and run real hydraulic models wherever the work takes you,
+      on whatever operating system you have to hand.
+    </p>
+    <p>
+      It loads in a browser and runs locally, so a basic laptop and a modest
+      connection are enough to get to results.
+    </p>
+    <Media
+      slot="media"
+      src="/assets/landing/study-area.webp"
+      alt="A community water network modeled over satellite imagery in epanet-js."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Professional modeling without the price tag"
+    reverse>
+    <p>
+      Affordable and free options mean the budget goes to the project, not the
+      tooling. And because it's the full EPANET engine rather than a stripped-down
+      version, you're not trading cost for capability. You get professional
+      results on a humanitarian budget.
+    </p>
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Design and check a real supply">
+    <p>
+      Build a model from GIS data or draw the network by hand over satellite
+      imagery, run it on the EPANET 2.3 engine, and check whether the design
+      delivers: pressures where they're needed and enough capacity for fire flow
+      and growth. The same workflows the industry uses, available to your team.
+    </p>
+    <div
+      slot="media"
+      class="relative aspect-[16/10] w-full rounded-xl border border-gray-200 shadow-lg overflow-hidden bg-gray-100">
+      <NetworkMap variant="pressure" class="absolute inset-0" />
+      <LegendPanel
+        title="Pressure (m)"
+        class="absolute top-2 left-2"
+      />
+    </div>
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Open, local-first, and free of lock-in" reverse>
+    <p>
+      Your models and data stay on your machine by default, and the tool is open:
+      public source from day one, becoming fully open after two years, built on a
+      format any EPANET tool can read. A project handed over to a local partner or
+      a community team isn't trapped behind a license they can't afford.
+    </p>
+    <LocalFirstDiagram slot="media" />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    heading="Professional water modeling for humanitarian work"
+    items={benefits}
+    columns={4}
+  />
+
+  <CtaSection
+    heading="Doing humanitarian water work?"
+    subheading="Tell us about your project and we'd love to help you get set up."
+    primaryCta={talkCta}
+    secondaryCta={launchCta}
+    dark={false}
+  />
+
+  <ProseSection
+    title="A sustainable, open future for water modeling">
+    <p>
+      epanet-js exists because good water modeling shouldn't be limited by cost.
+      It's built in the open, sustained by fair pricing rather than locked-away
+      improvements, with the explicit goal of putting capable tools in the hands
+      of more engineers, utilities, and teams, including those doing the hardest,
+      least-funded work.
+    </p>
+  </ProseSection>
+
+  <CardGrid
+    heading="Workflows for humanitarian projects"
+    subheading="The jobs epanet-js helps you get done in the field."
+    items={workflows}
+    columns={3}
+  />
+
+  <FaqList
+    subheading="The questions humanitarian and NGO teams ask most."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Let's get your project set up"
+    subheading="Tell us about your humanitarian water work and we'd love to help, or launch epanet-js free and start right now."
+    primaryCta={talkCta}
+    secondaryCta={launchCta}
+  />
+</Layout>

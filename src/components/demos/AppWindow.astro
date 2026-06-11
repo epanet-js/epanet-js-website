@@ -1,0 +1,91 @@
+---
+// A stylized epanet-js app frame: toolbar, map canvas, and status bar.
+// Floating panels are placed via the default slot (absolutely positioned
+// inside the map area).
+import {
+  MousePointer2,
+  Circle,
+  Triangle,
+  RectangleHorizontal,
+  Spline,
+  Zap,
+  CheckCircle2,
+} from "lucide-react";
+import NetworkMap from "./NetworkMap.astro";
+
+interface Props {
+  variant?: "plain" | "pressure" | "passfail";
+  markers?: boolean;
+  /** Skip the built-in NetworkMap so the slot supplies the whole map stack. */
+  bare?: boolean;
+  label?: string;
+  class?: string;
+}
+
+const {
+  variant = "plain",
+  markers = false,
+  bare = false,
+  label,
+  class: className,
+} = Astro.props;
+
+const tools = [Spline, Circle, Triangle, RectangleHorizontal];
+---
+
+<div
+  class:list={[
+    "w-full rounded-xl border border-gray-200 shadow-lg overflow-hidden bg-white select-none",
+    className,
+  ]}
+  role="img"
+  aria-label={label}>
+  <!-- toolbar -->
+  <div class="flex items-center gap-2 h-9 px-3 border-b border-gray-100 bg-white">
+    <img src="/favicon.png" alt="" class="w-3.5 h-3.5" />
+    <span class="text-[11px] font-medium text-gray-600">epanet-js</span>
+    <div class="flex items-center gap-1 ml-3">
+      <span class="flex items-center justify-center w-6 h-6 rounded bg-violet-500 text-white">
+        <MousePointer2 size={12} />
+      </span>
+      {
+        tools.map((Tool) => (
+          <span class="hidden sm:flex items-center justify-center w-6 h-6 rounded text-gray-400">
+            <Tool size={12} />
+          </span>
+        ))
+      }
+    </div>
+    <span class="flex items-center gap-1 ml-auto text-[11px] font-medium text-violet-600">
+      <Zap size={12} />
+      Simulate
+    </span>
+  </div>
+
+  <!-- map canvas + floating panels -->
+  <div class="relative aspect-[16/10] bg-gray-100 overflow-hidden">
+    {
+      !bare && (
+        <NetworkMap
+          variant={variant}
+          markers={markers}
+          class="absolute inset-0"
+        />
+      )
+    }
+    <slot />
+  </div>
+
+  <!-- status bar -->
+  <div
+    class="flex items-center gap-3 px-3 py-1.5 border-t border-gray-100 bg-white text-[10px] text-gray-500 whitespace-nowrap overflow-hidden">
+    <span>Flow: l/s</span>
+    <span>Pressure: m</span>
+    <span class="hidden sm:inline">Headloss: H-W</span>
+    <span class="hidden md:inline">Demand multiplier: 1</span>
+    <span class="flex items-center gap-1 ml-auto text-green-500">
+      <CheckCircle2 size={11} />
+      Simulation was successful
+    </span>
+  </div>
+</div>

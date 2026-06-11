@@ -5,6 +5,12 @@ import { useState } from "react";
 import { IteratingLogoIcon, LogoIconAndWordmarkIcon } from "./icons";
 import { useTranslations } from "@i18n/utils";
 import type { Locale } from "@i18n/utils";
+import { solutions, whoItsFor } from "@config/navigation";
+
+// New sections (Solutions, Who it's for, Security) are English-only pages, so
+// they link without the locale prefix — mirroring the mega-menu navigation.
+const solutionsItems = solutions.columns.flatMap((c) => c.items);
+const audienceItems = whoItsFor.columns[0].items;
 
 interface Props {
   lang?: Locale;
@@ -136,6 +142,52 @@ export default function Footer({ lang = "en" }: Props) {
 
           {/* Right Column - Navigation Links */}
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-8 lg:pl-12">
+            {/* Solutions */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-white">
+                <a
+                  href="/solutions"
+                  className="hover:text-gray-200 transition-colors"
+                >
+                  {solutions.label}
+                </a>
+              </h3>
+              <nav className="flex flex-col space-y-3">
+                {solutionsItems.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+
+            {/* Who it's for */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-white">
+                <a
+                  href="/who-its-for"
+                  className="hover:text-gray-200 transition-colors"
+                >
+                  {whoItsFor.label}
+                </a>
+              </h3>
+              <nav className="flex flex-col space-y-3">
+                {audienceItems.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+
             {/* Product */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-white">
@@ -226,6 +278,12 @@ export default function Footer({ lang = "en" }: Props) {
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   {t("footer.contact")}
+                </a>
+                <a
+                  href="/security"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Security
                 </a>
                 <a
                   href="/terms-conditions/"

@@ -9,6 +9,9 @@ export const ui = {
 
   // ── Navbar ──
   "nav.home": "Inicio",
+  "nav.solutions": "Soluciones",
+  "nav.whoItsFor": "Para quién",
+  "nav.resources": "Recursos",
   "nav.pricing": "Precios",
   "nav.blog": "Blog",
   "nav.language.es": "Cambiar a español",

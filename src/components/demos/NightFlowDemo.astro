@@ -1,0 +1,231 @@
+---
+// Night flow demo: a DMA's 24-hour inflow trace draws in, the minimum night
+// flow window around 03:00 highlights, and the band between legitimate night
+// use and the MNF shades amber as the leakage estimate.
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+    className,
+  ]}
+  role="img"
+  aria-label="Night flow analysis panel: a 24-hour DMA inflow trace with the minimum night flow window highlighted and the leakage share of the night flow shaded.">
+  <div
+    class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+    <p class="text-[11px] font-semibold text-gray-700">DMA-3 inflow</p>
+    <p class="text-[10px] text-gray-400">24 h</p>
+  </div>
+  <div class="px-3 py-2.5">
+    <div class="relative">
+      <svg viewBox="0 0 200 96" class="w-full" aria-hidden="true">
+        <!-- minimum night flow window around the 03:00 trough -->
+        <rect
+          class="nf-window"
+          x="20"
+          y="6"
+          width="16"
+          height="74"
+          fill="#ede9fe"></rect>
+
+        <!-- leakage band: between legitimate night use and the MNF level -->
+        <g class="nf-band">
+          <rect
+            x="4"
+            y="60"
+            width="192"
+            height="9"
+            fill="#f59e0b"
+            opacity="0.16"></rect>
+          <line
+            x1="4"
+            y1="60"
+            x2="196"
+            y2="60"
+            stroke="#9ca3af"
+            stroke-width="0.75"
+            stroke-dasharray="3 2"></line>
+          <line
+            x1="4"
+            y1="69"
+            x2="196"
+            y2="69"
+            stroke="#9ca3af"
+            stroke-width="0.75"
+            stroke-dasharray="3 2"></line>
+          <text x="196" y="76" text-anchor="end" font-size="6" fill="#9ca3af">
+            Night use
+          </text>
+        </g>
+
+        <!-- inflow trace -->
+        <polyline
+          class="nf-trace"
+          pathLength="100"
+          points="4,40 12,48 20,57 28,60 36,57 44,46 52,32 60,20 68,24 84,30 100,34 116,30 132,26 148,20 156,16 164,18 180,30 196,38"
+          fill="none"
+          stroke="#8b5cf6"
+          stroke-width="1.5"
+          stroke-linejoin="round"></polyline>
+
+        <!-- hour labels -->
+        <g font-size="6.5" fill="#9ca3af">
+          <text x="4" y="92">00:00</text>
+          <text x="100" y="92" text-anchor="middle">12:00</text>
+          <text x="196" y="92" text-anchor="end">24:00</text>
+        </g>
+      </svg>
+
+      <span
+        class="nf-chip-mnf absolute left-[16%] top-[42%] whitespace-nowrap rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[9px] font-medium text-gray-700 shadow-sm">
+        MNF 4.2 l/s
+      </span>
+      <span
+        class="nf-chip-leak absolute left-[38%] top-[66%] whitespace-nowrap rounded border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-medium text-amber-700 shadow-sm">
+        Est. leakage 38% of MNF
+      </span>
+    </div>
+    <p class="mt-1.5 text-[9px] text-gray-400">
+      Minimum night flow window · 02:00 – 04:00
+    </p>
+  </div>
+</div>
+
+<style>
+  .nf-trace {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: nf-draw 7s linear infinite both;
+  }
+  @keyframes nf-draw {
+    0%,
+    2% {
+      stroke-dashoffset: 100;
+      opacity: 1;
+    }
+    38% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+
+  .nf-window {
+    animation: nf-window-in 7s ease-in-out infinite both;
+  }
+  @keyframes nf-window-in {
+    0%,
+    42% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .nf-band {
+    animation: nf-band-in 7s ease-in-out infinite both;
+  }
+  @keyframes nf-band-in {
+    0%,
+    52% {
+      opacity: 0;
+    }
+    62% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .nf-chip-mnf {
+    animation: nf-chip-mnf-in 7s ease-out infinite both;
+  }
+  @keyframes nf-chip-mnf-in {
+    0%,
+    64% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    70% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .nf-chip-leak {
+    animation: nf-chip-leak-in 7s ease-out infinite both;
+  }
+  @keyframes nf-chip-leak-in {
+    0%,
+    72% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    78% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nf-trace,
+    .nf-window,
+    .nf-band,
+    .nf-chip-mnf,
+    .nf-chip-leak {
+      animation: none;
+    }
+    .nf-trace {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .nf-window,
+    .nf-band {
+      opacity: 1;
+    }
+    .nf-chip-mnf,
+    .nf-chip-leak {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

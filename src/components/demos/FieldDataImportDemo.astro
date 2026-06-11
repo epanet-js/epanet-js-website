@@ -1,0 +1,210 @@
+---
+// Field data import demo: a logger CSV drops in, sparkline chips appear at
+// each monitoring point as its record loads, and a summary bar reads off
+// the campaign: loggers, duration, and logging interval.
+import { FileUp } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import { markerPoints } from "./network-geometry";
+
+// Chip positions next to each marker (percent of the 400x300 viewBox).
+const chipPos = markerPoints.map(([x, y]) => ({
+  left: `${((x / 400) * 100).toFixed(1)}%`,
+  top: `${((y / 300) * 100).toFixed(1)}%`,
+}));
+
+const sparkPoints = [
+  "1,10 7,5 13,8 19,4 25,7 31,3 37,6",
+  "1,4 7,8 13,5 19,9 25,6 31,9 37,5",
+  "1,7 7,3 13,7 19,5 25,9 31,5 37,8",
+  "1,5 7,9 13,4 19,7 25,4 31,8 37,4",
+];
+---
+
+<AppWindow
+  variant="plain"
+  markers={true}
+  label="Field data import in epanet-js: a logger CSV drops in and sparkline chips appear at each monitoring point, with a summary of loggers, duration, and interval.">
+  <!-- dropped CSV chip (top left) -->
+  <div class="fdi-chip absolute top-2 left-2">
+    <div
+      class="flex items-center gap-1.5 bg-white rounded-lg border border-gray-100 shadow-md pl-1.5 pr-2.5 py-1.5">
+      <span
+        class="flex items-center justify-center w-5 h-5 rounded bg-violet-50 text-violet-600">
+        <FileUp size={12} />
+      </span>
+      <span class="text-[10px] font-medium text-gray-700">loggers.csv</span>
+      <span class="text-[9px] text-gray-400">680 KB</span>
+    </div>
+    <div class="mx-1.5 -mt-px h-0.5 rounded-full bg-gray-100 overflow-hidden">
+      <div class="fdi-progress h-full bg-violet-500"></div>
+    </div>
+  </div>
+
+  <!-- sparkline chips landing at the monitoring points -->
+  {
+    chipPos.map((pos, i) => (
+      <span
+        class={`fdi-spark-${i + 1} absolute -translate-y-full ml-2 -mt-1.5 rounded border border-gray-200 bg-white px-1 py-0.5 shadow-sm`}
+        style={`left: ${pos.left}; top: ${pos.top};`}>
+        <svg viewBox="0 0 38 12" class="h-3 w-9" aria-hidden="true">
+          <polyline
+            points={sparkPoints[i]}
+            fill="none"
+            stroke="#8b5cf6"
+            stroke-width="1.5"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+    ))
+  }
+
+  <!-- campaign summary -->
+  <div
+    class="fdi-summary absolute bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg border border-gray-100 bg-white px-3 py-1.5 text-[10px] text-gray-600 shadow-md">
+    <span class="font-medium text-gray-700">4 loggers</span>
+    · 14 days · 2-min interval
+  </div>
+</AppWindow>
+
+<style>
+  .fdi-chip {
+    animation: fdi-chip-in 8s ease-out infinite both;
+  }
+  @keyframes fdi-chip-in {
+    0% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    7% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .fdi-progress {
+    width: 0;
+    animation: fdi-progress 8s linear infinite both;
+  }
+  @keyframes fdi-progress {
+    0%,
+    10% {
+      width: 0;
+      opacity: 1;
+    }
+    28% {
+      width: 100%;
+      opacity: 1;
+    }
+    36% {
+      opacity: 0;
+    }
+    100% {
+      width: 100%;
+      opacity: 0;
+    }
+  }
+
+  /* one sparkline chip pops per logger record as it loads */
+  .fdi-spark-1,
+  .fdi-spark-2,
+  .fdi-spark-3,
+  .fdi-spark-4 {
+    opacity: 0;
+  }
+  .fdi-spark-1 {
+    animation: fdi-spark-1 8s ease-out infinite both;
+  }
+  .fdi-spark-2 {
+    animation: fdi-spark-2 8s ease-out infinite both;
+  }
+  .fdi-spark-3 {
+    animation: fdi-spark-3 8s ease-out infinite both;
+  }
+  .fdi-spark-4 {
+    animation: fdi-spark-4 8s ease-out infinite both;
+  }
+  @keyframes fdi-spark-1 {
+    0%, 32% { opacity: 0; transform: translateY(calc(-100% + 2px)) scale(0.92); }
+    36% { opacity: 1; transform: translateY(-100%) scale(1); }
+    92% { opacity: 1; transform: translateY(-100%) scale(1); }
+    98%, 100% { opacity: 0; transform: translateY(-100%) scale(1); }
+  }
+  @keyframes fdi-spark-2 {
+    0%, 42% { opacity: 0; transform: translateY(calc(-100% + 2px)) scale(0.92); }
+    46% { opacity: 1; transform: translateY(-100%) scale(1); }
+    92% { opacity: 1; transform: translateY(-100%) scale(1); }
+    98%, 100% { opacity: 0; transform: translateY(-100%) scale(1); }
+  }
+  @keyframes fdi-spark-3 {
+    0%, 52% { opacity: 0; transform: translateY(calc(-100% + 2px)) scale(0.92); }
+    56% { opacity: 1; transform: translateY(-100%) scale(1); }
+    92% { opacity: 1; transform: translateY(-100%) scale(1); }
+    98%, 100% { opacity: 0; transform: translateY(-100%) scale(1); }
+  }
+  @keyframes fdi-spark-4 {
+    0%, 62% { opacity: 0; transform: translateY(calc(-100% + 2px)) scale(0.92); }
+    66% { opacity: 1; transform: translateY(-100%) scale(1); }
+    92% { opacity: 1; transform: translateY(-100%) scale(1); }
+    98%, 100% { opacity: 0; transform: translateY(-100%) scale(1); }
+  }
+
+  .fdi-summary {
+    animation: fdi-summary-in 8s ease-out infinite both;
+  }
+  @keyframes fdi-summary-in {
+    0%,
+    70% {
+      opacity: 0;
+      transform: translate(-50%, 4px);
+    }
+    76% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fdi-chip,
+    .fdi-progress,
+    .fdi-spark-1,
+    .fdi-spark-2,
+    .fdi-spark-3,
+    .fdi-spark-4,
+    .fdi-summary {
+      animation: none;
+    }
+    .fdi-chip {
+      opacity: 1;
+      transform: none;
+    }
+    .fdi-progress {
+      width: 100%;
+      opacity: 0;
+    }
+    .fdi-spark-1,
+    .fdi-spark-2,
+    .fdi-spark-3,
+    .fdi-spark-4 {
+      opacity: 1;
+      transform: translateY(-100%);
+    }
+    .fdi-summary {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+</style>

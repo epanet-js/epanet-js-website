@@ -1,0 +1,36 @@
+---
+// Security page diagram: the three deployment options.
+import { Cloud, Globe2, Server } from "lucide-react";
+
+const options = [
+  {
+    icon: Cloud,
+    title: "Managed cloud",
+    description: "We run it. Always up to date, zero maintenance.",
+  },
+  {
+    icon: Globe2,
+    title: "Chosen data region",
+    description: "Keep data in the region your policies require.",
+  },
+  {
+    icon: Server,
+    title: "Self-hosted",
+    description: "Run epanet-js entirely on your own infrastructure.",
+  },
+];
+---
+
+<div class="grid gap-3 sm:grid-cols-3">
+  {
+    options.map((option) => (
+      <div class="rounded-xl border border-gray-200 shadow-sm bg-white p-4">
+        <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-purple-50 text-purple-600">
+          <option.icon size={18} />
+        </span>
+        <p class="mt-3 text-sm font-semibold text-gray-900">{option.title}</p>
+        <p class="mt-1 text-xs text-muted-foreground">{option.description}</p>
+      </div>
+    ))
+  }
+</div>

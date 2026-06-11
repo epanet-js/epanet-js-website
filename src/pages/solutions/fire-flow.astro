@@ -1,0 +1,287 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import Media from "@components/marketing/Media.astro";
+import FireFlowDemo from "@components/demos/FireFlowDemo.astro";
+import PullQuote from "@components/marketing/PullQuote.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { CheckCircle2, Network, AlertTriangle, ClipboardCheck } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: CheckCircle2,
+    title: "Defensible capacity answers",
+    description:
+      "Know the available fire flow at any hydrant or node, at the residual pressure you need to hold.",
+  },
+  {
+    icon: Network,
+    title: "The whole network, one run",
+    description:
+      "Thousands of simulations in your browser, hundreds of nodes a second, instead of editing demands one location at a time.",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Catch hidden constraints",
+    description:
+      "The designed check flags low pressures and high velocities elsewhere, so a pass at the hydrant is a real pass.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Built for planning enquiries",
+    description:
+      "Right-click any point for an instant pressure and flow curve, then export straight to GIS or CSV.",
+  },
+];
+
+const related = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) => i.href !== "/solutions/fire-flow")
+  .slice(0, 3);
+
+const faqs = [
+  {
+    question: "What's the difference between the two tools?",
+    answer:
+      "The <strong>fire flow analysis</strong> tests many locations across the network at once and reports available, needed, or designed fire flow for each. The <strong>pressure and flow analysis</strong> focuses on a single point and gives a full pressure-versus-flow curve. Use the first to find weak spots system-wide, and the second to understand one location in depth.",
+  },
+  {
+    question: "What is \"available fire flow\"?",
+    answer:
+      "The maximum flow the network can supply at a location before pressure drops below the minimum residual you set. It answers how much capacity a hydrant or node actually has.",
+  },
+  {
+    question: "What is \"needed fire flow\"?",
+    answer:
+      "If you have a required flow in mind, such as 500 gpm, the needed check delivers exactly that and reports the actual residual pressure the network holds while doing it, so you can compare it against your standard.",
+  },
+  {
+    question: "What is \"designed fire flow\"?",
+    answer:
+      "The system-wide check. It confirms that pulling fire flow at one node doesn't push pressures too low or velocities too high anywhere else in the network, so a result that passes at the hydrant doesn't hide a problem upstream.",
+  },
+  {
+    question: "How fast is it, and can I run every hydrant?",
+    answer:
+      "Yes. The fire flow analysis runs a rapid series of simulations — hundreds of nodes a second, thousands of runs — entirely in your browser, and reports a result for each hydrant or junction mapped across the network.",
+  },
+  {
+    question: "Can I export the results?",
+    answer:
+      "Yes. Results export to GIS or CSV, ready for reports, capacity registers, or further analysis in your own tools.",
+  },
+  {
+    question: "Do I have to change demands to run a fire flow test?",
+    answer:
+      "No. Both tools handle the test setup for you, so there are no manual demand edits or workarounds to manage. Because the engine supports pressure-dependent demands and emitters, the results reflect how the network really behaves under stress.",
+  },
+];
+---
+
+<Layout
+  title="Fire flow"
+  description="Test the fire flow capacity of every hydrant in your network with available, needed, and designed checks, and read a full pressure and flow curve for any point. Thousands of simulations, in your browser."
+  lang={lang}>
+  <PageHero
+    title="Test the capacity of your network, hydrant by hydrant"
+    subtitle="Run fire flow across every hydrant and junction, check available, needed, and designed flow against your residual pressure target, and map where capacity runs short. Then dig into any single point with a full pressure and flow curve.">
+    <Media
+      slot="media"
+      src="/assets/blog/progress-report/2025-11/fire-flow-poc.mp4"
+    />
+  </PageHero>
+
+  <ProseSection
+    title="Capacity questions arrive constantly, and they're hard to answer by hand">
+    <p>
+      Can the network support a new development? Will this hydrant deliver the
+      required fire flow at an acceptable residual pressure? Where does the system
+      run short, and what would it take to fix it? Questions like these come in
+      from planners, fire departments, and developers all the time, and answering
+      them by editing EPANET demands one location at a time is slow and easy to
+      get wrong.
+    </p>
+    <p>
+      epanet-js gives you two purpose-built tools for this. A <strong>fire flow
+      analysis</strong> tests the whole network at once, and a <strong>pressure
+      and flow analysis</strong> lets you dig into any single point. Between them
+      they answer almost every capacity question you'll be asked.
+    </p>
+  </ProseSection>
+
+  <ContentMediaRow
+    title="Three checks, on every hydrant in the network">
+    <p>
+      Point the fire flow analysis at your hydrants, junctions, or whatever you
+      use to represent demand points, and it works through them rapidly. For each
+      location it can answer three different questions:
+    </p>
+    <ul class="list-disc space-y-3 pl-5 marker:text-purple-400">
+      <li>
+        <strong>Available fire flow</strong> — the maximum flow the network can
+        supply at a location before pressure drops below the minimum residual you
+        set. This is the “how much have I got?” answer.
+      </li>
+      <li>
+        <strong>Needed fire flow</strong> — set a required flow, say 500 gpm, and
+        the analysis delivers exactly that and reports the actual residual
+        pressure the network holds. This is the “does it meet the requirement?”
+        answer.
+      </li>
+      <li>
+        <strong>Designed fire flow</strong> — the system-wide check. It confirms
+        that pulling fire flow at one node doesn't violate pressure or velocity
+        limits anywhere else in the network, so a pass at the hydrant doesn't hide
+        a problem somewhere upstream.
+      </li>
+    </ul>
+    <Media
+      slot="media"
+      src="/assets/blog/progress-report/2025-11/fire-flow.png"
+      alt="The fire flow analysis panel in epanet-js with flow rate and minimum pressure settings, a design fire flow option, and a results table with pass and fail statuses."
+    />
+  </ContentMediaRow>
+
+  <PullQuote>
+    A faster way to run fire flow: hundreds of simulations a second, all in your
+    browser.
+  </PullQuote>
+
+  <ProseSection title="Thousands of simulations, no setup">
+    <p>
+      Fire flow has always meant running the model again and again, one location
+      at a time. epanet-js does it as a rapid series of simulations behind a
+      single action, processing hundreds of nodes a second and thousands of runs
+      in total, entirely in your browser. There's no batch to configure and no
+      demand hacking to keep track of — you choose the check, set your residual
+      target, and read the result for every hydrant at once.
+    </p>
+    <p>
+      Because it runs on the EPANET 2.3 engine with pressure-dependent demands
+      and emitters, the numbers reflect how the network actually behaves when you
+      draw a large flow, not a simplified fixed-demand approximation.
+    </p>
+  </ProseSection>
+
+  <ContentMediaRow
+    title="Right-click any point for a full capacity curve"
+    reverse>
+    <p>
+      Sometimes you don't need the whole network. You need to understand one
+      location in depth. Right-click a point and the pressure and flow analysis
+      builds a hydraulic curve for it: across a range of flows — 0, 5, 10, 15, 20
+      L/s and up — it shows how far the pressure drops. In a few seconds you can
+      read exactly how much capacity is there and where it gives out.
+    </p>
+    <p>
+      It's the quickest way to answer a development enquiry. Because the impact
+      shows up visually, you can see how velocity and flow change through the
+      system and pick out the critical assets that constrain it.
+    </p>
+  </ContentMediaRow>
+
+  <PullQuote>
+    For a planning department, it turns a week-long capacity enquiry into a
+    right-click.
+  </PullQuote>
+
+  <ContentMediaRow
+    title="Map capacity at a glance, then take it anywhere">
+    <p>
+      Both tools produce a visualization across the network, so the places with
+      spare capacity and the places running short stand out immediately on the
+      map. Color-coded results turn a table of numbers into a picture an engineer
+      or a planner can read in seconds.
+    </p>
+    <p>
+      When you need to take it further, export the results to GIS or CSV and use
+      them wherever your work lives: a report, a GIS layer, a capacity register,
+      or a response to a developer.
+    </p>
+    <FireFlowDemo slot="media" />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    heading="What fire flow analysis gives you"
+    items={benefits}
+    columns={4}
+  />
+
+  <CtaSection
+    heading="Check your network's capacity"
+    subheading="Run a fire flow analysis on your own model. Launch epanet-js, or book a demo to see it on your network."
+    dark={false}
+  />
+
+  <ProseSection
+    title="From fire flow compliance to development reviews">
+    <p>
+      Utilities use fire flow analysis to keep a live picture of capacity and to
+      prioritize reinforcement where the network falls short. Consultants use it
+      for capacity studies and to answer development enquiries with evidence
+      rather than estimates. Planning departments lean on the pressure and flow
+      analysis to understand, quickly and visually, whether the network can
+      support what's being proposed.
+    </p>
+    <p>
+      One tool, working on the same model, answers for all of them. There are no
+      separate spreadsheets and no one-off demand hacks to keep track of.
+    </p>
+  </ProseSection>
+
+  <ProseSection
+    title="Watch a fire flow analysis end to end">
+    <p>
+      The clearest way to see fire flow at work is to follow it on a real
+      network. Our worked examples take raw GIS data all the way through to a
+      running model and a fire flow test, with the files included so you can
+      build it yourself:
+    </p>
+    <ul class="list-disc space-y-2 pl-5 marker:text-purple-400">
+      <li>
+        <a
+          href="https://help.epanetjs.com/Worked-example-2-Roseberry-AU-2f7e18c9f0f680cebb07c46ae0690645"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+          >Worked example: Roseberry, AU</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://help.epanetjs.com/Worked-example-1-Wheelwright-KY-1c7e18c9f0f680d088b5d45bdece1e67"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+          >Worked example: Wheelwright, KY</a
+        >
+      </li>
+    </ul>
+  </ProseSection>
+
+  <CardGrid
+    heading="Where to next"
+    subheading="Fire flow is one part of understanding your network."
+    items={related}
+    columns={3}
+  />
+
+  <FaqList
+    subheading="The questions teams ask most about fire flow and capacity analysis in epanet-js."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Answer your next capacity question in minutes"
+    subheading="See fire flow and pressure-and-flow analysis on your own network. Launch epanet-js or book a demo."
+  />
+</Layout>

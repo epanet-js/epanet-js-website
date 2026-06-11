@@ -1,0 +1,232 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import Media from "@components/marketing/Media.astro";
+import PullQuote from "@components/marketing/PullQuote.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { MonitorOff, Timer, GraduationCap, BookOpen } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const schoolCta = { label: "Use your school email", href: "https://app.epanetjs.com" };
+const talkCta = { label: "Talk to us", href: "https://cal.com/epanet-js/" };
+
+const benefits = [
+  {
+    icon: MonitorOff,
+    title: "Zero-install classrooms",
+    description:
+      "Runs in any browser on any OS. No lab installs, no Mac headaches, no IT tickets before week one.",
+  },
+  {
+    icon: Timer,
+    title: "Fast to first model",
+    description:
+      "Students draw a real network and run a simulation in minutes — so class time goes to concepts, not setup.",
+  },
+  {
+    icon: BookOpen,
+    title: "Learn the real thing",
+    description:
+      "Built on the same EPANET engine the industry uses, so students learn skills that transfer directly to work.",
+  },
+  {
+    icon: GraduationCap,
+    title: "Free for education",
+    description:
+      "Free access for students and teachers for non-commercial learning and coursework.",
+  },
+];
+
+const workflows = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) =>
+    [
+      "/solutions/model-build",
+      "/solutions/fire-flow",
+      "/solutions/operational-modeling",
+      "/solutions/calibration",
+    ].includes(i.href),
+  );
+
+const faqs = [
+  {
+    question: "How do students and teachers get free access?",
+    answer:
+      "Sign in with a school email and eligibility is detected automatically — no purchase order, no waiting. It's free for non-commercial learning and coursework. See the <a href=\"https://help.epanetjs.com/Free-educational-licenses-for-epanet-js-2a1e18c9f0f68192a785cbe61747addf\" target=\"_blank\" rel=\"noopener noreferrer\">guide to free educational licenses</a>.",
+  },
+  {
+    question: "What does a student need to run it?",
+    answer:
+      "Just a web browser. epanet-js runs on any modern browser on Mac, Windows, Linux, and Chromebooks, with nothing to install.",
+  },
+  {
+    question: "Will it run on lab machines and Chromebooks?",
+    answer:
+      "Yes. Because it's browser-based, it runs the same on a locked-down lab machine, a student's laptop, or a Chromebook, with no per-machine licensing or admin rights needed.",
+  },
+  {
+    question: "Is it the real EPANET, or a teaching version?",
+    answer:
+      "It's the real thing — the EPANET 2.3 engine the industry uses, opening standard <strong>.inp</strong> files. Students learn skills and a tool that carry straight into professional work.",
+  },
+  {
+    question: "Can it be used for coursework and research?",
+    answer:
+      "Yes. The free educational access covers non-commercial learning, coursework, and study, so students and staff can use it across a module or a project.",
+  },
+  {
+    question: "How do I set up a class?",
+    answer:
+      "There's nothing to provision — students open epanet-js and sign in with their school email. If you'd like help planning a lab or a course around it, <a href=\"https://cal.com/epanet-js/\" target=\"_blank\" rel=\"noopener noreferrer\">talk to us</a>.",
+  },
+];
+---
+
+<Layout
+  title="For education"
+  description="Learn on the real tools the industry uses. epanet-js gives students and educators zero-install, browser-based water modeling on the EPANET engine — free for education."
+  lang={lang}>
+  <PageHero
+    title="Learn on the real tools the industry uses"
+    subtitle="Teach and learn water modeling without fighting software. epanet-js runs in any browser, gets students to a working model in minutes, and is free for education."
+    primaryCta={schoolCta}
+  />
+
+  <ProseSection
+    title="The software shouldn't be the hardest part of the course">
+    <p>
+      Too often the first weeks of a modeling course go to installing software,
+      chasing licenses, and working around the quirks of a dated interface. By
+      the time everyone is set up, the momentum is gone — and the tool itself has
+      become the obstacle instead of the subject.
+    </p>
+    <p>
+      epanet-js removes that friction. Students open a browser and start modeling,
+      on the same engine the industry runs, so class time goes to the concepts
+      and the craft rather than the setup.
+    </p>
+  </ProseSection>
+
+  <PullQuote>
+    When the software gets out of the way, students spend their time learning how
+    water networks behave — not how to fight an installer.
+  </PullQuote>
+
+  <ContentMediaRow
+    title="Spend class time teaching, not troubleshooting">
+    <p>
+      No installations, no virtual machines, no per-machine licensing. Every
+      student opens a browser and starts modeling. Watch them draw real networks
+      and run simulations in minutes instead of losing the first lab to setup.
+    </p>
+    <p>
+      Because everyone is on the same browser-based tool, a demo on your screen is
+      a demo on theirs, whatever hardware they brought to class.
+    </p>
+    <Media
+      slot="media"
+      src="/assets/blog/progress-report/2026-04/2026-04-02-welcome.webp"
+      alt="The epanet-js welcome screen in the browser, with demo networks ready to open."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Focus on the concepts, not the quirks"
+    reverse>
+    <p>
+      Undo/redo, automatic elevations, and visual map overlays remove the
+      friction that gets in the way of learning. Make mistakes, experiment
+      freely, and build intuition for how water networks actually behave.
+    </p>
+    <p>
+      Running a simulation is a keystroke, and the results are color-coded on the
+      map, so the link between a change and its effect is immediate and visible.
+    </p>
+    <Media
+      slot="media"
+      src="/assets/blog/progress-report/2025-10/ctrl-draw.mp4"
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="The same engine they'll use at work">
+    <p>
+      epanet-js runs the EPANET 2.3 engine and opens standard <strong>.inp</strong>
+      files, so students aren't learning a stripped-down teaching tool. The
+      skills, the workflow, and the file format all transfer directly into
+      professional practice.
+    </p>
+    <p>
+      Graduates arrive at their first job already fluent in a tool the industry
+      uses, not needing to relearn the craft on different software.
+    </p>
+    <Media
+      slot="media"
+      src="/assets/images/epanet-js-app.png"
+      alt="A real EPANET model running in the browser with color-coded simulation results."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Sign in with a school email" reverse>
+    <p>
+      Access is free for students and teachers for non-commercial learning and
+      coursework, with eligibility detected automatically from your school email.
+      There's no purchase order to raise and no license server to run.
+    </p>
+    <p>
+      It's part of the same goal behind the whole project: make good water
+      modeling usable by more people, starting with the ones learning the craft.
+    </p>
+  </ContentMediaRow>
+
+  <BenefitGrid
+    heading="Real tools, ready for the classroom"
+    items={benefits}
+    columns={4}
+  />
+
+  <CtaSection
+    heading="Bring epanet-js to your classroom"
+    subheading="Students and teachers get free access. Sign in with your school email to get started."
+    primaryCta={schoolCta}
+    secondaryCta={talkCta}
+    dark={false}
+  />
+
+  <ProseSection
+    title="Already being taught around the world">
+    <p>
+      Educators are building epanet-js into their teaching, from lab exercises to
+      full modules, and the community has started producing its own learning
+      material — including a student tutorial video recorded in Estonian. As a
+      browser-based, free-for-education tool, it's easy to share with a whole
+      cohort at once.
+    </p>
+  </ProseSection>
+
+  <CardGrid
+    heading="Great for coursework"
+    subheading="Workflows students can explore as they learn."
+    items={workflows}
+    columns={4}
+  />
+
+  <FaqList
+    subheading="The questions students and educators ask most."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Get your class modeling today"
+    subheading="Students and teachers get free access. Sign in with your school email to get started."
+    primaryCta={schoolCta}
+    secondaryCta={talkCta}
+  />
+</Layout>

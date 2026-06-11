@@ -1,6 +1,9 @@
 # Dependencies
 /node_modules
 
+# pnpm-generated build-config stub (auto-created by corepack)
+/pnpm-workspace.yaml
+
 # Production
 /site
 

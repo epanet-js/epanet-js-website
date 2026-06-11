@@ -1,0 +1,359 @@
+---
+// Pressure/flow capacity curve demo: the right-click node check that plots
+// available flow against pressure, marks where the curve meets the 15 m
+// minimum, and reads off the flow. `framed` overlays it on the app map.
+import { Activity } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+
+interface Props {
+  framed?: boolean;
+  class?: string;
+}
+
+const { framed = false, class: className } = Astro.props;
+
+const curveD = "M 8 14 C 64 24 94 37 124 56 C 138 64.5 164 67 192 80";
+const gridYs = [22, 45, 68];
+
+const label =
+  "Pressure flow check in epanet-js: a capacity curve for junction J288 with a marker where it meets the 15 m minimum pressure threshold, reading 41.2 l/s available.";
+---
+
+{
+  framed ? (
+    <AppWindow variant="plain" label={label} class={className}>
+      <div class="absolute top-2 right-2 w-[250px] max-w-[72%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+        <div class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+          <p class="flex items-center gap-1.5 text-[11px] font-semibold text-gray-700">
+            <Activity size={12} className="text-gray-400" />
+            Pressure / flow
+          </p>
+          <p class="text-[10px] text-gray-400">J288</p>
+        </div>
+        <div class="px-3 pt-2 pb-2.5">
+          <p class="text-[9px] text-gray-400">Pressure (m)</p>
+          <div class="relative mt-1">
+            <svg viewBox="0 0 200 90" class="w-full" aria-hidden="true">
+              <g stroke="#f3f4f6" stroke-width="1">
+                {gridYs.map((y) => (
+                  <line x1="0" y1={y} x2="200" y2={y} />
+                ))}
+              </g>
+              <g class="pq-threshold">
+                <line
+                  x1="8"
+                  y1="56"
+                  x2="192"
+                  y2="56"
+                  stroke="#9ca3af"
+                  stroke-width="1"
+                  stroke-dasharray="3 2"
+                />
+                <text x="8" y="52.5" font-size="7" fill="#9ca3af">
+                  15 m
+                </text>
+              </g>
+              <path
+                class="pq-curve"
+                d={curveD}
+                pathLength="100"
+                fill="none"
+                stroke="#8b5cf6"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <line
+                class="pq-hairline"
+                x1="124"
+                y1="56"
+                x2="124"
+                y2="86"
+                stroke="#9ca3af"
+                stroke-width="1"
+                stroke-dasharray="2 2"
+              />
+              <g class="pq-dot" transform="translate(124 56)">
+                <circle
+                  class="pq-dot-pulse"
+                  r="3"
+                  fill="#8b5cf6"
+                  stroke="#fff"
+                  stroke-width="1"
+                />
+              </g>
+            </svg>
+            <span
+              class="pq-chip absolute whitespace-nowrap rounded bg-white border border-gray-100 shadow-md px-1.5 py-0.5 text-[9px] tabular-nums text-gray-700"
+              style="left: 64%; bottom: 44%;">
+              41.2 l/s at 15 m
+            </span>
+          </div>
+          <p class="text-[9px] text-gray-400 text-right">Flow (l/s)</p>
+        </div>
+      </div>
+    </AppWindow>
+  ) : (
+    <div
+      class:list={[
+        "w-full max-w-[300px] mx-auto bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+        className,
+      ]}
+      role="img"
+      aria-label={label}>
+      <div class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+        <p class="flex items-center gap-1.5 text-[11px] font-semibold text-gray-700">
+          <Activity size={12} className="text-gray-400" />
+          Pressure / flow
+        </p>
+        <p class="text-[10px] text-gray-400">J288</p>
+      </div>
+      <div class="px-3 pt-2 pb-2.5">
+        <p class="text-[9px] text-gray-400">Pressure (m)</p>
+        <div class="relative mt-1">
+          <svg viewBox="0 0 200 90" class="w-full" aria-hidden="true">
+            <g stroke="#f3f4f6" stroke-width="1">
+              {gridYs.map((y) => (
+                <line x1="0" y1={y} x2="200" y2={y} />
+              ))}
+            </g>
+            <g class="pq-threshold">
+              <line
+                x1="8"
+                y1="56"
+                x2="192"
+                y2="56"
+                stroke="#9ca3af"
+                stroke-width="1"
+                stroke-dasharray="3 2"
+              />
+              <text x="8" y="52.5" font-size="7" fill="#9ca3af">
+                15 m
+              </text>
+            </g>
+            <path
+              class="pq-curve"
+              d={curveD}
+              pathLength="100"
+              fill="none"
+              stroke="#8b5cf6"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+            <line
+              class="pq-hairline"
+              x1="124"
+              y1="56"
+              x2="124"
+              y2="86"
+              stroke="#9ca3af"
+              stroke-width="1"
+              stroke-dasharray="2 2"
+            />
+            <g class="pq-dot" transform="translate(124 56)">
+              <circle
+                class="pq-dot-pulse"
+                r="3"
+                fill="#8b5cf6"
+                stroke="#fff"
+                stroke-width="1"
+              />
+            </g>
+          </svg>
+          <span
+            class="pq-chip absolute whitespace-nowrap rounded bg-white border border-gray-100 shadow-md px-1.5 py-0.5 text-[9px] tabular-nums text-gray-700"
+            style="left: 64%; bottom: 44%;">
+            41.2 l/s at 15 m
+          </span>
+        </div>
+        <p class="text-[9px] text-gray-400 text-right">Flow (l/s)</p>
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .pq-curve {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: pq-draw 6s linear infinite both;
+  }
+  @keyframes pq-draw {
+    0% {
+      stroke-dashoffset: 100;
+      opacity: 1;
+    }
+    35% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  .pq-threshold {
+    animation: pq-threshold-in 6s linear infinite both;
+  }
+  @keyframes pq-threshold-in {
+    0%,
+    16% {
+      opacity: 0;
+    }
+    26% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  /* Waypoints sampled along the capacity curve from its start to the
+     crossing with the 15 m threshold at (124, 56). */
+  .pq-dot {
+    animation: pq-travel 6s linear infinite both;
+  }
+  @keyframes pq-travel {
+    0%,
+    30% {
+      opacity: 0;
+      transform: translate(8px, 14px);
+    }
+    32% {
+      opacity: 1;
+      transform: translate(8px, 14px);
+    }
+    37.5% {
+      transform: translate(38.7px, 20.4px);
+    }
+    43% {
+      transform: translate(64.4px, 27.6px);
+    }
+    49% {
+      transform: translate(86.3px, 35.9px);
+    }
+    54.5% {
+      transform: translate(105.8px, 45.3px);
+    }
+    60% {
+      transform: translate(124px, 56px);
+    }
+    92% {
+      opacity: 1;
+      transform: translate(124px, 56px);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(124px, 56px);
+    }
+  }
+  .pq-dot-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pq-pulse 6s ease-in-out infinite both;
+  }
+  @keyframes pq-pulse {
+    0%,
+    62% {
+      transform: scale(1);
+    }
+    70% {
+      transform: scale(1.3);
+    }
+    78% {
+      transform: scale(1);
+    }
+    84% {
+      transform: scale(1.25);
+    }
+    92%,
+    100% {
+      transform: scale(1);
+    }
+  }
+  .pq-hairline {
+    transform-box: fill-box;
+    transform-origin: center top;
+    animation: pq-hairline-drop 6s linear infinite both;
+  }
+  @keyframes pq-hairline-drop {
+    0%,
+    60% {
+      opacity: 0;
+      transform: scaleY(0);
+    }
+    62% {
+      opacity: 1;
+    }
+    68% {
+      transform: scaleY(1);
+    }
+    92% {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scaleY(1);
+    }
+  }
+  .pq-chip {
+    transform-origin: left bottom;
+    animation: pq-chip-pop 6s ease-out infinite both;
+  }
+  @keyframes pq-chip-pop {
+    0%,
+    61% {
+      opacity: 0;
+      transform: translateY(3px) scale(0.95);
+    }
+    67% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    92% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(0) scale(1);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pq-curve,
+    .pq-threshold,
+    .pq-dot,
+    .pq-dot-pulse,
+    .pq-hairline,
+    .pq-chip {
+      animation: none;
+    }
+    .pq-curve {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .pq-threshold {
+      opacity: 1;
+    }
+    .pq-dot {
+      opacity: 1;
+      transform: translate(124px, 56px);
+    }
+    .pq-dot-pulse {
+      transform: scale(1);
+    }
+    .pq-hairline {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+    .pq-chip {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

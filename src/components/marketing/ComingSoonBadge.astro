@@ -1,0 +1,11 @@
+---
+import Badge from "@components/ui/badge.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<Badge color="orange" class={className}>Coming soon</Badge>

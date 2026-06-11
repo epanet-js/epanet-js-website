@@ -1,0 +1,223 @@
+---
+// Local-first flow diagram: the app arrives from the cloud, the .inp file
+// stays on the device, and when the connection drops the simulation keeps
+// running locally.
+import { CheckCircle2, Cloud, FileText, Laptop, WifiOff } from "lucide-react";
+import NetworkMap from "./NetworkMap.astro";
+---
+
+<div
+  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  role="img"
+  aria-label="Diagram: the epanet-js app loads from the cloud, your .inp file stays on your device, and the simulation keeps running when the connection drops.">
+  <div class="flex flex-col items-center">
+    <!-- cloud: where the app comes from -->
+    <div class="lff-cloud flex flex-col items-center">
+      <Cloud size={26} className="text-gray-400" />
+      <p class="text-[10px] text-gray-400">The app loads from here</p>
+    </div>
+
+    <!-- link from cloud to device, cut when offline -->
+    <div class="relative my-1 h-12">
+      <div
+        class="lff-link h-full border-l border-dashed border-gray-300 mx-auto w-px">
+      </div>
+      <!-- app glyph traveling down to the device -->
+      <span
+        class="lff-app absolute left-1/2 top-0 -ml-2.5 flex h-5 w-5 items-center justify-center rounded border-2 border-indigo-900 bg-white">
+        <span class="h-1.5 w-1.5 rounded-full bg-violet-500"></span>
+      </span>
+      <!-- connection drops -->
+      <span
+        class="lff-offline absolute left-1/2 top-1/2 ml-3 -translate-y-1/2 flex h-5 w-5 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 shadow-sm">
+        <WifiOff size={11} />
+      </span>
+    </div>
+
+    <!-- device -->
+    <div class="w-44 sm:w-52">
+      <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
+        <div class="relative aspect-[16/10] bg-gray-100">
+          <div class="lff-screen absolute inset-0">
+            <NetworkMap markers={true} class="absolute inset-0" />
+          </div>
+          <span
+            class="lff-inp absolute bottom-1.5 left-1.5 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[9px] font-medium text-gray-600">
+            <FileText size={9} className="text-gray-400" />
+            my-network.inp
+          </span>
+          <span
+            class="lff-chip absolute top-1.5 right-1.5 flex items-center gap-1 rounded-full bg-green-100 px-1.5 py-0.5 text-[8px] font-medium text-green-700">
+            <CheckCircle2 size={9} />
+            Simulation runs locally
+          </span>
+        </div>
+      </div>
+      <div class="h-1.5 mx-6 rounded-b-lg bg-gray-300"></div>
+      <p
+        class="flex items-center justify-center gap-1.5 mt-2 text-[11px] font-medium text-gray-700">
+        <Laptop size={12} className="text-gray-400" />
+        Your file, on your device
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* the cloud and its link dim once the connection drops */
+  .lff-cloud {
+    animation: lff-cloud 8s ease-in-out infinite both;
+  }
+  @keyframes lff-cloud {
+    0%, 3% { opacity: 0; }
+    8%, 52% { opacity: 1; }
+    58% { opacity: 0.3; }
+    94% { opacity: 0.3; }
+    100% { opacity: 0; }
+  }
+  .lff-link {
+    animation: lff-link 8s ease-in-out infinite both;
+  }
+  @keyframes lff-link {
+    0%, 6% { opacity: 0; }
+    10%, 52% { opacity: 1; }
+    58% { opacity: 0.3; }
+    94% { opacity: 0.3; }
+    100% { opacity: 0; }
+  }
+
+  /* the app travels down from the cloud onto the device */
+  .lff-app {
+    animation: lff-app-travel 8s ease-in-out infinite both;
+  }
+  @keyframes lff-app-travel {
+    0%,
+    10% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+    14% {
+      opacity: 1;
+    }
+    24% {
+      opacity: 1;
+      transform: translateY(30px);
+    }
+    28%,
+    100% {
+      opacity: 0;
+      transform: translateY(34px);
+    }
+  }
+
+  /* the screen turns on as the app lands */
+  .lff-screen {
+    animation: lff-screen-on 8s ease-out infinite both;
+  }
+  @keyframes lff-screen-on {
+    0%,
+    26% {
+      opacity: 0;
+    }
+    32% {
+      opacity: 1;
+    }
+    94% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .lff-inp {
+    animation: lff-inp-in 8s ease-out infinite both;
+  }
+  @keyframes lff-inp-in {
+    0%,
+    38% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    44% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    94% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .lff-offline {
+    animation: lff-offline-in 8s ease-out infinite both;
+  }
+  @keyframes lff-offline-in {
+    0%,
+    52% {
+      opacity: 0;
+      transform: translateY(-50%) scale(0.7);
+    }
+    57% {
+      opacity: 1;
+      transform: translateY(-50%) scale(1.1);
+    }
+    60% {
+      transform: translateY(-50%) scale(1);
+    }
+    94% {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .lff-chip {
+    animation: lff-chip-in 8s ease-out infinite both;
+  }
+  @keyframes lff-chip-in {
+    0%,
+    62% {
+      opacity: 0;
+      transform: translateY(-2px);
+    }
+    68% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    94% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lff-cloud,
+    .lff-link,
+    .lff-app,
+    .lff-screen,
+    .lff-inp,
+    .lff-offline,
+    .lff-chip {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .lff-cloud,
+    .lff-link {
+      opacity: 0.3;
+    }
+    .lff-app {
+      opacity: 0;
+    }
+    .lff-offline {
+      transform: translateY(-50%);
+    }
+  }
+</style>

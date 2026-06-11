@@ -1,0 +1,234 @@
+---
+// Demand categories demo: one junction's demand broken into residential,
+// commercial, and leakage categories, each with its own base demand and
+// pattern chip, summing to the total in a stacked bar.
+import AppWindow from "./AppWindow.astro";
+
+const categories = [
+  { label: "Domestic", pattern: "RES-24h", value: "0.42 l/s" },
+  { label: "Commercial", pattern: "COM-24h", value: "0.18 l/s" },
+  { label: "Leakage", pattern: "Continuous", value: "0.07 l/s" },
+];
+
+// Stacked bar segments matching the category shares of the 0.67 l/s total.
+const segments = [
+  { width: "63%", cls: "bg-violet-500" },
+  { width: "27%", cls: "bg-violet-300" },
+  { width: "10%", cls: "bg-gray-300" },
+];
+---
+
+<AppWindow
+  variant="plain"
+  label="Demand categories in epanet-js: junction J288's demand split into domestic, commercial, and leakage categories, each with its own pattern, summing in a stacked bar.">
+  <!-- selected junction highlight at [160, 140] -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <circle
+      class="dc-ring"
+      cx="160"
+      cy="140"
+      r="7"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="2"></circle>
+    <circle
+      class="dc-pulse"
+      cx="160"
+      cy="140"
+      r="7"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="1.5"></circle>
+  </svg>
+
+  <!-- asset panel: demands tab for J288 -->
+  <div
+    class="dc-panel absolute top-2 right-2 w-[210px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">Demands · J288</p>
+      <p class="text-[10px] text-gray-400">3 categories</p>
+    </div>
+    <div class="py-1 text-[10px]">
+      {
+        categories.map((cat, i) => (
+          <div
+            class="dc-row flex items-center justify-between gap-1 px-3 py-1"
+            style={`animation-delay: ${(i * 0.84).toFixed(2)}s`}>
+            <span class="flex items-center gap-1.5 min-w-0">
+              <span class="text-gray-600">{cat.label}</span>
+              <span class="rounded border border-gray-200 bg-gray-50 px-1 text-[8px] text-gray-500 whitespace-nowrap">
+                {cat.pattern}
+              </span>
+            </span>
+            <span class="font-medium text-gray-700 tabular-nums">
+              {cat.value}
+            </span>
+          </div>
+        ))
+      }
+      <div
+        class="dc-total flex items-center justify-between border-t border-gray-100 mt-1 px-3 py-1.5">
+        <span class="font-medium text-gray-600">Total</span>
+        <span class="font-semibold text-gray-800 tabular-nums">0.67 l/s</span>
+      </div>
+      <div class="px-3 pb-2">
+        <div class="flex h-1.5 gap-px overflow-hidden rounded-full bg-gray-100">
+          {
+            segments.map((seg, i) => (
+              <span
+                class:list={["dc-seg h-full", seg.cls]}
+                style={`width: ${seg.width}; animation-delay: ${(i * 0.42).toFixed(2)}s`}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  .dc-ring {
+    animation: dc-ring-in 7s ease-out infinite both;
+  }
+  @keyframes dc-ring-in {
+    0%,
+    3% {
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .dc-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: dc-pulse 1.8s ease-out infinite;
+  }
+  @keyframes dc-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    70%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  .dc-panel {
+    animation: dc-panel-in 7s ease-out infinite both;
+  }
+  @keyframes dc-panel-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    6% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .dc-row {
+    animation: dc-row-in 7s ease-out infinite both;
+  }
+  @keyframes dc-row-in {
+    0%,
+    12% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    17% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .dc-total {
+    animation: dc-total-in 7s ease-out infinite both;
+  }
+  @keyframes dc-total-in {
+    0%,
+    48% {
+      opacity: 0;
+    }
+    54% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .dc-seg {
+    transform-origin: left;
+    animation: dc-seg-grow 7s ease-in-out infinite both;
+  }
+  @keyframes dc-seg-grow {
+    0%,
+    54% {
+      transform: scaleX(0);
+      opacity: 1;
+    }
+    64% {
+      transform: scaleX(1);
+    }
+    92% {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+    98%,
+    100% {
+      transform: scaleX(1);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dc-ring,
+    .dc-pulse,
+    .dc-panel,
+    .dc-row,
+    .dc-total,
+    .dc-seg {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .dc-pulse {
+      opacity: 0;
+    }
+  }
+</style>

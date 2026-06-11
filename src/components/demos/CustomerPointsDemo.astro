@@ -1,0 +1,248 @@
+---
+// Customer points demo: imported customer points pop in around the network,
+// cluster by cluster, and connect to the nearest pipe while an allocation
+// summary panel fills in. Labels mirror the real import flow.
+import { TriangleAlert } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import { pipes } from "./network-geometry";
+
+// Each customer point hangs off a pipe from the shared network geometry:
+// `pipe` indexes into `pipes`, `t` is the position along the segment, and
+// `offset` is the perpendicular distance in map units (sign picks the side).
+// Grouped into three spatial clusters that pop in west to east.
+const clusters: { pipe: number; t: number; offset: number }[][] = [
+  // west
+  [
+    { pipe: 1, t: 0.35, offset: -10 },
+    { pipe: 2, t: 0.5, offset: 11 },
+    { pipe: 2, t: 0.83, offset: 9.5 },
+    { pipe: 6, t: 0.4, offset: 11 },
+  ],
+  // center and south
+  [
+    { pipe: 4, t: 0.6, offset: 10 },
+    { pipe: 8, t: 0.5, offset: -10 },
+    { pipe: 10, t: 0.45, offset: 11 },
+    { pipe: 11, t: 0.4, offset: 12 },
+  ],
+  // east
+  [
+    { pipe: 14, t: 0.25, offset: 11 },
+    { pipe: 14, t: 0.55, offset: 11 },
+    { pipe: 19, t: 0.5, offset: 10 },
+    { pipe: 16, t: 0.6, offset: 11 },
+  ],
+];
+
+const round = (n: number) => Math.round(n * 10) / 10;
+const clusterStart = [0.15, 0.9, 1.65];
+
+const points = clusters.flatMap((cluster, ci) =>
+  cluster.map(({ pipe, t, offset }, i) => {
+    const [x1, y1, x2, y2] = pipes[pipe];
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const len = Math.hypot(dx, dy);
+    const cx = x1 + dx * t;
+    const cy = y1 + dy * t;
+    return {
+      cx: round(cx),
+      cy: round(cy),
+      px: round(cx + (-dy / len) * offset),
+      py: round(cy + (dx / len) * offset),
+      delay: clusterStart[ci] + i * 0.08,
+    };
+  }),
+);
+
+const summary = [
+  { label: "Imported", value: "1,284", warn: false },
+  { label: "Allocated", value: "1,281", warn: false },
+  { label: "Unallocated", value: "3", warn: true },
+];
+---
+
+<AppWindow
+  variant="plain"
+  label="Customer points in epanet-js: imported customer points connecting to their nearest pipes, with an allocation summary.">
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <!-- connectors to the nearest pipe -->
+    <g stroke="#a78bfa" stroke-width="0.75">
+      {
+        points.map((pt) => (
+          <line
+            class="cp-connector"
+            x1={pt.px}
+            y1={pt.py}
+            x2={pt.cx}
+            y2={pt.cy}
+            pathLength="100"
+            style={`animation-delay: ${(pt.delay + 1.15).toFixed(2)}s`}
+          />
+        ))
+      }
+    </g>
+    <!-- customer points -->
+    <g fill="#c4b5fd" stroke="#8b5cf6" stroke-width="0.5">
+      {
+        points.map((pt) => (
+          <circle
+            class="cp-dot"
+            cx={pt.px}
+            cy={pt.py}
+            r="2"
+            style={`animation-delay: ${pt.delay.toFixed(2)}s`}
+          />
+        ))
+      }
+    </g>
+  </svg>
+
+  <!-- allocation summary (top-right, like the asset panel) -->
+  <div
+    class="absolute top-2 right-2 w-[190px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">Customer points</p>
+      <p class="text-[10px] text-gray-400">customers.geojson</p>
+    </div>
+    <div class="px-3 py-1 text-[10px]">
+      {
+        summary.map((row, i) => (
+          <div
+            class:list={[
+              "cp-row flex items-center justify-between py-1",
+              i > 0 && "border-t border-gray-50",
+            ]}
+            style={`animation-delay: ${(3.5 + i * 0.55).toFixed(2)}s`}>
+            <span class="text-gray-500">{row.label}</span>
+            {row.warn ? (
+              <span class="cp-breathe flex items-center gap-1 font-medium text-amber-600 tabular-nums">
+                <TriangleAlert size={11} className="text-amber-500" />
+                {row.value}
+              </span>
+            ) : (
+              <span class="font-medium text-gray-700 tabular-nums">
+                {row.value}
+              </span>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  .cp-dot {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: cp-pop 7s infinite both;
+  }
+  @keyframes cp-pop {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    2% {
+      opacity: 1;
+    }
+    3.5% {
+      transform: scale(1.3);
+    }
+    5% {
+      transform: scale(1);
+    }
+    92% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    98%,
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+  .cp-connector {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: cp-connect 7s linear infinite both;
+  }
+  @keyframes cp-connect {
+    0% {
+      stroke-dashoffset: 100;
+      opacity: 1;
+    }
+    11% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  .cp-row {
+    animation: cp-row-in 7s infinite both;
+  }
+  @keyframes cp-row-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    7% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .cp-breathe {
+    animation: cp-breathe 2.2s ease-in-out infinite;
+  }
+  @keyframes cp-breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cp-dot,
+    .cp-connector,
+    .cp-row,
+    .cp-breathe {
+      animation: none;
+    }
+    .cp-dot {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .cp-connector {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .cp-row {
+      opacity: 1;
+      transform: none;
+    }
+    .cp-breathe {
+      opacity: 1;
+    }
+  }
+</style>

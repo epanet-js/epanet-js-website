@@ -1,0 +1,284 @@
+---
+// Pump schedule demo: a 24-hour strip with tariff bands. One pump run
+// overlaps the peak band, shifts out of it into the early afternoon, a
+// night run slides in, and the peak-tariff energy figure drops to zero.
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+    className,
+  ]}
+  role="img"
+  aria-label="Pump schedule panel: pump runs on a 24-hour strip with tariff bands, one run shifting out of the peak band and the peak-tariff energy dropping to zero.">
+  <div
+    class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+    <p class="text-[11px] font-semibold text-gray-700">
+      Pump schedule · PMP-1
+    </p>
+    <p class="text-[10px] text-gray-400">24 h</p>
+  </div>
+  <div class="px-3 py-2.5">
+    <!-- 24-hour strip with tariff bands -->
+    <div
+      class="relative h-11 overflow-hidden rounded-md border border-gray-100 bg-gray-50">
+      <div
+        class="psc-band absolute inset-y-0 left-0 w-1/4 bg-green-50">
+        <span
+          class="absolute left-1 top-0.5 text-[8px] font-medium text-green-600">
+          Off-peak
+        </span>
+      </div>
+      <div
+        class="psc-band absolute inset-y-0 left-[66.66%] w-[16.67%] bg-rose-50">
+        <span
+          class="absolute left-1 top-0.5 text-[8px] font-medium text-rose-500">
+          Peak
+        </span>
+      </div>
+
+      <!-- run blocks -->
+      <div
+        class="psc-run-1 absolute left-1/4 top-1/2 h-3.5 w-[16.67%] rounded-sm bg-violet-500/90">
+      </div>
+      <div
+        class="psc-run-2 absolute left-[62.5%] top-1/2 h-3.5 w-[16.67%] rounded-sm bg-violet-500/90">
+      </div>
+      <div
+        class="psc-run-3 absolute left-[4.17%] top-1/2 h-3.5 w-[12.5%] rounded-sm bg-violet-500/90">
+      </div>
+    </div>
+
+    <!-- hour ticks -->
+    <div class="relative mt-0.5 h-3 text-[8px] text-gray-400">
+      <span class="absolute left-0">0</span>
+      <span class="absolute left-1/4 -translate-x-1/2">6</span>
+      <span class="absolute left-1/2 -translate-x-1/2">12</span>
+      <span class="absolute left-3/4 -translate-x-1/2">18</span>
+      <span class="absolute right-0">24</span>
+    </div>
+
+    <!-- energy readout -->
+    <div
+      class="mt-1.5 flex items-center justify-between border-t border-gray-100 pt-2">
+      <span class="text-[10px] text-gray-500">Peak-tariff energy</span>
+      <span class="flex items-center gap-1.5">
+        <span
+          class="psc-chip whitespace-nowrap rounded-full bg-green-100 px-1.5 py-px text-[9px] font-medium text-green-700">
+          Cost −23%
+        </span>
+        <span class="relative text-[10px] font-medium tabular-nums">
+          <span class="psc-val-old text-gray-700">186 kWh</span>
+          <span
+            class="psc-val-new absolute inset-0 bg-white text-right text-green-600">
+            0 kWh
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .psc-band {
+    animation: psc-band-in 8s ease-out infinite both;
+  }
+  @keyframes psc-band-in {
+    0%,
+    5% {
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .psc-run-1 {
+    animation: psc-run-1-in 8s ease-out infinite both;
+  }
+  @keyframes psc-run-1-in {
+    0%,
+    16% {
+      opacity: 0;
+      transform: translate(0, -50%) scaleX(0.6);
+    }
+    22% {
+      opacity: 1;
+      transform: translate(0, -50%) scaleX(1);
+    }
+    92% {
+      opacity: 1;
+      transform: translate(0, -50%) scaleX(1);
+    }
+    98%,
+    100% {
+      opacity: 0;
+      transform: translate(0, -50%) scaleX(1);
+    }
+  }
+
+  /* the run overlapping the peak band gets flagged, then shifts 4 hours
+     earlier (its own width) out of the band */
+  .psc-run-2 {
+    animation: psc-run-2-move 8s ease-in-out infinite both;
+  }
+  @keyframes psc-run-2-move {
+    0%,
+    22% {
+      opacity: 0;
+      transform: translate(0, -50%);
+      box-shadow: none;
+    }
+    28% {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+    32%,
+    40% {
+      box-shadow: 0 0 0 1.5px #f43f5e;
+    }
+    44% {
+      transform: translate(0, -50%);
+    }
+    56% {
+      transform: translate(-100%, -50%);
+      box-shadow: none;
+    }
+    92% {
+      opacity: 1;
+      transform: translate(-100%, -50%);
+    }
+    98%,
+    100% {
+      opacity: 0;
+      transform: translate(-100%, -50%);
+    }
+  }
+
+  /* an extra short run slides into the off-peak night band */
+  .psc-run-3 {
+    animation: psc-run-3-in 8s ease-out infinite both;
+  }
+  @keyframes psc-run-3-in {
+    0%,
+    50% {
+      opacity: 0;
+      transform: translate(-60%, -50%);
+    }
+    60% {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+    92% {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+    98%,
+    100% {
+      opacity: 0;
+      transform: translate(0, -50%);
+    }
+  }
+
+  .psc-val-new {
+    animation: psc-val-new 8s linear infinite both;
+  }
+  @keyframes psc-val-new {
+    0%,
+    60% {
+      opacity: 0;
+    }
+    64% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .psc-val-old {
+    animation: psc-val-old 8s linear infinite both;
+  }
+  @keyframes psc-val-old {
+    0% {
+      opacity: 0;
+    }
+    6%,
+    60% {
+      opacity: 1;
+    }
+    64%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .psc-chip {
+    animation: psc-chip-in 8s ease-out infinite both;
+  }
+  @keyframes psc-chip-in {
+    0%,
+    68% {
+      opacity: 0;
+      transform: translateY(2px);
+    }
+    74% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .psc-band,
+    .psc-run-1,
+    .psc-run-2,
+    .psc-run-3,
+    .psc-val-old,
+    .psc-val-new,
+    .psc-chip {
+      animation: none;
+    }
+    .psc-band {
+      opacity: 1;
+    }
+    .psc-run-1,
+    .psc-run-3 {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+    .psc-run-2 {
+      opacity: 1;
+      transform: translate(-100%, -50%);
+    }
+    .psc-val-old {
+      opacity: 0;
+    }
+    .psc-val-new,
+    .psc-chip {
+      opacity: 1;
+    }
+  }
+</style>
