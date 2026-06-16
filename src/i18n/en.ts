@@ -263,6 +263,9 @@ export const ui = {
   "whyBuilt.luke": "Luke Butler",
   "whyBuilt.sam": "Sam Payá",
   "whyBuilt.cofounder": "Co-founder",
+  "whyBuilt.productEngineer": "Product Engineer",
+  "whyBuilt.productEngineerFem": "Product Engineer",
+  "whyBuilt.productDesigner": "Product Designer",
   "whyBuilt.lukeAlt": "Luke Butler - Co-founder",
   "whyBuilt.samAlt": "Sam - Co-founder",
   "whyBuilt.p1":
