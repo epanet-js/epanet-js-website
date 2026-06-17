@@ -17,8 +17,6 @@ import {
   Newspaper,
   ShieldCheck,
   FileText,
-  Milestone,
-  Wrench,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -34,6 +32,7 @@ export interface NavItem {
 export interface NavColumn {
   heading?: string;
   items: NavItem[];
+  secondaryItems?: NavItem[];
 }
 
 export interface NavSection {
@@ -169,11 +168,10 @@ export const resources: NavSection = {
     {
       items: [
         {
-          label: "Help Center",
-          href: "https://help.epanetjs.com",
-          description: "Guides and answers for getting things done.",
-          icon: LifeBuoy,
-          external: true,
+          label: "Security",
+          href: "/security",
+          description: "How we keep your data private and in your control.",
+          icon: ShieldCheck,
         },
         {
           label: "Blog",
@@ -182,29 +180,26 @@ export const resources: NavSection = {
           icon: Newspaper,
         },
         {
-          label: "Security",
-          href: "/security",
-          description: "How we keep your data private and in your control.",
-          icon: ShieldCheck,
-        },
-        {
           label: "Case studies",
           href: "/case-studies",
           description: "How teams use epanet-js in the real world.",
           icon: FileText,
         },
+      ],
+      secondaryItems: [
         {
           label: "Roadmap",
           href: "https://roadmap.epanetjs.com",
-          description: "See what we're building next.",
-          icon: Milestone,
+          external: true,
+        },
+        {
+          label: "Help Center",
+          href: "https://help.epanetjs.com",
           external: true,
         },
         {
           label: "Toolkit",
           href: "https://toolkit.epanetjs.com",
-          description: "The EPANET engine for the web, for developers.",
-          icon: Wrench,
           external: true,
         },
       ],
