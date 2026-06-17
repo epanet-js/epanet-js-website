@@ -31,6 +31,7 @@ const menuitems = [
     columns: solutions.columns,
     hubHref: solutions.hubHref,
     width: "lg",
+    layout: "rows",
   },
   {
     type: "mega",
@@ -105,6 +106,7 @@ const isEnglishOnlyPage = englishOnlyRoutes.some(
                         columns={item.columns}
                         hubHref={item.hubHref}
                         width={item.width}
+                        layout={item.layout}
                         lastItem={index === menuitems.length - 1}
                       />
                     )}
