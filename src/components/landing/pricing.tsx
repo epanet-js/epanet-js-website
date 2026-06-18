@@ -1,8 +1,312 @@
 import React, { useState } from "react";
-import { Check, CircleMinus, InfoIcon } from "lucide-react";
+import { Check, CircleMinus, InfoIcon, Minus } from "lucide-react";
+import { clsx } from "clsx";
 import { Button } from "@components/ui/landing/button";
 import { useTranslations } from "@i18n/utils";
 import type { Locale, TranslationKey } from "@i18n/utils";
+
+// ── Pricing comparison table ─────────────────────────────────────────────────
+
+type CellValue = "yes" | "no" | "coming-soon";
+
+interface ComparisonRow {
+  feature: string;
+  indent?: boolean;
+  values: [CellValue, CellValue, CellValue]; // [free, pro, teams]
+}
+
+interface ComparisonSection {
+  title: string;
+  rows: ComparisonRow[];
+}
+
+const comparisonSections: ComparisonSection[] = [
+  {
+    title: "Simulation",
+    rows: [
+      { feature: "EPANET Toolkit 2.3.5 engine", values: ["yes", "yes", "yes"] },
+      { feature: "Steady-state and Extended Period Simulation (EPS)", values: ["yes", "yes", "yes"] },
+      { feature: "Pressure-Driven Demands (PDD)", values: ["yes", "yes", "yes"] },
+      { feature: "Simple and rule-based controls", values: ["yes", "yes", "yes"] },
+      { feature: "Water quality analysis (age, trace, chemical)", values: ["yes", "yes", "yes"] },
+      { feature: "Energy consumption analysis", values: ["yes", "yes", "yes"] },
+      { feature: "Energy pricing parameters (global price, demand charge, price pattern)", indent: true, values: ["yes", "yes", "yes"] },
+      { feature: "Stop / play simulation", values: ["yes", "yes", "yes"] },
+      { feature: "Headloss formula (H-W, D-W, C-M)", values: ["yes", "yes", "yes"] },
+      { feature: "US or metric units", values: ["yes", "yes", "yes"] },
+      { feature: "Tank mixing models (complete mix, 2-compartment, FIFO, LIFO)", values: ["yes", "yes", "yes"] },
+      { feature: "Global demand multiplier", values: ["yes", "yes", "yes"] },
+    ],
+  },
+  {
+    title: "Network editing",
+    rows: [
+      { feature: "Easy asset drawing in the map", values: ["yes", "yes", "yes"] },
+      { feature: "Snap-to-node and pipe splitting", indent: true, values: ["yes", "yes", "yes"] },
+      { feature: "Node merging and replacement", indent: true, values: ["yes", "yes", "yes"] },
+      { feature: "Redraw and reverse links", indent: true, values: ["yes", "yes", "yes"] },
+      { feature: "Customize pipe drawing defaults", indent: true, values: ["yes", "yes", "yes"] },
+      { feature: "Active topology – deactivate / reactivate assets", values: ["yes", "yes", "yes"] },
+      { feature: "Area selection (rectangular, freehand, polygonal)", values: ["yes", "yes", "yes"] },
+      { feature: "Batch attribute editing", values: ["yes", "yes", "yes"] },
+      { feature: "Asset search", values: ["yes", "yes", "yes"] },
+      { feature: "Custom asset labels", values: ["yes", "yes", "yes"] },
+    ],
+  },
+  {
+    title: "Customer points",
+    rows: [
+      { feature: "Add, edit, move, remove customer points", values: ["yes", "yes", "yes"] },
+      { feature: "Import from Shapefile or GeoJSON", values: ["yes", "yes", "yes"] },
+      { feature: "Demand allocation rules", values: ["yes", "yes", "yes"] },
+      { feature: "Customer points data table", values: ["yes", "yes", "yes"] },
+      { feature: "Per-zone demand allocation", values: ["coming-soon", "coming-soon", "coming-soon"] },
+    ],
+  },
+  {
+    title: "Element properties",
+    rows: [
+      { feature: "Define pump curves (1-point or 3-point)", values: ["yes", "yes", "yes"] },
+      { feature: "Define tank curves (diameter, area, volume)", values: ["yes", "yes", "yes"] },
+      { feature: "Define reservoir head patterns", values: ["yes", "yes", "yes"] },
+      { feature: "Demand patterns on junctions", values: ["yes", "yes", "yes"] },
+      { feature: "Edit junction demand categories", values: ["yes", "yes", "yes"] },
+      { feature: "Pump speed patterns", values: ["yes", "yes", "yes"] },
+      { feature: "Pipe material and installation year", values: ["no", "yes", "yes"] },
+      { feature: "Assign roughness", values: ["coming-soon", "coming-soon", "coming-soon"] },
+      { feature: "Pump controls", values: ["coming-soon", "coming-soon", "coming-soon"] },
+      { feature: "Custom data fields per asset", values: ["no", "coming-soon", "coming-soon"] },
+    ],
+  },
+  {
+    title: "Data libraries",
+    rows: [
+      { feature: "Curve library manager", values: ["yes", "yes", "yes"] },
+      { feature: "Patterns library (time-series patterns)", values: ["yes", "yes", "yes"] },
+      { feature: "Pipe definition library", values: ["coming-soon", "coming-soon", "coming-soon"] },
+      { feature: "Saved selection sets", values: ["no", "coming-soon", "coming-soon"] },
+    ],
+  },
+  {
+    title: "Data exchange",
+    rows: [
+      { feature: "INP import and export", values: ["yes", "yes", "yes"] },
+      { feature: "epanet-js project format (.ejsdb)", values: ["yes", "yes", "yes"] },
+      { feature: "Custom coordinate systems and projections", values: ["yes", "yes", "yes"] },
+      { feature: "Simple X-Y grid (non-georeferenced models)", values: ["yes", "yes", "yes"] },
+      { feature: "Elevation data", values: ["yes", "yes", "yes"] },
+      { feature: "Mapbox Terrain DTM", indent: true, values: ["yes", "yes", "yes"] },
+      { feature: "GeoTIFF upload", indent: true, values: ["no", "yes", "yes"] },
+      { feature: "Export asset data (Shapefile, CSV, XLSX, GeoJSON)", values: ["yes", "yes", "yes"] },
+      { feature: "Export simulation results (CSV, XLSX)", values: ["yes", "yes", "yes"] },
+      { feature: "Third-party model importers", values: ["no", "coming-soon", "coming-soon"] },
+    ],
+  },
+  {
+    title: "Results & visualization",
+    rows: [
+      { feature: "Map visualization", values: ["yes", "yes", "yes"] },
+      { feature: "Basemap selection (satellite, streets, outdoors)", indent: true, values: ["yes", "yes", "yes"] },
+      { feature: "Custom tile server (XYZ, Mapbox, TileJSON)", indent: true, values: ["no", "yes", "yes"] },
+      { feature: "Custom vector file layers (GeoJSON, Shapefile)", indent: true, values: ["no", "yes", "yes"] },
+      { feature: "Local background layers", indent: true, values: ["no", "coming-soon", "coming-soon"] },
+      { feature: "Upstream and downstream trace", values: ["yes", "yes", "yes"] },
+      { feature: "Map symbology (pressure, flow, demand, head, roughness, diameter, elevation)", values: ["yes", "yes", "yes"] },
+      { feature: "Flow direction arrows", values: ["yes", "yes", "yes"] },
+      { feature: "Node size and visibility settings", values: ["yes", "yes", "yes"] },
+      { feature: "Time-series quick graph", values: ["yes", "yes", "yes"] },
+      { feature: "Asset data tables", values: ["yes", "yes", "yes"] },
+      { feature: "Show / hide asset labels", values: ["yes", "yes", "yes"] },
+      { feature: "Hydraulic Grade Line (HGL) profile", values: ["no", "yes", "yes"] },
+      { feature: "Zone polygons – import and visualize", values: ["no", "yes", "yes"] },
+      { feature: "Time-series custom graphs", values: ["no", "yes", "yes"] },
+    ],
+  },
+  {
+    title: "Network review & analysis",
+    rows: [
+      { feature: "Boundary and selection trace", values: ["yes", "yes", "yes"] },
+      { feature: "Network review (orphan assets, proximity, crossing pipes, connectivity trace)", values: ["yes", "yes", "yes"] },
+      { feature: "Valve criticality analysis", values: ["no", "coming-soon", "coming-soon"] },
+    ],
+  },
+  {
+    title: "Scenario management",
+    rows: [
+      { feature: "Create and switch scenarios", values: ["no", "yes", "yes"] },
+      { feature: "Scenarios, versioning, model history", values: ["no", "coming-soon", "coming-soon"] },
+      { feature: "Save scenarios in model / cloud", values: ["no", "coming-soon", "coming-soon"] },
+    ],
+  },
+  {
+    title: "Model building",
+    rows: [
+      { feature: "GIS model import (legacy)", values: ["yes", "no", "no"] },
+      { feature: "GIS model import (improved)", values: ["no", "yes", "yes"] },
+    ],
+  },
+  {
+    title: "Team collaboration",
+    rows: [
+      { feature: "Support for multiple languages", values: ["yes", "yes", "yes"] },
+      { feature: "Multiple team members", values: ["no", "no", "yes"] },
+      { feature: "Guest user access and privacy settings", values: ["no", "no", "yes"] },
+      { feature: "Organization management", values: ["no", "no", "yes"] },
+    ],
+  },
+];
+
+function TableCell({ value }: { value: CellValue }) {
+  if (value === "yes") {
+    return <Check className="mx-auto h-5 w-5 text-indigo-500" aria-label="Included" />;
+  }
+  if (value === "no") {
+    return <Minus className="mx-auto h-4 w-4 text-gray-300" aria-label="Not included" />;
+  }
+  return (
+    <span className="inline-flex items-center rounded-full bg-gray-200 px-2 py-0.5 text-[0.65rem] font-medium text-gray-600 whitespace-nowrap">
+      Coming soon
+    </span>
+  );
+}
+
+interface PlanHeader {
+  name: string;
+  price: string;
+  priceNote: string;
+  userPrice?: string;
+  userPriceNote?: string;
+  buttonText: string;
+  buttonUrl: string;
+  buttonVariant?: "outline" | "default";
+  buttonClassName?: string;
+}
+
+function getPlanHeaders(billingCycle: "monthly" | "annually"): PlanHeader[] {
+  const isMonthly = billingCycle === "monthly";
+  return [
+    {
+      name: "Free",
+      price: "$0",
+      priceNote: isMonthly ? "per month" : "per year",
+      buttonText: "Get Free",
+      buttonUrl: "https://app.epanetjs.com",
+    },
+    {
+      name: "Pro",
+      price: isMonthly ? "$95" : "$950",
+      priceNote: isMonthly ? "per month" : "per year",
+      buttonText: "Get Pro",
+      buttonUrl: `https://app.epanetjs.com/?dialog=upgrade&plan=pro&paymentType=${isMonthly ? "monthly" : "yearly"}&startCheckout=true`,
+      buttonVariant: "default",
+      buttonClassName: "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-transparent",
+    },
+    {
+      name: "Teams",
+      price: isMonthly ? "$440" : "$4,400",
+      priceNote: "(base cost)",
+      userPrice: isMonthly ? "+ $60" : "+ $600",
+      userPriceNote: "(per user)",
+      buttonText: "Get Teams",
+      buttonUrl: "https://tally.so/r/wkqjyo",
+    },
+  ];
+}
+
+function ComparisonHeader({ billingCycle, position }: { billingCycle: "monthly" | "annually"; position: "top" | "bottom" }) {
+  const plans = getPlanHeaders(billingCycle);
+  return (
+    <tr className={clsx("bg-white", position === "top" ? "border-b border-gray-200" : "border-t border-gray-200")}>
+      <th className="w-[46%] py-5 px-5 text-left align-bottom">
+        <span className="sr-only">Feature</span>
+      </th>
+      {plans.map((plan) => (
+        <th key={plan.name} className="w-[18%] py-5 px-4 text-center font-normal">
+          <div className="flex flex-col items-center gap-2.5">
+            <span className="font-semibold text-gray-800 text-base">{plan.name}</span>
+            {plan.userPrice ? (
+              <div className="flex items-start gap-3">
+                <div className="flex flex-col items-center">
+                  <span className="text-2xl font-bold text-gray-900">{plan.price}</span>
+                  <span className="text-xs text-gray-500 mt-0.5">{plan.priceNote}</span>
+                </div>
+                <div className="flex flex-col items-center pt-1">
+                  <span className="text-lg font-semibold text-gray-900 whitespace-nowrap">{plan.userPrice}</span>
+                  <span className="text-xs text-gray-500 mt-0.5">{plan.userPriceNote}</span>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center leading-tight">
+                <span className="text-2xl font-bold text-gray-900">{plan.price}</span>
+                <span className="text-xs text-gray-500 mt-0.5">{plan.priceNote}</span>
+              </div>
+            )}
+            <Button size="sm" variant={plan.buttonVariant ?? "outline"} className={plan.buttonClassName} asChild>
+              <a href={plan.buttonUrl} rel="noopener">
+                {plan.buttonText}
+              </a>
+            </Button>
+          </div>
+        </th>
+      ))}
+    </tr>
+  );
+}
+
+function PricingComparisonTable({ billingCycle }: { billingCycle: "monthly" | "annually" }) {
+  return (
+    <div className="mt-20 max-w-5xl mx-auto px-4 md:px-6">
+      <h3 className="text-2xl font-bold text-center mb-2">Compare plans</h3>
+      <p className="text-center text-muted-foreground mb-10">Everything that's included in each plan.</p>
+      <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+        <table className="w-full text-sm border-collapse">
+          <thead>
+            <ComparisonHeader billingCycle={billingCycle} position="top" />
+          </thead>
+          <tbody>
+            {comparisonSections.flatMap((section) => [
+              <tr key={`section-${section.title}`} className="bg-gray-100 border-t border-b border-gray-200">
+                <td
+                  colSpan={4}
+                  className="py-2.5 px-5 text-[0.7rem] font-semibold uppercase tracking-wide text-gray-600"
+                >
+                  {section.title}
+                </td>
+              </tr>,
+              ...section.rows.map((row, i) => (
+                <tr
+                  key={`${section.title}-${i}`}
+                  className="border-b border-gray-100 last:border-0 hover:bg-gray-50/60 transition-colors"
+                >
+                  <td
+                    className={clsx(
+                      "py-3 px-5 text-gray-700 leading-snug",
+                      row.indent && "pl-10 text-gray-500"
+                    )}
+                  >
+                    {row.feature}
+                  </td>
+                  <td className="py-3 px-4 text-center">
+                    <TableCell value={row.values[0]} />
+                  </td>
+                  <td className="py-3 px-4 text-center">
+                    <TableCell value={row.values[1]} />
+                  </td>
+                  <td className="py-3 px-4 text-center">
+                    <TableCell value={row.values[2]} />
+                  </td>
+                </tr>
+              )),
+            ])}
+          </tbody>
+          <tfoot>
+            <ComparisonHeader billingCycle={billingCycle} position="bottom" />
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  );
+}
 
 // --- Props Interface for Main Pricing Card ---
 interface MainPricingCardProps {
@@ -173,7 +477,7 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
               <li key={index} className="flex items-start">
                 {" "}
                 {/* Changed to items-start */}
-                <Check className="mr-2 mt-0.5 h-4 w-4 text-green-500 flex-shrink-0" />
+                <Check className="mr-2 mt-0.5 h-4 w-4 text-indigo-500 flex-shrink-0" />
                 <span>{feature}</span>
               </li>
             ))}
@@ -292,7 +596,7 @@ const SpecialPricingCard: React.FC<SpecialPricingCardProps> = ({
               <li key={index} className="flex items-start">
                 {" "}
                 {/* Changed to items-start */}
-                <CircleMinus className="mr-1.5 mt-0.5 h-3.5 w-3.5 text-green-500 flex-shrink-0" />
+                <CircleMinus className="mr-1.5 mt-0.5 h-3.5 w-3.5 text-indigo-500 flex-shrink-0" />
                 <span>{limitation}</span>
               </li>
             ))}
@@ -552,6 +856,8 @@ export default function Pricing({ lang = "en" }: PricingProps) {
           .
         </p>
       </div>
+
+      <PricingComparisonTable billingCycle={billingCycle} />
 
       {/* --- Special Access Section --- */}
       <div className="container mx-auto mt-20 px-4 md:px-6 relative">
