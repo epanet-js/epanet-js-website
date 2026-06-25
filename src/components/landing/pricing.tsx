@@ -3,7 +3,7 @@ import { Check, CircleMinus, InfoIcon, Minus } from "lucide-react";
 import { clsx } from "clsx";
 import { Button } from "@components/ui/landing/button";
 import { useTranslations } from "@i18n/utils";
-import type { Locale, TranslationKey } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
 
 // ── Pricing comparison table ─────────────────────────────────────────────────
 
@@ -173,8 +173,10 @@ function TableCell({ value }: { value: CellValue }) {
 interface PlanHeader {
   name: string;
   price: string;
-  priceNote: string;
+  priceSuffix: string;
+  priceNote?: string;
   userPrice?: string;
+  userPriceSuffix?: string;
   userPriceNote?: string;
   buttonText: string;
   buttonUrl: string;
@@ -184,18 +186,21 @@ interface PlanHeader {
 
 function getPlanHeaders(billingCycle: "monthly" | "annually"): PlanHeader[] {
   const isMonthly = billingCycle === "monthly";
+  const suffix = isMonthly ? "/mo" : "/yr";
   return [
     {
       name: "Free",
       price: "$0",
-      priceNote: isMonthly ? "per month" : "per year",
+      priceSuffix: suffix,
+      priceNote: " ",
       buttonText: "Get Free",
       buttonUrl: "https://app.epanetjs.com",
     },
     {
       name: "Pro",
       price: isMonthly ? "$95" : "$950",
-      priceNote: isMonthly ? "per month" : "per year",
+      priceSuffix: suffix,
+      priceNote: "Individual named license",
       buttonText: "Get Pro",
       buttonUrl: `https://app.epanetjs.com/?dialog=upgrade&plan=pro&paymentType=${isMonthly ? "monthly" : "yearly"}&startCheckout=true`,
       buttonVariant: "default",
@@ -204,8 +209,10 @@ function getPlanHeaders(billingCycle: "monthly" | "annually"): PlanHeader[] {
     {
       name: "Teams",
       price: isMonthly ? "$440" : "$4,400",
+      priceSuffix: suffix,
       priceNote: "(base cost)",
       userPrice: isMonthly ? "+ $60" : "+ $600",
+      userPriceSuffix: "/user",
       userPriceNote: "(per user)",
       buttonText: "Get Teams",
       buttonUrl: "https://tally.so/r/wkqjyo",
@@ -227,18 +234,27 @@ function ComparisonHeader({ billingCycle, position }: { billingCycle: "monthly" 
             {plan.userPrice ? (
               <div className="flex items-start gap-3">
                 <div className="flex flex-col items-center">
-                  <span className="text-2xl font-bold text-gray-900">{plan.price}</span>
-                  <span className="text-xs text-gray-500 mt-0.5">{plan.priceNote}</span>
+                  <span className="whitespace-nowrap leading-none">
+                    <span className="text-2xl font-bold text-gray-900">{plan.price}</span>
+                    <span className="text-sm text-gray-500">{plan.priceSuffix}</span>
+                  </span>
+                  {plan.priceNote && <span className="text-xs text-gray-500 mt-1">{plan.priceNote}</span>}
                 </div>
-                <div className="flex flex-col items-center pt-1">
-                  <span className="text-lg font-semibold text-gray-900 whitespace-nowrap">{plan.userPrice}</span>
-                  <span className="text-xs text-gray-500 mt-0.5">{plan.userPriceNote}</span>
+                <div className="flex flex-col items-center pt-0.5">
+                  <span className="whitespace-nowrap leading-none">
+                    <span className="text-lg font-semibold text-gray-900">{plan.userPrice}</span>
+                    <span className="text-sm text-gray-500">{plan.userPriceSuffix}</span>
+                  </span>
+                  {plan.userPriceNote && <span className="text-xs text-gray-500 mt-1">{plan.userPriceNote}</span>}
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center leading-tight">
-                <span className="text-2xl font-bold text-gray-900">{plan.price}</span>
-                <span className="text-xs text-gray-500 mt-0.5">{plan.priceNote}</span>
+              <div className="flex flex-col items-center">
+                <span className="whitespace-nowrap leading-none">
+                  <span className="text-2xl font-bold text-gray-900">{plan.price}</span>
+                  <span className="text-sm text-gray-500">{plan.priceSuffix}</span>
+                </span>
+                <span className="text-xs text-gray-500 mt-1 whitespace-nowrap">{plan.priceNote ?? " "}</span>
               </div>
             )}
             <Button size="sm" variant={plan.buttonVariant ?? "outline"} className={plan.buttonClassName} asChild>
