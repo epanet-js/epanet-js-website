@@ -5,6 +5,10 @@ import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
 import LocalFirstFlowDemo from "@components/demos/LocalFirstFlowDemo.astro";
 import DeploymentOptionsDiagram from "@components/demos/DeploymentOptionsDiagram.astro";
+import FileTransferDemo from "@components/demos/FileTransferDemo.astro";
+import CloudOptionalDemo from "@components/demos/CloudOptionalDemo.astro";
+import TeamAccessDemo from "@components/demos/TeamAccessDemo.astro";
+import EncryptedTransitDemo from "@components/demos/EncryptedTransitDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
 import Container from "@components/container.astro";
@@ -37,7 +41,7 @@ const principles = [
     icon: Lock,
     title: "Encrypted in transit",
     description:
-      "All traffic to and from epanet-js is served over HTTPS/TLS, so data moving between your browser and the application is encrypted.",
+      "All traffic to and from epanet-js is served over HTTPS/TLS, so data moving between your machine and the application is encrypted.",
   },
   {
     icon: Eye,
@@ -94,10 +98,67 @@ const principles = [
   </ContentMediaRow>
 
   <ContentMediaRow
+    title="Share models without any cloud at all"
+    reverse>
+    <p>
+      An epanet-js model is an ordinary file. If your organization's policy
+      rules out cloud storage, you can keep every project on your own machines
+      and pass models around the way you already share files: email, a network
+      drive, or a USB stick.
+    </p>
+    <p>
+      There is no account requirement and no hidden upload. A colleague opens
+      the file and picks up exactly where you left off.
+    </p>
+    <FileTransferDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Cloud sync when you choose it">
+    <p>
+      When a team wants one model available across devices, cloud projects keep
+      every copy in sync through a single source of truth. That sync point can
+      be our managed cloud or a deployment you host yourself.
+    </p>
+    <p>
+      Turning on the cloud for one project changes nothing for the rest.
+      Everything else keeps living on your machine.
+    </p>
+    <CloudOptionalDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="You control who can open a shared model"
+    reverse>
+    <p>
+      Models stored in the cloud belong to your workspace, and access to them
+      is explicit. Every member has a role: editors can change a model, viewers
+      can only read it.
+    </p>
+    <p>
+      Invite a colleague by email, change their role, or remove them from the
+      workspace, and their access changes with it. Nobody outside your
+      workspace can see your network.
+    </p>
+    <TeamAccessDemo slot="media" class="w-full max-w-[340px] mx-auto" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Encrypted in transit">
+    <p>
+      Everything that moves between your machine and epanet-js travels over
+      HTTPS and is encrypted with TLS. That covers loading the application
+      itself as well as any model data you choose to sync through a cloud
+      project.
+    </p>
+    <EncryptedTransitDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
     title="Choose where your data lives"
     reverse>
     <p>
-      For organisations with specific requirements, epanet-js offers
+      For organizations with specific requirements, epanet-js offers
       <strong>data-residency options</strong> and a <strong>self-hosted /
       on-premise</strong> deployment, so you can keep everything within your own
       environment and governance.

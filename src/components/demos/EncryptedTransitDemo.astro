@@ -1,23 +1,23 @@
 ---
-// Encrypted transit diagram: traffic between the browser and the epanet-js
-// service shuttles through a TLS lock in both directions. Grounded in the
-// security page's "encrypted in transit" claim.
+// Encrypted transit diagram: traffic between the user's machine and the
+// epanet-js service shuttles through a TLS lock in both directions. Grounded
+// in the security page's "encrypted in transit" claim.
 import { Cloud, Laptop, Lock } from "lucide-react";
 ---
 
 <div
   class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
   role="img"
-  aria-label="Diagram: traffic between your browser and the epanet-js service is encrypted in transit over HTTPS and TLS.">
+  aria-label="Diagram: traffic between your machine and the epanet-js service is encrypted in transit over HTTPS and TLS.">
   <div class="flex items-center justify-center gap-3 sm:gap-4">
-    <!-- browser -->
+    <!-- the user's machine -->
     <div class="flex shrink-0 flex-col items-center gap-1.5">
       <span
         class="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
         <Laptop size={18} />
       </span>
       <p class="text-[10px] font-medium text-gray-600 whitespace-nowrap">
-        Your browser
+        Your machine
       </p>
     </div>
 
