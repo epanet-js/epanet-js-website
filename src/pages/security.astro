@@ -3,7 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
-import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
+import LocalFirstFlowDemo from "@components/demos/LocalFirstFlowDemo.astro";
 import DeploymentOptionsDiagram from "@components/demos/DeploymentOptionsDiagram.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
@@ -25,7 +25,7 @@ const principles = [
     icon: HardDrive,
     title: "Local-first by default",
     description:
-      "Models run and save directly in your browser, on your machine. Nothing is uploaded to our servers unless you explicitly choose to use the cloud.",
+      "Models run and save directly on your machine. Nothing is uploaded to our servers unless you explicitly choose to use the cloud.",
   },
   {
     icon: MapPin,
@@ -66,7 +66,7 @@ const principles = [
   lang={lang}>
   <PageHero
     title="Security and privacy by design"
-    subtitle="epanet-js is built so the most sensitive thing — your network data — stays in your control by default. Here's exactly how we approach security."
+    subtitle="epanet-js is built so the most sensitive thing — your network and customer data — stays in your control by default. Here's exactly how we approach security."
     primaryCta={{ label: "Contact us", href: "mailto:support@epanetjs.com" }}
     secondaryCta={{ label: "Read our privacy policy", href: "/privacy-policy" }}
     align="center"
@@ -83,14 +83,14 @@ const principles = [
     <p>
       Most web tools force your data into their cloud. epanet-js takes the
       opposite approach: by default your projects are created, run, and saved
-      <strong>locally</strong>, in your own browser and on your own disk.
+      <strong>locally</strong>, on your own disk.
     </p>
     <p>
-      That means your network model — often sensitive critical-infrastructure
-      data — doesn't sit on our servers at all unless you make a deliberate
-      choice to use cloud features.
+      That means neither your private customer data nor your network data — which often includes
+      sensitive critical-infrastructure information — sit on our servers at all unless you make
+      a deliberate choice to use cloud features.
     </p>
-    <LocalFirstDiagram slot="media" />
+    <LocalFirstFlowDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
