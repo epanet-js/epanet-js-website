@@ -1,7 +1,7 @@
 ---
 // Drawing tools demo: pipes drawn click by click over the basemap, the cursor
 // leading each segment and a junction popping in at every placed vertex.
-import { MousePointer2, Spline, Circle, Triangle, RectangleHorizontal } from "lucide-react";
+import { MousePointer2, Circle, Triangle, RectangleHorizontal } from "lucide-react";
 import AppWindow from "./AppWindow.astro";
 import Basemap from "./Basemap.astro";
 
@@ -80,32 +80,32 @@ const segments: [number, number, number, number][] = [
 
   <!-- floating toolbar — mirrors the real app's absolute top-2 centered bar -->
   <div class="absolute top-2 inset-x-0 z-10 flex justify-center pointer-events-none" aria-hidden="true">
-    <div class="pointer-events-none flex items-center bg-white rounded border border-gray-200 shadow-md px-2 py-[5px] gap-[3px]">
+    <div class="pointer-events-none flex items-center bg-white rounded border border-gray-200 shadow-md p-[4px] gap-0">
       <!-- pointer -->
-      <span class="flex items-center justify-center w-[32px] h-[32px] rounded text-gray-400">
-        <MousePointer2 size={16} />
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded text-gray-400">
+        <MousePointer2 size={14} />
       </span>
       <!-- pipe — active -->
-      <span class="flex items-center justify-center w-[32px] h-[32px] rounded bg-violet-500 text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded bg-violet-500 text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
           <path d="M4 15v6a.997.997 0 0 1-1 1 .997.997 0 0 1-1-1V3a.997.997 0 0 1 1-1 .997.997 0 0 1 1 1v6h16V3a.997.997 0 0 1 1-1 .997.997 0 0 1 1 1v18a.997.997 0 0 1-1 1 .997.997 0 0 1-1-1v-6H4Z" />
         </svg>
       </span>
       <!-- circle / junction -->
-      <span class="flex items-center justify-center w-[32px] h-[32px] rounded text-gray-400">
-        <Circle size={16} />
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded text-gray-400">
+        <Circle size={14} />
       </span>
       <!-- triangle / reservoir -->
-      <span class="flex items-center justify-center w-[32px] h-[32px] rounded text-gray-400">
-        <Triangle size={16} />
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded text-gray-400">
+        <Triangle size={14} />
       </span>
       <!-- rectangle / tank -->
-      <span class="flex items-center justify-center w-[32px] h-[32px] rounded text-gray-400">
-        <RectangleHorizontal size={16} />
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded text-gray-400">
+        <RectangleHorizontal size={14} />
       </span>
       <!-- valve -->
-      <span class="flex items-center justify-center w-[32px] h-[32px] rounded text-gray-400">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" width="16" height="16">
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded text-gray-400">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" width="14" height="14">
           <path d="M3 3v18L21 3v18L3 3"/>
         </svg>
       </span>
@@ -129,11 +129,13 @@ const segments: [number, number, number, number][] = [
   <!-- drawing hint chip -->
   <div
     class="nd-chip absolute bottom-[15px] left-[15px] bg-white rounded-lg border border-gray-200 shadow-md px-5 py-[15px]">
-    <p class="flex items-center gap-2.5 text-[15px] font-medium text-gray-700">
-      <Spline size={18} className="text-violet-600" />
+    <p class="flex items-center gap-2.5 text-[12px] font-medium text-gray-700">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" class="text-violet-600">
+        <path d="M4 15v6a.997.997 0 0 1-1 1 .997.997 0 0 1-1-1V3a.997.997 0 0 1 1-1 .997.997 0 0 1 1 1v6h16V3a.997.997 0 0 1 1-1 .997.997 0 0 1 1 1v18a.997.997 0 0 1-1 1 .997.997 0 0 1-1-1v-6H4Z" />
+      </svg>
       Drawing pipe P-12
     </p>
-    <p class="mt-[5px] text-[14px] text-gray-400">Click to add a junction</p>
+    <p class="mt-[5px] text-[12px] text-gray-400">Click to add a junction</p>
   </div>
 </AppWindow>
 
