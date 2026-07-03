@@ -15,6 +15,7 @@ import CalibrationReviewDemo from "@components/demos/CalibrationReviewDemo.astro
 import CalibrationScatterDemo from "@components/demos/CalibrationScatterDemo.astro";
 import ChlorineBoosterDemo from "@components/demos/ChlorineBoosterDemo.astro";
 import CloudOptionalDemo from "@components/demos/CloudOptionalDemo.astro";
+import CloudYourStorageDiagram from "@components/demos/CloudYourStorageDiagram.astro";
 import ControlRuleDemo from "@components/demos/ControlRuleDemo.astro";
 import CustomerPointsDemo from "@components/demos/CustomerPointsDemo.astro";
 import DataTableDemo from "@components/demos/DataTableDemo.astro";
@@ -42,6 +43,7 @@ import NetworkMap from "@components/demos/NetworkMap.astro";
 import NetworkReviewDemo from "@components/demos/NetworkReviewDemo.astro";
 import NightFlowDemo from "@components/demos/NightFlowDemo.astro";
 import ObservedOverlayDemo from "@components/demos/ObservedOverlayDemo.astro";
+import OnPremDeploymentDiagram from "@components/demos/OnPremDeploymentDiagram.astro";
 import PatternEditorDemo from "@components/demos/PatternEditorDemo.astro";
 import PressureFlowCurveDemo from "@components/demos/PressureFlowCurveDemo.astro";
 import PressureLeakageDemo from "@components/demos/PressureLeakageDemo.astro";
@@ -569,7 +571,6 @@ const sections: DemoSection[] = [
         frame: "diagram",
         usedOn: [
           "/",
-          "/security",
           "/who-its-for/consultants",
           "/who-its-for/humanitarian-ngos",
         ],
@@ -581,8 +582,26 @@ const sections: DemoSection[] = [
           "Three deployment paths side by side: managed cloud, a chosen data region, and self-hosted.",
         useOn: "Security and utility-audience pages covering IT requirements.",
         frame: "diagram",
-        usedOn: ["/security", "/who-its-for/utilities"],
+        usedOn: ["/who-its-for/utilities"],
         component: DeploymentOptionsDiagram,
+      },
+      {
+        name: "CloudYourStorageDiagram",
+        description:
+          "We run the application while model reads and writes go to a storage layer the customer manages, such as their own S3 bucket.",
+        useOn: "/security (enterprise, customer-managed storage).",
+        frame: "diagram",
+        usedOn: ["/security"],
+        component: CloudYourStorageDiagram,
+      },
+      {
+        name: "OnPremDeploymentDiagram",
+        description:
+          "Your users, the epanet-js application, and the model data all inside a dashed network boundary.",
+        useOn: "/security (enterprise, on-premises deployment).",
+        frame: "diagram",
+        usedOn: ["/security"],
+        component: OnPremDeploymentDiagram,
       },
       {
         name: "BrowserAppDemo",
@@ -599,6 +618,7 @@ const sections: DemoSection[] = [
           "The app arrives from the cloud, the .inp stays on the device, and the connection drops without stopping the simulation.",
         useOn: "/security and audience pages explaining local-first.",
         frame: "diagram",
+        usedOn: ["/security"],
         component: LocalFirstFlowDemo,
       },
       {
@@ -607,6 +627,7 @@ const sections: DemoSection[] = [
           "A model file moves between two machines the traditional way, email, network drive, or USB, with no cloud in the path.",
         useOn: "/security and /who-its-for/humanitarian-ngos.",
         frame: "diagram",
+        usedOn: ["/security"],
         component: FileTransferDemo,
       },
       {
@@ -615,6 +636,7 @@ const sections: DemoSection[] = [
           "One model syncing from a cloud, ours or yours, down to three devices and back.",
         useOn: "/security and collaboration content.",
         frame: "diagram",
+        usedOn: ["/security"],
         component: CloudOptionalDemo,
       },
       {
@@ -623,6 +645,7 @@ const sections: DemoSection[] = [
           "Traffic between your machine and the application shuttles through a TLS lock in both directions.",
         useOn: "/security (encrypted in transit row).",
         frame: "diagram",
+        usedOn: ["/security"],
         component: EncryptedTransitDemo,
       },
       {
@@ -631,6 +654,7 @@ const sections: DemoSection[] = [
           "A member list with per-person roles, an invite going out, and a role change applying.",
         useOn: "/pricing and /security.",
         frame: "panel",
+        usedOn: ["/security"],
         component: TeamAccessDemo,
       },
       {

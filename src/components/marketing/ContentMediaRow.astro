@@ -11,10 +11,20 @@ interface Props {
   reverse?: boolean;
   cta?: Cta;
   caption?: string;
+  headingLevel?: "h2" | "h3";
   class?: string;
 }
 
-const { title, reverse = false, cta, caption, class: className } = Astro.props;
+const {
+  title,
+  reverse = false,
+  cta,
+  caption,
+  headingLevel = "h2",
+  class: className,
+} = Astro.props;
+
+const Heading = headingLevel;
 
 const hasMedia = Astro.slots.has("media");
 ---
@@ -27,7 +37,14 @@ const hasMedia = Astro.slots.has("media");
         hasMedia ? "lg:grid-cols-2" : "max-w-3xl",
       ]}>
       <div class:list={["space-y-4", reverse && hasMedia && "lg:order-last"]}>
-        <h2 class="text-2xl font-bold tracking-tight md:text-3xl">{title}</h2>
+        <Heading
+          class={
+            headingLevel === "h2"
+              ? "text-2xl font-bold tracking-tight md:text-3xl"
+              : "text-xl font-bold tracking-tight md:text-2xl"
+          }>
+          {title}
+        </Heading>
         <div class="space-y-3 text-muted-foreground md:text-lg/relaxed">
           <slot />
         </div>

@@ -1,0 +1,65 @@
+---
+// Security page diagram: we run the epanet-js application; model data is
+// read from and written to a storage layer the customer manages, such as
+// their own S3 bucket.
+import { Cloud, Database } from "lucide-react";
+---
+
+<div
+  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  role="img"
+  aria-label="Diagram: we run the epanet-js application, and model data is read from and written to storage your organization manages, such as your own S3 bucket.">
+  <div class="flex items-center justify-center gap-2 sm:gap-5">
+    <!-- the application, run by us -->
+    <div
+      class="flex shrink-0 flex-col items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-5 shadow-sm sm:px-6">
+      <span
+        class="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+        <Cloud size={18} />
+      </span>
+      <p class="text-[11px] font-medium text-gray-700 whitespace-nowrap">
+        epanet-js app
+      </p>
+      <p class="text-[10px] text-gray-400 whitespace-nowrap">
+        We run and update it
+      </p>
+    </div>
+
+    <!-- reads and writes, both directions -->
+    <div class="flex min-w-0 flex-col items-center gap-1.5">
+      <svg viewBox="0 0 80 12" class="w-10 sm:w-20" aria-hidden="true">
+        <path
+          d="M10 6 H70"
+          fill="none"
+          stroke="#d1d5db"
+          stroke-width="2"
+          stroke-dasharray="5 4"></path>
+        <path d="M10 1.5 L2 6 L10 10.5 Z" fill="#d1d5db"></path>
+        <path d="M70 1.5 L78 6 L70 10.5 Z" fill="#d1d5db"></path>
+      </svg>
+      <span
+        class="rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[9px] font-medium text-gray-500 whitespace-nowrap">
+        Model reads and writes
+      </span>
+    </div>
+
+    <!-- the storage layer, managed by the customer -->
+    <div
+      class="flex shrink-0 flex-col items-center gap-1.5 rounded-lg border-2 border-gray-300 bg-gray-50 px-3 py-5 sm:px-6">
+      <span
+        class="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+        <Database size={18} />
+      </span>
+      <p class="text-[11px] font-medium text-gray-700 whitespace-nowrap">
+        Your storage
+      </p>
+      <p class="text-[10px] text-gray-400 whitespace-nowrap">
+        An S3 bucket you manage
+      </p>
+    </div>
+  </div>
+
+  <p class="mt-5 text-center text-[10px] text-gray-400">
+    Your region · Your retention · Your access
+  </p>
+</div>
