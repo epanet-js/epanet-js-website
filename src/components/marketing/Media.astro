@@ -3,10 +3,12 @@ interface Props {
   src: string;
   alt?: string;
   poster?: string;
+  /** Set false for media with transparent backgrounds that shouldn't be boxed. */
+  frame?: boolean;
   class?: string;
 }
 
-const { src, alt = "", poster, class: className } = Astro.props;
+const { src, alt = "", poster, frame = true, class: className } = Astro.props;
 
 const isVideo = src.endsWith(".mp4") || src.endsWith(".webm");
 ---
@@ -21,7 +23,8 @@ const isVideo = src.endsWith(".mp4") || src.endsWith(".webm");
       preload="metadata"
       poster={poster}
       class:list={[
-        "w-full rounded-xl border border-gray-200 shadow-lg",
+        "w-full",
+        frame && "rounded-xl border border-gray-200 shadow-lg",
         className,
       ]}>
       <source src={src} type="video/mp4" />
@@ -32,7 +35,8 @@ const isVideo = src.endsWith(".mp4") || src.endsWith(".webm");
       alt={alt}
       loading="lazy"
       class:list={[
-        "w-full rounded-xl border border-gray-200 shadow-lg",
+        "w-full",
+        frame && "rounded-xl border border-gray-200 shadow-lg",
         className,
       ]}
     />
