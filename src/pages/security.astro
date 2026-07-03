@@ -22,7 +22,7 @@ const setups = [
   {
     id: "local-files",
     icon: HardDrive,
-    quote: "I want to keep my files on my computer",
+    title: "Keep everything on your machine",
     description:
       "No cloud at all. Files on your file system, shared the way you already share them.",
     enterprise: false,
@@ -30,7 +30,7 @@ const setups = [
   {
     id: "cloud-sharing",
     icon: Cloud,
-    quote: "I want to use the cloud to share my model",
+    title: "Share models through the cloud",
     description:
       "One synced copy of the model, workspace roles, encrypted in transit.",
     enterprise: false,
@@ -38,14 +38,14 @@ const setups = [
   {
     id: "your-storage",
     icon: Database,
-    quote: "I want to use the cloud app with our own storage",
+    title: "Bring your own storage",
     description: "We run the app; model data stays in storage you manage.",
     enterprise: true,
   },
   {
     id: "on-premises",
     icon: Server,
-    quote: "I want to run it on-premises",
+    title: "Run it on-premises",
     description: "The whole deployment inside your own network.",
     enterprise: true,
   },
@@ -98,7 +98,7 @@ const linkClass =
                   )}
                 </div>
                 <p class="mt-3 font-semibold text-gray-900">
-                  “{setup.quote}”
+                  {setup.title}
                 </p>
                 <p class="mt-1 text-sm text-muted-foreground">
                   {setup.description}
@@ -115,7 +115,7 @@ const linkClass =
     <Container>
       <div class="max-w-3xl">
         <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
-          “I want to keep my files on my computer”
+          Keep everything on your machine
         </h2>
         <p class="mt-3 text-muted-foreground md:text-lg">
           This is the default. Projects are created, run, and saved on your
@@ -156,6 +156,21 @@ const linkClass =
       <FileTransferDemo slot="media" />
     </ContentMediaRow>
 
+    <ContentMediaRow headingLevel="h3" title="Open source you can inspect">
+      <p>
+        You don't have to take our word for any of this. The epanet-js source
+        code is public from day one under the Functional Source License and
+        becomes fully open source (MIT) after two years.
+      </p>
+      <p>Anyone can review how the application handles your data.</p>
+      <Media
+        slot="media"
+        src="/assets/landing/github-open-source.webp"
+        alt="The public epanet-js source repository on GitHub."
+        frame={false}
+      />
+    </ContentMediaRow>
+
     <Container>
       <div
         class="max-w-3xl rounded-xl border border-gray-200 bg-gray-50 p-5 md:p-6">
@@ -164,8 +179,7 @@ const linkClass =
         </p>
         <p class="mt-2 text-muted-foreground">
           Cloud features are opt-in per project. If you never turn them on, the
-          three setups below never touch your data. The fundamentals at the end
-          of the page, open source and privacy, apply to every setup.
+          three setups below never touch your data.
         </p>
       </div>
     </Container>
@@ -175,7 +189,7 @@ const linkClass =
     <Container>
       <div class="max-w-3xl">
         <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
-          “I want to use the cloud to share my model”
+          Share models through the cloud
         </h2>
         <p class="mt-3 text-muted-foreground md:text-lg">
           When a team wants one model available across devices and people,
@@ -234,7 +248,7 @@ const linkClass =
       <div class="max-w-3xl">
         <div class="flex flex-wrap items-center gap-3">
           <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
-            “I want to use the cloud app with our own storage”
+            Bring your own storage
           </h2>
           <Badge color="purple">Enterprise</Badge>
         </div>
@@ -273,7 +287,7 @@ const linkClass =
       <div class="max-w-3xl">
         <div class="flex flex-wrap items-center gap-3">
           <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
-            “I want to run it on-premises”
+            Run it on-premises
           </h2>
           <Badge color="purple">Enterprise</Badge>
         </div>
@@ -303,47 +317,6 @@ const linkClass =
         requirements, we're happy to work through them with you directly.
       </p>
       <OnPremDeploymentDiagram slot="media" />
-    </ContentMediaRow>
-  </section>
-
-  <section id="fundamentals" class="scroll-mt-24 pt-12 md:pt-16">
-    <Container>
-      <div class="max-w-3xl">
-        <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
-          In every setup
-        </h2>
-        <p class="mt-3 text-muted-foreground md:text-lg">
-          Whichever of the four arrangements you choose, these fundamentals
-          hold.
-        </p>
-      </div>
-    </Container>
-
-    <ContentMediaRow
-      headingLevel="h3"
-      title="Open source you can inspect"
-      reverse>
-      <p>
-        You don't have to take our word for any of this. The epanet-js source
-        code is public from day one under the Functional Source License and
-        becomes fully open source (MIT) after two years.
-      </p>
-      <p>Anyone can review how the application handles your data.</p>
-      <Media
-        slot="media"
-        src="/assets/landing/github-open-source.webp"
-        alt="The public epanet-js source repository on GitHub."
-        frame={false}
-      />
-    </ContentMediaRow>
-
-    <ContentMediaRow headingLevel="h3" title="Privacy and GDPR">
-      <p>
-        Our practices are aligned with GDPR. Because the default is
-        local-first, the most sensitive data never reaches us at all. For the
-        details of what we collect and why, read our
-        <a href="/privacy-policy" class={linkClass}>privacy policy</a>.
-      </p>
     </ContentMediaRow>
   </section>
 
