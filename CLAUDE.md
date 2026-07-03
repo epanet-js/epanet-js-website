@@ -44,8 +44,3 @@ Match the established voice. The site should not read as AI-generated. Reference
 - The Solutions mega-menu is organized into two **lifecycle groups** in `navigation.ts`: **"Build your model"** (model building, field planning, demand analysis, calibration) and **"Use your model"** (model import, planning, operational modeling, water quality, fire flow, valve criticality). It is grouped by workflow and does **not** signal what is available now vs. coming. Don't add "Coming soon" badges or availability labels to the menu or the nav-driven `CardGrid`s.
 - Slugs of note: demand analysis lives at `/solutions/demand-analysis` (formerly "flow balance"), planning at `/solutions/planning` (formerly "master planning"). Keep the "master plan" noun (a deliverable) but call the workflow "planning".
 - Some solution pages are intentionally **barebones** and will be filled in later: `model-import`, `water-quality`, `valve-criticality`. Don't pad them with invented detail.
-
-## Git
-
-- Feature work for this effort is on branch `claude/busy-bell-ar6i4`.
-- Don't open a PR unless asked. Commit messages: imperative subject; explain the why.

@@ -101,15 +101,11 @@ const principles = [
     title="Share models without any cloud at all"
     reverse>
     <p>
-      An epanet-js model is an ordinary file. If your organization's policy
-      rules out cloud storage, you can keep every project on your own machines
-      and pass models around the way you already share files: email, a network
-      drive, or a USB stick.
+      An epanet-js model is a standard file. If your organization prefers to manage files locally,
+      your projects can reside entirely on your own infrastructure and be shared using your existing
+      workflows. A colleague can simply open the model file and begin working immediately.
     </p>
-    <p>
-      There is no account requirement and no hidden upload. A colleague opens
-      the file and picks up exactly where you left off.
-    </p>
+
     <FileTransferDemo slot="media" />
   </ContentMediaRow>
 
@@ -140,7 +136,10 @@ const principles = [
       workspace, and their access changes with it. Nobody outside your
       workspace can see your network.
     </p>
-    <TeamAccessDemo slot="media" class="w-full max-w-[340px] mx-auto" />
+    <TeamAccessDemo
+      slot="media"
+      class="w-full max-w-[340px] mx-auto [zoom:1.2]"
+    />
   </ContentMediaRow>
 
   <ContentMediaRow
