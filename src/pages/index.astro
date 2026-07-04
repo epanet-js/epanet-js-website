@@ -1,6 +1,7 @@
 ---
 import Features from "@components/landing/features.tsx";
 import Hero from "@components/landing/hero.tsx";
+import TrustedBy from "@components/landing/trusted-by.tsx";
 import Layout from "@layouts/Layout.astro";
 import UserDilemma from "@components/landing/user-dilemma";
 import OpenSource from "@components/landing/open-source";
@@ -86,6 +87,7 @@ const securityBenefits = [
 
 <Layout footerMargin={false} lang={lang}>
   <Hero lang={lang} client:load />
+  <TrustedBy />
 
   <ProseSection
     title="One tool, from the first pipe to the master plan"

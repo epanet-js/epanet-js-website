@@ -77,7 +77,6 @@ export default function Hero({ lang = "en" }: Props) {
                   "--controls": "none",
                   // https://stackoverflow.com/questions/6492027/css-transform-jagged-edges-in-chrome
                   filter: "brightness(1)",
-                  "box-shadow": "0 0 1px rgba(255,255,255,0);",
                 }}
               />
             </div>

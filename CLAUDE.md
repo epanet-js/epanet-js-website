@@ -19,7 +19,7 @@ The product mixes shipped features and features in development. **The website do
 - Package manager is **pnpm** (not npm).
 - The shell may be left in a subdirectory; run build/check from the repo root.
 - Build: `node_modules/.bin/astro build`. Type-check: `node_modules/.bin/astro check`.
-  - There are **10 known pre-existing `astro check` errors** in `TableOfContents.astro` and `landing/*` files. Don't be alarmed; just confirm your changes don't add new ones.
+  - `astro check` reports **0 errors** (hints are fine to ignore). Keep it that way — don't introduce new errors.
 - File-based routing under `src/pages/`. Most marketing pages are `prerender = true`; the landing page (`src/pages/index.astro`) is `prerender = false` (SSR), so it isn't emitted as static HTML — render it via the dev server to inspect.
 - **Languages:** the redesign is English-only for now. `src/pages/es/` holds Spanish versions of the old landing page and pricing; don't add new ES pages and don't mirror changes there unless asked.
 
