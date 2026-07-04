@@ -41,16 +41,16 @@ Demos may be shared across pages (precedent: `LocalFirstDiagram` appears on 4 pa
 
 CLAUDE.md core policy: the site does not distinguish shipped from in-development features. Everything is written in present tense as available today. The following violations exist and should be removed in one sweep (they are also listed per page):
 
-1. **`comingSoon` badges on PageHero** — `planning.astro`, `demand-analysis.astro`, `field-planning.astro`. Remove the prop and the `comingSoonPrimary`/`comingSoonSecondary` CTA overrides ("Talk to us" as primary); use the standard CTAs.
-2. **"Coming soon to epanet-js." in meta descriptions** — same three pages.
-3. **"Illustrative concept" / "Concept preview — in development" captions** — calibration (3: hero, field-data row, assistant-panel row), demand-analysis (hero), planning ("Lay the plan out across the years"), field-planning (hero), who-its-for/consultants (CalibrationPanel row). Remove all.
+1. ~~**`comingSoon` badges on PageHero** — `planning.astro`, `demand-analysis.astro`, `field-planning.astro`. Remove the prop and the `comingSoonPrimary`/`comingSoonSecondary` CTA overrides ("Talk to us" as primary); use the standard CTAs.~~ **DONE** (also removed the legacy `comingSoon` prop from PageHero/CardGrid/NavItem and deleted `ComingSoonBadge.astro`)
+2. ~~**"Coming soon to epanet-js." in meta descriptions** — same three pages.~~ **DONE**
+3. ~~**"Illustrative concept" / "Concept preview — in development" captions** — calibration (3: hero, field-data row, assistant-panel row), demand-analysis (hero), planning ("Lay the plan out across the years"), field-planning (hero), who-its-for/consultants (CalibrationPanel row). Remove all.~~ **DONE**
 4. **Future-tense copy:**
    - "This page is a work in progress. We'll add detail… soon." — the three stubs (superseded by the rebuilds below).
-   - FAQ items framed as unshipped: planning "Is planning available now?"; equivalents on demand-analysis and field-planning.
-   - FaqList subheadings such as "How staged, long-horizon planning **will** work in epanet-js."
-   - CardGrid headings "Available now" with subheading "While X is in development, explore what you can do today." (planning, demand-analysis, field-planning) → use the standard "Where to next" pattern.
-   - CtaSections "Help shape planning" / "Help shape demand analysis" / "Want demand analysis for your network?" / "Tell us about your planning process — it helps shape what we build." → standard present-tense CTAs.
-5. **Bare `/blog` links** — planning and operational-modeling FAQs link "scenarios request for comments" to `/blog`. The post exists: link `/blog/scenarios-request-for-comments`.
+   - ~~FAQ items framed as unshipped: planning "Is planning available now?"; equivalents on demand-analysis and field-planning.~~ **DONE**
+   - ~~FaqList subheadings such as "How staged, long-horizon planning **will** work in epanet-js."~~ **DONE**
+   - ~~CardGrid headings "Available now" with subheading "While X is in development, explore what you can do today." (planning, demand-analysis, field-planning) → use the standard "Where to next" pattern.~~ **DONE**
+   - ~~CtaSections "Help shape planning" / "Help shape demand analysis" / "Want demand analysis for your network?" / "Tell us about your planning process — it helps shape what we build." → standard present-tense CTAs.~~ **DONE**
+5. ~~**Bare `/blog` links** — planning and operational-modeling FAQs link "scenarios request for comments" to `/blog`. The post exists: link `/blog/scenarios-request-for-comments`.~~ **DONE**
 
 Minor, optional polish (not policy):
 
@@ -88,7 +88,7 @@ Minor, optional polish (not policy):
 
 **Changes:**
 
-- **REWRITE** — remove all three "Illustrative concept" captions (policy).
+- ~~**REWRITE** — remove all three "Illustrative concept" captions (policy).~~ **DONE**
 - **ADD** `ZoneFitDemo` → "Break the network into pieces you can actually solve" (text-only). Demo splits the network into colored zones with a fit figure each.
 - **ADD** `CalibrationScatterDemo` → "Try many combinations, and score each one" (text-only). Demo shows observed-vs-simulated scatter pulling toward the 1:1 line, RMSE dropping 4.8 → 1.2 m.
 - **REPLACE (either/or)** the hand-rolled divergence block on "Bring in what you measured in the field" → `ObservedOverlayDemo` (observed readings land over the simulated trace, residual gap shaded). The purpose-built demo is stronger, but the custom block is acceptable; keep whichever reads better.
@@ -103,7 +103,7 @@ Minor, optional polish (not policy):
 - **REPLACE** `/assets/images/epanet-js-app.png` on "Watch the whole system react" → `EpsPlaybackDemo` (24-hour playback, network extremities shifting at the evening peak). Retires the generic screenshot's second use.
 - **NEW SECTION** "Plan shutdowns before the crew rolls" → `ShutdownPlanDemo` (two valves close, isolated main grays out, length/customers-affected fill in, detour draws). ~2 paragraphs of new copy; the "everyday questions" prose is source material. Note: also proposed on valve-criticality — sharing is fine, flag in review.
 - **NEW SECTION** on pump scheduling and controls → `PumpScheduleDemo` (pump runs shift out of the peak-tariff band, daily energy cost drops 23%) or `ControlRuleDemo` (rule types out, pump flips on at the trigger). PumpScheduleDemo is the more compelling story. ~2 paragraphs of new copy. `TankOperationsDemo` is the bench alternate.
-- **REWRITE** — fix the "scenarios request for comments" link to `/blog/scenarios-request-for-comments`.
+- ~~**REWRITE** — fix the "scenarios request for comments" link to `/blog/scenarios-request-for-comments`.~~ **DONE**
 
 ### demand-analysis — complete-ish; policy sweep + two fills
 
@@ -111,7 +111,7 @@ Minor, optional polish (not policy):
 
 **Changes:**
 
-- **REWRITE** — policy sweep: remove badge + CTA overrides, hero caption "Concept preview — in development", "Coming soon" meta text, "Available now" CardGrid, "Help shape demand analysis" / "Want demand analysis for your network?" CTAs.
+- ~~**REWRITE** — policy sweep: remove badge + CTA overrides, hero caption "Concept preview — in development", "Coming soon" meta text, "Available now" CardGrid, "Help shape demand analysis" / "Want demand analysis for your network?" CTAs.~~ **DONE**
 - **ADD** `DemandScalingDemo` → "Reconcile inflow with consumption, zone by zone" (text-only). Demo shows allocated demand falling short of metered inflow until a scaling factor closes the gap and the balance check turns green — a literal match.
 - **ADD** `PressureLeakageDemo` → "Let pressure drive leakage" (text-only). Demo steps a PRV setting down and estimated leakage falls with it.
 - Keep the real captures on the allocation and patterns rows. `DemandCategoriesDemo` and `PatternEditorDemo` are bench alternates for the patterns row.
@@ -123,7 +123,7 @@ Minor, optional polish (not policy):
 
 **Changes:**
 
-- **REWRITE** — policy sweep: badge + CTA overrides, "Coming soon" meta, "Concept preview" caption, FAQ "Is planning available now?", FaqList subheading "…will work in epanet-js", "Available now" CardGrid, "Help shape planning" CTA, `/blog` RFC link → `/blog/scenarios-request-for-comments`.
+- ~~**REWRITE** — policy sweep: badge + CTA overrides, "Coming soon" meta, "Concept preview" caption, FAQ "Is planning available now?", FaqList subheading "…will work in epanet-js", "Available now" CardGrid, "Help shape planning" CTA, `/blog` RFC link → `/blog/scenarios-request-for-comments`.~~ **DONE**
 - **REPLACE** `ScenarioCompareDemo` on "Lay the plan out across the years" → `ScenarioTreeDemo`. The tree demo shows change-sets per year and a project moving between years — the literal subject. Also relieves `ScenarioCompareDemo`, currently on 4 pages.
 - **ADD** `ScenarioCompareDemo` → "Move projects between years to find the best plan". Its two-scenario comparison graph matches the row's "compare what each does to performance and cost". Net effect: same demo count, far better fit per row.
 - "Draw everything once, switch it on when it's needed" — no matching demo exists. **Demo gap:** a future-assets / active-topology toggle demo is the strongest candidate for a new demo component. Hero `topology.mp4` partially covers the idea; leave the row text-only for now.
@@ -135,7 +135,7 @@ Minor, optional polish (not policy):
 
 **Changes:**
 
-- **REWRITE** — policy sweep: badge + CTA overrides, "Coming soon" meta, hero caption, "Available now" CardGrid, "Help shape field planning" CTAs, future-tense FAQ.
+- ~~**REWRITE** — policy sweep: badge + CTA overrides, "Coming soon" meta, hero caption, "Available now" CardGrid, "Help shape field planning" CTAs, future-tense FAQ.~~ **DONE**
 - **ADD** `LoggerPlacementDemo` → "Optimize placement automatically" (text-only). Demo drops proposed loggers with coverage halos, coverage climbing to 94% — an exact match.
 - **ADD** `FieldDataImportDemo` → "From plan to data to a calibrated model" (text-only). Demo: logger CSV drops in, sparkline chips appear at each monitoring point.
 - **ADD** `HydrantTestPlanDemo` → "Measure what the model is least sure about", with one added sentence tying planned hydrant tests to model uncertainty. Alternatively leave text-only; the demo fit is good but not literal.
@@ -202,7 +202,7 @@ Plus BenefitGrid, FAQs, "Where to next" CardGrid, both CTAs.
 
 **Changes:**
 
-- **REWRITE** — remove the "Illustrative concept" caption.
+- ~~**REWRITE** — remove the "Illustrative concept" caption.~~ **DONE**
 - **NEW SECTION** "Deliver in the format the client requires" → `ResultsExportDemo`. Data in and data out is the core consultant pitch (per CLAUDE.md comparison posture: epanet-js plus the incumbent is the best of both worlds). ~2 paragraphs of new copy; add one FAQ on working alongside InfoWater/WaterCAD, linking the `/compare/*` pages.
 - Hero stays media-free (policy prefers no media over a stretch; the page reads fine).
 - **Bench (optional):** `ProfilePlotDemo` or `TimeSeriesPlotDemo` for a client-deliverables row if the page should grow further.
@@ -230,7 +230,7 @@ Plus BenefitGrid, FAQs, "Where to next" CardGrid, both CTAs.
 
 ## Suggested order of work
 
-1. **Policy sweep** (mechanical, no new copy): planning, demand-analysis, field-planning, calibration, consultants — badges, captions, future-tense copy, CTA overrides, `/blog` RFC links. Small diffs, fixes tone site-wide.
+1. ~~**Policy sweep** (mechanical, no new copy): planning, demand-analysis, field-planning, calibration, consultants — badges, captions, future-tense copy, CTA overrides, `/blog` RFC links. Small diffs, fixes tone site-wide.~~ **DONE**
 2. **Stub rebuilds** (the big lift, most new copy): water-quality, valve-criticality, model-import. Demos are ready for all three; water-quality is the easiest win (four purpose-built demos, outline above).
 3. **Demo fills** (no new copy — drop demos into existing text-only rows): fire-flow, calibration, field-planning, demand-analysis, planning, model-build, humanitarian-ngos.
 4. **New sections and swaps** (new copy or judgment calls): operational-modeling's shutdown and pump-scheduling sections, consultants' deliverables section, then the optional generic-screenshot replacements (model-build, education, utilities).

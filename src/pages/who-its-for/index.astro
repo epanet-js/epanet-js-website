@@ -12,7 +12,7 @@ import { Zap, Lock, Cpu, Scale } from "lucide-react";
 export const prerender = true;
 const lang = "en";
 
-const liveColumn = solutions.columns.find((c) => c.heading === "Available now");
+const solutionItems = solutions.columns.flatMap((c) => c.items);
 
 const benefits = [
   {
@@ -106,20 +106,16 @@ const faqs = [
 
   <CtaSection
     heading="Ready to see it for your team?"
-    subheading="Launch epanet-js free in your browser, or book a demo tailored to how you work."
+    subheading="Launch epanet-js free, or book a demo tailored to how you work."
     dark={false}
   />
 
-  {
-    liveColumn && (
-      <CardGrid
-        heading="See what epanet-js can do"
-        subheading="The everyday jobs the tool helps teams get done."
-        items={liveColumn.items}
-        columns={4}
-      />
-    )
-  }
+  <CardGrid
+    heading="See what epanet-js can do"
+    subheading="The everyday jobs the tool helps teams get done."
+    items={solutionItems}
+    columns={4}
+  />
 
   <FaqList
     subheading="Common questions about fit, access, and pricing."

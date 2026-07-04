@@ -1,6 +1,5 @@
 ---
 import Container from "@components/container.astro";
-import ComingSoonBadge from "./ComingSoonBadge.astro";
 
 interface Cta {
   label: string;
@@ -12,14 +11,12 @@ interface Props {
   subtitle?: string;
   primaryCta?: Cta | null;
   secondaryCta?: Cta | null;
-  comingSoon?: boolean;
   align?: "left" | "center";
 }
 
 const {
   title,
   subtitle,
-  comingSoon = false,
   align = "left",
 } = Astro.props;
 
@@ -58,17 +55,6 @@ const isCentered = align === "center" || !hasMedia;
           isCentered ? "text-center items-center mx-auto max-w-3xl" : "",
         ]}>
         <div class="space-y-4">
-          {
-            comingSoon && (
-              <div
-                class:list={[
-                  "flex items-center gap-2",
-                  isCentered && "justify-center",
-                ]}>
-                <ComingSoonBadge />
-              </div>
-            )
-          }
           <h1
             class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-5xl/none">
             {title}

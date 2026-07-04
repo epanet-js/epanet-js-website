@@ -95,10 +95,7 @@ const faqs = [
   <PageHero
     title="Calibrate your model against the field, with an engineer in control"
     subtitle="epanet-js breaks the network into manageable pieces, searches for the parameters that best explain your observed data, and proposes the most likely calibration. You review the reasoning and decide. Fast to produce, and grounded in your judgment.">
-    <div slot="media">
-      <CalibrationReviewDemo framed />
-      <p class="mt-2 text-xs text-gray-400">Illustrative concept</p>
-    </div>
+    <CalibrationReviewDemo slot="media" framed />
   </PageHero>
 
   <ProseSection
@@ -119,8 +116,7 @@ const faqs = [
   </ProseSection>
 
   <ContentMediaRow
-    title="Bring in what you measured in the field"
-    caption="Illustrative concept">
+    title="Bring in what you measured in the field">
     <p>
       Calibration starts from observed data. Load the measurements you've
       collected and see them next to your model's results, with the gaps
@@ -212,8 +208,7 @@ const faqs = [
   </ContentMediaRow>
 
   <ContentMediaRow
-    title="Engineering stays in the loop, on every change"
-    caption="Illustrative concept">
+    title="Engineering stays in the loop, on every change">
     <p>
       The assistant proposes; you decide. Review each recommendation alongside
       the reasoning and the alternatives, then accept it, adjust the value, or

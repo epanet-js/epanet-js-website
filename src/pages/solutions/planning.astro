@@ -15,9 +15,6 @@ import { CalendarRange, TrendingUp, Network, Wallet } from "lucide-react";
 export const prerender = true;
 const lang = "en";
 
-const comingSoonPrimary = { label: "Talk to us", href: "https://cal.com/epanet-js/" };
-const comingSoonSecondary = { label: "Launch epanet-js", href: "https://app.epanetjs.com" };
-
 const benefits = [
   {
     icon: CalendarRange,
@@ -54,7 +51,7 @@ const faqs = [
   {
     question: "What is a scenario, in this context?",
     answer:
-      "A structured variation on your baseline network that lets you test changes without duplicating the model. For planning, scenarios stack into stages, so you can represent the network as it will be in five, ten, or twenty years. See the <a href=\"/blog\">scenarios request for comments</a> for the full design.",
+      "A structured variation on your baseline network that lets you test changes without duplicating the model. For planning, scenarios stack into stages, so you can represent the network as it will be in five, ten, or twenty years. See the <a href=\"/blog/scenarios-request-for-comments\">scenarios request for comments</a> for the full design.",
   },
   {
     question: "How does staging work?",
@@ -72,23 +69,20 @@ const faqs = [
       "That's the point of working this way. By moving change sets between stages you can test sequencing — bring a transfer main forward, delay a pump, or try a different pathway entirely — and compare how each plays out before committing capital.",
   },
   {
-    question: "Is planning available now?",
+    question: "How does this relate to a master plan?",
     answer:
-      "The scenario foundation it's built on is in active development, and you can already test scenario management on our demo models. Planning is the next layer. Tell us how you plan today, and follow progress on our <a href=\"https://roadmap.epanetjs.com\" target=\"_blank\" rel=\"noopener noreferrer\">public roadmap</a>.",
+      "A master plan is the deliverable; planning is the modeling behind it. The staged scenarios, the sequencing tests, and the comparisons of investment pathways you build here become the evidence a master plan rests on.",
   },
 ];
 ---
 
 <Layout
   title="Planning"
-  description="Plan your water network years ahead. Draw future infrastructure, stage upgrades across five-year horizons, move capital projects between stages, and compare investment pathways. Coming soon to epanet-js."
+  description="Plan your water network years ahead. Draw future infrastructure, stage upgrades across five-year horizons, move capital projects between stages, and compare investment pathways."
   lang={lang}>
   <PageHero
     title="Plan your network years ahead"
-    subtitle="Draw the network as it will grow, stage the upgrades across the years, and move capital projects between stages to find the most efficient plan. Long-horizon planning that stays in one project instead of a folder of copies."
-    comingSoon
-    primaryCta={comingSoonPrimary}
-    secondaryCta={comingSoonSecondary}>
+    subtitle="Draw the network as it will grow, stage the upgrades across the years, and move capital projects between stages to find the most efficient plan. Long-horizon planning that stays in one project instead of a folder of copies.">
     <Media
       slot="media"
       src="/assets/blog/progress-report/2025-11/topology.mp4"
@@ -106,8 +100,8 @@ const faqs = [
     <p>
       It's also where modeling tools tend to fall apart. The work usually means
       duplicating the model for every stage and every option, until no one is
-      sure which file represents what. Planning in epanet-js is designed
-      to keep the whole horizon in one place.
+      sure which file represents what. Planning in epanet-js keeps the whole
+      horizon in one place.
     </p>
   </ProseSection>
 
@@ -127,7 +121,6 @@ const faqs = [
 
   <ContentMediaRow
     title="Lay the plan out across the years"
-    caption="Concept preview — in development"
     reverse>
     <p>
       Build a stage for each horizon (Year 5, Year 10, Year 20) as a scenario
@@ -180,10 +173,8 @@ const faqs = [
   />
 
   <CtaSection
-    heading="Planning for the long term?"
-    subheading="Tell us about your planning process — it helps shape what we build."
-    primaryCta={comingSoonPrimary}
-    secondaryCta={comingSoonSecondary}
+    heading="Put your capital plan to the test"
+    subheading="Stage the upgrades, move projects between years, and see what each pathway does to performance and cost."
     dark={false}
   />
 
@@ -196,27 +187,23 @@ const faqs = [
       and the multi-year staging here are two ends of the same capability, both
       built on a network you've already
       <a href="/solutions/calibration" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">calibrated</a>.
-      You can follow how scenario management is developing on our
-      <a href="https://roadmap.epanetjs.com" target="_blank" rel="noopener noreferrer" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">public roadmap</a>.
     </p>
   </ProseSection>
 
   <CardGrid
-    heading="Available now"
-    subheading="While planning is in development, explore what you can do today."
+    heading="Where to next"
+    subheading="Planning draws on the rest of your modeling work."
     items={related}
     columns={3}
   />
 
   <FaqList
-    subheading="How staged, long-horizon planning will work in epanet-js."
+    subheading="How staged, long-horizon planning works in epanet-js."
     items={faqs}
   />
 
   <CtaSection
-    heading="Help shape planning"
-    subheading="Tell us how you plan capital works today. Launch epanet-js to start building, or talk to us about what's next."
-    primaryCta={comingSoonPrimary}
-    secondaryCta={comingSoonSecondary}
+    heading="One project, the whole horizon"
+    subheading="Build the staged program behind your next master plan. Launch epanet-js free, or book a demo to walk through it with us."
   />
 </Layout>
