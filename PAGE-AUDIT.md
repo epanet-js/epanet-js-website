@@ -26,7 +26,7 @@ Demos may be shared across pages (precedent: `LocalFirstDiagram`, which appeared
 | solutions/fire-flow | Complete | 2 | 2 | 0 | ~~ADD PressureFlowCurveDemo~~ **DONE** |
 | solutions/calibration | Complete | 0 | 5 | 0 | ~~Strip captions; ADD 2 demos~~ **DONE** |
 | solutions/operational-modeling | Complete | 3 | 4 | 0 | ~~2 NEW SECTIONs; 1 REPLACE~~ **DONE** |
-| solutions/demand-analysis | Complete | 2 | 3 | 0 | ~~Policy sweep; ADD 2 demos~~ **DONE** |
+| solutions/demand-analysis | Complete | 2 | 4 | 0 | ~~Policy sweep; ADD 2 demos~~ **DONE**; ~~optional NRW section~~ **DONE** |
 | solutions/planning | Complete | 1 | 2 | 2 | ~~Policy sweep; ScenarioTreeDemo~~ **DONE** (2 rows text-only by design) |
 | solutions/field-planning | Complete | 1 | 4 (incl. custom) | 0 | ~~Policy sweep; ADD 3 demos~~ **DONE** |
 | solutions/model-import | Rebuilt | 2 | 3 | 0 | ~~REBUILD~~ **DONE** |
@@ -115,7 +115,7 @@ Minor, optional polish (not policy):
 - ~~**ADD** `DemandScalingDemo` → "Reconcile inflow with consumption, zone by zone" (text-only). Demo shows allocated demand falling short of metered inflow until a scaling factor closes the gap and the balance check turns green — a literal match.~~ **DONE**
 - ~~**ADD** `PressureLeakageDemo` → "Let pressure drive leakage" (text-only). Demo steps a PRV setting down and estimated leakage falls with it.~~ **DONE**
 - Keep the real captures on the allocation and patterns rows. `DemandCategoriesDemo` and `PatternEditorDemo` are bench alternates for the patterns row.
-- **NEW SECTION (optional):** night flow / water balance (`NightFlowDemo` or `WaterBalanceDemo`) if the page should cover NRW estimation explicitly. New copy needed.
+- ~~**NEW SECTION (optional):** night flow / water balance (`NightFlowDemo` or `WaterBalanceDemo`) if the page should cover NRW estimation explicitly. New copy needed.~~ **DONE** — "Estimate leakage from the night flow" with `NightFlowDemo` (better fit for the page's DMA/trace thread); `WaterBalanceDemo` stays on the bench
 
 ### planning — structurally complete, weakest media
 
@@ -246,8 +246,8 @@ Demos still unused after everything above, with optional homes:
 | `DataTableDemo` | same, or a future reporting page |
 | `NetworkReviewDemo` | alternate for model-build's Network Review row (real video currently there is better) |
 | `CustomerPointsDemo` | alternate for model-build / demand-analysis allocation rows (real video better) |
-| `NightFlowDemo` | demand-analysis optional NRW section |
-| `WaterBalanceDemo` | same |
+| ~~`NightFlowDemo`~~ | ~~demand-analysis optional NRW section~~ **DONE** — used on demand-analysis |
+| `WaterBalanceDemo` | demand-analysis NRW section — not chosen (`NightFlowDemo` won); stays bench, or future NRW content |
 | `DemandCategoriesDemo` | alternate for demand-analysis patterns row |
 | `PatternEditorDemo` | same |
 | `TankOperationsDemo` | alternate for operational-modeling pump section (PumpScheduleDemo was chosen; stays bench) |

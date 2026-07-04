@@ -7,6 +7,7 @@ import Media from "@components/marketing/Media.astro";
 import DemandAllocationDemo from "@components/demos/DemandAllocationDemo.astro";
 import DemandScalingDemo from "@components/demos/DemandScalingDemo.astro";
 import PressureLeakageDemo from "@components/demos/PressureLeakageDemo.astro";
+import NightFlowDemo from "@components/demos/NightFlowDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -172,6 +173,24 @@ const faqs = [
       the water you can't account for is modeled the way it actually behaves.
     </p>
     <PressureLeakageDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Estimate leakage from the night flow">
+    <p>
+      The quietest hour of the day is the most informative one. Around 03:00,
+      legitimate use in a DMA drops to a small, predictable minimum, so most of
+      what still flows in is leakage. Compare the minimum night flow against the
+      expected legitimate night use and the gap is a leakage estimate for the
+      zone, read straight from inflow data you already log.
+    </p>
+    <p>
+      Fold that estimate into each zone's balance and non-revenue water becomes
+      a per-DMA figure you can rank and track, rather than a single system-wide
+      percentage. It also gives the pressure-driven leakage model above a real
+      number to match, so the zones that repay attention first stand out.
+    </p>
+    <NightFlowDemo slot="media" />
   </ContentMediaRow>
 
   <BenefitGrid
