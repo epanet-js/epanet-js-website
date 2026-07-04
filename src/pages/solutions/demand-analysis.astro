@@ -5,6 +5,8 @@ import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
 import DemandAllocationDemo from "@components/demos/DemandAllocationDemo.astro";
+import DemandScalingDemo from "@components/demos/DemandScalingDemo.astro";
+import PressureLeakageDemo from "@components/demos/PressureLeakageDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -153,6 +155,7 @@ const faqs = [
       rather than rounded away, it becomes a number you can act on, and a check
       that keeps the whole demand picture honest.
     </p>
+    <DemandScalingDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -168,6 +171,7 @@ const faqs = [
       Demand analysis builds on that to keep the zonal reconciliation realistic, so
       the water you can't account for is modeled the way it actually behaves.
     </p>
+    <PressureLeakageDemo slot="media" />
   </ContentMediaRow>
 
   <BenefitGrid

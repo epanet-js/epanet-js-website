@@ -16,26 +16,26 @@ Action tags used below:
 - **NEW SECTION** — a new `ContentMediaRow` with a demo; new copy required.
 - **REBUILD** — stub page rebuilt to the full-page pattern; substantial new copy required.
 
-Demos may be shared across pages (precedent: `LocalFirstDiagram` appears on 4 pages), but heavy duplication is flagged where it occurs.
+Demos may be shared across pages (precedent: `LocalFirstDiagram`, which appeared on 4 pages at audit time — now 3 after the humanitarian-ngos swap), but heavy duplication is flagged where it occurs.
 
 ## Snapshot
 
 | Page | Status | Real captures | Demos today | Empty slots | Headline action |
 |---|---|---|---|---|---|
-| solutions/model-build | Complete | 8 | 0 | 1 | ADD ElevationDemo; optional swaps |
-| solutions/fire-flow | Complete | 2 | 1 | 1 | ADD PressureFlowCurveDemo |
-| solutions/calibration | Strong prose | 0 | 3 | 3 | Strip captions; ADD 2 demos |
+| solutions/model-build | Complete | 8 | 1 | 0 | ~~ADD ElevationDemo~~ **DONE**; optional swaps remain |
+| solutions/fire-flow | Complete | 2 | 2 | 0 | ~~ADD PressureFlowCurveDemo~~ **DONE** |
+| solutions/calibration | Complete | 0 | 5 | 0 | ~~Strip captions; ADD 2 demos~~ **DONE** |
 | solutions/operational-modeling | Complete | 4 | 1 | 0 | 2 NEW SECTIONs; 1 REPLACE |
-| solutions/demand-analysis | Complete-ish | 2 | 1 | 2 | Policy sweep; ADD 2 demos |
-| solutions/planning | Media-thin | 1 | 1 | 3 | Policy sweep; ScenarioTreeDemo |
-| solutions/field-planning | Media-thin | 1 | 1 (custom) | 3 | Policy sweep; ADD 3 demos |
+| solutions/demand-analysis | Complete | 2 | 3 | 0 | ~~Policy sweep; ADD 2 demos~~ **DONE** |
+| solutions/planning | Complete | 1 | 2 | 2 | ~~Policy sweep; ScenarioTreeDemo~~ **DONE** (2 rows text-only by design) |
+| solutions/field-planning | Complete | 1 | 4 (incl. custom) | 0 | ~~Policy sweep; ADD 3 demos~~ **DONE** |
 | solutions/model-import | Rebuilt | 2 | 3 | 0 | ~~REBUILD~~ **DONE** |
 | solutions/water-quality | Rebuilt | 0 | 4 | 0 | ~~REBUILD (4 demos ready)~~ **DONE** |
 | solutions/valve-criticality | Rebuilt | 0 | 3 | 0 | ~~REBUILD (demos ready)~~ **DONE** |
 | who-its-for/utilities | Complete | 4 | 1 | 0 | Optional swap only |
 | who-its-for/consultants | Thinnest | 1 | 2 | 0 | 1 NEW SECTION; strip caption |
 | who-its-for/education | Complete | 3 | 0 | 0 | 1 REPLACE (dedupe asset) |
-| who-its-for/humanitarian-ngos | Complete | 1 | 2 (+custom) | 1 | ADD + REPLACE |
+| who-its-for/humanitarian-ngos | Complete | 1 | 3 (+custom) | 0 | ~~ADD + REPLACE~~ **DONE** |
 
 ## Cross-cutting policy sweep
 
@@ -67,7 +67,7 @@ Minor, optional polish (not policy):
 
 **Changes:**
 
-- **ADD** `ElevationDemo` → "Accurate ground levels, anywhere in the world" (currently text-only). The demo shows the prioritized elevation-sources stack, your GeoTIFFs down to global terrain, which is exactly what the row describes. No new text.
+- ~~**ADD** `ElevationDemo` → "Accurate ground levels, anywhere in the world" (currently text-only). The demo shows the prioritized elevation-sources stack, your GeoTIFFs down to global terrain, which is exactly what the row describes. No new text.~~ **DONE**
 - **REPLACE (optional)** `/assets/images/epanet-js-app.png` on "Simulate in the browser, read results on the map" → `SimulationRunDemo`. The screenshot is generic and appears on 3 pages; the demo animates exactly this claim (press Simulate, map recolors, legend appears).
 - **REPLACE (optional)** `/assets/blog/progress-report/2026-04/2026-04-02-welcome.webp` on "Bring in the GIS you already have" → `GisImportDemo` (shapefile drops in, network appears, import summary). The welcome-screen image is generic and reused on utilities and education.
 - Keep all five real workflow videos; they show the actual features.
@@ -79,7 +79,7 @@ Minor, optional polish (not policy):
 
 **Changes:**
 
-- **ADD** `PressureFlowCurveDemo` → "Right-click any point for a full capacity curve" (currently text-only). The demo is the capacity curve with available flow read at the residual target — an exact match. No new text.
+- ~~**ADD** `PressureFlowCurveDemo` → "Right-click any point for a full capacity curve" (currently text-only). The demo is the capacity curve with available flow read at the residual target — an exact match. No new text.~~ **DONE**
 - Nothing else needed. This page is the model for "real capture + one demo" balance.
 
 ### calibration — strong prose; visuals need finishing
@@ -89,9 +89,9 @@ Minor, optional polish (not policy):
 **Changes:**
 
 - ~~**REWRITE** — remove all three "Illustrative concept" captions (policy).~~ **DONE**
-- **ADD** `ZoneFitDemo` → "Break the network into pieces you can actually solve" (text-only). Demo splits the network into colored zones with a fit figure each.
-- **ADD** `CalibrationScatterDemo` → "Try many combinations, and score each one" (text-only). Demo shows observed-vs-simulated scatter pulling toward the 1:1 line, RMSE dropping 4.8 → 1.2 m.
-- **REPLACE (either/or)** the hand-rolled divergence block on "Bring in what you measured in the field" → `ObservedOverlayDemo` (observed readings land over the simulated trace, residual gap shaded). The purpose-built demo is stronger, but the custom block is acceptable; keep whichever reads better.
+- ~~**ADD** `ZoneFitDemo` → "Break the network into pieces you can actually solve" (text-only). Demo splits the network into colored zones with a fit figure each.~~ **DONE**
+- ~~**ADD** `CalibrationScatterDemo` → "Try many combinations, and score each one" (text-only). Demo shows observed-vs-simulated scatter pulling toward the 1:1 line, RMSE dropping 4.8 → 1.2 m.~~ **DONE**
+- ~~**REPLACE (either/or)** the hand-rolled divergence block on "Bring in what you measured in the field" → `ObservedOverlayDemo` (observed readings land over the simulated trace, residual gap shaded). The purpose-built demo is stronger, but the custom block is acceptable; keep whichever reads better.~~ **DONE** — swapped to `ObservedOverlayDemo` (owner's call)
 - "An assistant that weighs the options" stays text-only; `CalibrationPanel` two rows later already visualizes the assistant.
 
 ### operational-modeling — complete; room to grow
@@ -112,8 +112,8 @@ Minor, optional polish (not policy):
 **Changes:**
 
 - ~~**REWRITE** — policy sweep: remove badge + CTA overrides, hero caption "Concept preview — in development", "Coming soon" meta text, "Available now" CardGrid, "Help shape demand analysis" / "Want demand analysis for your network?" CTAs.~~ **DONE**
-- **ADD** `DemandScalingDemo` → "Reconcile inflow with consumption, zone by zone" (text-only). Demo shows allocated demand falling short of metered inflow until a scaling factor closes the gap and the balance check turns green — a literal match.
-- **ADD** `PressureLeakageDemo` → "Let pressure drive leakage" (text-only). Demo steps a PRV setting down and estimated leakage falls with it.
+- ~~**ADD** `DemandScalingDemo` → "Reconcile inflow with consumption, zone by zone" (text-only). Demo shows allocated demand falling short of metered inflow until a scaling factor closes the gap and the balance check turns green — a literal match.~~ **DONE**
+- ~~**ADD** `PressureLeakageDemo` → "Let pressure drive leakage" (text-only). Demo steps a PRV setting down and estimated leakage falls with it.~~ **DONE**
 - Keep the real captures on the allocation and patterns rows. `DemandCategoriesDemo` and `PatternEditorDemo` are bench alternates for the patterns row.
 - **NEW SECTION (optional):** night flow / water balance (`NightFlowDemo` or `WaterBalanceDemo`) if the page should cover NRW estimation explicitly. New copy needed.
 
@@ -124,8 +124,8 @@ Minor, optional polish (not policy):
 **Changes:**
 
 - ~~**REWRITE** — policy sweep: badge + CTA overrides, "Coming soon" meta, "Concept preview" caption, FAQ "Is planning available now?", FaqList subheading "…will work in epanet-js", "Available now" CardGrid, "Help shape planning" CTA, `/blog` RFC link → `/blog/scenarios-request-for-comments`.~~ **DONE**
-- **REPLACE** `ScenarioCompareDemo` on "Lay the plan out across the years" → `ScenarioTreeDemo`. The tree demo shows change-sets per year and a project moving between years — the literal subject. Also relieves `ScenarioCompareDemo`, currently on 4 pages.
-- **ADD** `ScenarioCompareDemo` → "Move projects between years to find the best plan". Its two-scenario comparison graph matches the row's "compare what each does to performance and cost". Net effect: same demo count, far better fit per row.
+- ~~**REPLACE** `ScenarioCompareDemo` on "Lay the plan out across the years" → `ScenarioTreeDemo`. The tree demo shows change-sets per year and a project moving between years — the literal subject. Also relieves `ScenarioCompareDemo`, currently on 4 pages.~~ **DONE** (also dropped the "Concept diagram:" prefix from ScenarioTreeDemo's aria-label)
+- ~~**ADD** `ScenarioCompareDemo` → "Move projects between years to find the best plan". Its two-scenario comparison graph matches the row's "compare what each does to performance and cost". Net effect: same demo count, far better fit per row.~~ **DONE**
 - "Draw everything once, switch it on when it's needed" — no matching demo exists. **Demo gap:** a future-assets / active-topology toggle demo is the strongest candidate for a new demo component. Hero `topology.mp4` partially covers the idea; leave the row text-only for now.
 - "Turn the analysis into a defensible program" stays text-only.
 
@@ -136,9 +136,9 @@ Minor, optional polish (not policy):
 **Changes:**
 
 - ~~**REWRITE** — policy sweep: badge + CTA overrides, "Coming soon" meta, hero caption, "Available now" CardGrid, "Help shape field planning" CTAs, future-tense FAQ.~~ **DONE**
-- **ADD** `LoggerPlacementDemo` → "Optimize placement automatically" (text-only). Demo drops proposed loggers with coverage halos, coverage climbing to 94% — an exact match.
-- **ADD** `FieldDataImportDemo` → "From plan to data to a calibrated model" (text-only). Demo: logger CSV drops in, sparkline chips appear at each monitoring point.
-- **ADD** `HydrantTestPlanDemo` → "Measure what the model is least sure about", with one added sentence tying planned hydrant tests to model uncertainty. Alternatively leave text-only; the demo fit is good but not literal.
+- ~~**ADD** `LoggerPlacementDemo` → "Optimize placement automatically" (text-only). Demo drops proposed loggers with coverage halos, coverage climbing to 94% — an exact match.~~ **DONE**
+- ~~**ADD** `FieldDataImportDemo` → "From plan to data to a calibrated model" (text-only). Demo: logger CSV drops in, sparkline chips appear at each monitoring point.~~ **DONE**
+- ~~**ADD** `HydrantTestPlanDemo` → "Measure what the model is least sure about", with one added sentence tying planned hydrant tests to model uncertainty. Alternatively leave text-only; the demo fit is good but not literal.~~ **DONE** — added with the one sentence (owner's call)
 - Keep the custom hero (works well once uncaptioned) and the acoustic-logger video.
 
 ### model-import — ~~stub → REBUILD~~ **DONE** (rebuilt July 2026)
@@ -222,8 +222,8 @@ Plus BenefitGrid, FAQs, "Where to next" CardGrid, both CTAs.
 
 **Changes:**
 
-- **ADD** `SustainableOpenSourceDemo` → "Professional modeling without the price tag" (text-only). The demo shows the cycle — people use the app free, some pay for advanced features, developers reinvest — which is why capable tools stay affordable here.
-- **REPLACE** `LocalFirstDiagram` on "Open, local-first, and free of lock-in" → `LicenseTimelineDemo`. The row's copy states "public source → fully open after 2 years," the demo's exact content, and it relieves the most-reused diagram on the site.
+- ~~**ADD** `SustainableOpenSourceDemo` → "Professional modeling without the price tag" (text-only). The demo shows the cycle — people use the app free, some pay for advanced features, developers reinvest — which is why capable tools stay affordable here.~~ **DONE**
+- ~~**REPLACE** `LocalFirstDiagram` on "Open, local-first, and free of lock-in" → `LicenseTimelineDemo`. The row's copy states "public source → fully open after 2 years," the demo's exact content, and it relieves the most-reused diagram on the site.~~ **DONE** (LocalFirstDiagram now on 3 pages)
 - Keep `study-area.webp` and the custom pressure block.
 
 ---
@@ -232,7 +232,7 @@ Plus BenefitGrid, FAQs, "Where to next" CardGrid, both CTAs.
 
 1. ~~**Policy sweep** (mechanical, no new copy): planning, demand-analysis, field-planning, calibration, consultants — badges, captions, future-tense copy, CTA overrides, `/blog` RFC links. Small diffs, fixes tone site-wide.~~ **DONE**
 2. ~~**Stub rebuilds** (the big lift, most new copy): water-quality, valve-criticality, model-import. Demos are ready for all three; water-quality is the easiest win (four purpose-built demos, outline above).~~ **DONE**
-3. **Demo fills** (no new copy — drop demos into existing text-only rows): fire-flow, calibration, field-planning, demand-analysis, planning, model-build, humanitarian-ngos.
+3. ~~**Demo fills** (no new copy — drop demos into existing text-only rows): fire-flow, calibration, field-planning, demand-analysis, planning, model-build, humanitarian-ngos.~~ **DONE** (July 2026; calibration's either/or went to ObservedOverlayDemo, field-planning got HydrantTestPlanDemo with the one added sentence)
 4. **New sections and swaps** (new copy or judgment calls): operational-modeling's shutdown and pump-scheduling sections, consultants' deliverables section, then the optional generic-screenshot replacements (model-build, education, utilities).
 
 ## Demo bench and gaps

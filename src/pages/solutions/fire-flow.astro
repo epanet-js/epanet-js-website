@@ -5,6 +5,7 @@ import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
 import FireFlowDemo from "@components/demos/FireFlowDemo.astro";
+import PressureFlowCurveDemo from "@components/demos/PressureFlowCurveDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -26,7 +27,7 @@ const benefits = [
     icon: Network,
     title: "The whole network, one run",
     description:
-      "Thousands of simulations in your browser, hundreds of nodes a second, instead of editing demands one location at a time.",
+      "Thousands of simulations on your machine, hundreds of nodes a second, instead of editing demands one location at a time.",
   },
   {
     icon: AlertTriangle,
@@ -181,6 +182,7 @@ const faqs = [
       shows up visually, you can see how velocity and flow change through the
       system and pick out the critical assets that constrain it.
     </p>
+    <PressureFlowCurveDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow

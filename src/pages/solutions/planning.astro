@@ -5,6 +5,7 @@ import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
 import ScenarioCompareDemo from "@components/demos/ScenarioCompareDemo.astro";
+import ScenarioTreeDemo from "@components/demos/ScenarioTreeDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -132,7 +133,7 @@ const faqs = [
       Run any stage to see how the network performs at that point in the future,
       with the demand and infrastructure it will actually have.
     </p>
-    <ScenarioCompareDemo slot="media" />
+    <ScenarioTreeDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -149,6 +150,7 @@ const faqs = [
       Bring a transfer main forward, delay a reinforcement, or try a different
       pathway entirely, and compare what each does to performance and cost.
     </p>
+    <ScenarioCompareDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow

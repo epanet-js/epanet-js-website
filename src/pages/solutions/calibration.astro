@@ -5,8 +5,9 @@ import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import CalibrationReviewDemo from "@components/demos/CalibrationReviewDemo.astro";
 import CalibrationPanel from "@components/demos/CalibrationPanel.astro";
-import NetworkMap from "@components/demos/NetworkMap.astro";
-import LegendPanel from "@components/demos/LegendPanel.astro";
+import ObservedOverlayDemo from "@components/demos/ObservedOverlayDemo.astro";
+import ZoneFitDemo from "@components/demos/ZoneFitDemo.astro";
+import CalibrationScatterDemo from "@components/demos/CalibrationScatterDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -129,21 +130,7 @@ const faqs = [
       <li><strong>SCADA</strong> pressures, flows, tank levels, and pump states.</li>
       <li><strong>Hydrant and field tests</strong>, including fire-flow readings.</li>
     </ul>
-    <div
-      slot="media"
-      class="relative aspect-[16/10] w-full rounded-xl border border-gray-200 shadow-lg overflow-hidden bg-gray-100">
-      <NetworkMap variant="pressure" class="absolute inset-0" />
-      <LegendPanel
-        title="Divergence (m)"
-        entries={[
-          { color: "#3b82f6", label: "< 1" },
-          { color: "#22c55e", label: "1 – 3" },
-          { color: "#f59e0b", label: "3 – 5" },
-          { color: "#ef4444", label: "> 5" },
-        ]}
-        class="absolute top-2 left-2"
-      />
-    </div>
+    <ObservedOverlayDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -160,6 +147,7 @@ const faqs = [
       evidence, so one bad assumption in a single zone can't quietly ripple
       across the whole model.
     </p>
+    <ZoneFitDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -188,6 +176,7 @@ const faqs = [
       Each method returns its candidates with a likelihood, so every option
       arrives with a measure of how well it actually explains the data.
     </p>
+    <CalibrationScatterDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow

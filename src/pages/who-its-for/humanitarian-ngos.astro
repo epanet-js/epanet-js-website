@@ -6,7 +6,8 @@ import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
 import NetworkMap from "@components/demos/NetworkMap.astro";
 import LegendPanel from "@components/demos/LegendPanel.astro";
-import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
+import SustainableOpenSourceDemo from "@components/demos/SustainableOpenSourceDemo.astro";
+import LicenseTimelineDemo from "@components/demos/LicenseTimelineDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -145,6 +146,7 @@ const faqs = [
       version, you're not trading cost for capability. You get professional
       results on a humanitarian budget.
     </p>
+    <SustainableOpenSourceDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow title="Design and check a real supply">
@@ -172,7 +174,7 @@ const faqs = [
       format any EPANET tool can read. A project handed over to a local partner or
       a community team isn't trapped behind a license they can't afford.
     </p>
-    <LocalFirstDiagram slot="media" />
+    <LicenseTimelineDemo slot="media" />
   </ContentMediaRow>
 
   <BenefitGrid
