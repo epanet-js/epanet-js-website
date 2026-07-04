@@ -2,7 +2,6 @@
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
-import PullQuote from "@components/marketing/PullQuote.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -97,11 +96,6 @@ const faqs = [
     </p>
   </ProseSection>
 
-  <PullQuote>
-    The fastest, easiest way to build and use hydraulic models — whoever you are
-    and wherever you work.
-  </PullQuote>
-
   <CardGrid items={whoItsFor.columns[0].items} columns={4} />
 
   <BenefitGrid
@@ -126,10 +120,6 @@ const faqs = [
       at the 2026 World Environmental &amp; Water Resources Congress.
     </p>
   </ProseSection>
-
-  <PullQuote>
-    We believe the future of hydraulic modeling should be built in the open.
-  </PullQuote>
 
   <CtaSection
     heading="Ready to see it for your team?"
