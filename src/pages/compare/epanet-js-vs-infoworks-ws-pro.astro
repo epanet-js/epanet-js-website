@@ -111,7 +111,10 @@ const glanceGroups: ComparisonRowGroup[] = [
       },
       {
         label: "Results export",
-        values: ["CSV, XLSX, Shapefile, GeoJSON", true],
+        values: [
+          "CSV, XLSX, Shapefile, GeoJSON",
+          { text: "Reports and data export" },
+        ],
       },
     ],
   },
@@ -132,7 +135,6 @@ const glanceGroups: ComparisonRowGroup[] = [
           { text: "Read-only Viewer only", note: "no free modeling tier" },
         ],
       },
-      { label: "Try it without talking to sales", values: [true, false] },
       {
         label: "Model size limits",
         values: ["None on any plan", "None published; proven at large scale"],
@@ -182,8 +184,8 @@ const pricingRows: ComparisonRow[] = [
     values: [
       "None",
       {
-        text: "IWLive Pro licensed separately",
-        note: "for automated operational forecasting",
+        text: "Windows Server workgroup database",
+        note: "for multi-user modeling",
       },
     ],
   },
@@ -229,7 +231,7 @@ const faqs = [
   {
     question: "Is epanet-js really free?",
     answer:
-      "The free plan is a full modeling tool: EPANET 2.3 engine, network editing, GIS import, fire flow, water quality, and no limit on model size. Paid plans add team features and advanced visualization, and they fund the project. The source code is public under the Functional Source License and becomes MIT after two years.",
+      "Yes. The free plan runs the full EPANET 2.3 engine with no limit on model size, and covers network editing, GIS import, fire flow, and water quality. Revenue from the paid plans funds development, and the source code is public under the Functional Source License, with each release becoming MIT-licensed after two years.",
   },
 ];
 ---
@@ -265,9 +267,8 @@ const faqs = [
       Just as important is what happens if you ever leave: nothing. Your
       models are standard .inp files on your own disk, readable by EPANET and
       every tool built on it, so there is no export project standing between
-      you and your data. Prices are published, the free plan has no model
-      size limit, and the source code is public. Choosing epanet-js supports
-      the continued development of EPANET and of open tools for the industry.
+      you and your data. The free plan has no model size limit, and the code
+      is developed in the open.
     </p>
     <LocalFirstDiagram slot="media" />
   </ContentMediaRow>
@@ -305,7 +306,8 @@ const faqs = [
       models directly, and exports them with caveats Autodesk documents
       itself: water quality doesn't export, some rules have no equivalent,
       and Darcy-Weisbach friction is converted on the way out. epanet-js
-      reads and writes .inp natively, with nothing lost in either direction.
+      reads and writes .inp natively; everything the EPANET format holds
+      survives the round trip.
     </p>
     <p>
       That still leaves room for both. Keep WS Pro where its database and

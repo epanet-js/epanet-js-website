@@ -138,7 +138,6 @@ const glanceGroups: ComparisonRowGroup[] = [
         ],
       },
       { label: "Free plan", values: [true, false] },
-      { label: "Try it without talking to sales", values: [true, false] },
       { label: "Open source", values: [true, false] },
     ],
   },
@@ -247,7 +246,7 @@ const faqs = [
     caption="Feature comparison of epanet-js and Bentley OpenFlows WaterCAD and WaterGEMS"
     columns={["epanet-js", "WaterCAD / WaterGEMS"]}
     groups={glanceGroups}
-    footnote="WaterCAD and WaterGEMS capabilities as described in Bentley's public product documentation, data sheets, and store tier definitions, July 2026."
+    footnote="WaterCAD and WaterGEMS capabilities as described in Bentley's public product documentation, data sheets, and store tier definitions, July 2026. Prices shown are Bentley's published US list prices on the Virtuosity store as of August 2025."
   />
 
   <ContentMediaRow title="What you get with epanet-js">
@@ -262,9 +261,8 @@ const faqs = [
       Day-to-day work is the focus: drawing with snapping and automatic pipe
       splitting, batch edits, undo and redo, and scenarios you can create and
       compare without bookkeeping. It runs in a browser on any machine, your
-      model stays on your machine, prices are published, and the source code
-      is public. Choosing epanet-js also supports the continued development of
-      EPANET itself.
+      model stays on your machine, and the price list is public, just like
+      the source code.
     </p>
     <ScenarioCompareDemo slot="media" />
   </ContentMediaRow>
@@ -297,8 +295,8 @@ const faqs = [
     cta={{ label: "More on model import", href: "/solutions/model-import" }}>
     <p>
       WaterCAD, WaterGEMS, and epanet-js all read and write EPANET .inp
-      files, so the model's core, its network, demands, patterns, controls,
-      and water quality setup, moves freely between them. Bentley's own
+      files, so the model's core (network, demands, patterns, controls, and
+      water quality setup) moves freely between them. Bentley's own
       documentation is clear that tool-specific extras such as scenarios and
       Darwin configurations stay behind on export; the hydraulics travel.
     </p>

@@ -58,6 +58,9 @@ const allGroups: ComparisonRowGroup[] = groups ?? [{ rows: rows ?? [] }];
     }
     <div class="max-w-4xl">
       <div
+        tabindex="0"
+        role="region"
+        aria-label={caption ?? heading ?? "Comparison table"}
         class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm bg-white">
         <table class="w-full min-w-[560px] text-sm border-collapse">
           {caption && <caption class="sr-only">{caption}</caption>}
@@ -83,11 +86,12 @@ const allGroups: ComparisonRowGroup[] = groups ?? [{ rows: rows ?? [] }];
                 <>
                   {group.title && (
                     <tr class="bg-gray-100 border-t border-b border-gray-200">
-                      <td
+                      <th
                         colspan="3"
-                        class="py-2.5 px-5 text-[0.7rem] font-semibold uppercase tracking-wide text-gray-600">
+                        scope="colgroup"
+                        class="py-2.5 px-5 text-left text-[0.7rem] font-semibold uppercase tracking-wide text-gray-600">
                         {group.title}
-                      </td>
+                      </th>
                     </tr>
                   )}
                   {group.rows.map((row) => (
@@ -105,11 +109,13 @@ const allGroups: ComparisonRowGroup[] = groups ?? [{ rows: rows ?? [] }];
                           {value === true ? (
                             <Check
                               className="mx-auto h-5 w-5 text-indigo-500"
+                              role="img"
                               aria-label="Yes"
                             />
                           ) : value === false ? (
                             <Minus
                               className="mx-auto h-4 w-4 text-gray-300"
+                              role="img"
                               aria-label="No"
                             />
                           ) : typeof value === "string" ? (
