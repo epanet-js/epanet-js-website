@@ -1,0 +1,142 @@
+---
+import Container from "@components/container.astro";
+import { Check, Minus } from "lucide-react";
+
+export type Cell = boolean | string | { text: string; note?: string };
+
+export interface ComparisonRow {
+  label: string;
+  values: [Cell, Cell];
+  indent?: boolean;
+}
+
+export interface ComparisonRowGroup {
+  title?: string;
+  rows: ComparisonRow[];
+}
+
+interface Props {
+  heading?: string;
+  subheading?: string;
+  caption?: string; // screen-reader-only <caption>
+  columns: [string, string];
+  rows?: ComparisonRow[]; // flat table (e.g. pricing)
+  groups?: ComparisonRowGroup[]; // grouped table (e.g. at a glance)
+  footnote?: string;
+  class?: string;
+}
+
+const {
+  heading,
+  subheading,
+  caption,
+  columns,
+  rows,
+  groups,
+  footnote,
+  class: className,
+} = Astro.props;
+
+const allGroups: ComparisonRowGroup[] = groups ?? [{ rows: rows ?? [] }];
+---
+
+<section class:list={["w-full py-12 md:py-16", className]}>
+  <Container>
+    {
+      (heading || subheading) && (
+        <div class="max-w-2xl mb-10 md:mb-12">
+          {heading && (
+            <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
+              {heading}
+            </h2>
+          )}
+          {subheading && (
+            <p class="mt-3 text-muted-foreground md:text-lg">{subheading}</p>
+          )}
+        </div>
+      )
+    }
+    <div class="max-w-4xl">
+      <div
+        class="overflow-x-auto rounded-xl border border-gray-200 shadow-sm bg-white">
+        <table class="w-full min-w-[560px] text-sm border-collapse">
+          {caption && <caption class="sr-only">{caption}</caption>}
+          <thead>
+            <tr class="bg-white border-b border-gray-200">
+              <th scope="col" class="w-[44%] py-4 px-5 text-left">
+                <span class="sr-only">Category</span>
+              </th>
+              {
+                columns.map((column) => (
+                  <th
+                    scope="col"
+                    class="w-[28%] py-4 px-4 text-center font-semibold text-gray-800 text-base">
+                    {column}
+                  </th>
+                ))
+              }
+            </tr>
+          </thead>
+          <tbody>
+            {
+              allGroups.map((group) => (
+                <>
+                  {group.title && (
+                    <tr class="bg-gray-100 border-t border-b border-gray-200">
+                      <td
+                        colspan="3"
+                        class="py-2.5 px-5 text-[0.7rem] font-semibold uppercase tracking-wide text-gray-600">
+                        {group.title}
+                      </td>
+                    </tr>
+                  )}
+                  {group.rows.map((row) => (
+                    <tr class="border-b border-gray-100 last:border-0 hover:bg-gray-50/60 transition-colors">
+                      <th
+                        scope="row"
+                        class:list={[
+                          "py-3 px-5 text-left font-normal text-gray-700 leading-snug",
+                          row.indent && "pl-10 text-gray-500",
+                        ]}>
+                        {row.label}
+                      </th>
+                      {row.values.map((value) => (
+                        <td class="py-3 px-4 text-center align-middle">
+                          {value === true ? (
+                            <Check
+                              className="mx-auto h-5 w-5 text-indigo-500"
+                              aria-label="Yes"
+                            />
+                          ) : value === false ? (
+                            <Minus
+                              className="mx-auto h-4 w-4 text-gray-300"
+                              aria-label="No"
+                            />
+                          ) : typeof value === "string" ? (
+                            <span class="text-gray-700 leading-snug">
+                              {value}
+                            </span>
+                          ) : (
+                            <span class="text-gray-700 leading-snug">
+                              {value.text}
+                              {value.note && (
+                                <span class="block text-xs text-gray-500 mt-0.5">
+                                  {value.note}
+                                </span>
+                              )}
+                            </span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      {footnote && <p class="mt-3 text-xs text-gray-500">{footnote}</p>}
+    </div>
+  </Container>
+</section>

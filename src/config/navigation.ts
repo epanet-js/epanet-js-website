@@ -17,6 +17,7 @@ import {
   Newspaper,
   ShieldCheck,
   FileText,
+  Scale,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -185,6 +186,12 @@ export const resources: NavSection = {
           description: "How teams use epanet-js in the real world.",
           icon: FileText,
         },
+        {
+          label: "Compare",
+          href: "/compare",
+          description: "How epanet-js stacks up against the incumbent tools.",
+          icon: Scale,
+        },
       ],
       secondaryItems: [
         {
@@ -206,5 +213,29 @@ export const resources: NavSection = {
     },
   ],
 };
+
+// ── Product comparisons ──────────────────────────────────────────────────
+// Consumed by the /compare hub, the vs-page cross-links, and the footer.
+export const comparePages: NavItem[] = [
+  {
+    label: "epanet-js vs InfoWater",
+    href: "/compare/epanet-js-vs-infowater",
+    description: "How epanet-js compares with Autodesk InfoWater Pro.",
+    icon: Scale,
+  },
+  {
+    label: "epanet-js vs WaterCAD/WaterGEMS",
+    href: "/compare/epanet-js-vs-watercad-watergems",
+    description:
+      "How epanet-js compares with Bentley OpenFlows WaterCAD and WaterGEMS.",
+    icon: Scale,
+  },
+  {
+    label: "epanet-js vs InfoWorks WS Pro",
+    href: "/compare/epanet-js-vs-infoworks-ws-pro",
+    description: "How epanet-js compares with Autodesk InfoWorks WS Pro.",
+    icon: Scale,
+  },
+];
 
 export const navSections: NavSection[] = [solutions, whoItsFor, resources];

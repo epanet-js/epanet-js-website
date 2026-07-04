@@ -5,7 +5,7 @@ import { useState } from "react";
 import { IteratingLogoIcon, LogoIconAndWordmarkIcon } from "./icons";
 import { useTranslations } from "@i18n/utils";
 import type { Locale } from "@i18n/utils";
-import { solutions, whoItsFor } from "@config/navigation";
+import { solutions, whoItsFor, comparePages } from "@config/navigation";
 
 // New sections (Solutions, Who it's for, Security) are English-only pages, so
 // they link without the locale prefix — mirroring the mega-menu navigation.
@@ -303,6 +303,29 @@ export default function Footer({ lang = "en" }: Props) {
                 >
                   {t("footer.cookies")}
                 </a>
+              </nav>
+            </div>
+
+            {/* Compare */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-white">
+                <a
+                  href="/compare"
+                  className="hover:text-gray-200 transition-colors"
+                >
+                  Compare
+                </a>
+              </h3>
+              <nav className="flex flex-col space-y-3">
+                {comparePages.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                ))}
               </nav>
             </div>
           </div>

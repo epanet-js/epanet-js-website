@@ -1,0 +1,339 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import ComparisonTable from "@components/marketing/ComparisonTable.astro";
+import type {
+  ComparisonRow,
+  ComparisonRowGroup,
+} from "@components/marketing/ComparisonTable.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import BrowserAppDemo from "@components/demos/BrowserAppDemo.astro";
+import ScenarioCompareDemo from "@components/demos/ScenarioCompareDemo.astro";
+import ResultsExportDemo from "@components/demos/ResultsExportDemo.astro";
+import { comparePages } from "@config/navigation";
+
+export const prerender = true;
+const lang = "en";
+
+const glanceGroups: ComparisonRowGroup[] = [
+  {
+    title: "Platform & install",
+    rows: [
+      {
+        label: "Runs on",
+        values: [
+          "Any modern browser: Mac, Windows, Linux, Chromebooks",
+          {
+            text: "Windows only",
+            note: "standalone or inside MicroStation, AutoCAD, ArcGIS Pro",
+          },
+        ],
+      },
+      {
+        label: "Install and IT setup",
+        values: [
+          { text: "None", note: "open app.epanetjs.com" },
+          {
+            text: "Desktop install",
+            note: "CAD and GIS hosts need their own licenses",
+          },
+        ],
+      },
+      {
+        label: "Where your model lives",
+        values: [
+          "On your machine, with opt-in cloud sharing",
+          "On your Windows workstation",
+        ],
+      },
+    ],
+  },
+  {
+    title: "Engine & compatibility",
+    rows: [
+      {
+        label: "Hydraulic engine",
+        values: [
+          { text: "EPANET 2.3", note: "Toolkit 2.3.5, unmodified" },
+          { text: "EPANET-derived", note: "with Bentley enhancements" },
+        ],
+      },
+      { label: "Opens and saves EPANET .inp", values: [true, true] },
+      { label: "Extended period simulation", values: [true, true] },
+      { label: "Pressure-driven demand", values: [true, true] },
+      {
+        label: "Water quality, including multi-species (MSX)",
+        values: [true, true],
+      },
+      { label: "Fire flow analysis", values: [true, true] },
+      { label: "Scenario management", values: [true, true] },
+      {
+        label: "Transient (surge) analysis",
+        values: [
+          false,
+          { text: "Included", note: "Standard tier and up (formerly HAMMER)" },
+        ],
+      },
+      {
+        label: "Genetic-algorithm design optimization",
+        values: [
+          false,
+          { text: "Darwin Designer, Scheduler", note: "top tiers only" },
+        ],
+      },
+      {
+        label: "SCADA integration",
+        values: [false, { text: "SCADAConnect", note: "top tiers only" }],
+      },
+    ],
+  },
+  {
+    title: "Data exchange",
+    rows: [
+      {
+        label: "GIS import",
+        values: [
+          "Shapefile, GeoJSON, CAD",
+          "ModelBuilder: shapefiles, geodatabases, ODBC, spreadsheets",
+        ],
+      },
+      {
+        label: "Customer points and demand allocation",
+        values: [true, true],
+      },
+      {
+        label: "Results export",
+        values: [
+          "CSV, XLSX, Shapefile, GeoJSON",
+          "FlexTables, MS Office, Google Earth",
+        ],
+      },
+    ],
+  },
+  {
+    title: "Licensing & pricing",
+    rows: [
+      {
+        label: "Model size limits",
+        values: [
+          "None on any plan",
+          {
+            text: "Pipe-count tiers",
+            note: "100 / 1,000 / 5,000 / unlimited",
+          },
+        ],
+      },
+      {
+        label: "Entry price",
+        values: [
+          { text: "Free", note: "Pro $950/yr" },
+          {
+            text: "$982/yr for up to 100 pipes",
+            note: "unlimited pipes $16,137/yr",
+          },
+        ],
+      },
+      { label: "Free plan", values: [true, false] },
+      { label: "Try it without talking to sales", values: [true, false] },
+      { label: "Open source", values: [true, false] },
+    ],
+  },
+];
+
+const pricingRows: ComparisonRow[] = [
+  {
+    label: "How it's sold",
+    values: [
+      "Free plan, or monthly and annual subscriptions",
+      "12-month Virtuoso subscriptions, or quote-based perpetual licenses",
+    ],
+  },
+  {
+    label: "Up to 100 pipes",
+    values: [{ text: "Free" }, { text: "Essentials: $982/yr" }],
+  },
+  {
+    label: "Up to 1,000 pipes",
+    values: [{ text: "Free" }, { text: "Standard: $3,225/yr" }],
+  },
+  {
+    label: "Up to 5,000 pipes",
+    values: [{ text: "Free" }, { text: "Advanced: $9,682/yr" }],
+  },
+  {
+    label: "Unlimited pipes",
+    values: [
+      { text: "Free", note: "Pro at $950/yr adds advanced features" },
+      { text: "Ultimate: $16,137/yr" },
+    ],
+  },
+  {
+    label: "Team licensing",
+    values: [
+      {
+        text: "Teams: $4,400/yr + $600/user/yr",
+        note: "floating licenses, minimum 2",
+      },
+      {
+        text: "Per license",
+        note: "perpetual + SELECT maintenance quoted by sales",
+      },
+    ],
+  },
+  {
+    label: "Students and educators",
+    values: [
+      { text: "Free education license" },
+      { text: "Free student access", note: "via Bentley Education" },
+    ],
+  },
+];
+
+const related = comparePages.filter(
+  (p) => p.href !== "/compare/epanet-js-vs-watercad-watergems"
+);
+
+const faqs = [
+  {
+    question: "Can epanet-js open a WaterCAD or WaterGEMS model?",
+    answer:
+      "Yes. Export your model to EPANET format from WaterCAD or WaterGEMS (File > Export > EPANET) and open the .inp in epanet-js. The network, demands, patterns, controls, and water quality setup carry across. Bentley's documentation notes that data specific to its own tools, such as scenarios and Darwin settings, stays behind in the export. See <a href=\"/solutions/model-import\">model import</a> for details.",
+  },
+  {
+    question: "Can I move a model back to WaterCAD or WaterGEMS?",
+    answer:
+      "Yes. epanet-js saves standard EPANET .inp files, and both tools import them directly. Models move in both directions, so you can try epanet-js on a real project without giving anything up.",
+  },
+  {
+    question: "How much do WaterCAD and WaterGEMS cost?",
+    answer:
+      "Bentley sells them together as OpenFlows Water, licensed by pipe count. Published US list prices on Bentley's Virtuosity store (August 2025): Essentials (up to 100 pipes) $982/yr, Standard (up to 1,000) $3,225/yr, Advanced (up to 5,000) $9,682/yr, Ultimate (unlimited) $16,137/yr. Perpetual licenses are quoted by sales. epanet-js has no pipe limits on any plan, including the free one.",
+  },
+  {
+    question: "What's the difference between WaterCAD and WaterGEMS?",
+    answer:
+      "Historically WaterCAD was the base product and WaterGEMS added GIS integration and the Darwin optimization tools. Since July 2024 Bentley sells one product, OpenFlows Water, and that split now lives in its tiers: the ArcGIS integration and Darwin tools sit in the Advanced and Ultimate tiers.",
+  },
+  {
+    question: "Does epanet-js limit how big my model can be?",
+    answer:
+      "No. Every epanet-js plan, including the free one, handles models from a few hundred pipes to several hundred thousand junctions. There are no pipe-count tiers to buy your way up.",
+  },
+  {
+    question: "Do the two tools give the same results?",
+    answer:
+      "Both are built on the EPANET engine lineage. epanet-js runs the current EPANET 2.3 toolkit unmodified. Bentley describes its solver as based on EPANET with its own enhancements, and documents compatibility modes that reproduce plain EPANET results up to version 2.2.",
+  },
+];
+---
+
+<Layout
+  title="epanet-js vs WaterCAD and WaterGEMS"
+  description="Compare epanet-js and Bentley OpenFlows WaterCAD and WaterGEMS: features, pipe-count license tiers, pricing, and how to use them together. epanet-js runs the EPANET 2.3 engine with no model size limits, starting free."
+  lang={lang}>
+  <PageHero
+    title="epanet-js vs WaterCAD and WaterGEMS"
+    subtitle="Bentley sells WaterCAD and WaterGEMS as OpenFlows Water, licensed by pipe count: $982 a year buys a 100-pipe cap, and unlimited pipes cost $16,137 a year. epanet-js puts no limit on model size on any plan, including the free one, and trades standard .inp files with Bentley's tools in both directions.">
+    <BrowserAppDemo slot="media" />
+  </PageHero>
+
+  <ComparisonTable
+    heading="At a glance"
+    subheading="The essentials, side by side. Details and sources below."
+    caption="Feature comparison of epanet-js and Bentley OpenFlows WaterCAD and WaterGEMS"
+    columns={["epanet-js", "WaterCAD / WaterGEMS"]}
+    groups={glanceGroups}
+    footnote="WaterCAD and WaterGEMS capabilities as described in Bentley's public product documentation, data sheets, and store tier definitions, July 2026."
+  />
+
+  <ContentMediaRow title="What you get with epanet-js">
+    <p>
+      The pipe count question disappears. A rural network with 300 pipes and a
+      citywide model with 300,000 junctions run on the same plan, so you never
+      pick a license tier by guessing how big the model will get. The free
+      plan runs the full EPANET 2.3 engine with extended period simulation,
+      fire flow, and water quality included.
+    </p>
+    <p>
+      Day-to-day work is the focus: drawing with snapping and automatic pipe
+      splitting, batch edits, undo and redo, and scenarios you can create and
+      compare without bookkeeping. It runs in a browser on any machine, your
+      model stays on your machine, prices are published, and the source code
+      is public. Choosing epanet-js also supports the continued development of
+      EPANET itself.
+    </p>
+    <ScenarioCompareDemo slot="media" />
+  </ContentMediaRow>
+
+  <ProseSection title="What WaterCAD and WaterGEMS offer that epanet-js doesn't">
+    <p>
+      OpenFlows Water covers analysis well beyond the EPANET core. Transient
+      (surge) analysis, the former HAMMER product, is built into the Standard
+      tier and above. The top tiers add the Darwin suite of genetic-algorithm
+      optimization: Darwin Designer for least-cost pipe sizing and Darwin
+      Scheduler for pump schedules, plus Skelebrator for skeletonization and
+      SCADAConnect for live SCADA integration. epanet-js offers none of those.
+    </p>
+    <p>
+      The same product can also run inside MicroStation, AutoCAD, or ArcGIS
+      Pro for teams whose deliverables live in those environments (the host
+      platforms are licensed separately). Bentley backs it with structured
+      training through Virtuoso subscription credits, an extensive knowledge
+      base, and free student access through Bentley Education.
+    </p>
+    <p>
+      For a utility that runs surge studies or optimization-driven design on a
+      regular basis, those tiers buy real capability. For the everyday
+      modeling in between, they may be more product, and more license, than
+      the work requires.
+    </p>
+  </ProseSection>
+
+  <ContentMediaRow title="Data in, data out: use both" reverse
+    cta={{ label: "More on model import", href: "/solutions/model-import" }}>
+    <p>
+      WaterCAD, WaterGEMS, and epanet-js all read and write EPANET .inp
+      files, so the model's core, its network, demands, patterns, controls,
+      and water quality setup, moves freely between them. Bentley's own
+      documentation is clear that tool-specific extras such as scenarios and
+      Darwin configurations stay behind on export; the hydraulics travel.
+    </p>
+    <p>
+      In practice that means you can build and maintain the model in
+      epanet-js, run the routine analysis there, and export a .inp whenever a
+      surge study, an optimization run, or a client's required format calls
+      for a Bentley seat. One subscription for the specialist work instead of
+      one per modeler.
+    </p>
+    <ResultsExportDemo slot="media" />
+  </ContentMediaRow>
+
+  <ComparisonTable
+    heading="Pricing"
+    subheading="Published prices only. Bentley licenses by pipe count; epanet-js doesn't."
+    caption="Pricing comparison of epanet-js and Bentley OpenFlows WaterCAD and WaterGEMS"
+    columns={["epanet-js", "OpenFlows Water"]}
+    rows={pricingRows}
+    footnote="WaterCAD and WaterGEMS are sold together as Bentley OpenFlows Water. Prices are Bentley's published US list prices on the Virtuosity store as of August 2025; Bentley's store shows regional pricing, and perpetual licensing with SELECT maintenance is quoted by sales. epanet-js pricing is at epanetjs.com/pricing."
+  />
+
+  <CardGrid
+    heading="Comparing something else?"
+    items={related}
+    columns={2}
+  />
+
+  <FaqList
+    subheading="Common questions about moving between epanet-js and Bentley's water modeling tools."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Run your model without a pipe limit"
+    subheading="Export a .inp from WaterCAD or WaterGEMS and open it in epanet-js in a couple of minutes. No install, no tier decision, and the free plan has no model size limit."
+  />
+</Layout>
