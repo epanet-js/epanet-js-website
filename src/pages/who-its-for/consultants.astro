@@ -6,6 +6,7 @@ import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
 import CalibrationPanel from "@components/demos/CalibrationPanel.astro";
 import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
+import ResultsExportDemo from "@components/demos/ResultsExportDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -66,6 +67,11 @@ const faqs = [
     question: "Can I exchange models with clients on other tools?",
     answer:
       "Yes. epanet-js opens and works with standard EPANET <strong>.inp</strong> files, so you can take a client's existing model in and hand a model back without a proprietary format getting in the way.",
+  },
+  {
+    question: "Can I use epanet-js alongside InfoWater or WaterCAD?",
+    answer:
+      "Yes, and many consultants do. Every major platform imports and exports standard .inp, so you can do the fast model building and testing in epanet-js and deliver through the tool the client requires. See how they compare: <a href=\"/compare/epanet-js-vs-infowater\">InfoWater Pro</a>, <a href=\"/compare/epanet-js-vs-watercad-watergems\">WaterCAD / WaterGEMS</a>, and <a href=\"/compare/epanet-js-vs-infoworks-ws-pro\">InfoWorks WS Pro</a>.",
   },
   {
     question: "How does licensing work for a consultancy?",
@@ -150,6 +156,26 @@ const faqs = [
       a security questionnaire is a short one.
     </p>
     <LocalFirstDiagram slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Deliver in the format the client requires"
+    reverse>
+    <p>
+      A deliverable arrives in whatever format the client's standards say it
+      does. epanet-js keeps every exit open: hand back a standard
+      <strong>.inp</strong> model, export assets as GeoJSON, CSV, Shapefile, or
+      XLSX for the client's GIS, and pull full time-series results into the
+      tables your report needs.
+    </p>
+    <p>
+      When a client requires InfoWater, WaterCAD, or InfoWorks, that isn't a
+      reason to give up the speed. All of them exchange .inp, so you can build,
+      calibrate, and test options in epanet-js, then finalize the deliverable in
+      the platform the client runs. The fast tool and the required tool work on
+      the same model.
+    </p>
+    <ResultsExportDemo slot="media" />
   </ContentMediaRow>
 
   <BenefitGrid

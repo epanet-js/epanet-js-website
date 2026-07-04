@@ -22,19 +22,19 @@ Demos may be shared across pages (precedent: `LocalFirstDiagram`, which appeared
 
 | Page | Status | Real captures | Demos today | Empty slots | Headline action |
 |---|---|---|---|---|---|
-| solutions/model-build | Complete | 8 | 1 | 0 | ~~ADD ElevationDemo~~ **DONE**; optional swaps remain |
+| solutions/model-build | Complete | 6 | 3 | 0 | ~~ADD ElevationDemo~~ **DONE**; ~~optional swaps~~ **DONE** |
 | solutions/fire-flow | Complete | 2 | 2 | 0 | ~~ADD PressureFlowCurveDemo~~ **DONE** |
 | solutions/calibration | Complete | 0 | 5 | 0 | ~~Strip captions; ADD 2 demos~~ **DONE** |
-| solutions/operational-modeling | Complete | 4 | 1 | 0 | 2 NEW SECTIONs; 1 REPLACE |
+| solutions/operational-modeling | Complete | 3 | 4 | 0 | ~~2 NEW SECTIONs; 1 REPLACE~~ **DONE** |
 | solutions/demand-analysis | Complete | 2 | 3 | 0 | ~~Policy sweep; ADD 2 demos~~ **DONE** |
 | solutions/planning | Complete | 1 | 2 | 2 | ~~Policy sweep; ScenarioTreeDemo~~ **DONE** (2 rows text-only by design) |
 | solutions/field-planning | Complete | 1 | 4 (incl. custom) | 0 | ~~Policy sweep; ADD 3 demos~~ **DONE** |
 | solutions/model-import | Rebuilt | 2 | 3 | 0 | ~~REBUILD~~ **DONE** |
 | solutions/water-quality | Rebuilt | 0 | 4 | 0 | ~~REBUILD (4 demos ready)~~ **DONE** |
 | solutions/valve-criticality | Rebuilt | 0 | 3 | 0 | ~~REBUILD (demos ready)~~ **DONE** |
-| who-its-for/utilities | Complete | 4 | 1 | 0 | Optional swap only |
-| who-its-for/consultants | Thinnest | 1 | 2 | 0 | 1 NEW SECTION; strip caption |
-| who-its-for/education | Complete | 3 | 0 | 0 | 1 REPLACE (dedupe asset) |
+| who-its-for/utilities | Complete | 3 | 2 | 0 | ~~Optional swap~~ **DONE** |
+| who-its-for/consultants | Complete | 1 | 3 | 0 | ~~1 NEW SECTION; strip caption~~ **DONE** |
+| who-its-for/education | Complete | 2 | 1 | 0 | ~~1 REPLACE (dedupe asset)~~ **DONE** |
 | who-its-for/humanitarian-ngos | Complete | 1 | 3 (+custom) | 0 | ~~ADD + REPLACE~~ **DONE** |
 
 ## Cross-cutting policy sweep
@@ -68,8 +68,8 @@ Minor, optional polish (not policy):
 **Changes:**
 
 - ~~**ADD** `ElevationDemo` → "Accurate ground levels, anywhere in the world" (currently text-only). The demo shows the prioritized elevation-sources stack, your GeoTIFFs down to global terrain, which is exactly what the row describes. No new text.~~ **DONE**
-- **REPLACE (optional)** `/assets/images/epanet-js-app.png` on "Simulate in the browser, read results on the map" → `SimulationRunDemo`. The screenshot is generic and appears on 3 pages; the demo animates exactly this claim (press Simulate, map recolors, legend appears).
-- **REPLACE (optional)** `/assets/blog/progress-report/2026-04/2026-04-02-welcome.webp` on "Bring in the GIS you already have" → `GisImportDemo` (shapefile drops in, network appears, import summary). The welcome-screen image is generic and reused on utilities and education.
+- ~~**REPLACE (optional)** `/assets/images/epanet-js-app.png` on "Simulate in the browser, read results on the map" → `SimulationRunDemo`. The screenshot is generic and appears on 3 pages; the demo animates exactly this claim (press Simulate, map recolors, legend appears).~~ **DONE** (epanet-js-app.png now only on education)
+- ~~**REPLACE (optional)** `/assets/blog/progress-report/2026-04/2026-04-02-welcome.webp` on "Bring in the GIS you already have" → `GisImportDemo` (shapefile drops in, network appears, import summary). The welcome-screen image is generic and reused on utilities and education.~~ **DONE** (welcome.webp no longer used on any audited page)
 - Keep all five real workflow videos; they show the actual features.
 - **NEW SECTION (optional, bench):** a "work at scale" row using `AssetSearchDemo` / `SelectionBatchEditDemo` / `DataTableDemo`. Only if the page wants to grow; it is already the fullest on the site.
 
@@ -100,9 +100,9 @@ Minor, optional polish (not policy):
 
 **Changes:**
 
-- **REPLACE** `/assets/images/epanet-js-app.png` on "Watch the whole system react" → `EpsPlaybackDemo` (24-hour playback, network extremities shifting at the evening peak). Retires the generic screenshot's second use.
-- **NEW SECTION** "Plan shutdowns before the crew rolls" → `ShutdownPlanDemo` (two valves close, isolated main grays out, length/customers-affected fill in, detour draws). ~2 paragraphs of new copy; the "everyday questions" prose is source material. Note: also proposed on valve-criticality — sharing is fine, flag in review.
-- **NEW SECTION** on pump scheduling and controls → `PumpScheduleDemo` (pump runs shift out of the peak-tariff band, daily energy cost drops 23%) or `ControlRuleDemo` (rule types out, pump flips on at the trigger). PumpScheduleDemo is the more compelling story. ~2 paragraphs of new copy. `TankOperationsDemo` is the bench alternate.
+- ~~**REPLACE** `/assets/images/epanet-js-app.png` on "Watch the whole system react" → `EpsPlaybackDemo` (24-hour playback, network extremities shifting at the evening peak). Retires the generic screenshot's second use.~~ **DONE**
+- ~~**NEW SECTION** "Plan shutdowns before the crew rolls" → `ShutdownPlanDemo` (two valves close, isolated main grays out, length/customers-affected fill in, detour draws). ~2 paragraphs of new copy; the "everyday questions" prose is source material. Note: also proposed on valve-criticality — sharing is fine, flag in review.~~ **DONE** (shared with valve-criticality as flagged; copy angles differ — ops page covers backfeeds and pressure-dependent analysis)
+- ~~**NEW SECTION** on pump scheduling and controls → `PumpScheduleDemo` (pump runs shift out of the peak-tariff band, daily energy cost drops 23%) or `ControlRuleDemo` (rule types out, pump flips on at the trigger). PumpScheduleDemo is the more compelling story. ~2 paragraphs of new copy. `TankOperationsDemo` is the bench alternate.~~ **DONE** — went with `PumpScheduleDemo` ("Find a pump schedule that costs less to run"); ControlRuleDemo stays on the bench
 - ~~**REWRITE** — fix the "scenarios request for comments" link to `/blog/scenarios-request-for-comments`.~~ **DONE**
 
 ### demand-analysis — complete-ish; policy sweep + two fills
@@ -194,7 +194,7 @@ Plus BenefitGrid, FAQs, "Where to next" CardGrid, both CTAs.
 **Changes:**
 
 - None required.
-- **REPLACE (optional)** `welcome.webp` on "Built on EPANET, open and affordable" → `LicenseTimelineDemo`. The copy literally describes the FSL → MIT timeline the demo animates, and it dedupes an asset used on three pages. (Also proposed on humanitarian-ngos; decide which page gets it, or share.)
+- ~~**REPLACE (optional)** `welcome.webp` on "Built on EPANET, open and affordable" → `LicenseTimelineDemo`. The copy literally describes the FSL → MIT timeline the demo animates, and it dedupes an asset used on three pages. (Also proposed on humanitarian-ngos; decide which page gets it, or share.)~~ **DONE** — shared with humanitarian-ngos (2-page share, precedent allows)
 
 ### consultants — thinnest of the four; expand
 
@@ -203,7 +203,7 @@ Plus BenefitGrid, FAQs, "Where to next" CardGrid, both CTAs.
 **Changes:**
 
 - ~~**REWRITE** — remove the "Illustrative concept" caption.~~ **DONE**
-- **NEW SECTION** "Deliver in the format the client requires" → `ResultsExportDemo`. Data in and data out is the core consultant pitch (per CLAUDE.md comparison posture: epanet-js plus the incumbent is the best of both worlds). ~2 paragraphs of new copy; add one FAQ on working alongside InfoWater/WaterCAD, linking the `/compare/*` pages.
+- ~~**NEW SECTION** "Deliver in the format the client requires" → `ResultsExportDemo`. Data in and data out is the core consultant pitch (per CLAUDE.md comparison posture: epanet-js plus the incumbent is the best of both worlds). ~2 paragraphs of new copy; add one FAQ on working alongside InfoWater/WaterCAD, linking the `/compare/*` pages.~~ **DONE** (section + FAQ with all three compare links)
 - Hero stays media-free (policy prefers no media over a stretch; the page reads fine).
 - **Bench (optional):** `ProfilePlotDemo` or `TimeSeriesPlotDemo` for a client-deliverables row if the page should grow further.
 
@@ -213,7 +213,7 @@ Plus BenefitGrid, FAQs, "Where to next" CardGrid, both CTAs.
 
 **Changes:**
 
-- **REPLACE** `welcome.webp` on "Spend class time teaching, not troubleshooting" → `BrowserAppDemo` (URL types out, app loads, no-install / no-login / runs-on-your-device chips — the exact zero-install claim). Dedupes the asset.
+- ~~**REPLACE** `welcome.webp` on "Spend class time teaching, not troubleshooting" → `BrowserAppDemo` (URL types out, app loads, no-install / no-login / runs-on-your-device chips — the exact zero-install claim). Dedupes the asset.~~ **DONE**
 - Keep `ctrl-draw.mp4` and keep `epanet-js-app.png` on "The same engine they'll use at work" (a real screenshot fits that claim).
 
 ### humanitarian-ngos — prose complete; two media improvements
@@ -233,7 +233,7 @@ Plus BenefitGrid, FAQs, "Where to next" CardGrid, both CTAs.
 1. ~~**Policy sweep** (mechanical, no new copy): planning, demand-analysis, field-planning, calibration, consultants — badges, captions, future-tense copy, CTA overrides, `/blog` RFC links. Small diffs, fixes tone site-wide.~~ **DONE**
 2. ~~**Stub rebuilds** (the big lift, most new copy): water-quality, valve-criticality, model-import. Demos are ready for all three; water-quality is the easiest win (four purpose-built demos, outline above).~~ **DONE**
 3. ~~**Demo fills** (no new copy — drop demos into existing text-only rows): fire-flow, calibration, field-planning, demand-analysis, planning, model-build, humanitarian-ngos.~~ **DONE** (July 2026; calibration's either/or went to ObservedOverlayDemo, field-planning got HydrantTestPlanDemo with the one added sentence)
-4. **New sections and swaps** (new copy or judgment calls): operational-modeling's shutdown and pump-scheduling sections, consultants' deliverables section, then the optional generic-screenshot replacements (model-build, education, utilities).
+4. ~~**New sections and swaps** (new copy or judgment calls): operational-modeling's shutdown and pump-scheduling sections, consultants' deliverables section, then the optional generic-screenshot replacements (model-build, education, utilities).~~ **DONE** (July 2026; all optional swaps included — PumpScheduleDemo chosen over ControlRuleDemo, LicenseTimelineDemo shared between utilities and humanitarian-ngos)
 
 ## Demo bench and gaps
 
@@ -250,14 +250,14 @@ Demos still unused after everything above, with optional homes:
 | `WaterBalanceDemo` | same |
 | `DemandCategoriesDemo` | alternate for demand-analysis patterns row |
 | `PatternEditorDemo` | same |
-| `TankOperationsDemo` | alternate for operational-modeling pump section |
-| `ControlRuleDemo` | operational-modeling pump section (if `PumpScheduleDemo` not chosen) |
+| `TankOperationsDemo` | alternate for operational-modeling pump section (PumpScheduleDemo was chosen; stays bench) |
+| `ControlRuleDemo` | operational-modeling pump section — not chosen (`PumpScheduleDemo` won); stays bench |
 | `PumpCurveDemo` | operational-modeling or education coursework contexts |
 | `TimeSeriesPlotDemo` | consultants deliverables row (optional) |
 | `ProfilePlotDemo` | consultants or planning deliverables (optional) |
 | ~~`ProjectionFinderDemo`~~ | ~~model-import row 4 (if the real capture stays in the hero)~~ **DONE** — used on model-import |
 
-`GisImportDemo`, `NetworkDrawDemo`, `SimulationRunDemo`, `BrowserAppDemo`, `InpCompatReportDemo`, `ResultsExportDemo` currently live only on `/compare/*` pages; the recommendations above give several of them second homes.
+~~`GisImportDemo`, `NetworkDrawDemo`, `SimulationRunDemo`, `BrowserAppDemo`, `InpCompatReportDemo`, `ResultsExportDemo` currently live only on `/compare/*` pages; the recommendations above give several of them second homes.~~ **DONE** — all but `NetworkDrawDemo` now have homes beyond `/compare/*`: `GisImportDemo` + `SimulationRunDemo` on model-build, `BrowserAppDemo` on education, `InpCompatReportDemo` + `ResultsExportDemo` on model-import, `ResultsExportDemo` also on consultants.
 
 **Demo gaps** (features with no matching demo; candidates for new components):
 
