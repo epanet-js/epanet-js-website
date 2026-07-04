@@ -2,10 +2,84 @@
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import ValveCriticalityDemo from "@components/demos/ValveCriticalityDemo.astro";
+import TraceDemo from "@components/demos/TraceDemo.astro";
+import ShutdownPlanDemo from "@components/demos/ShutdownPlanDemo.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { AlertTriangle, Users, Network, ClipboardCheck } from "lucide-react";
 
 export const prerender = true;
 const lang = "en";
+
+const benefits = [
+  {
+    icon: Network,
+    title: "Segments, not guesswork",
+    description:
+      "See exactly which pipes and customers each valve isolates, computed from the network itself.",
+  },
+  {
+    icon: Users,
+    title: "Customer counts you can defend",
+    description:
+      "Impact is measured in customers affected and demand isolated, drawn from the customer points in your model.",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Single points of failure, found",
+    description:
+      "Valves with no backup and an outsized isolation area stand out, so you know where redundancy is thinnest.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Straight into shutdown plans",
+    description:
+      "The same segment logic drives shutdown planning, so a criticality finding turns into an operational plan.",
+  },
+];
+
+const related = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) => i.href !== "/solutions/valve-criticality")
+  .slice(0, 3);
+
+const faqs = [
+  {
+    question: "What makes a valve critical?",
+    answer:
+      "The consequence of closing it. A valve is critical when the segment it isolates is large, serves many customers, or has no alternative supply path, and especially when no backup valve can take over its role. Criticality analysis measures those consequences for every valve so you can rank them instead of guessing.",
+  },
+  {
+    question: "How is the isolated segment worked out?",
+    answer:
+      "By tracing the network's connectivity. From any point, the trace spreads outward and stops at the assets that bound the segment: closed valves, pumps, tanks, and other control assets. What's inside that boundary is what a closure takes out of service.",
+  },
+  {
+    question: "Where do the customer numbers come from?",
+    answer:
+      "From the customer points in your model. Each customer point connects to a pipe and carries its own demand, so when a segment is isolated the affected customers and the demand they represent are counted directly. Customer points import from GeoJSON or Shapefile; see <a href='/solutions/demand-analysis' class='font-medium text-indigo-600 hover:text-indigo-800 transition-colors'>demand analysis</a> for how they work.",
+  },
+  {
+    question: "How does criticality relate to shutdown planning?",
+    answer:
+      "Criticality is the survey; a shutdown plan is the operation. Criticality analysis scans the whole network to find where the risk concentrates. When you need to take a specific main out of service, <a href='/solutions/operational-modeling' class='font-medium text-indigo-600 hover:text-indigo-800 transition-colors'>operational modeling</a> uses the same segment logic to plan the closure: which valves to operate, what's isolated, and whether a detour keeps everyone else in supply.",
+  },
+  {
+    question: "Do I need a calibrated model?",
+    answer:
+      "Not to start. Which valves isolate which segment is a question about the network's layout, so an accurate map of pipes, valves, and customer connections goes a long way. Calibration matters when you move on to the hydraulic consequences, such as whether a detour path holds pressure during a shutdown.",
+  },
+  {
+    question: "Can I export the results?",
+    answer:
+      "Yes. Like other results in epanet-js, criticality outputs export to GeoJSON, CSV, Shapefile, or XLSX, ready for a valve maintenance program, a GIS layer, or a report.",
+  },
+];
 ---
 
 <Layout
@@ -14,23 +88,129 @@ const lang = "en";
   lang={lang}>
   <PageHero
     title="Find the valves that matter most"
-    subtitle="Understand which valves isolate each part of the network, and where a shutdown leaves customers at risk."
-  />
+    subtitle="Understand which valves isolate each part of the network, and where a shutdown leaves customers at risk.">
+    <ValveCriticalityDemo slot="media" />
+  </PageHero>
 
   <ProseSection title="Know the impact before you close a valve">
     <p>
-      Valve criticality looks at which valves define each isolation area and what
-      a closure takes out of service, so you can see where a single valve carries
-      an outsized share of the risk.
+      Every isolation, planned or emergency, comes down to the same questions:
+      which valves have to close, what do they take out of service, and who
+      loses water? On the day of a burst there's no time to work that out, and
+      the answer is often worse than expected because one valve quietly controls
+      a far larger area than anyone assumed.
     </p>
     <p>
-      This page is a work in progress. We'll add detail on how criticality is
-      assessed and presented soon.
+      Valve criticality analysis answers those questions ahead of time, for
+      every valve in the network. It identifies the segment each valve isolates,
+      counts the customers and demand inside it, and flags the valves where a
+      single failure carries an outsized share of the risk.
     </p>
   </ProseSection>
 
+  <ContentMediaRow title="Find the segment each valve isolates">
+    <p>
+      The unit of isolation isn't a pipe, it's a segment: the portion of network
+      bounded by the valves that can actually shut it off. epanet-js finds these
+      by tracing connectivity through the model. From any starting point, the
+      trace spreads outward and stops at the assets that bound the segment,
+      closed valves, pumps, and tanks, so what you see selected is exactly what
+      a closure takes out.
+    </p>
+    <p>
+      Run that logic across the network and the map becomes an inventory of
+      isolation zones. Small, well-valved segments in one place; a single
+      sprawling segment in another, waiting for the day its one valve fails to
+      seat.
+    </p>
+    <TraceDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="See who's affected before you close anything">
+    <p>
+      A segment's size in meters of main understates what matters: the people
+      connected to it. Because customer points in epanet-js connect to specific
+      pipes and carry their own demand, isolating a segment counts the affected
+      customers and the demand they represent directly. Closing one valve might
+      isolate 142 customers and 4.6 L/s of demand; the valve two streets over,
+      half that. Those are the numbers that set priorities.
+    </p>
+    <p>
+      The analysis also flags the condition that turns an incident into an
+      event: a critical valve with no backup. When the count of backup valves is
+      zero, that valve is the only thing standing between a burst and a much
+      larger outage, which makes it a strong candidate for the next inspection
+      and exercise program.
+    </p>
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="From criticality to shutdown planning"
+    reverse
+    cta={{ label: "See operational modeling", href: "/solutions/operational-modeling" }}>
+    <p>
+      Criticality tells you where the risk is; a shutdown plan is what you do
+      about it when work is scheduled. The same segment logic drives both. Pick
+      the main to be replaced and the model shows the valves to close, the
+      length isolated, the customers affected, and whether a detour path keeps
+      the rest of the network in supply while the work happens.
+    </p>
+    <p>
+      Planning the closure in the model means the crew arrives with a valve
+      list instead of a theory, and the customers who will lose supply are known
+      and notified rather than discovered.
+    </p>
+    <ShutdownPlanDemo slot="media" />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    heading="What valve criticality gives you"
+    items={benefits}
+    columns={4}
+  />
+
   <CtaSection
     heading="Understand your network's weak points"
-    subheading="Launch epanet-js free, or book a demo to talk through valve criticality on your network."
+    subheading="See which valves carry the most risk in your own model. Launch epanet-js free, or book a demo."
+    dark={false}
+  />
+
+  <ProseSection title="From risk survey to daily operations">
+    <p>
+      Utilities use valve criticality to target maintenance where it counts:
+      the exercise program starts with the valves whose failure would hurt most,
+      and the case for new valves is made with customer counts rather than
+      instinct. Consultants use it in resilience studies to show a client, on a
+      map, where the network's redundancy is thinnest.
+    </p>
+    <p>
+      And because it runs on the same model as everything else, the findings
+      feed straight into <a
+        href="/solutions/operational-modeling"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >operational modeling</a
+      > for shutdown planning and into <a
+        href="/solutions/planning"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >planning</a
+      > when the fix is capital work rather than a maintenance visit.
+    </p>
+  </ProseSection>
+
+  <CardGrid
+    heading="Where to next"
+    subheading="Valve criticality is one part of understanding your network."
+    items={related}
+    columns={3}
+  />
+
+  <FaqList
+    subheading="The questions teams ask most about valve criticality in epanet-js."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Find your critical valves before they find you"
+    subheading="Run valve criticality on your own network. Launch epanet-js or book a demo."
   />
 </Layout>

@@ -29,9 +29,9 @@ Demos may be shared across pages (precedent: `LocalFirstDiagram` appears on 4 pa
 | solutions/demand-analysis | Complete-ish | 2 | 1 | 2 | Policy sweep; ADD 2 demos |
 | solutions/planning | Media-thin | 1 | 1 | 3 | Policy sweep; ScenarioTreeDemo |
 | solutions/field-planning | Media-thin | 1 | 1 (custom) | 3 | Policy sweep; ADD 3 demos |
-| solutions/model-import | **Stub** | 1 | 0 | — | REBUILD |
-| solutions/water-quality | **Stub** | 0 | 0 | — | REBUILD (4 demos ready) |
-| solutions/valve-criticality | **Stub** | 0 | 0 | — | REBUILD (demos ready) |
+| solutions/model-import | Rebuilt | 2 | 3 | 0 | ~~REBUILD~~ **DONE** |
+| solutions/water-quality | Rebuilt | 0 | 4 | 0 | ~~REBUILD (4 demos ready)~~ **DONE** |
+| solutions/valve-criticality | Rebuilt | 0 | 3 | 0 | ~~REBUILD (demos ready)~~ **DONE** |
 | who-its-for/utilities | Complete | 4 | 1 | 0 | Optional swap only |
 | who-its-for/consultants | Thinnest | 1 | 2 | 0 | 1 NEW SECTION; strip caption |
 | who-its-for/education | Complete | 3 | 0 | 0 | 1 REPLACE (dedupe asset) |
@@ -45,7 +45,7 @@ CLAUDE.md core policy: the site does not distinguish shipped from in-development
 2. ~~**"Coming soon to epanet-js." in meta descriptions** — same three pages.~~ **DONE**
 3. ~~**"Illustrative concept" / "Concept preview — in development" captions** — calibration (3: hero, field-data row, assistant-panel row), demand-analysis (hero), planning ("Lay the plan out across the years"), field-planning (hero), who-its-for/consultants (CalibrationPanel row). Remove all.~~ **DONE**
 4. **Future-tense copy:**
-   - "This page is a work in progress. We'll add detail… soon." — the three stubs (superseded by the rebuilds below).
+   - ~~"This page is a work in progress. We'll add detail… soon." — the three stubs (superseded by the rebuilds below).~~ **DONE** (all three stubs rebuilt)
    - ~~FAQ items framed as unshipped: planning "Is planning available now?"; equivalents on demand-analysis and field-planning.~~ **DONE**
    - ~~FaqList subheadings such as "How staged, long-horizon planning **will** work in epanet-js."~~ **DONE**
    - ~~CardGrid headings "Available now" with subheading "While X is in development, explore what you can do today." (planning, demand-analysis, field-planning) → use the standard "Where to next" pattern.~~ **DONE**
@@ -141,11 +141,11 @@ Minor, optional polish (not policy):
 - **ADD** `HydrantTestPlanDemo` → "Measure what the model is least sure about", with one added sentence tying planned hydrant tests to model uncertainty. Alternatively leave text-only; the demo fit is good but not literal.
 - Keep the custom hero (works well once uncaptioned) and the acoustic-logger video.
 
-### model-import — stub → REBUILD
+### model-import — ~~stub → REBUILD~~ **DONE** (rebuilt July 2026)
 
 **Today:** ~80 words of real prose. Hero with real capture (`2026-03-00-projection.png`), one ProseSection ("This page is a work in progress"), one CTA. No FAQs, no BenefitGrid, no related links.
 
-**Rebuild to the full-page pattern** (hero, intro prose, ~4 rows, BenefitGrid, light CTA, "Where to next" CardGrid, 5–7 FAQs, dark CTA). ~1,100–1,400 words of new copy. Proposed outline:
+~~**Rebuild to the full-page pattern** (hero, intro prose, ~4 rows, BenefitGrid, light CTA, "Where to next" CardGrid, 5–7 FAQs, dark CTA). ~1,100–1,400 words of new copy.~~ **DONE** — built with the hero capture kept, the `.ejsdb` capture, `InpCompatReportDemo`, `ProjectionFinderDemo`, a migration text row linking the three compare pages, and `ResultsExportDemo`. Original outline:
 
 1. **Hero** — keep `2026-03-00-projection.png` (real capture of the projection finder placing an imported model).
 2. **"Open any EPANET .inp"** — .inp fully supported on the EPANET 2.3 engine; the native `.ejsdb` project file stores what .inp can't (customer points, zones). Real capture available: `/assets/blog/progress-report/2026-05/2026-05-02-file-format.webp` (the .ejsdb graphic from the May 2026 report).
@@ -156,11 +156,11 @@ Minor, optional polish (not policy):
 
 FAQ topics: supported formats (.inp, .ejsdb), GIS import vs model import (link `/solutions/model-build`), EPANET 2.3 compatibility, migrating from proprietary formats via .inp export, whether the model stays local. Copy sources: Feb 2026 (EPANET 2.3), Mar 2026 (projection finder), May 2026 (.ejsdb) progress reports and the compare pages' interchange copy.
 
-### water-quality — stub → REBUILD (richest unused-demo coverage)
+### water-quality — ~~stub → REBUILD (richest unused-demo coverage)~~ **DONE** (rebuilt July 2026)
 
 **Today:** ~70 words, zero media. Hero (no media), one ProseSection ("This page is a work in progress"), one CTA. Four purpose-built demos sit unused: `WaterAgeDemo`, `SourceTraceDemo`, `ChlorineBoosterDemo`, `FlushingPlanDemo`.
 
-**Rebuild to the full-page pattern.** ~1,100–1,400 words of new copy. Proposed outline:
+~~**Rebuild to the full-page pattern.** ~1,100–1,400 words of new copy.~~ **DONE** — built per the outline below (all four demos placed; MSX/constituents text row included). Original outline:
 
 1. **Hero** — `WaterAgeDemo` (age spreading band by band from the source; the most visual of the four).
 2. **"Trace where the water comes from"** — `SourceTraceDemo` (water from two treatment works meets mid-network, blend share shifting through the day).
@@ -170,11 +170,11 @@ FAQ topics: supported formats (.inp, .ejsdb), GIS import vs model import (link `
 
 Plus BenefitGrid, 5–7 FAQs (water age vs source trace vs chemical analysis, MSX, why EPS matters for quality runs, exporting results), "Where to next" CardGrid, both CTAs.
 
-### valve-criticality — stub → REBUILD
+### valve-criticality — ~~stub → REBUILD~~ **DONE** (rebuilt July 2026)
 
 **Today:** ~70 words, zero media. Hero (no media), one ProseSection ("This page is a work in progress"), one CTA. `ValveCriticalityDemo` exists unused.
 
-**Rebuild to the full-page pattern.** ~1,000–1,300 words of new copy. Proposed outline:
+~~**Rebuild to the full-page pattern.** ~1,000–1,300 words of new copy.~~ **DONE** — built per the outline below (`ValveCriticalityDemo` hero, `TraceDemo`, customers text row, `ShutdownPlanDemo` shared with the proposed operational-modeling section). Original outline:
 
 1. **Hero** — `ValveCriticalityDemo` (closing valve V-114 grays out the segment it isolates and reports customers affected).
 2. **"Find the segment each valve isolates"** — `TraceDemo` (boundary trace spreading to the closed valves that bound the zone).
@@ -231,7 +231,7 @@ Plus BenefitGrid, FAQs, "Where to next" CardGrid, both CTAs.
 ## Suggested order of work
 
 1. ~~**Policy sweep** (mechanical, no new copy): planning, demand-analysis, field-planning, calibration, consultants — badges, captions, future-tense copy, CTA overrides, `/blog` RFC links. Small diffs, fixes tone site-wide.~~ **DONE**
-2. **Stub rebuilds** (the big lift, most new copy): water-quality, valve-criticality, model-import. Demos are ready for all three; water-quality is the easiest win (four purpose-built demos, outline above).
+2. ~~**Stub rebuilds** (the big lift, most new copy): water-quality, valve-criticality, model-import. Demos are ready for all three; water-quality is the easiest win (four purpose-built demos, outline above).~~ **DONE**
 3. **Demo fills** (no new copy — drop demos into existing text-only rows): fire-flow, calibration, field-planning, demand-analysis, planning, model-build, humanitarian-ngos.
 4. **New sections and swaps** (new copy or judgment calls): operational-modeling's shutdown and pump-scheduling sections, consultants' deliverables section, then the optional generic-screenshot replacements (model-build, education, utilities).
 
@@ -255,7 +255,7 @@ Demos still unused after everything above, with optional homes:
 | `PumpCurveDemo` | operational-modeling or education coursework contexts |
 | `TimeSeriesPlotDemo` | consultants deliverables row (optional) |
 | `ProfilePlotDemo` | consultants or planning deliverables (optional) |
-| `ProjectionFinderDemo` | model-import row 4 (if the real capture stays in the hero) |
+| ~~`ProjectionFinderDemo`~~ | ~~model-import row 4 (if the real capture stays in the hero)~~ **DONE** — used on model-import |
 
 `GisImportDemo`, `NetworkDrawDemo`, `SimulationRunDemo`, `BrowserAppDemo`, `InpCompatReportDemo`, `ResultsExportDemo` currently live only on `/compare/*` pages; the recommendations above give several of them second homes.
 
