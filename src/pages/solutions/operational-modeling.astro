@@ -5,6 +5,9 @@ import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
 import ScenarioCompareDemo from "@components/demos/ScenarioCompareDemo.astro";
+import EpsPlaybackDemo from "@components/demos/EpsPlaybackDemo.astro";
+import ShutdownPlanDemo from "@components/demos/ShutdownPlanDemo.astro";
+import PumpScheduleDemo from "@components/demos/PumpScheduleDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -71,7 +74,7 @@ const faqs = [
   {
     question: "How is this different from editing the INP directly?",
     answer:
-      "Editing the file in place means duplicating models and losing track of what changed. Scenarios let you test against a fixed baseline, compare cleanly, and keep one project instead of a folder of near-identical copies. See the <a href=\"/blog\">scenarios request for comments</a> for how we're building this.",
+      "Editing the file in place means duplicating models and losing track of what changed. Scenarios let you test against a fixed baseline, compare cleanly, and keep one project instead of a folder of near-identical copies. See the <a href=\"/blog/scenarios-request-for-comments\">scenarios request for comments</a> for the full design.",
   },
   {
     question: "What about long-term, staged planning?",
@@ -142,11 +145,7 @@ const faqs = [
       can't fully meet demand, instead of assuming every customer is satisfied.
       It's the honest view for resilience work.
     </p>
-    <Media
-      slot="media"
-      src="/assets/images/epanet-js-app.png"
-      alt="Color-coded pressure and flow results across the network in epanet-js after a simulation."
-    />
+    <EpsPlaybackDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -163,6 +162,47 @@ const faqs = [
       that's been edited in a dozen places.
     </p>
     <ScenarioCompareDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Plan shutdowns before the crew rolls"
+    reverse
+    cta={{ label: "See valve criticality", href: "/solutions/valve-criticality" }}>
+    <p>
+      A planned shutdown starts with the same two questions every time: which
+      valves have to close, and who loses supply while the main is out. Close
+      the valves in a scenario and the model gives you both, along with the
+      part that's harder to guess: what happens to pressures in the rest of the
+      zone while the section is isolated.
+    </p>
+    <p>
+      If the closure leaves an area short, test a temporary backfeed or a
+      rezoned supply in the same scenario until the plan holds. Run it with
+      pressure-dependent analysis and the customer impact is realistic rather
+      than optimistic. The crew arrives with a valve list that's already been
+      tested, and the customers who will lose supply are known before the
+      first letter goes out.
+    </p>
+    <ShutdownPlanDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Find a pump schedule that costs less to run">
+    <p>
+      Pumping energy is one of the few operating costs a model can directly
+      reduce. Lay your pump runs against the electricity tariff, shift a run
+      out of the peak band or move it overnight, and re-run the simulation to
+      confirm tanks still recover and pressures stay in range. Each option
+      comes back as a daily energy figure, so you can put a number on what a
+      schedule change saves before anyone commits to it.
+    </p>
+    <p>
+      The same run covers your control rules, the logic that switches pumps on
+      tank levels or pressures. Edit a rule, simulate the full day, and watch
+      when the pump actually fires and what it does to the tank, before the
+      change goes anywhere near the real network.
+    </p>
+    <PumpScheduleDemo slot="media" class="w-full max-w-[360px] mx-auto" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -220,8 +260,6 @@ const faqs = [
       and builds on the same network. For long-horizon, staged programs rather
       than day-to-day operations, the same scenario foundation carries through to
       <a href="/solutions/planning" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">planning</a>.
-      You can follow how scenario management is taking shape on our
-      <a href="https://roadmap.epanetjs.com" target="_blank" rel="noopener noreferrer" class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors">public roadmap</a>.
     </p>
   </ProseSection>
 

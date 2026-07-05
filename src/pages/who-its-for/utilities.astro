@@ -5,6 +5,7 @@ import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
 import DeploymentOptionsDiagram from "@components/demos/DeploymentOptionsDiagram.astro";
+import LicenseTimelineDemo from "@components/demos/LicenseTimelineDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -180,11 +181,7 @@ const faqs = [
       adopt the tool widely without the budget conversation that usually limits
       modeling to a single seat.
     </p>
-    <Media
-      slot="media"
-      src="/assets/blog/progress-report/2026-04/2026-04-02-welcome.webp"
-      alt="The epanet-js welcome screen with the option to open an existing model and demo networks ready to explore."
-    />
+    <LicenseTimelineDemo slot="media" />
   </ContentMediaRow>
 
   <BenefitGrid

@@ -4,6 +4,9 @@ import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
+import ElevationDemo from "@components/demos/ElevationDemo.astro";
+import GisImportDemo from "@components/demos/GisImportDemo.astro";
+import SimulationRunDemo from "@components/demos/SimulationRunDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -146,11 +149,7 @@ const faqs = [
       Size isn't a constraint. Whether your network is a few hundred pipes or
       several hundred thousand junctions, it opens, edits, and runs.
     </p>
-    <Media
-      slot="media"
-      src="/assets/blog/progress-report/2026-04/2026-04-02-welcome.webp"
-      alt="The epanet-js welcome screen with options to start a project, open a model, or import from GIS, and demo networks ready to explore."
-    />
+    <GisImportDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -230,6 +229,7 @@ const faqs = [
       directly from disk and only loads the parts it needs, so even datasets over
       10 GB work without issue.
     </p>
+    <ElevationDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -335,11 +335,7 @@ const faqs = [
       It all happens locally, in a tab, with nothing sent to a server unless you
       choose to. That makes it fast to run and private by default.
     </p>
-    <Media
-      slot="media"
-      src="/assets/images/epanet-js-app.png"
-      alt="Color-coded pressure and flow results on the network map in epanet-js, with the legend and asset panel open."
-    />
+    <SimulationRunDemo slot="media" />
   </ContentMediaRow>
 
   <BenefitGrid

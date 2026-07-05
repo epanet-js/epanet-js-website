@@ -1,6 +1,5 @@
 ---
 import Container from "@components/container.astro";
-import ComingSoonBadge from "./ComingSoonBadge.astro";
 import type { NavItem } from "@config/navigation";
 
 interface Props {
@@ -43,7 +42,6 @@ const colsClass = {
                 <item.icon size={20} />
               </div>
             )}
-            {item.comingSoon && <ComingSoonBadge />}
           </div>
           <h3 class="font-semibold text-gray-900 group-hover:text-purple-700 transition-colors">
             {item.label}
@@ -82,7 +80,6 @@ const colsClass = {
                     <item.icon size={20} />
                   </div>
                 )}
-                {item.comingSoon && <ComingSoonBadge />}
               </div>
               <h3 class="font-semibold text-gray-900 group-hover:text-purple-700 transition-colors">
                 {item.label}

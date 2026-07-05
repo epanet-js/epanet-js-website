@@ -5,6 +5,9 @@ import ProseSection from "@components/marketing/ProseSection.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
 import DemandAllocationDemo from "@components/demos/DemandAllocationDemo.astro";
+import DemandScalingDemo from "@components/demos/DemandScalingDemo.astro";
+import PressureLeakageDemo from "@components/demos/PressureLeakageDemo.astro";
+import NightFlowDemo from "@components/demos/NightFlowDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
 import FaqList from "@components/marketing/FaqList.astro";
@@ -14,9 +17,6 @@ import { Target, BarChart3, Scale, Droplets } from "lucide-react";
 
 export const prerender = true;
 const lang = "en";
-
-const comingSoonPrimary = { label: "Talk to us", href: "https://cal.com/epanet-js/" };
-const comingSoonSecondary = { label: "Launch epanet-js", href: "https://app.epanetjs.com" };
 
 const benefits = [
   {
@@ -52,7 +52,7 @@ const related = solutions.columns
 
 const faqs = [
   {
-    question: "What can I do for demand today?",
+    question: "What can I do for demand in epanet-js?",
     answer:
       "A lot. You can import customer points from a GeoJSON, allocate them to the right pipes with rules you control, build and assign demand patterns, attach multiple demand categories to a junction, and color-code the network by actual demand to check your allocation at a glance.",
   },
@@ -72,27 +72,21 @@ const faqs = [
       "Pressure matters for leakage, so the engine's emitter and pressure-dependent demand support let you represent leakage that rises and falls with pressure, instead of a fixed number. Demand analysis builds on that to keep the zonal picture honest.",
   },
   {
-    question: "When will the balancing tools be available?",
+    question: "How does zonal balancing work?",
     answer:
-      "The demand foundation — customer points, patterns, and actual-demand visualization — is in epanet-js now. The zonal balancing layer is in development. Tell us how you balance demand today and we'll build it around real workflows. You can follow progress on our <a href=\"https://roadmap.epanetjs.com\" target=\"_blank\" rel=\"noopener noreferrer\">public roadmap</a>.",
+      "Bring the metered inflow for each DMA together with the consumption allocated inside it. The reconciliation surfaces the gap between the two as leakage, so every zone adds up and the difference becomes a number you can act on.",
   },
 ];
 ---
 
 <Layout
   title="Demand analysis"
-  description="Build an accurate picture of demand across your network. Allocate consumption to customers, apply demand profiles, and reconcile metered inflow against use so every zone balances. Coming soon to epanet-js."
+  description="Build an accurate picture of demand across your network. Allocate consumption to customers, apply demand profiles, and reconcile metered inflow against use so every zone balances."
   lang={lang}>
   <PageHero
     title="Build an accurate picture of demand across your network"
-    subtitle="Allocate consumption where it happens, profile it through the day, and reconcile what your meters record against what your model uses, so the loading on your network reflects how water is really used."
-    comingSoon
-    primaryCta={comingSoonPrimary}
-    secondaryCta={comingSoonSecondary}>
-    <div slot="media">
-      <DemandAllocationDemo />
-      <p class="mt-2 text-xs text-gray-400">Concept preview — in development</p>
-    </div>
+    subtitle="Allocate consumption where it happens, profile it through the day, and reconcile what your meters record against what your model uses, so the loading on your network reflects how water is really used.">
+    <DemandAllocationDemo slot="media" />
   </PageHero>
 
   <ProseSection
@@ -153,16 +147,16 @@ const faqs = [
   <ContentMediaRow
     title="Reconcile inflow with consumption, zone by zone">
     <p>
-      This is where demand analysis is heading. With demand allocated and profiled,
-      the next step is to bring it together with what your meters record:
-      reconcile the metered inflow into each DMA against the consumption assigned
-      inside it, so every zone adds up.
+      With demand allocated and profiled, bring it together with what your
+      meters record: reconcile the metered inflow into each DMA against the
+      consumption assigned inside it, so every zone adds up.
     </p>
     <p>
       Where the two don't match, the difference is meaningful. Treated as leakage
       rather than rounded away, it becomes a number you can act on, and a check
       that keeps the whole demand picture honest.
     </p>
+    <DemandScalingDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -178,6 +172,25 @@ const faqs = [
       Demand analysis builds on that to keep the zonal reconciliation realistic, so
       the water you can't account for is modeled the way it actually behaves.
     </p>
+    <PressureLeakageDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Estimate leakage from the night flow">
+    <p>
+      The quietest hour of the day is the most informative one. Around 03:00,
+      legitimate use in a DMA drops to a small, predictable minimum, so most of
+      what still flows in is leakage. Compare the minimum night flow against the
+      expected legitimate night use and the gap is a leakage estimate for the
+      zone, read straight from inflow data you already log.
+    </p>
+    <p>
+      Fold that estimate into each zone's balance and non-revenue water becomes
+      a per-DMA figure you can rank and track, rather than a single system-wide
+      percentage. It also gives the pressure-driven leakage model above a real
+      number to match, so the zones that repay attention first stand out.
+    </p>
+    <NightFlowDemo slot="media" />
   </ContentMediaRow>
 
   <BenefitGrid
@@ -187,10 +200,8 @@ const faqs = [
   />
 
   <CtaSection
-    heading="Want demand analysis for your network?"
-    subheading="Tell us how you handle demand and zonal balance today — it helps us build the right thing."
-    primaryCta={comingSoonPrimary}
-    secondaryCta={comingSoonSecondary}
+    heading="Get demand right for your network"
+    subheading="Import your customers, profile demand through the day, and balance every zone."
     dark={false}
   />
 
@@ -209,21 +220,19 @@ const faqs = [
   </ProseSection>
 
   <CardGrid
-    heading="Available now"
-    subheading="While the balancing tools are in development, explore what you can do today."
+    heading="Where to next"
+    subheading="An accurate demand picture feeds everything downstream."
     items={related}
     columns={3}
   />
 
   <FaqList
-    subheading="What's available today, and what's coming, for demand in epanet-js."
+    subheading="How demand allocation, patterns, and zonal balance work in epanet-js."
     items={faqs}
   />
 
   <CtaSection
-    heading="Help shape demand analysis"
-    subheading="Tell us how you build and balance demand today. Launch epanet-js to use the demand tools now, or talk to us about what's next."
-    primaryCta={comingSoonPrimary}
-    secondaryCta={comingSoonSecondary}
+    heading="Demand you can trust, zone by zone"
+    subheading="Build the demand picture your model deserves. Launch epanet-js free, or book a demo to walk through it with us."
   />
 </Layout>

@@ -2,10 +2,85 @@
 import Layout from "@layouts/Layout.astro";
 import PageHero from "@components/marketing/PageHero.astro";
 import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import WaterAgeDemo from "@components/demos/WaterAgeDemo.astro";
+import SourceTraceDemo from "@components/demos/SourceTraceDemo.astro";
+import ChlorineBoosterDemo from "@components/demos/ChlorineBoosterDemo.astro";
+import FlushingPlanDemo from "@components/demos/FlushingPlanDemo.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { CheckCircle2, FlaskConical, Map, Download } from "lucide-react";
 
 export const prerender = true;
 const lang = "en";
+
+const benefits = [
+  {
+    icon: CheckCircle2,
+    title: "The full EPANET engine",
+    description:
+      "epanet-js runs the EPANET 2.3 toolkit unmodified, so water quality results match EPANET exactly.",
+  },
+  {
+    icon: FlaskConical,
+    title: "Every standard analysis",
+    description:
+      "Water age, source tracing, and chemical transport and decay, including multi-species reactions, in one tool.",
+  },
+  {
+    icon: Map,
+    title: "Results you can read on the map",
+    description:
+      "Quality results color the network at every timestep, so stagnation and low residuals stand out immediately.",
+  },
+  {
+    icon: Download,
+    title: "Data you can take anywhere",
+    description:
+      "Export quality results with the full time series to CSV or XLSX, ready for reports and further analysis.",
+  },
+];
+
+const related = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) => i.href !== "/solutions/water-quality")
+  .slice(0, 3);
+
+const faqs = [
+  {
+    question: "When do I use water age, source tracing, or chemical analysis?",
+    answer:
+      "<strong>Water age</strong> tells you how long water has been in the system, which is the quickest screen for stagnation and disinfectant decay risk. <strong>Source tracing</strong> tells you where the water at any point came from, which matters when sources blend or switch. <strong>Chemical analysis</strong> follows an actual constituent, such as chlorine residual, with growth or decay over time. They answer different questions, and most quality studies use more than one.",
+  },
+  {
+    question: "Does epanet-js support multi-species reactions?",
+    answer:
+      "Yes. Beyond single-constituent transport and decay, epanet-js supports multi-species analysis (MSX), where several constituents react with each other and with the pipe wall. That covers cases a single-species model can't, such as chloramine chemistry.",
+  },
+  {
+    question: "Why do quality runs need an extended period simulation?",
+    answer:
+      "Water quality develops over time. Age accumulates, residuals decay, and source blends shift with demand through the day, so a single snapshot tells you very little. Run an extended period simulation over several days and let the results reach a repeating pattern; that pattern is your answer. See <a href='/solutions/operational-modeling' class='font-medium text-indigo-600 hover:text-indigo-800 transition-colors'>operational modeling</a> for how EPS and time control work in epanet-js.",
+  },
+  {
+    question: "What does my model need for useful quality results?",
+    answer:
+      "Sound hydraulics first: quality rides on top of flows and velocities, so a model that gets those wrong gets age and residuals wrong too. For chemical runs you also need reaction coefficients, bulk and wall, for your network. If the hydraulics need work, start with <a href='/solutions/calibration' class='font-medium text-indigo-600 hover:text-indigo-800 transition-colors'>calibration</a>.",
+  },
+  {
+    question: "Will my quality setup survive moving between tools?",
+    answer:
+      "Yes. Quality options, sources, and reaction coefficients are part of the standard .inp format, and epanet-js imports and stores quality patterns so nothing is lost moving a model between epanet-js and other software.",
+  },
+  {
+    question: "Do the results match EPANET?",
+    answer:
+      "Yes. epanet-js runs the current EPANET 2.3 toolkit (2.3.5) unmodified, so any model you can run in EPANET runs here and produces the same numbers.",
+  },
+];
 ---
 
 <Layout
@@ -14,23 +89,142 @@ const lang = "en";
   lang={lang}>
   <PageHero
     title="Model water quality across your network"
-    subtitle="Track water age, trace sources, and follow chlorine and other constituents through the system."
-  />
+    subtitle="Track water age, trace sources, and follow chlorine and other constituents through the system, on the same model you use for hydraulics.">
+    <WaterAgeDemo slot="media" />
+  </PageHero>
 
   <ProseSection title="See where the water goes, and how old it is">
     <p>
-      epanet-js runs the standard EPANET water quality analyses, including water
-      age, source tracing, and chemical constituents such as chlorine, with MSX
-      for multi-species reactions.
+      Taste and odor complaints, low chlorine residuals, discolored water: quality
+      problems surface at the tap, but their causes sit upstream, in long
+      residence times, dead ends, oversized mains, and tanks that turn over too
+      slowly. A hydraulic model already knows the flow paths and travel times.
+      Water quality analysis puts them to work.
     </p>
     <p>
-      This page is a work in progress. We'll add detail on each analysis and how
-      to read the results soon.
+      epanet-js runs the full range of standard EPANET water quality analyses:
+      <strong>water age</strong> to find where water sits too long,
+      <strong>source tracing</strong> to see how supplies blend, and
+      <strong>chemical transport and decay</strong> to follow constituents such
+      as chlorine through the network over time. Run an extended period
+      simulation, 72 hours is a common choice, and watch age spread outward from
+      the source band by band until the pattern settles.
     </p>
   </ProseSection>
 
+  <ContentMediaRow title="Trace where the water comes from">
+    <p>
+      When a network is fed from more than one source, the boundary between them
+      is rarely where you'd draw it by eye, and it moves through the day as
+      demand shifts. A source trace computes, for every node and every timestep,
+      what share of the water came from the source you pick.
+    </p>
+    <p>
+      That answers practical questions directly: which customers receive water
+      from which treatment works, how far a blend zone swings between morning
+      and evening, and what actually reaches the far end of the system when you
+      switch a source in or out. If a quality complaint maps onto one source's
+      footprint, you know where to look next.
+    </p>
+    <SourceTraceDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Keep chlorine residual above target" reverse>
+    <p>
+      Chlorine decays from the moment it leaves the works, in the bulk water and
+      at the pipe wall. Model it as a reacting constituent and you can read the
+      residual at every point in the network, at every hour, and find the tails
+      of the system that fall below your minimum before the water gets there.
+    </p>
+    <p>
+      Then test the fixes. Raise the dose at the works and see how much of the
+      shortfall it recovers, or place a booster station mid-network and confirm
+      it lifts the far end back above target. Because it's a model, you can try
+      locations and doses freely before anything is built or changed.
+    </p>
+    <ChlorineBoosterDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Plan flushing that clears the main">
+    <p>
+      Flushing only works when the water moves fast enough to scour the pipe,
+      and that depends on which valves and hydrants you operate, in which order.
+      Use the model to design a unidirectional flushing sequence and check each
+      run against a velocity target before a crew opens anything.
+    </p>
+    <p>
+      The model shows the velocity every run achieves, so you can spot the mains
+      that need a different valve arrangement to hit the target and fix the
+      sequence at your desk. The result is a plan the field team can follow run
+      by run, with less water spent to get the same clean pipe.
+    </p>
+    <FlushingPlanDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Go beyond a single constituent">
+    <p>
+      Some questions involve more than one substance at a time: chloramine
+      decay, disinfection by-product formation, or a reaction between a
+      contaminant and the disinfectant meant to neutralize it. For these,
+      epanet-js supports multi-species analysis (MSX), where you define the
+      constituents and the reactions between them and the engine simulates the
+      chemistry along with the hydraulics.
+    </p>
+    <p>
+      Single-species studies stay simple, and the harder cases have a path that
+      doesn't require leaving the model or hand-building a spreadsheet
+      approximation.
+    </p>
+  </ContentMediaRow>
+
+  <BenefitGrid
+    heading="What water quality analysis gives you"
+    items={benefits}
+    columns={4}
+  />
+
   <CtaSection
     heading="Check the quality of your network"
-    subheading="Launch epanet-js free and run a water quality analysis, or book a demo to see it on your model."
+    subheading="Run a water age analysis on your own model in minutes. Launch epanet-js free, or book a demo to see it on your network."
+    dark={false}
+  />
+
+  <ProseSection title="One model for hydraulics and quality">
+    <p>
+      Quality analysis in epanet-js runs on the same model you use for
+      everything else, so there's no second tool to license and no copy of the
+      network to keep in sync. Build or import the model once, get the
+      hydraulics right, and every quality question after that is a settings
+      change and a run.
+    </p>
+    <p>
+      It fits naturally alongside the rest of the workflow: <a
+        href="/solutions/operational-modeling"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >operational modeling</a
+      > provides the extended period runs and time control that quality analysis
+      depends on, and <a
+        href="/solutions/calibration"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >calibration</a
+      > gives you hydraulics you can trust before you put chemistry on top of them.
+    </p>
+  </ProseSection>
+
+  <CardGrid
+    heading="Where to next"
+    subheading="Water quality is one part of understanding your network."
+    items={related}
+    columns={3}
+  />
+
+  <FaqList
+    subheading="The questions teams ask most about water quality modeling in epanet-js."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Answer your next quality question with the model"
+    subheading="See water age, source tracing, and chlorine analysis on your own network. Launch epanet-js or book a demo."
   />
 </Layout>

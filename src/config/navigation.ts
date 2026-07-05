@@ -26,7 +26,6 @@ export interface NavItem {
   href: string;
   description?: string;
   icon?: LucideIcon;
-  comingSoon?: boolean;
   external?: boolean;
 }
 
