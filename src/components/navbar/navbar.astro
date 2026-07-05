@@ -20,6 +20,8 @@ const t = useTranslations(lang);
 
 const prefix = lang === "es" ? "/es" : "";
 
+// Mega-menu sections whose items are all feature-flagged off (see
+// src/config/feature-flags.ts) are dropped from the navbar entirely.
 const menuitems = [
   {
     title: t("nav.home"),
@@ -50,7 +52,13 @@ const menuitems = [
     columns: resources.columns,
     width: "sm",
   },
-];
+].filter(
+  (item) =>
+    item.type !== "mega" ||
+    item.columns.some(
+      (column) => column.items.length > 0 || column.secondaryItems?.length
+    )
+);
 
 // Language switcher: link to alternate locale
 const currentPath = Astro.url.pathname;

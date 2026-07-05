@@ -13,6 +13,7 @@ export const prerender = true;
 const lang = "en";
 
 const solutionItems = solutions.columns.flatMap((c) => c.items);
+const audienceItems = whoItsFor.columns[0].items;
 
 const benefits = [
   {
@@ -96,7 +97,7 @@ const faqs = [
     </p>
   </ProseSection>
 
-  <CardGrid items={whoItsFor.columns[0].items} columns={4} />
+  {audienceItems.length > 0 && <CardGrid items={audienceItems} columns={4} />}
 
   <BenefitGrid
     heading="The common ground, whatever your role"
@@ -110,12 +111,16 @@ const faqs = [
     dark={false}
   />
 
-  <CardGrid
-    heading="See what epanet-js can do"
-    subheading="The everyday jobs the tool helps teams get done."
-    items={solutionItems}
-    columns={4}
-  />
+  {
+    solutionItems.length > 0 && (
+      <CardGrid
+        heading="See what epanet-js can do"
+        subheading="The everyday jobs the tool helps teams get done."
+        items={solutionItems}
+        columns={4}
+      />
+    )
+  }
 
   <FaqList
     subheading="Common questions about fit, access, and pricing."

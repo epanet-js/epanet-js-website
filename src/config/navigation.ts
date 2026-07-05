@@ -20,6 +20,7 @@ import {
   Scale,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { isPageEnabled, isSectionEnabled } from "./feature-flags";
 
 export interface NavItem {
   label: string;
@@ -45,7 +46,7 @@ export interface NavSection {
 // ── Solutions (by workflow) ──────────────────────────────────────────────
 // Two lifecycle groups: getting to a model, then working with one. The menu
 // is organized by workflow and does not signal availability.
-export const solutions: NavSection = {
+const solutionsData: NavSection = {
   id: "solutions",
   label: "Solutions",
   hubHref: "/solutions",
@@ -124,7 +125,7 @@ export const solutions: NavSection = {
 };
 
 // ── Who it's for (by audience) ───────────────────────────────────────────
-export const whoItsFor: NavSection = {
+const whoItsForData: NavSection = {
   id: "who-its-for",
   label: "Who it's for",
   hubHref: "/who-its-for",
@@ -161,7 +162,7 @@ export const whoItsFor: NavSection = {
 };
 
 // ── Resources ────────────────────────────────────────────────────────────
-export const resources: NavSection = {
+const resourcesData: NavSection = {
   id: "resources",
   label: "Resources",
   columns: [
@@ -236,5 +237,31 @@ export const comparePages: NavItem[] = [
     icon: Scale,
   },
 ];
+
+// ── Staged-launch filtering ──────────────────────────────────────────────
+// Sections are exported with feature-flagged items removed (see
+// src/config/feature-flags.ts), so every consumer — mega-menu, footer,
+// hub-page CardGrids, related-links grids — respects the flags for free.
+function filterSection(section: NavSection, enabled: boolean): NavSection {
+  return {
+    ...section,
+    columns: section.columns.map((column) => ({
+      ...column,
+      items: enabled
+        ? column.items.filter((item) => item.external || isPageEnabled(item.href))
+        : [],
+    })),
+  };
+}
+
+export const solutions = filterSection(
+  solutionsData,
+  isSectionEnabled("solutions"),
+);
+export const whoItsFor = filterSection(
+  whoItsForData,
+  isSectionEnabled("whoItsFor"),
+);
+export const resources = filterSection(resourcesData, true);
 
 export const navSections: NavSection[] = [solutions, whoItsFor, resources];

@@ -26,6 +26,7 @@ export const prerender = false;
 const lang = "en";
 
 const allWorkflows = solutions.columns.flatMap((c) => c.items);
+const audienceItems = whoItsFor.columns[0].items;
 
 const linkClass =
   "font-medium text-indigo-600 hover:text-indigo-800 transition-colors";
@@ -101,12 +102,16 @@ const securityBenefits = [
     </p>
   </ProseSection>
 
-  <CardGrid
-    heading="Everything you need across the modeling lifecycle"
-    subheading="From building your model to running it every day — epanet-js helps you get to the answer faster. Most workflows are available now, with more on the way."
-    items={allWorkflows}
-    columns={4}
-  />
+  {
+    allWorkflows.length > 0 && (
+      <CardGrid
+        heading="Everything you need across the modeling lifecycle"
+        subheading="From building your model to running it every day — epanet-js helps you get to the answer faster. Most workflows are available now, with more on the way."
+        items={allWorkflows}
+        columns={4}
+      />
+    )
+  }
 
   <ContentMediaRow
     title="Go from GIS to a running model in an afternoon">
@@ -137,10 +142,7 @@ const securityBenefits = [
     <p>
       <a href="/solutions/calibration" class={linkClass}>Explore calibration →</a>
     </p>
-    <div slot="media">
-      <CalibrationReviewDemo framed />
-      <p class="mt-2 text-xs text-gray-400">Illustrative concept</p>
-    </div>
+    <CalibrationReviewDemo slot="media" framed />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -188,22 +190,28 @@ const securityBenefits = [
     columns={4}
   />
 
-  <ProseSection
-    title="Built for every role in the water industry"
-    align="center">
-    <p>
-      A utility operator, a consultant on a deadline, a professor in a computer
-      lab, and an engineer designing a community supply do very different work.
-      What they share is the need to get to a trustworthy model quickly, keep
-      their data in their hands, and not fight the software. epanet-js is built
-      for all of them.
-    </p>
-  </ProseSection>
+  {
+    audienceItems.length > 0 && (
+      <>
+        <ProseSection
+          title="Built for every role in the water industry"
+          align="center">
+          <p>
+            A utility operator, a consultant on a deadline, a professor in a computer
+            lab, and an engineer designing a community supply do very different work.
+            What they share is the need to get to a trustworthy model quickly, keep
+            their data in their hands, and not fight the software. epanet-js is built
+            for all of them.
+          </p>
+        </ProseSection>
 
-  <CardGrid
-    items={whoItsFor.columns[0].items}
-    columns={4}
-  />
+        <CardGrid
+          items={audienceItems}
+          columns={4}
+        />
+      </>
+    )
+  }
 
   <ContentMediaRow
     title="Own your network and your model">
