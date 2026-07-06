@@ -18,6 +18,7 @@ import CloudOptionalDemo from "@components/demos/CloudOptionalDemo.astro";
 import CloudYourStorageDiagram from "@components/demos/CloudYourStorageDiagram.astro";
 import ControlRuleDemo from "@components/demos/ControlRuleDemo.astro";
 import CustomerPointsDemo from "@components/demos/CustomerPointsDemo.astro";
+import DataRegionsDemo from "@components/demos/DataRegionsDemo.astro";
 import DataTableDemo from "@components/demos/DataTableDemo.astro";
 import DemandAllocationDemo from "@components/demos/DemandAllocationDemo.astro";
 import DemandCategoriesDemo from "@components/demos/DemandCategoriesDemo.astro";
@@ -584,6 +585,14 @@ const sections: DemoSection[] = [
         frame: "diagram",
         usedOn: ["/who-its-for/utilities"],
         component: DeploymentOptionsDiagram,
+      },
+      {
+        name: "DataRegionsDemo",
+        description:
+          "Three data regions side by side, each running the epanet-js app beside its own model storage: files drop to that region's users and nothing crosses from one region to another.",
+        useOn: "/security (data residency) and /who-its-for/utilities (IT requirements).",
+        frame: "diagram",
+        component: DataRegionsDemo,
       },
       {
         name: "CloudYourStorageDiagram",
