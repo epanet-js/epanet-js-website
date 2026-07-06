@@ -10,6 +10,7 @@ import LocalFirstFlowDemo from "@components/demos/LocalFirstFlowDemo.astro";
 import FileTransferDemo from "@components/demos/FileTransferDemo.astro";
 import CloudOptionalDemo from "@components/demos/CloudOptionalDemo.astro";
 import TeamAccessDemo from "@components/demos/TeamAccessDemo.astro";
+import DataRegionsDemo from "@components/demos/DataRegionsDemo.astro";
 import EncryptedTransitDemo from "@components/demos/EncryptedTransitDemo.astro";
 import CloudYourStorageDiagram from "@components/demos/CloudYourStorageDiagram.astro";
 import OnPremDeploymentDiagram from "@components/demos/OnPremDeploymentDiagram.astro";
@@ -216,8 +217,23 @@ const linkClass =
 
     <ContentMediaRow
       headingLevel="h3"
-      title="Workspace roles control who can open it"
+      title="Select your data region"
       reverse>
+      <p>
+        You decide which geographic region handles your data. When a user
+        uploads or syncs a model, that data remains entirely within their
+        selected region.
+      </p>
+      <p>
+        This guarantees your team strictly complies with local data residency
+        and privacy mandates.
+      </p>
+      <DataRegionsDemo slot="media" />
+    </ContentMediaRow>
+
+    <ContentMediaRow
+      headingLevel="h3"
+      title="Workspace roles control who can open it">
       <p>
         Models stored in the cloud belong to your workspace, and access to them
         is explicit. Every member has a role: editors can change a model,
@@ -234,7 +250,10 @@ const linkClass =
       />
     </ContentMediaRow>
 
-    <ContentMediaRow headingLevel="h3" title="Encrypted in transit and at rest">
+    <ContentMediaRow
+      headingLevel="h3"
+      title="Encrypted in transit and at rest"
+      reverse>
       <p>
         Data security is enforced at every stage. Everything moving between your machine and epanet-js
         travels over HTTPS and is encrypted with TLS.
