@@ -3,13 +3,24 @@
 // one, each adding a coverage halo, while the share of demand observable
 // climbs in the placement panel.
 import AppWindow from "./AppWindow.astro";
-import { markerPoints } from "./network-geometry";
+
+// Explicit reveal order (pin/halo 1-4) rather than markerPoints' own order
+// or a west-to-east sort — the placement panel has moved corners a few
+// times, and each of these has been hand-picked to land clear of it.
+const sortedMarkerPoints: [number, number][] = [
+  [100, 130],
+  [270, 65],
+  [240, 210],
+  [360, 150],
+];
 
 const coverageSteps = ["0%", "52%", "71%", "86%", "94%"];
 ---
 
 <AppWindow
   variant="plain"
+  hideHeader
+  hideFooter
   label="Logger placement in epanet-js: proposed pressure loggers dropping onto the map one by one while the coverage figure climbs to 94% of demand observable.">
   <!-- proposed loggers with coverage halos -->
   <svg
@@ -18,19 +29,19 @@ const coverageSteps = ["0%", "52%", "71%", "86%", "94%"];
     class="absolute inset-0 w-full h-full"
     aria-hidden="true">
     {
-      markerPoints.map(([x, y], i) => (
+      sortedMarkerPoints.map(([x, y], i) => (
         <circle
           class={`lp-halo lp-halo-${i + 1}`}
           cx={x}
           cy={y}
-          r="42"
+          r="64"
           fill="#8b5cf6"
           fill-opacity="0.12"
         />
       ))
     }
     {
-      markerPoints.map(([x, y], i) => (
+      sortedMarkerPoints.map(([x, y], i) => (
         <circle
           class={`lp-pin lp-pin-${i + 1}`}
           cx={x}
@@ -46,16 +57,16 @@ const coverageSteps = ["0%", "52%", "71%", "86%", "94%"];
 
   <!-- placement panel -->
   <div
-    class="lp-panel absolute top-2 right-2 w-[180px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    class="lp-panel absolute bottom-2 left-2 w-[180px] max-w-[70%] bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
     <div
       class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-      <p class="text-[11px] font-semibold text-gray-700">Logger placement</p>
-      <p class="text-[10px] text-gray-400">DMA-3</p>
+      <p class="text-[12px] font-semibold text-gray-700">Logger placement</p>
+      <p class="text-[11px] text-gray-400">DMA-3</p>
     </div>
     <div class="px-3 py-2">
-      <div class="flex items-center justify-between text-[10px]">
+      <div class="flex items-center justify-between text-[12px]">
         <span class="text-gray-500">Demand observable</span>
-        <span class="relative font-medium text-gray-700 tabular-nums">
+        <span class="relative inline-block min-w-[28px] text-right font-medium text-gray-700 tabular-nums">
           {
             coverageSteps.map((step, i) => (
               <span
@@ -74,7 +85,7 @@ const coverageSteps = ["0%", "52%", "71%", "86%", "94%"];
       </div>
     </div>
     <p
-      class="lp-footer px-3 py-1.5 border-t border-gray-100 text-[10px] text-gray-500">
+      class="lp-footer px-3 py-1.5 border-t border-gray-100 text-[12px] text-gray-500">
       4 loggers proposed
     </p>
   </div>
