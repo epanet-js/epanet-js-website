@@ -4,6 +4,7 @@ import PageHero from "@components/marketing/PageHero.astro";
 import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
 import Media from "@components/marketing/Media.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
+import FaqList from "@components/marketing/FaqList.astro";
 import Container from "@components/container.astro";
 import Badge from "@components/ui/badge.astro";
 import LocalFirstFlowDemo from "@components/demos/LocalFirstFlowDemo.astro";
@@ -54,6 +55,58 @@ const setups = [
 
 const linkClass =
   "text-indigo-600 hover:text-indigo-800 underline hover:no-underline";
+
+const faqs = [
+  {
+    question: "Can you complete our organization's security questionnaire?",
+    answer: `We complete security questionnaires for our Enterprise customers.
+      <p class="mt-3">Free, Pro, and Teams plans are self-service, and we expect your team to run its own internal security review. To make that as easy as possible, we maintain a generic security questionnaire with answers to the questions utilities and engineering firms have put to us before, so you can fill out your own internal forms quickly. If a question isn't covered, <a href="mailto:support@epanetjs.com" class="${linkClass}">email us</a> or <a href="https://cal.com/epanet-js/" class="${linkClass}">book a call</a>.</p>`,
+  },
+  {
+    question:
+      "If epanet-js runs in a web browser, how is my data not uploaded to the internet?",
+    answer: `epanet-js is built local-first. The browser acts as a secure runtime, much like a desktop operating system: when you load the app over HTTPS, the entire application, including the EPANET simulation engine compiled to WebAssembly, downloads to your browser cache and runs on your machine's own CPU and memory inside the browser sandbox, at near-native desktop performance.
+      <p class="mt-3">Project files are read from and written to your hard drive or network drive through the browser's local file access APIs, and simulation results are saved locally. Neither your infrastructure data nor your customer data leaves your computer. It also saves bandwidth, since heavy model files are never streamed, uploaded, or downloaded. Once the page has loaded, you can disconnect from the internet entirely and keep working.</p>`,
+  },
+  {
+    question:
+      "When I open a model, does the web browser get access to my entire hard drive?",
+    answer:
+      "No. epanet-js uses the browser's File System Access API. When you open a project, the browser shows the native system file picker, and the app is granted read and write access only to the specific file or folder you choose. It cannot see the rest of your hard drive, your operating system, or your network shares.",
+  },
+  {
+    question: "Do you use my hydraulic models or customer data to train AI models?",
+    answer:
+      "No. We never use your project files, network layouts, or customer data to train machine learning or AI models. For local projects we couldn't even if we wanted to: the data never reaches us. For cloud and enterprise projects, your data belongs to your organization and is treated as confidential.",
+  },
+  {
+    question: "Which data regions are available for cloud-synced projects?",
+    answer:
+      "We support data regions across the US, Europe, and Asia-Pacific. When you set up a cloud workspace, you choose the region that fits your regulatory requirements, such as GDPR or regional critical-infrastructure mandates. Your data stays pinned to that region and is never replicated or routed across geographic boundaries.",
+  },
+  {
+    question: "Does epanet-js support multi-factor authentication (MFA / 2FA)?",
+    answer:
+      "Yes. We use Clerk for identity management, which supports multi-factor authentication with authenticator apps (Google Authenticator, Microsoft Authenticator, 1Password) and SMS verification codes. Workspace administrators on the Teams plan can also enforce MFA across the whole team, so every member has it in place before accessing shared cloud projects.",
+  },
+  {
+    question: "Do you support single sign-on (SSO) for managing team access?",
+    answer:
+      "Yes, on our Enterprise configurations (bring your own storage and on-premises). We support identity federation over SAML 2.0 and OIDC, so your IT department can connect epanet-js to your corporate identity provider, such as Microsoft Entra ID, Okta, Ping Identity, or Google Workspace, and manage user provisioning, workspace roles, and access control through your existing workflows.",
+  },
+  {
+    question:
+      'What cloud object storage providers do you support for the "Bring your own storage" plan?',
+    answer:
+      "The storage layer is provider-agnostic. We support any standard cloud object storage or S3-compatible service, including Amazon S3, Azure Blob Storage, Google Cloud Storage, and self-hosted options such as MinIO. Your IT team keeps full control of the encryption keys and access policies on the storage buckets.",
+  },
+  {
+    question:
+      "How do we receive software and security updates if we deploy on-premises?",
+    answer:
+      "We work with your IT infrastructure team to set up an update path that fits your network governance. That can range from automated container registry updates to manual, air-gapped package transfers if your network has no external internet connectivity.",
+  },
+];
 ---
 
 <Layout
@@ -349,6 +402,8 @@ const linkClass =
       <OnPremDeploymentDiagram slot="media" />
     </ContentMediaRow>
   </section>
+
+  <FaqList heading="Frequently asked questions" items={faqs} />
 
   <section class="w-full py-12 md:py-16 bg-gray-50">
     <Container>
