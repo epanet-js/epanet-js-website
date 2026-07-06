@@ -10,6 +10,113 @@ import {
   WifiOff,
 } from "lucide-react";
 import NetworkMap from "./NetworkMap.astro";
+
+// Intro fades in four 1s stages, in order: the offline icon, the sending
+// device (whole component), the receiving device (whole component), then
+// the arrow/label/file chip group — which then continues its existing
+// slide-to-the-laptop motion once visible.
+const toPct = (seconds: number, cycle: number) =>
+  +((seconds / cycle) * 100).toFixed(3);
+
+const STAGE_FADE = 1;
+const STAGE1_START = 0; // offline icon
+const STAGE2_START = STAGE1_START + STAGE_FADE; // office desktop (whole component)
+const STAGE3_START = STAGE2_START + STAGE_FADE; // site laptop (whole component)
+const STAGE4_START = STAGE3_START + STAGE_FADE; // arrow + pill (at rest)
+const STAGE4_END = STAGE4_START + STAGE_FADE;
+
+// The .ejsdb chip appears 1s after the arrow/pill, fading in while it
+// slides out of the office desktop (opacity ramps up during the first
+// 0.3s of the slide) and fading out while it slides the last 0.3s onto
+// the site laptop, so the slide's arrival and the fade-out's completion
+// land on the exact same instant — no stop-then-fade two-step.
+const CHIP_DELAY_AFTER_ARROW = 1;
+const CHIP_START = STAGE4_START + CHIP_DELAY_AFTER_ARROW;
+const CHIP_FADE_IN_DURATION = 0.3; // quick opacity ramp as it starts sliding
+const CHIP_VISIBLE = CHIP_START + CHIP_FADE_IN_DURATION;
+const SLIDE_START = CHIP_START;
+const SLIDE_DURATION = 1.76;
+const SLIDE_END = SLIDE_START + SLIDE_DURATION; // slide's arrival, in position
+const CHIP_FADEOUT_DURATION = 0.3;
+const CHIP_FADEOUT_START = SLIDE_END - CHIP_FADEOUT_DURATION; // fade-out overlaps the slide's tail
+
+// The receiving screen lights up right as the chip arrives, then the
+// checkmark bounces in once the screen is visible.
+const SCREEN2_START = SLIDE_END;
+const SCREEN2_FADE_DURATION = 0.5;
+const SCREEN2_VISIBLE = SCREEN2_START + SCREEN2_FADE_DURATION;
+
+const CHECK_WAIT_AFTER_SCREEN2 = 0.3;
+const CHECK_START = SCREEN2_VISIBLE + CHECK_WAIT_AFTER_SCREEN2;
+const CHECK_PEAK_OFFSET = 0.4; // reaches overshoot scale
+const CHECK_SETTLE_OFFSET = 0.64; // settles to scale 1
+const CHECK_PEAK = CHECK_START + CHECK_PEAK_OFFSET;
+const CHECK_SETTLE = CHECK_START + CHECK_SETTLE_OFFSET;
+
+const FINAL_HOLD = 2;
+const HOLD_END = CHECK_SETTLE + FINAL_HOLD;
+const FADE_END = HOLD_END + 0.5;
+const CYCLE = FADE_END + 0.3;
+const pct = (seconds: number) => toPct(seconds, CYCLE);
+
+const generatedCss = `
+.ftr-nocloud { animation-name: ftr-nocloud-in; }
+@keyframes ftr-nocloud-in {
+  0%, ${pct(STAGE1_START)}% { opacity: 0; }
+  ${pct(STAGE1_START + STAGE_FADE)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-desktop { animation-name: ftr-desktop-in; }
+@keyframes ftr-desktop-in {
+  0%, ${pct(STAGE2_START)}% { opacity: 0; }
+  ${pct(STAGE2_START + STAGE_FADE)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-laptop { animation-name: ftr-laptop-in; }
+@keyframes ftr-laptop-in {
+  0%, ${pct(STAGE3_START)}% { opacity: 0; }
+  ${pct(STAGE3_START + STAGE_FADE)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-arrow { animation-name: ftr-arrow-in; }
+@keyframes ftr-arrow-in {
+  0%, ${pct(STAGE4_START)}% { opacity: 0; }
+  ${pct(STAGE4_END)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-pill { animation-name: ftr-pill-in; }
+@keyframes ftr-pill-in {
+  0%, ${pct(STAGE4_START)}% { opacity: 0; }
+  ${pct(STAGE4_END)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-file { animation-name: ftr-file-travel; }
+@keyframes ftr-file-travel {
+  0%, ${pct(CHIP_START)}% { opacity: 0; left: -6%; transform: translateY(calc(-50% - 16px)); }
+  ${pct(CHIP_VISIBLE)}% { opacity: 1; }
+  ${pct(CHIP_FADEOUT_START)}% { opacity: 1; }
+  ${pct(SLIDE_END)}%, 100% { opacity: 0; left: 70%; transform: translateY(calc(-50% - 16px)); }
+}
+.ftr-screen2 { animation-name: ftr-screen2-on; }
+@keyframes ftr-screen2-on {
+  0%, ${pct(SCREEN2_START)}% { opacity: 0; }
+  ${pct(SCREEN2_VISIBLE)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-check { animation-name: ftr-check-in; }
+@keyframes ftr-check-in {
+  0%, ${pct(CHECK_START)}% { opacity: 0; transform: scale(0.6); }
+  ${pct(CHECK_PEAK)}% { opacity: 1; transform: scale(1.15); }
+  ${pct(CHECK_SETTLE)}% { transform: scale(1); }
+  ${pct(HOLD_END)}% { opacity: 1; transform: scale(1); }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}`;
 ---
 
 <div
@@ -26,7 +133,7 @@ import NetworkMap from "./NetworkMap.astro";
 
   <div class="mt-2 flex items-center justify-center gap-2 sm:gap-3">
     <!-- sending device -->
-    <div class="w-32 sm:w-40 shrink-0">
+    <div class="ftr-desktop w-32 sm:w-40 shrink-0">
       <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
         <div class="relative aspect-[16/10] bg-gray-100">
           <NetworkMap class="absolute inset-0" />
@@ -40,12 +147,13 @@ import NetworkMap from "./NetworkMap.astro";
       </p>
     </div>
 
-    <!-- transfer path: stretched to the device columns' full height so the
-         pill below can align with the "Office desktop"/"Site laptop" labels -->
-    <div
-      class="relative w-20 sm:w-28 shrink-0 self-stretch flex flex-col items-center justify-between">
-      <div class="relative flex flex-1 w-full items-center justify-center">
-        <svg viewBox="0 0 100 16" class="w-full" aria-hidden="true">
+    <!-- transfer path -->
+    <div class="relative w-20 sm:w-28 shrink-0 flex flex-col items-center">
+      <div class="relative w-full">
+        <svg
+          viewBox="0 0 100 16"
+          class="ftr-arrow w-full"
+          aria-hidden="true">
           <path
             d="M10 8 H90"
             fill="none"
@@ -61,14 +169,15 @@ import NetworkMap from "./NetworkMap.astro";
           .ejsdb
         </span>
       </div>
+      <!-- 4px below the arrow -->
       <span
-        class="ftr-pill whitespace-nowrap rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[11px] font-medium text-gray-500">
+        class="ftr-pill mt-1 whitespace-nowrap rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[11px] font-medium text-gray-500">
         Email · network · USB
       </span>
     </div>
 
     <!-- receiving device -->
-    <div class="w-32 sm:w-40 shrink-0">
+    <div class="ftr-laptop w-32 sm:w-40 shrink-0">
       <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
         <div class="relative aspect-[16/10] bg-gray-100">
           <div class="ftr-screen2 absolute inset-0">
@@ -94,125 +203,28 @@ import NetworkMap from "./NetworkMap.astro";
   </p>
 </div>
 
-<style>
-  .ftr-nocloud {
-    animation: ftr-nocloud-in 8s ease-out infinite both;
-  }
-  @keyframes ftr-nocloud-in {
-    0%,
-    6% {
-      opacity: 0;
-    }
-    12% {
-      opacity: 1;
-    }
-    94% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-
-  /* the .ejsdb chip travels from one machine to the other, riding 16px
-     above the arrow's centerline */
-  .ftr-file {
-    animation: ftr-file-travel 8s ease-in-out infinite both;
-  }
-  @keyframes ftr-file-travel {
-    0%,
-    24% {
-      opacity: 0;
-      left: -6%;
-      transform: translateY(calc(-50% - 16px));
-    }
-    30% {
-      opacity: 1;
-    }
-    52% {
-      opacity: 1;
-      left: 70%;
-      transform: translateY(calc(-50% - 16px));
-    }
-    58%,
-    100% {
-      opacity: 0;
-      left: 78%;
-      transform: translateY(calc(-50% - 16px));
-    }
-  }
-
-  /* visible from early on (1s in) and stays up through the end */
-  .ftr-pill {
-    animation: ftr-pill-in 8s ease-out infinite both;
-  }
-  @keyframes ftr-pill-in {
-    0%,
-    12.5% {
-      opacity: 0;
-      transform: translateY(2px);
-    }
-    18.5% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    94% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-
-  /* the receiving screen lights up when the file arrives */
-  .ftr-screen2 {
-    animation: ftr-screen2-on 8s ease-out infinite both;
-  }
-  @keyframes ftr-screen2-on {
-    0%,
-    54% {
-      opacity: 0;
-    }
-    60% {
-      opacity: 1;
-    }
-    94% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-
+<style define:vars={{ cycle: `${CYCLE}s` }}>
+  .ftr-nocloud,
+  .ftr-desktop,
+  .ftr-laptop,
+  .ftr-arrow,
+  .ftr-pill,
+  .ftr-file,
+  .ftr-screen2,
   .ftr-check {
-    animation: ftr-check-in 8s ease-out infinite both;
-  }
-  @keyframes ftr-check-in {
-    0%,
-    62% {
-      opacity: 0;
-      transform: scale(0.6);
-    }
-    67% {
-      opacity: 1;
-      transform: scale(1.15);
-    }
-    70% {
-      transform: scale(1);
-    }
-    94% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0;
-    }
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .ftr-nocloud,
-    .ftr-file,
+    .ftr-desktop,
+    .ftr-laptop,
+    .ftr-arrow,
     .ftr-pill,
+    .ftr-file,
     .ftr-screen2,
     .ftr-check {
       animation: none;
@@ -227,3 +239,5 @@ import NetworkMap from "./NetworkMap.astro";
     }
   }
 </style>
+
+<style set:html={generatedCss} />
