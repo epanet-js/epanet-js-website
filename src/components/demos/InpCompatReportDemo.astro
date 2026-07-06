@@ -19,7 +19,84 @@ const rows = [
   { label: "Rule-based controls", value: "2 need review", warn: true },
 ];
 
-const rowDelay = (i: number) => 1.2 + i * 0.5;
+// Timing is baked directly into per-index @keyframes below (no
+// animation-delay). animation-delay only defers an infinite animation's
+// FIRST play — every loop after that runs back-to-back on the element's own
+// fixed period, permanently out of phase with anything that has a different
+// delay (like the zero-delay progress bar). That let rows still be sitting
+// in their "hold visible" phase from the previous loop the instant the
+// progress bar reset to 0%, looking like they were visible from the start.
+// Baking absolute times with zero delay for every element keeps them all on
+// the same cycle boundary, so nothing can drift out of sync between loops.
+// The floating box's height animates in two steps: collapsed to just the
+// header + progress bar until the import "completes", then it expands to
+// fit the rows + button (via the grid-template-rows 0fr->1fr trick — the
+// only way to animate to/from an auto/content-based height in CSS), holds,
+// fades its content out, and — after a pause — collapses back down before
+// the cycle loops. That extra tail (wait + collapse + pause) is why the
+// cycle is longer than the content's own hold/fade would otherwise need.
+const CYCLE = 8.3;
+const toPct = (seconds: number) => +((seconds / CYCLE) * 100).toFixed(3);
+
+// Progress bar finishes filling at 1.32s — see .inp-progress-bar below. Rows
+// begin appearing 0.5s after that, staggered 0.5s apart; the entrance
+// transition itself takes 0.42s.
+const PROGRESS_COMPLETE = 1.32;
+const ROW_GAP = 0.5;
+const ENTRANCE = 0.42;
+const HOLD_END = 6.8;
+const FADE_END = 7.2;
+const COLLAPSE_WAIT = 0.3;
+const COLLAPSE_DURATION = 0.5;
+
+// The box finishes expanding right as the first row starts fading in.
+const BOX_EXPAND_END = PROGRESS_COMPLETE + 0.5;
+const BOX_COLLAPSE_START = FADE_END + COLLAPSE_WAIT;
+const BOX_COLLAPSE_END = BOX_COLLAPSE_START + COLLAPSE_DURATION;
+
+const rowStart = (i: number) => PROGRESS_COMPLETE + 0.5 + i * ROW_GAP;
+const buttonStart = rowStart(rows.length);
+
+const rowCss = [...rows.map((_, i) => rowStart(i)), buttonStart]
+  .map(
+    (start, i) => `
+.inp-row-${i} { animation-name: inp-row-in-${i}; }
+@keyframes inp-row-in-${i} {
+  0%, ${toPct(start)}% { opacity: 0; transform: translateY(4px); }
+  ${toPct(start + ENTRANCE)}% { opacity: 1; transform: translateY(0); }
+  ${toPct(HOLD_END)}% { opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}
+.inp-check-${i} { animation-name: inp-check-pop-${i}; }
+@keyframes inp-check-pop-${i} {
+  0%, ${toPct(start)}% { opacity: 0; transform: scale(0); }
+  ${toPct(start + ENTRANCE + 0.24)}% { opacity: 1; transform: scale(1.25); }
+  ${toPct(start + ENTRANCE + 0.42)}% { opacity: 1; transform: scale(1); }
+  ${toPct(HOLD_END)}% { opacity: 1; transform: scale(1); }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}`,
+  )
+  .join("\n");
+
+const progressCss = `
+.inp-progress-bar { animation-name: inp-progress; }
+@keyframes inp-progress {
+  0% { width: 0; opacity: 1; }
+  ${toPct(PROGRESS_COMPLETE)}% { width: 100%; opacity: 1; }
+  ${toPct(HOLD_END)}% { width: 100%; opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { width: 100%; opacity: 0; }
+}`;
+
+const collapseCss = `
+.inp-collapse { animation-name: inp-collapse; }
+@keyframes inp-collapse {
+  0%, ${toPct(PROGRESS_COMPLETE)}% { grid-template-rows: 0fr; }
+  ${toPct(BOX_EXPAND_END)}% { grid-template-rows: 1fr; }
+  ${toPct(BOX_COLLAPSE_START)}% { grid-template-rows: 1fr; }
+  ${toPct(BOX_COLLAPSE_END)}%, 100% { grid-template-rows: 0fr; }
+}`;
+
+const generatedCss = `${progressCss}\n${collapseCss}\n${rowCss}`;
 
 const label =
   "INP import in epanet-js: a compatibility report for my-network.inp listing 1,284 junctions, 1,407 pipes, and 6 demand patterns imported, with 2 rule-based controls flagged for review.";
@@ -27,194 +104,154 @@ const label =
 
 {
   framed ? (
-    <AppWindow variant="plain" label={label} class={className}>
-      <div class="absolute top-2 right-2 w-[250px] max-w-[72%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <AppWindow variant="plain" hideHeader hideFooter label={label} class={className}>
+      <div class="absolute top-2 right-2 w-[250px] max-w-[72%] bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
         <div class="px-3 pt-2.5 pb-2 border-b border-gray-100">
           <div class="flex items-center justify-between">
-            <p class="flex items-center gap-1.5 text-[11px] font-semibold text-gray-700">
-              <FileText size={12} className="text-gray-400" />
+            <p class="flex items-center gap-1.5 text-[12px] font-semibold text-gray-700">
+              <FileText size={14} className="text-gray-400" />
               my-network.inp
             </p>
-            <p class="text-[10px] text-gray-400">Import report</p>
           </div>
           <div class="mt-2 h-0.5 rounded-full bg-gray-100 overflow-hidden">
             <div class="inp-progress-bar h-full bg-violet-500" />
           </div>
         </div>
-        <div>
-          {rows.map((row, i) => (
-            <div
-              class="inp-row border-t border-gray-50 first:border-t-0 px-3 py-1.5"
-              style={`animation-delay: ${rowDelay(i)}s`}>
-              <div
-                class:list={[
-                  "flex items-center justify-between text-[10px]",
-                  row.warn ? "inp-breathe text-amber-600" : "text-gray-600",
-                ]}>
-                <span>{row.label}</span>
-                <span
-                  class:list={[
-                    "flex items-center gap-1 font-medium tabular-nums",
-                    !row.warn && "text-gray-700",
-                  ]}>
-                  {row.value}
-                  <span
-                    class="inp-check inline-flex"
-                    style={`animation-delay: ${rowDelay(i)}s`}>
-                    {row.warn ? (
-                      <TriangleAlert size={11} className="text-amber-500" />
-                    ) : (
-                      <CheckCircle2 size={11} className="text-green-500" />
-                    )}
-                  </span>
-                </span>
-              </div>
+        <div class="inp-collapse">
+          <div class="overflow-hidden">
+            <div>
+              {rows.map((row, i) => (
+                <div class={`inp-row inp-row-${i} border-t border-gray-50 first:border-t-0 px-3 py-1.5`}>
+                  <div
+                    class:list={[
+                      "flex items-center justify-between text-[12px]",
+                      row.warn ? "inp-breathe text-amber-600" : "text-gray-600",
+                    ]}>
+                    <span>{row.label}</span>
+                    <span
+                      class:list={[
+                        "flex items-center gap-1 font-medium tabular-nums",
+                        !row.warn && "text-gray-700",
+                      ]}>
+                      {row.value}
+                      <span class={`inp-check inp-check-${i} inline-flex`}>
+                        {row.warn ? (
+                          <TriangleAlert size={14} className="text-amber-500" />
+                        ) : (
+                          <CheckCircle2 size={14} className="text-green-500" />
+                        )}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div
-          class="inp-row flex gap-1.5 px-3 pt-1.5 pb-2.5 border-t border-gray-50"
-          style="animation-delay: 3.2s">
-          <span class="inp-open rounded bg-violet-600 text-white text-[10px] font-medium px-2.5 py-1">
-            Open model
-          </span>
-          <span class="rounded border border-gray-200 text-gray-600 text-[10px] px-2.5 py-1">
-            View report
-          </span>
+            <div class={`inp-row inp-row-${rows.length} flex px-3 pt-1.5 pb-2.5 border-t border-gray-50`}>
+              <span class="inp-open rounded bg-violet-600 text-white text-[12px] font-medium px-2.5 py-1">
+                Review model
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </AppWindow>
   ) : (
     <div
       class:list={[
-        "w-full max-w-[300px] mx-auto bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+        "w-full max-w-[300px] mx-auto bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden select-none",
         className,
       ]}
       role="img"
       aria-label={label}>
       <div class="px-3 pt-2.5 pb-2 border-b border-gray-100">
         <div class="flex items-center justify-between">
-          <p class="flex items-center gap-1.5 text-[11px] font-semibold text-gray-700">
-            <FileText size={12} className="text-gray-400" />
+          <p class="flex items-center gap-1.5 text-[12px] font-semibold text-gray-700">
+            <FileText size={14} className="text-gray-400" />
             my-network.inp
           </p>
-          <p class="text-[10px] text-gray-400">Import report</p>
         </div>
         <div class="mt-2 h-0.5 rounded-full bg-gray-100 overflow-hidden">
           <div class="inp-progress-bar h-full bg-violet-500" />
         </div>
       </div>
-      <div>
-        {rows.map((row, i) => (
-          <div
-            class="inp-row border-t border-gray-50 first:border-t-0 px-3 py-1.5"
-            style={`animation-delay: ${rowDelay(i)}s`}>
-            <div
-              class:list={[
-                "flex items-center justify-between text-[10px]",
-                row.warn ? "inp-breathe text-amber-600" : "text-gray-600",
-              ]}>
-              <span>{row.label}</span>
-              <span
-                class:list={[
-                  "flex items-center gap-1 font-medium tabular-nums",
-                  !row.warn && "text-gray-700",
-                ]}>
-                {row.value}
-                <span
-                  class="inp-check inline-flex"
-                  style={`animation-delay: ${rowDelay(i)}s`}>
-                  {row.warn ? (
-                    <TriangleAlert size={11} className="text-amber-500" />
-                  ) : (
-                    <CheckCircle2 size={11} className="text-green-500" />
-                  )}
-                </span>
-              </span>
-            </div>
+      <div class="inp-collapse">
+        <div class="overflow-hidden">
+          <div>
+            {rows.map((row, i) => (
+              <div class={`inp-row inp-row-${i} border-t border-gray-50 first:border-t-0 px-3 py-1.5`}>
+                <div
+                  class:list={[
+                    "flex items-center justify-between text-[12px]",
+                    row.warn ? "inp-breathe text-amber-600" : "text-gray-600",
+                  ]}>
+                  <span>{row.label}</span>
+                  <span
+                    class:list={[
+                      "flex items-center gap-1 font-medium tabular-nums",
+                      !row.warn && "text-gray-700",
+                    ]}>
+                    {row.value}
+                    <span class={`inp-check inp-check-${i} inline-flex`}>
+                      {row.warn ? (
+                        <TriangleAlert size={14} className="text-amber-500" />
+                      ) : (
+                        <CheckCircle2 size={14} className="text-green-500" />
+                      )}
+                    </span>
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div
-        class="inp-row flex gap-1.5 px-3 pt-1.5 pb-2.5 border-t border-gray-50"
-        style="animation-delay: 3.2s">
-        <span class="inp-open rounded bg-violet-600 text-white text-[10px] font-medium px-2.5 py-1">
-          Open model
-        </span>
-        <span class="rounded border border-gray-200 text-gray-600 text-[10px] px-2.5 py-1">
-          View report
-        </span>
+          <div class={`inp-row inp-row-${rows.length} flex px-3 pt-1.5 pb-2.5 border-t border-gray-50`}>
+            <span class="inp-open rounded bg-violet-600 text-white text-[12px] font-medium px-2.5 py-1">
+              Review model
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
 
-<style>
+<style define:vars={{ cycle: `${CYCLE}s` }}>
+  /* width/opacity keyframe stops are generated (inp-progress, below) since
+     they depend on CYCLE */
   .inp-progress-bar {
     width: 0;
-    animation: inp-progress 6s infinite;
+    animation-duration: var(--cycle);
+    animation-iteration-count: infinite;
   }
-  @keyframes inp-progress {
-    0% {
-      width: 0;
-      opacity: 1;
-    }
-    22% {
-      width: 100%;
-      opacity: 1;
-    }
-    30% {
-      opacity: 0;
-    }
-    100% {
-      width: 100%;
-      opacity: 0;
-    }
+  /* the floating box's own height: collapsed to 0fr (just the header) until
+     the import completes, then expands to fit the rows + button (grid rows
+     interpolate to a track's natural content height, unlike plain "height"
+     which can't animate to/from auto). Keyframe stops are generated
+     (inp-collapse, below) since they depend on CYCLE. */
+  .inp-collapse {
+    display: grid;
+    grid-template-rows: 0fr;
+    animation-duration: var(--cycle);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
+  /* rows fade in one at a time; the exact entrance time for each comes from
+     the generated per-index keyframes (inp-row-in-N below) */
   .inp-row {
-    animation: inp-row-in 6s infinite both;
+    opacity: 0;
+    transform: translateY(4px);
+    animation-duration: var(--cycle);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
-  @keyframes inp-row-in {
-    0% {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    7% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    92% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
+  /* check/warning icons pop in alongside their row; per-index keyframes
+     (inp-check-pop-N) set the exact pop time */
   .inp-check {
+    opacity: 0;
+    transform: scale(0);
     transform-origin: center;
-    animation: inp-check-pop 6s infinite both;
-  }
-  @keyframes inp-check-pop {
-    0%,
-    7% {
-      opacity: 0;
-      transform: scale(0);
-    }
-    11% {
-      opacity: 1;
-      transform: scale(1.25);
-    }
-    14% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    92% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0;
-    }
+    animation-duration: var(--cycle);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
   .inp-breathe {
     animation: inp-breathe 2s ease-in-out infinite;
@@ -229,7 +266,7 @@ const label =
     }
   }
   .inp-open {
-    animation: inp-open-pulse 6s infinite;
+    animation: inp-open-pulse var(--cycle) infinite;
   }
   @keyframes inp-open-pulse {
     0%,
@@ -246,6 +283,7 @@ const label =
   }
   @media (prefers-reduced-motion: reduce) {
     .inp-progress-bar,
+    .inp-collapse,
     .inp-row,
     .inp-check,
     .inp-breathe,
@@ -254,7 +292,10 @@ const label =
     }
     .inp-progress-bar {
       width: 100%;
-      opacity: 0;
+      opacity: 1;
+    }
+    .inp-collapse {
+      grid-template-rows: 1fr;
     }
     .inp-row {
       opacity: 1;
@@ -272,3 +313,5 @@ const label =
     }
   }
 </style>
+
+<style set:html={generatedCss} />
