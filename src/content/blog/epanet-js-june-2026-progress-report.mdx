@@ -1,0 +1,263 @@
+---
+draft: true
+title: "epanet-js June 2026 Progress Report"
+snippet: "Pipe library, native pump controls, and model validation"
+image:
+  { src: "/assets/blog/progress-report/2026-06/2026-06-00-hero.webp", alt: "" }
+publishDate: "2026-07-8 08:15"
+category: "Progress report"
+author: "Luke Butler"
+tags: [Progress report]
+---
+
+**Pipe library, native pump controls, and model validation**
+
+June was another big month at Iterating. The two headline features are the **pipe definition library** — a reusable set of age-to-roughness tables for your pipe materials, applied across the network in one action — and **native pump controls**, time- and level-based controls you define directly in the asset panel.
+
+Alongside those, we've shipped custom attributes, support for empty values backed by a new set of model validations, scoped customer point allocation, and three additions to the model build: pipe material and installation year from GIS, preserved projections, and the whole experience in your language.
+
+And if you're keeping score against last month's What's next — the pipe library, material and year from GIS, and zone-aware allocation all made it in.
+
+{/* more */}
+
+<div style="text-align: center">
+  <a
+    href="https://app.epanetjs.com"
+    style="
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+padding: 0.75rem 2rem;
+font-weight: 500;
+color: white;
+background-image: linear-gradient(to right, #2563eb, #9333ea);
+border-radius: 0.375rem;
+text-decoration: none;
+"
+  >
+    <p style="margin: 0;">Launch epanet-js. No login needed.</p>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M5 12h14"></path>
+      <path d="m12 5 7 7-7 7"></path>
+    </svg>
+  </a>
+</div>
+
+## **Pipe definition library**
+
+<AccessBadge tier="paid" />
+
+The first of the two big ones. The pipe library lets you build a reusable set of pipe materials, each with its own age-to-roughness table — so roughness is driven by what's actually in the ground rather than a single network-wide default. Define once how cast iron or PVC ages, and apply it everywhere.
+
+When you apply the library, epanet-js works out each pipe's age from its installation year, finds the row its age falls into in the material's table, and fills in the roughness. It only ever fills pipes whose roughness is empty — values you've set by hand are never overwritten, so partial data stays intact. A pipe without an installation year is treated as new, and one with a year that can't be read is skipped.
+
+A few things make the library quick to work with:
+
+- **Seed it from your model.** Pull in the materials already present on your pipes instead of starting from scratch.
+- **Validated as you type.** Every row of the age-to-roughness table is checked immediately, so a bad entry is caught in the library before it ever reaches a pipe.
+- **Take it between projects.** Export a library to CSV or XLSX and import it into another project — any rows that fail validation are flagged so you can fix the gaps.
+
+Together with empty values (more on those below), this is the asset-management workflow we've been building toward: import your pipes from GIS with material and installation year, leave roughness blank, and let the library fill it in.
+
+{/* TODO(video): Replace this screenshot with the Mux player embed when the demo video is ready — copy the bordered <div> + <iframe> pattern from the May 2026 post. */}
+
+<figure>
+  <img
+    src="/assets/blog/progress-report/2026-06/report-06-pipe-library.webp"
+    style="box-sizing: border-box;
+                max-width:800px;
+                width:100%;"
+  />
+  <figcaption>
+    Each material carries its own age-to-roughness table; apply the whole
+    library in one action.
+  </figcaption>
+</figure>
+
+## **Native pump controls**
+
+<AccessBadge tier="priority" />
+
+Until now, pump controls only existed in epanet-js if they arrived with an INP file — you could keep them, but not create them. Now you can define a control directly in the pump's asset panel, and the simulation executes it, switching the pump exactly as you'd expect.
+
+Each pump takes one control, and there are two types. A **time-based** control switches the pump on and off at the clock times you choose. A **level-based** control watches a tank and switches at the levels you set. Both let you set the speed the pump runs at. Undo and redo track every change while you tune the settings, and if a pump already has legacy controls from an imported INP file, the panel flags them so the two don't silently conflict.
+
+It's the first step toward operational logic that's as easy to build as the rest of your model.
+
+{/* TODO(video): Replace this screenshot with the Mux player embed when the demo video is ready — copy the bordered <div> + <iframe> pattern from the May 2026 post. */}
+
+<figure>
+  <img
+    src="/assets/blog/progress-report/2026-06/report-06-pump-native-controls.webp"
+    style="box-sizing: border-box;
+                max-width:800px;
+                width:100%;"
+  />
+  <figcaption>
+    A level-based control in the asset panel — PU1 switches on tank T1's
+    level.
+  </figcaption>
+</figure>
+
+## **Scoped customer point allocation**
+
+Customer point allocation no longer has to run across the whole network. A new Scope section in the allocation dialog lets you restrict the operation to the pipes you've selected — and, when your model has zones, to the customers inside a zone you choose. Leave both off and it works network-wide as before.
+
+Scoping to a zone also skips the distance checks for every customer outside it, so allocation stays fast even on large networks.
+
+<figure>
+  <img
+    src="/assets/blog/progress-report/2026-06/report-06-customer-allocation-scope.webp"
+    style="box-sizing: border-box;
+                max-width:800px;
+                width:100%;"
+  />
+  <figcaption>
+    Scope an allocation to selected pipes or a zone instead of the whole
+    network.
+  </figcaption>
+</figure>
+
+## **Custom attributes**
+
+<AccessBadge tier="paid" />
+
+Every organisation tracks data that the standard schema has no field for. Custom attributes let you extend the model with your own — text or numeric fields on any asset type — and keep that data with the model instead of in a spreadsheet on the side. Define your fields once, then edit the values wherever you work: the asset panel, the multi-asset panel, or the data tables. Everything is saved in the .ejsdb project file.
+
+Next we'll bring custom attribute data in from the model build, so the fields in your GIS come along from day one.
+
+{/* TODO: optionally add a custom attributes screenshot here */}
+
+## **Model attribute validation and empty values**
+
+<AccessBadge tier="paid" />
+
+Until now, every attribute had to hold a value from the moment an asset existed. Import pipes from GIS without roughness and we'd quietly fill in a default — data that looked real but wasn't, waiting for someone to remember to clean it up.
+
+This month that changes: nearly any numeric field can now be empty. Import pipes without roughness and they arrive blank. Draw a new asset and its optional values start empty too — only computed values like elevation and your drawing defaults are filled in. An empty value is honest about what your model doesn't know yet, and it's what makes the pipe library workflow above possible.
+
+A model with gaps can't always run, though, so validation keeps you on top of them:
+
+- **Orange highlights.** A required value that's missing — or any value that's invalid — is highlighted in the asset panel, the data tables, and the multi-asset panel, right where you edit.
+- **Model attribute checks in the network review.** A new group of checks covers missing or invalid attributes — pipe roughness, tank levels, pump curves, unallocated customer points, and many more — listed errors-first. Click an issue to see the affected assets and select them on the map.
+- **A check before every simulation.** If issues could stop your model running correctly, you're warned before the simulation starts: jump to the network review to fix them, or run anyway. Missing values are even written explicitly into the INP, so EPANET's own report points straight at them.
+
+The highlights and the pre-simulation warning are there for everyone; working through the full network review list is part of paid plans. We'll keep adding checks and validations to help you see where your model stands and work through issues faster.
+
+## **Model build**
+
+<AccessBadge tier="paid" />
+
+Three additions to the redesigned model build this month.
+
+### **Pipe material and installation year**
+
+The pipe attributes we added in May are now part of the model build: map material and installation year from your GIS fields and they land on your pipes, ready for the pipe library. Any installation-year value that can't be read as a valid year is flagged in red before it reaches your model.
+
+<figure>
+  <img
+    src="/assets/blog/progress-report/2026-06/report-06-model-builder-material-year.webp"
+    style="box-sizing: border-box;
+                max-width:800px;
+                width:100%;"
+  />
+  <figcaption>
+    Map material and installation year from your GIS data; invalid years are
+    flagged before they reach your model.
+  </figcaption>
+</figure>
+
+### **Projection preserved**
+
+When you build a model from GIS data, the source projection is now stored with the project file, so it's there again when you export back out — no guessing or re-specifying the coordinate system after the fact.
+
+### **In your language**
+
+The model build now follows the language you use in epanet-js from the first step to the last, rather than defaulting to English.
+
+<figure>
+  <img
+    src="/assets/blog/progress-report/2026-06/report-06-model-builder-language.webp"
+    style="box-sizing: border-box;
+                max-width:800px;
+                width:100%;"
+  />
+  <figcaption>The model build running in Japanese.</figcaption>
+</figure>
+
+## **Improvements**
+
+- **Faster data tables on big models:** Sorting, copying, and pasting now show a loading state instead of freezing the table during heavy operations — a real difference on models with hundreds of thousands of rows.
+- **Zone import from Shapefile:** Zone polygons can now be imported from Shapefile as well as GeoJSON, with a drop zone that asks for each companion file (SHP, DBF, and so on) as you add them.
+- **Customer point multi-select:** Customer points can now be selected together with junctions, pipes, and other assets — with the pointer, the area select, or the data table — and the multi-asset panel, exports, and map context menus all handle the mix. It powers bulk disconnection too: select every customer point in the data table and disconnect them in one go, a fast way to undo an allocation.
+- **Floating drawing toolbar:** The drawing tools have moved into a floating toolbar on the map itself, tidying the layout and giving the playback and drawing controls more room on smaller screens.
+- **Attribute search in the model build:** The mapping step now has a search box, so you can find the right GIS field without scanning a long list.
+- **Zoom to asset from the data table:** Selecting a row zooms the map to that asset, keeping the table and the map in sync.
+- **Shared defaults:** The model build now uses the same default values as the rest of epanet-js, so a model behaves the same whichever way you build it.
+
+## **Fixes**
+
+- A pipe connected to a since-deleted node no longer crashes the simulation or the network review, so you can repair the model instead.
+- Fixed several issues that could build up over long, hours-long sessions.
+- Importing an INP file with an unsupported headloss formula now falls back to Hazen-Williams and flags the substitution in the import issues, instead of failing the import.
+- A simulation that runs out of memory now shows a clear out-of-memory message with next steps, instead of failing blankly.
+- Clicking overlapping customer points now selects the one closest to your pointer.
+- Redrawing a pump's geometry no longer discards its assigned performance curve.
+- Project files saved before a naming-convention change, with tank mixing values stored in uppercase, now migrate and open correctly.
+- Base demands accept negative values again — the new validations had briefly blocked them.
+- Fixed a mismatch where the interface accepted installation-year values the database rejected — validation is now consistent end to end.
+
+## **What's next**
+
+Our focus now turns to the overall experience of building a model — lots of small improvements to make it feel seamless end to end. Among them:
+
+- **Customers and zones in the model build:** Import customer points and zone polygons during the build itself, rather than afterwards.
+- **Custom attributes in the model build:** Bring your GIS fields in as custom attributes from the start.
+- **More validations, with suggested fixes:** More checks that catch problems early — a disconnected system, for example — with friendlier warnings than a raw EPANET error, and suggested fixes that point you in the right direction.
+
+Support EPANET by using software that supports it back.
+
+<div style="text-align: center">
+  <a
+    href="https://app.epanetjs.com"
+    style="
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+padding: 0.75rem 2rem;
+font-weight: 500;
+color: white;
+background-image: linear-gradient(to right, #2563eb, #9333ea);
+border-radius: 0.375rem;
+text-decoration: none;
+"
+  >
+    <p style="margin: 0;">Launch epanet-js. No login needed.</p>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M5 12h14"></path>
+      <path d="m12 5 7 7-7 7"></path>
+    </svg>
+  </a>
+</div>
+
+— Luke and Sam
