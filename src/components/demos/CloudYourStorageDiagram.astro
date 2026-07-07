@@ -6,9 +6,10 @@ import { Cloud, Database } from "lucide-react";
 ---
 
 <div
-  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  class="relative aspect-video w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: we run the epanet-js application, and model data is read from and written to storage your organization manages, such as your own S3 bucket.">
+  <div class="absolute inset-0 flex scale-90 flex-col items-center justify-center sm:scale-100">
   <div class="flex items-center justify-center gap-2 sm:gap-5">
     <!-- the application, run by us -->
     <div
@@ -62,4 +63,5 @@ import { Cloud, Database } from "lucide-react";
   <p class="mt-5 text-center text-[10px] text-gray-400">
     Your region · Your retention · Your access
   </p>
+  </div>
 </div>

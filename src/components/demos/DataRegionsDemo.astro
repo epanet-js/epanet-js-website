@@ -20,9 +20,10 @@ const regions = [
 ---
 
 <div
-  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  class="relative aspect-video w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: three data regions, Europe, the United States, and Asia Pacific, each running the epanet-js app beside its own model storage and delivering models to that region's users without leaving the region.">
+  <div class="absolute inset-0 flex scale-90 items-center justify-center sm:scale-100">
   <div class="mx-auto w-full max-w-[420px]">
     <div class="grid grid-cols-3 gap-4 sm:gap-5">
       {
@@ -105,6 +106,7 @@ const regions = [
     <p class="drg-footer mt-4 text-center text-[10px] text-gray-400">
       Models are stored and served in the region you choose.
     </p>
+  </div>
   </div>
 </div>
 

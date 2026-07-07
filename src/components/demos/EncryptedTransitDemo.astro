@@ -6,9 +6,10 @@ import { Cloud, Laptop, Lock } from "lucide-react";
 ---
 
 <div
-  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  class="relative aspect-video w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: traffic between your machine and the epanet-js service is encrypted in transit over HTTPS and TLS.">
+  <div class="absolute inset-0 flex scale-90 flex-col items-center justify-center sm:scale-100">
   <div class="flex items-center justify-center gap-3 sm:gap-4">
     <!-- the user's machine -->
     <div class="flex shrink-0 flex-col items-center gap-1.5">
@@ -69,6 +70,7 @@ import { Cloud, Laptop, Lock } from "lucide-react";
   <p class="enc-footer mt-6 text-center text-[10px] text-gray-400">
     All traffic encrypted in transit.
   </p>
+  </div>
 </div>
 
 <style>

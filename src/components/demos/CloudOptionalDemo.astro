@@ -13,9 +13,10 @@ const devices = [
 ---
 
 <div
-  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  class="relative aspect-video w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: one model syncing through a cloud, managed or self-hosted, down to three devices and back.">
+  <div class="absolute inset-0 flex scale-90 items-center justify-center sm:scale-100">
   <div class="mx-auto w-full max-w-[340px]">
     <!-- the sync point -->
     <div class="flex items-center justify-center gap-2.5">
@@ -87,6 +88,7 @@ const devices = [
         ))
       }
     </div>
+  </div>
   </div>
 </div>
 

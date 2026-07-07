@@ -23,11 +23,12 @@ const roleChip = (role: string) =>
 
 <div
   class:list={[
-    "bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+    "relative aspect-video bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
     className,
   ]}
   role="img"
   aria-label="Team access panel: a member list with per-person roles, an invite going out, and one member's role changing from editor to viewer.">
+  <div class="absolute inset-0 flex scale-90 flex-col justify-center">
   <div
     class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
     <p class="text-[11px] font-semibold text-gray-700">Team access</p>
@@ -89,6 +90,7 @@ const roleChip = (role: string) =>
     class="tac-footer px-3 py-1.5 border-t border-gray-100 text-[9px] text-gray-400">
     4 seats · roles per member
   </p>
+  </div>
 </div>
 
 <style>

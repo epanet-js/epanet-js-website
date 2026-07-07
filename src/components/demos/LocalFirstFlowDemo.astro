@@ -198,10 +198,10 @@ ${captionWindows
 ---
 
 <div
-  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  class="relative aspect-video w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: the epanet-js app loads from the cloud, your .inp file stays on your device, and the simulation keeps running when the connection drops.">
-  <div class="flex flex-col items-center">
+  <div class="absolute inset-0 flex scale-[0.6] flex-col items-center justify-center sm:scale-75 lg:scale-90">
     <!-- cloud: where the app comes from -->
     <div class="lff-cloud flex flex-col items-center">
       <Cloud size={26} className="text-gray-400" />
