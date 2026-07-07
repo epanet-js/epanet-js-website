@@ -55,7 +55,7 @@ text-decoration: none;
 
 <AccessBadge tier="paid" />
 
-The first of the two big ones. The pipe library lets you build a reusable set of pipe materials, each with its own age-to-roughness table, so roughness can quickly be defined by accepted standards and then later calibrated.
+The pipe library lets you build a reusable set of pipe materials, each with its own age-to-roughness table, so roughness can quickly be defined by accepted standards and then later calibrated.
 
 When you apply the library, epanet-js works out each pipe's age from its installation year, finds the row its age falls into in the material's table, and fills in the roughness. It only ever fills pipes whose roughness is empty, and those with material and year values already set. The one exception is materials that have a single roughness value, these will also get a roughness assigned even if the year is missing.
 
@@ -102,7 +102,7 @@ You can define two types of controls on pumps. A time-based control switches the
 
 ## **Scoped customer point allocation**
 
-Customer point allocation no longer has to be applied across the whole network. A new scope section in the allocation dialog lets you restrict the operation to the pipes you've selected or to the customers inside a zone . Leave both off and it works network-wide as before.
+Customer point allocation no longer has to be applied across the whole network. A new scope section in the allocation dialog lets you restrict the operation to the pipes you've selected or to the customers inside a zone. Leave both off and it works network-wide as before.
 
 <figure>
   <img
