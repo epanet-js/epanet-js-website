@@ -2,8 +2,199 @@
 // Local-first flow diagram: the app arrives from the cloud, the .inp file
 // stays on the device, and when the connection drops the simulation keeps
 // running locally.
-import { CheckCircle2, Cloud, FileText, Laptop, WifiOff } from "lucide-react";
-import NetworkMap from "./NetworkMap.astro";
+import { CheckCircle2, Cloud, FileText, WifiOff } from "lucide-react";
+import Basemap from "./Basemap.astro";
+import { pipes, junctions, markerPoints } from "./network-geometry";
+
+// Timing is baked directly into @keyframes below (no animation-delay), so
+// every element resets on the same cycle boundary. Every "wait Ns" below is
+// start-to-start from the event before it (matching STEP1/STEP2's own
+// spacing), so shifting one step's start cascades HOLD_END/FADE_END/CYCLE
+// automatically instead of drifting out of sync with what follows it.
+const toPct = (seconds: number, cycle: number) =>
+  +((seconds / cycle) * 100).toFixed(3);
+
+const STEP_INTERVAL = 3;
+const STEP1_START = 0.8; // app travels down from the cloud
+const STEP1_TO_STEP2_DELAY = STEP_INTERVAL + 0.5; // extra 0.5s pause after "The application loads"
+const STEP2_START = STEP1_START + STEP1_TO_STEP2_DELAY; // connection drops
+
+// The app travels the full length of the connecting line, reaching the top
+// of the device display before fading out.
+const APP_OPACITY_RAMP = 0.32;
+const APP_LANDED = STEP1_START + 1.6; // absolute time, not an offset
+const APP_FADE_COMPLETE = APP_LANDED + 0.2;
+const APP_LANDED_Y = 58; // px — top of the device display
+const APP_FADE_Y = 62;
+
+// The basemap shows as soon as the screen turns on.
+const SCREEN_HIDDEN_UNTIL = APP_LANDED + 0.16;
+const SCREEN_VISIBLE = APP_LANDED + 0.64;
+
+// The file icon starts traveling in 4s after the basemap appears (giving the
+// offline sequence an extra 1s pause to read clearly before the file starts
+// loading), and the "You load your local file" caption switches the moment
+// it appears.
+// The icon fades in and moves into the display over 2s, then holds briefly
+// before fading out. The filename chip appears 0.5s after the file icon has
+// disappeared, and stays up for the rest of the cycle (it no longer fades
+// out early). The network fades in gradually, starting 0.5s after the
+// chip's own entrance animation finishes; the "simulation runs locally"
+// caption and the white "Running simulation..." chip (with its purple
+// progress bar) fade in 1.5s after the network finishes fading in. The
+// green "simulation successful" chip takes over once that progress bar
+// reaches 100% (a 1s fill).
+const FILE_DELAY_AFTER_BASEMAP = 4;
+const FILE_START = SCREEN_VISIBLE + FILE_DELAY_AFTER_BASEMAP;
+const FILE_OPACITY_RAMP = 0.3;
+const FILE_MOVE_DURATION = 2;
+const FILE_MOVE_X = 100; // px — travels in from 100px to the left
+const FILE_END = FILE_START + FILE_MOVE_DURATION;
+const FILE_HOLD_AFTER_MOVE = 0.5;
+const FILE_FADEOUT_DURATION = 0.2;
+const FILE_FADEOUT_START = FILE_END + FILE_HOLD_AFTER_MOVE;
+const FILE_FADEOUT_END = FILE_FADEOUT_START + FILE_FADEOUT_DURATION;
+
+const STEP3_START = FILE_START; // "you load your local file" switches as soon as the file icon appears
+const INP_VISIBLE_OFFSET = 0.48; // the filename chip's own fade-in ramp
+
+const CHIP_WAIT_AFTER_FILE_GONE = 0.5;
+const INP_START = FILE_FADEOUT_END + CHIP_WAIT_AFTER_FILE_GONE; // filename chip appears 0.5s after the file icon disappears
+const INP_VISIBLE = INP_START + INP_VISIBLE_OFFSET; // filename chip's entrance animation ends
+
+const NETWORK_WAIT_AFTER_CHIP = 0.5;
+const NETWORK_START = INP_VISIBLE + NETWORK_WAIT_AFTER_CHIP; // network starts fading in 0.5s after the filename chip finishes entering
+const NETWORK_VISIBLE_OFFSET = 1.5; // gradual fade-in, not a quick pop
+const NETWORK_VISIBLE = NETWORK_START + NETWORK_VISIBLE_OFFSET;
+
+const GREEN_WAIT_AFTER_NETWORK = 1.5;
+const STEP4_START = NETWORK_VISIBLE + GREEN_WAIT_AFTER_NETWORK; // white "Running simulation..." chip appears
+const CHIP_VISIBLE_OFFSET = 0.48;
+
+// The white chip's progress bar starts filling once the chip has fully
+// faded in, takes 2s to complete, and the green chip takes over right as
+// it finishes (a quick crossfade).
+const PROGRESS_BAR_DURATION = 2;
+const PROGRESS_BAR_START = STEP4_START + CHIP_VISIBLE_OFFSET;
+const PROGRESS_BAR_END = PROGRESS_BAR_START + PROGRESS_BAR_DURATION;
+const PROGRESS_CHIP_FADEOUT_DURATION = 0.2;
+const GREEN_START = PROGRESS_BAR_END;
+const GREEN_VISIBLE_OFFSET = CHIP_VISIBLE_OFFSET;
+const PROGRESS_CHIP_FADEOUT_START = GREEN_START - PROGRESS_CHIP_FADEOUT_DURATION;
+
+// The offline badge only fades in — no scale bounce.
+const OFFLINE_VISIBLE_OFFSET = 0.5;
+
+const CLOUD_DIM_COMPLETE = STEP2_START + 0.3;
+
+// The final hold (green chip visible before the whole diagram fades) is 2s
+// longer than the standard step spacing, so the success state lingers.
+const FINAL_HOLD_DURATION = STEP_INTERVAL + 2;
+const HOLD_END = GREEN_START + FINAL_HOLD_DURATION;
+const FADE_END = HOLD_END + 0.5;
+const CYCLE = FADE_END + 0.3;
+const pct = (seconds: number) => toPct(seconds, CYCLE);
+
+// Captions fade in as their step starts, hold until 0.2s before the next
+// step begins, and hand off.
+const captionWindows = [
+  { start: STEP1_START, visible: STEP1_START + APP_OPACITY_RAMP, fadeOutStart: STEP2_START - 0.2, fadeOutEnd: STEP2_START },
+  { start: STEP2_START, visible: STEP2_START + OFFLINE_VISIBLE_OFFSET, fadeOutStart: STEP3_START - 0.2, fadeOutEnd: STEP3_START },
+  { start: STEP3_START, visible: STEP3_START + INP_VISIBLE_OFFSET, fadeOutStart: STEP4_START - 0.2, fadeOutEnd: STEP4_START },
+  { start: STEP4_START, visible: STEP4_START + CHIP_VISIBLE_OFFSET, fadeOutStart: HOLD_END, fadeOutEnd: FADE_END },
+];
+
+const generatedCss = `
+.lff-cloud { animation-name: lff-cloud; }
+@keyframes lff-cloud {
+  0%, 3% { opacity: 0; }
+  8%, ${pct(STEP2_START)}% { opacity: 1; }
+  ${pct(CLOUD_DIM_COMPLETE)}% { opacity: 0.3; }
+  ${pct(HOLD_END)}% { opacity: 0.3; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.lff-link { animation-name: lff-link; }
+@keyframes lff-link {
+  0%, 6% { opacity: 0; }
+  10%, ${pct(STEP2_START)}% { opacity: 1; }
+  ${pct(CLOUD_DIM_COMPLETE)}% { opacity: 0.3; }
+  ${pct(HOLD_END)}% { opacity: 0.3; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.lff-app { animation-name: lff-app-travel; }
+@keyframes lff-app-travel {
+  0%, ${pct(STEP1_START)}% { opacity: 0; transform: translateY(0); }
+  ${pct(STEP1_START + APP_OPACITY_RAMP)}% { opacity: 1; }
+  ${pct(APP_LANDED)}% { opacity: 1; transform: translateY(${APP_LANDED_Y}px); }
+  ${pct(APP_FADE_COMPLETE)}%, 100% { opacity: 0; transform: translateY(${APP_FADE_Y}px); }
+}
+.lff-screen { animation-name: lff-screen-on; }
+@keyframes lff-screen-on {
+  0%, ${pct(SCREEN_HIDDEN_UNTIL)}% { opacity: 0; }
+  ${pct(SCREEN_VISIBLE)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.lff-file { animation-name: lff-file-in; }
+@keyframes lff-file-in {
+  0%, ${pct(FILE_START)}% { opacity: 0; transform: translateX(0); }
+  ${pct(FILE_START + FILE_OPACITY_RAMP)}% { opacity: 1; }
+  ${pct(FILE_END)}% { opacity: 1; transform: translateX(${FILE_MOVE_X}px); }
+  ${pct(FILE_FADEOUT_START)}% { opacity: 1; transform: translateX(${FILE_MOVE_X}px); }
+  ${pct(FILE_FADEOUT_END)}%, 100% { opacity: 0; transform: translateX(${FILE_MOVE_X}px); }
+}
+.lff-network { animation-name: lff-network-on; }
+@keyframes lff-network-on {
+  0%, ${pct(NETWORK_START)}% { opacity: 0; }
+  ${pct(NETWORK_VISIBLE)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.lff-offline { animation-name: lff-offline-in; }
+@keyframes lff-offline-in {
+  0%, ${pct(STEP2_START)}% { opacity: 0; }
+  ${pct(STEP2_START + OFFLINE_VISIBLE_OFFSET)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.lff-inp { animation-name: lff-inp-in; }
+@keyframes lff-inp-in {
+  0%, ${pct(INP_START)}% { opacity: 0; transform: translateY(3px); }
+  ${pct(INP_VISIBLE)}% { opacity: 1; transform: translateY(0); }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.lff-chip-progress { animation-name: lff-chip-progress-in; }
+@keyframes lff-chip-progress-in {
+  0%, ${pct(STEP4_START)}% { opacity: 0; transform: translate(-50%, calc(-50% - 2px)); }
+  ${pct(PROGRESS_BAR_START)}% { opacity: 1; transform: translate(-50%, -50%); }
+  ${pct(PROGRESS_CHIP_FADEOUT_START)}% { opacity: 1; }
+  ${pct(GREEN_START)}%, 100% { opacity: 0; }
+}
+.lff-progress-bar { animation-name: lff-progress-bar-fill; }
+@keyframes lff-progress-bar-fill {
+  0%, ${pct(PROGRESS_BAR_START)}% { width: 0%; }
+  ${pct(PROGRESS_BAR_END)}%, 100% { width: 100%; }
+}
+.lff-chip-success { animation-name: lff-chip-success-in; }
+@keyframes lff-chip-success-in {
+  0%, ${pct(GREEN_START)}% { opacity: 0; transform: translate(-50%, calc(-50% - 2px)); }
+  ${pct(GREEN_START + GREEN_VISIBLE_OFFSET)}% { opacity: 1; transform: translate(-50%, -50%); }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+${captionWindows
+  .map(
+    ({ start, visible, fadeOutStart, fadeOutEnd }, i) => `
+.lff-caption-${i + 1} { animation-name: lff-caption-${i + 1}; }
+@keyframes lff-caption-${i + 1} {
+  0%, ${pct(start)}% { opacity: 0; }
+  ${pct(visible)}% { opacity: 1; }
+  ${pct(fadeOutStart)}% { opacity: 1; }
+  ${pct(fadeOutEnd)}%, 100% { opacity: 0; }
+}`,
+  )
+  .join("\n")}`;
 ---
 
 <div
@@ -14,11 +205,10 @@ import NetworkMap from "./NetworkMap.astro";
     <!-- cloud: where the app comes from -->
     <div class="lff-cloud flex flex-col items-center">
       <Cloud size={26} className="text-gray-400" />
-      <p class="text-[10px] text-gray-400">The app loads from here</p>
     </div>
 
     <!-- link from cloud to device, cut when offline -->
-    <div class="relative my-1 h-12">
+    <div class="relative mt-1 mb-1 h-16">
       <div
         class="lff-link h-full border-l border-dashed border-gray-300 mx-auto w-px">
       </div>
@@ -27,174 +217,220 @@ import NetworkMap from "./NetworkMap.astro";
         class="lff-app absolute left-1/2 top-0 -ml-2.5 flex h-5 w-5 items-center justify-center rounded border-2 border-indigo-900 bg-white">
         <span class="h-1.5 w-1.5 rounded-full bg-violet-500"></span>
       </span>
-      <!-- connection drops -->
+      <!-- connection drops: one step smaller than the cloud icon, centered
+           on the line, fade only (no scale animation) -->
       <span
-        class="lff-offline absolute left-1/2 top-1/2 ml-3 -translate-y-1/2 flex h-5 w-5 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 shadow-sm">
-        <WifiOff size={11} />
+        class="lff-offline absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 shadow-sm">
+        <WifiOff size={22} />
       </span>
     </div>
 
     <!-- device -->
     <div class="w-44 sm:w-52">
-      <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
-        <div class="relative aspect-[16/10] bg-gray-100">
-          <div class="lff-screen absolute inset-0">
-            <NetworkMap markers={true} class="absolute inset-0" />
+      <div class="relative">
+        <!-- the local file, traveling in from the left, same size as the
+             offline badge; fades in and moves into the display -->
+        <span
+          class="lff-file absolute left-[-100px] top-1/2 -mt-[18px] flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 shadow-sm">
+          <FileText size={22} />
+        </span>
+        <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
+          <div class="relative aspect-[16/10] bg-gray-100">
+            <!-- basemap shows as soon as the screen turns on -->
+            <div class="lff-screen absolute inset-0">
+              <svg
+                viewBox="0 0 400 300"
+                preserveAspectRatio="xMidYMid slice"
+                class="absolute inset-0 w-full h-full"
+                aria-hidden="true">
+                <Basemap />
+              </svg>
+              <!-- network (pipes, junctions, tank, markers) renders once the
+                   local file has loaded -->
+              <svg
+                viewBox="0 0 400 300"
+                preserveAspectRatio="xMidYMid slice"
+                class="lff-network absolute inset-0 w-full h-full"
+                aria-hidden="true">
+                <g stroke-width="2.5" stroke-linecap="round">
+                  {
+                    pipes.map(([x1, y1, x2, y2]) => (
+                      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#3730a3" />
+                    ))
+                  }
+                </g>
+                <g stroke="#ffffff" stroke-width="1">
+                  {
+                    junctions.map(([x, y]) => (
+                      <circle cx={x} cy={y} r="3.5" fill="#312e81" />
+                    ))
+                  }
+                </g>
+                <path
+                  d="M40 42 L48 56 L32 56 Z"
+                  fill="#312e81"
+                  stroke="#ffffff"
+                  stroke-width="1"></path>
+                <g fill="none" stroke="#8b5cf6" stroke-width="2.5">
+                  {
+                    markerPoints.map(([x, y], i) => (
+                      <circle
+                        cx={x}
+                        cy={y}
+                        r="8"
+                        class="lff-marker-pulse"
+                        style={`animation-delay: ${i * 0.4}s`}
+                      />
+                    ))
+                  }
+                </g>
+              </svg>
+            </div>
+            <span
+              class="lff-inp absolute bottom-1.5 left-1.5 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[12px] font-medium text-gray-600">
+              my-network.ejsdb
+            </span>
+            <!-- centered in the network, not the corner: the progress chip
+                 runs, then hands off to the success chip -->
+            <span
+              class="lff-chip-progress absolute top-1/2 left-1/2 flex flex-col items-center gap-1.5 whitespace-nowrap rounded-full border border-gray-200 bg-white px-3 py-2 text-[14px] font-medium text-gray-600 shadow-sm">
+              Running simulation...
+              <span class="h-1 w-24 rounded-full bg-gray-100 overflow-hidden">
+                <span class="lff-progress-bar block h-full rounded-full bg-violet-500"></span>
+              </span>
+            </span>
+            <span
+              class="lff-chip-success absolute top-1/2 left-1/2 flex items-center gap-1 whitespace-nowrap rounded-full bg-green-100 px-3 py-2 text-[14px] font-medium text-green-700 shadow-sm">
+              <CheckCircle2 size={14} />
+              Simulation successful
+            </span>
           </div>
-          <span
-            class="lff-inp absolute bottom-1.5 left-1.5 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[9px] font-medium text-gray-600">
-            <FileText size={9} className="text-gray-400" />
-            my-network.inp
-          </span>
-          <span
-            class="lff-chip absolute top-1.5 right-1.5 flex items-center gap-1 rounded-full bg-green-100 px-1.5 py-0.5 text-[8px] font-medium text-green-700">
-            <CheckCircle2 size={9} />
-            Simulation runs locally
-          </span>
         </div>
       </div>
       <div class="h-1.5 mx-6 rounded-b-lg bg-gray-300"></div>
-      <p
-        class="flex items-center justify-center gap-1.5 mt-2 text-[11px] font-medium text-gray-700">
-        <Laptop size={12} className="text-gray-400" />
-        Your file, on your device
+      <p class="flex justify-center mt-2 text-[14px] font-medium text-gray-700">
+        <span class="relative inline-block h-[18px] w-56 text-center">
+          <span class="lff-caption-1 absolute inset-0 whitespace-nowrap">The application loads</span>
+          <span class="lff-caption-2 absolute inset-0 whitespace-nowrap">The device goes offline</span>
+          <span class="lff-caption-3 absolute inset-0 whitespace-nowrap">You load your local file</span>
+          <span class="lff-caption-4 absolute inset-0 whitespace-nowrap">The simulation runs locally</span>
+        </span>
       </p>
     </div>
   </div>
 </div>
 
-<style>
+<style define:vars={{ cycle: `${CYCLE}s` }}>
   /* the cloud and its link dim once the connection drops */
   .lff-cloud {
-    animation: lff-cloud 8s ease-in-out infinite both;
-  }
-  @keyframes lff-cloud {
-    0%, 3% { opacity: 0; }
-    8%, 52% { opacity: 1; }
-    58% { opacity: 0.3; }
-    94% { opacity: 0.3; }
-    100% { opacity: 0; }
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
   .lff-link {
-    animation: lff-link 8s ease-in-out infinite both;
-  }
-  @keyframes lff-link {
-    0%, 6% { opacity: 0; }
-    10%, 52% { opacity: 1; }
-    58% { opacity: 0.3; }
-    94% { opacity: 0.3; }
-    100% { opacity: 0; }
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
 
-  /* the app travels down from the cloud onto the device */
+  /* the app travels down from the cloud, reaching the top of the device
+     display before fading out */
   .lff-app {
-    animation: lff-app-travel 8s ease-in-out infinite both;
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
-  @keyframes lff-app-travel {
+
+  /* the screen turns on (revealing the basemap) as the app lands */
+  .lff-screen {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  /* the local file travels in from the left and settles into the display */
+  .lff-file {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  /* the network layer (pipes/junctions/tank/markers) renders once the file
+     has loaded */
+  .lff-network {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .lff-marker-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: lff-marker-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes lff-marker-pulse {
     0%,
-    10% {
-      opacity: 0;
-      transform: translateY(0);
-    }
-    14% {
-      opacity: 1;
-    }
-    24% {
-      opacity: 1;
-      transform: translateY(30px);
-    }
-    28%,
     100% {
-      opacity: 0;
-      transform: translateY(34px);
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
     }
   }
 
-  /* the screen turns on as the app lands */
-  .lff-screen {
-    animation: lff-screen-on 8s ease-out infinite both;
-  }
-  @keyframes lff-screen-on {
-    0%,
-    26% {
-      opacity: 0;
-    }
-    32% {
-      opacity: 1;
-    }
-    94% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
+  /* offline badge: fade only, no scale */
+  .lff-offline {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
 
   .lff-inp {
-    animation: lff-inp-in 8s ease-out infinite both;
-  }
-  @keyframes lff-inp-in {
-    0%,
-    38% {
-      opacity: 0;
-      transform: translateY(3px);
-    }
-    44% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    94% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
 
-  .lff-offline {
-    animation: lff-offline-in 8s ease-out infinite both;
+  .lff-chip-progress {
+    transform: translate(-50%, -50%);
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
-  @keyframes lff-offline-in {
-    0%,
-    52% {
-      opacity: 0;
-      transform: translateY(-50%) scale(0.7);
-    }
-    57% {
-      opacity: 1;
-      transform: translateY(-50%) scale(1.1);
-    }
-    60% {
-      transform: translateY(-50%) scale(1);
-    }
-    94% {
-      opacity: 1;
-      transform: translateY(-50%) scale(1);
-    }
-    100% {
-      opacity: 0;
-    }
+  .lff-progress-bar {
+    width: 0;
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .lff-chip-success {
+    transform: translate(-50%, -50%);
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
 
-  .lff-chip {
-    animation: lff-chip-in 8s ease-out infinite both;
-  }
-  @keyframes lff-chip-in {
-    0%,
-    62% {
-      opacity: 0;
-      transform: translateY(-2px);
-    }
-    68% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    94% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
+  /* the caption under the device cycles through one line per step, each
+     synced to the animation it describes; keyframe stops are generated
+     above since they depend on CYCLE */
+  .lff-caption-1,
+  .lff-caption-2,
+  .lff-caption-3,
+  .lff-caption-4 {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -202,22 +438,43 @@ import NetworkMap from "./NetworkMap.astro";
     .lff-link,
     .lff-app,
     .lff-screen,
+    .lff-file,
+    .lff-network,
+    .lff-marker-pulse,
     .lff-inp,
     .lff-offline,
-    .lff-chip {
+    .lff-chip-progress,
+    .lff-progress-bar,
+    .lff-chip-success,
+    .lff-caption-1,
+    .lff-caption-2,
+    .lff-caption-3,
+    .lff-caption-4 {
       animation: none;
       opacity: 1;
-      transform: none;
     }
     .lff-cloud,
     .lff-link {
       opacity: 0.3;
     }
-    .lff-app {
+    .lff-app,
+    .lff-file,
+    .lff-chip-progress {
       opacity: 0;
+      transform: none;
     }
-    .lff-offline {
-      transform: translateY(-50%);
+    .lff-progress-bar {
+      width: 100%;
+    }
+    .lff-chip-success {
+      transform: translate(-50%, -50%);
+    }
+    .lff-caption-1,
+    .lff-caption-2,
+    .lff-caption-3 {
+      opacity: 0;
     }
   }
 </style>
+
+<style set:html={generatedCss} />

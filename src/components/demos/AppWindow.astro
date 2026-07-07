@@ -7,7 +7,6 @@ import {
   Circle,
   Triangle,
   RectangleHorizontal,
-  Spline,
   Zap,
   CheckCircle2,
 } from "lucide-react";
@@ -20,6 +19,14 @@ interface Props {
   bare?: boolean;
   label?: string;
   class?: string;
+  hideFooter?: boolean;
+  hideSimulate?: boolean;
+  /** Highlight the pipe-draw tool instead of the pointer. */
+  drawMode?: boolean;
+  /** Hide the toolbar tools — use when the demo renders its own floating toolbar. */
+  floatingTools?: boolean;
+  /** Remove the top bar entirely. */
+  hideHeader?: boolean;
 }
 
 const {
@@ -28,9 +35,14 @@ const {
   bare = false,
   label,
   class: className,
+  hideFooter = false,
+  hideSimulate = false,
+  drawMode = false,
+  floatingTools = false,
+  hideHeader = false,
 } = Astro.props;
 
-const tools = [Spline, Circle, Triangle, RectangleHorizontal];
+const tools = [Circle, Triangle, RectangleHorizontal];
 ---
 
 <div
@@ -41,26 +53,33 @@ const tools = [Spline, Circle, Triangle, RectangleHorizontal];
   role="img"
   aria-label={label}>
   <!-- toolbar -->
-  <div class="flex items-center gap-2 h-9 px-3 border-b border-gray-100 bg-white">
+  {!hideHeader && <div class="flex items-center gap-2 h-9 px-3 border-b border-gray-100 bg-white">
     <img src="/favicon.png" alt="" class="w-3.5 h-3.5" />
     <span class="text-[11px] font-medium text-gray-600">epanet-js</span>
-    <div class="flex items-center gap-1 ml-3">
-      <span class="flex items-center justify-center w-6 h-6 rounded bg-violet-500 text-white">
-        <MousePointer2 size={12} />
-      </span>
-      {
-        tools.map((Tool) => (
+    {!floatingTools && (
+      <div class="flex items-center gap-1 ml-3">
+        <span class:list={["flex items-center justify-center w-6 h-6 rounded", drawMode ? "text-gray-400" : "bg-violet-500 text-white"]}>
+          <MousePointer2 size={12} />
+        </span>
+        <span class:list={["hidden sm:flex items-center justify-center w-6 h-6 rounded", drawMode ? "bg-violet-500 text-white" : "text-gray-400"]}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+            <path d="M4 15v6a.997.997 0 0 1-1 1 .997.997 0 0 1-1-1V3a.997.997 0 0 1 1-1 .997.997 0 0 1 1 1v6h16V3a.997.997 0 0 1 1-1 .997.997 0 0 1 1 1v18a.997.997 0 0 1-1 1 .997.997 0 0 1-1-1v-6H4Z" />
+          </svg>
+        </span>
+        {tools.map((Tool) => (
           <span class="hidden sm:flex items-center justify-center w-6 h-6 rounded text-gray-400">
             <Tool size={12} />
           </span>
-        ))
-      }
-    </div>
-    <span class="flex items-center gap-1 ml-auto text-[11px] font-medium text-violet-600">
-      <Zap size={12} />
-      Simulate
-    </span>
-  </div>
+        ))}
+      </div>
+    )}
+    {!hideSimulate && (
+      <span class="flex items-center gap-1 ml-auto text-[11px] font-medium text-violet-600">
+        <Zap size={12} />
+        Simulate
+      </span>
+    )}
+  </div>}
 
   <!-- map canvas + floating panels -->
   <div class="relative aspect-[16/10] bg-gray-100 overflow-hidden">
@@ -76,16 +95,17 @@ const tools = [Spline, Circle, Triangle, RectangleHorizontal];
     <slot />
   </div>
 
-  <!-- status bar -->
-  <div
-    class="flex items-center gap-3 px-3 py-1.5 border-t border-gray-100 bg-white text-[10px] text-gray-500 whitespace-nowrap overflow-hidden">
-    <span>Flow: l/s</span>
-    <span>Pressure: m</span>
-    <span class="hidden sm:inline">Headloss: H-W</span>
-    <span class="hidden md:inline">Demand multiplier: 1</span>
-    <span class="flex items-center gap-1 ml-auto text-green-500">
-      <CheckCircle2 size={11} />
-      Simulation was successful
-    </span>
-  </div>
+  {!hideFooter && (
+    <div
+      class="flex items-center gap-3 px-3 py-1.5 border-t border-gray-100 bg-white text-[10px] text-gray-500 whitespace-nowrap overflow-hidden">
+      <span>Flow: l/s</span>
+      <span>Pressure: m</span>
+      <span class="hidden sm:inline">Headloss: H-W</span>
+      <span class="hidden md:inline">Demand multiplier: 1</span>
+      <span class="flex items-center gap-1 ml-auto text-green-500">
+        <CheckCircle2 size={11} />
+        Simulation was successful
+      </span>
+    </div>
+  )}
 </div>

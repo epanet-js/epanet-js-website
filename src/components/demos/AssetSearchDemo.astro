@@ -10,6 +10,8 @@ import NetworkMap from "./NetworkMap.astro";
 
 <AppWindow
   bare
+  hideHeader
+  hideFooter
   label="Asset search in epanet-js: typing J288 into search, the map zooming to the junction, and the junction pulsing with its label.">
   <!-- zoom wrapper: scales around the junction at [160, 140] in the
        400x300 viewBox, which lands at 40% / 46% of the 16:10 canvas -->
@@ -45,29 +47,29 @@ import NetworkMap from "./NetworkMap.astro";
   </div>
 
   <!-- search field and recent searches (outside the zoom wrapper) -->
-  <div class="absolute top-2 left-2 w-[150px] max-w-[60%]">
+  <div class="absolute top-2 left-2 w-[160px] max-w-[60%]">
     <div
-      class="flex items-center gap-1.5 rounded-lg border border-gray-100 bg-white px-2 py-1.5 shadow-md">
-      <Search size={11} className="shrink-0 text-gray-400" />
-      <span class="flex items-center text-[10px] font-medium text-gray-700">
-        <span class="asr-ch-1">J</span>
-        <span class="asr-ch-2">2</span>
-        <span class="asr-ch-3">8</span>
-        <span class="asr-ch-4">8</span>
+      class="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2 py-1.5 shadow-md">
+      <Search size={14} className="shrink-0 text-gray-400" />
+      <span class="flex items-center text-[12px] font-medium text-gray-700">
+        <span class="asr-ch asr-ch-1"><span>J</span></span>
+        <span class="asr-ch asr-ch-2"><span>2</span></span>
+        <span class="asr-ch asr-ch-3"><span>8</span></span>
+        <span class="asr-ch asr-ch-4"><span>8</span></span>
         <span class="asr-caret ml-px inline-block h-3 w-px bg-violet-500">
         </span>
       </span>
     </div>
     <div
-      class="asr-dropdown mt-1 origin-top overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+      class="asr-dropdown mt-1 origin-top overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md">
       <p
-        class="px-2 pt-1.5 pb-0.5 text-[8px] font-medium uppercase tracking-wide text-gray-400">
+        class="px-2 pt-1.5 pb-0.5 text-[10px] font-medium uppercase tracking-wide text-gray-400">
         Recent
       </p>
-      <p class="border-t border-gray-50 px-2 py-1 text-[10px] text-gray-600">
+      <p class="border-t border-gray-50 px-2 py-1 text-[12px] text-gray-600">
         T2
       </p>
-      <p class="border-t border-gray-50 px-2 py-1 text-[10px] text-gray-600">
+      <p class="border-t border-gray-50 px-2 py-1 text-[12px] text-gray-600">
         PMP-1
       </p>
     </div>
@@ -96,11 +98,15 @@ import NetworkMap from "./NetworkMap.astro";
     }
   }
 
-  /* "J288" types out one character at a time */
-  .asr-ch-1,
-  .asr-ch-2,
-  .asr-ch-3,
-  .asr-ch-4 {
+  /* "J288" types out one character at a time — each character's grid column
+     grows from 0 to its natural width (the same to-content-size trick used
+     for the floating boxes elsewhere), so the caret sitting after them
+     shifts right as each letter "types in" instead of standing still while
+     already-reserved space just fades visible */
+  .asr-ch {
+    display: inline-grid;
+    grid-template-columns: minmax(0, 0fr);
+    overflow: hidden;
     opacity: 0;
   }
   .asr-ch-1 {
@@ -116,28 +122,28 @@ import NetworkMap from "./NetworkMap.astro";
     animation: asr-ch-4 8s linear infinite both;
   }
   @keyframes asr-ch-1 {
-    0%, 10% { opacity: 0; }
-    11% { opacity: 1; }
-    96% { opacity: 1; }
-    100% { opacity: 0; }
+    0%, 10% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+    11% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    96% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    100% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
   }
   @keyframes asr-ch-2 {
-    0%, 16% { opacity: 0; }
-    17% { opacity: 1; }
-    96% { opacity: 1; }
-    100% { opacity: 0; }
+    0%, 16% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+    17% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    96% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    100% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
   }
   @keyframes asr-ch-3 {
-    0%, 22% { opacity: 0; }
-    23% { opacity: 1; }
-    96% { opacity: 1; }
-    100% { opacity: 0; }
+    0%, 22% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+    23% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    96% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    100% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
   }
   @keyframes asr-ch-4 {
-    0%, 28% { opacity: 0; }
-    29% { opacity: 1; }
-    96% { opacity: 1; }
-    100% { opacity: 0; }
+    0%, 28% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+    29% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    96% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    100% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
   }
 
   .asr-caret {
@@ -160,19 +166,19 @@ import NetworkMap from "./NetworkMap.astro";
   }
   @keyframes asr-dropdown {
     0%,
-    4% {
+    10.25% {
       opacity: 0;
       transform: scaleY(0.8);
     }
-    8% {
+    14.25% {
       opacity: 1;
       transform: scaleY(1);
     }
-    34% {
+    40.25% {
       opacity: 1;
       transform: scaleY(1);
     }
-    38%,
+    44.25%,
     100% {
       opacity: 0;
       transform: scaleY(0);
@@ -254,10 +260,10 @@ import NetworkMap from "./NetworkMap.astro";
     .asr-zoom {
       transform: scale(1.8);
     }
-    .asr-ch-1,
-    .asr-ch-2,
-    .asr-ch-3,
-    .asr-ch-4,
+    .asr-ch {
+      grid-template-columns: minmax(0, 1fr);
+      opacity: 1;
+    }
     .asr-target,
     .asr-label {
       opacity: 1;
