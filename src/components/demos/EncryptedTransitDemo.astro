@@ -9,21 +9,21 @@ import { Cloud, Laptop, Lock } from "lucide-react";
   class="relative h-[280px] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: traffic between your machine and the epanet-js service is encrypted in transit over HTTPS and TLS.">
-  <div class="absolute inset-0 flex scale-90 flex-col items-center justify-center sm:scale-100">
-  <div class="flex items-center justify-center gap-3 sm:gap-4">
+  <div class="absolute inset-[5%] flex flex-col items-center">
+  <div class="flex w-full flex-1 items-center justify-center gap-6 sm:gap-9">
     <!-- the user's machine -->
-    <div class="flex shrink-0 flex-col items-center gap-1.5">
+    <div class="flex shrink-0 flex-col items-center gap-[15px]">
       <span
-        class="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
-        <Laptop size={18} />
+        class="flex h-[84px] w-[84px] items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+        <Laptop size={42} />
       </span>
-      <p class="text-[10px] font-medium text-gray-600 whitespace-nowrap">
+      <p class="text-[14px] font-medium text-gray-600 whitespace-nowrap">
         Your machine
       </p>
     </div>
 
     <!-- encrypted connection -->
-    <div class="relative w-36 sm:w-52">
+    <div class="relative flex-1">
       <svg viewBox="0 0 200 24" class="w-full" aria-hidden="true">
         <line
           class="enc-line"
@@ -46,28 +46,28 @@ import { Cloud, Laptop, Lock } from "lucide-react";
       <span
         class="enc-lock absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <span
-          class="flex h-7 w-7 items-center justify-center rounded-full border border-violet-200 bg-white text-violet-600 shadow-sm">
-          <Lock size={12} />
+          class="flex h-[66px] w-[66px] items-center justify-center rounded-full border border-violet-200 bg-white text-violet-600 shadow-sm">
+          <Lock size={27} />
         </span>
       </span>
       <span
-        class="enc-pill absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[9px] font-medium text-gray-500">
+        class="enc-pill absolute left-1/2 top-full mt-7 -translate-x-1/2 whitespace-nowrap rounded-full border border-gray-200 bg-gray-50 px-[15px] py-1.5 text-[10px] font-medium text-gray-500">
         HTTPS · TLS
       </span>
     </div>
 
     <!-- service -->
-    <div class="flex shrink-0 flex-col items-center gap-1.5">
+    <div class="flex shrink-0 flex-col items-center gap-[15px]">
       <span
-        class="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
-        <Cloud size={18} />
+        class="flex h-[84px] w-[84px] items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+        <Cloud size={42} />
       </span>
-      <p class="text-[10px] font-medium text-gray-600 whitespace-nowrap">
+      <p class="text-[14px] font-medium text-gray-600 whitespace-nowrap">
         epanet-js
       </p>
     </div>
   </div>
-  <p class="enc-footer mt-6 text-center text-[10px] text-gray-400">
+  <p class="enc-footer mt-4 text-center text-[14px] font-medium text-gray-700">
     All traffic encrypted in transit.
   </p>
   </div>
@@ -157,20 +157,24 @@ import { Cloud, Laptop, Lock } from "lucide-react";
       enc-pkt-vis 8s linear infinite both;
     animation-delay: -1.3s, 0s;
   }
+  /* cx is a native SVG coordinate (viewBox user units), so the travel
+     distance stays proportional to the connector's actual rendered
+     width no matter how wide it renders — unlike a CSS px transform,
+     which would be a fixed pixel distance regardless of the SVG's size. */
   @keyframes enc-travel-out {
     0% {
-      transform: translateX(0);
+      cx: 4;
     }
     100% {
-      transform: translateX(192px);
+      cx: 196;
     }
   }
   @keyframes enc-travel-back {
     0% {
-      transform: translateX(0);
+      cx: 196;
     }
     100% {
-      transform: translateX(-192px);
+      cx: 4;
     }
   }
   @keyframes enc-pkt-vis {
@@ -178,11 +182,12 @@ import { Cloud, Laptop, Lock } from "lucide-react";
     32% {
       opacity: 0;
     }
-    36%,
-    88% {
+    36% {
       opacity: 1;
     }
-    92%,
+    94% {
+      opacity: 1;
+    }
     100% {
       opacity: 0;
     }
@@ -193,10 +198,10 @@ import { Cloud, Laptop, Lock } from "lucide-react";
   }
   @keyframes enc-footer-in {
     0%,
-    38% {
+    4% {
       opacity: 0;
     }
-    44% {
+    8% {
       opacity: 1;
     }
     94% {
