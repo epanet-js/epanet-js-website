@@ -16,19 +16,18 @@ const devices = [
   class="relative h-[280px] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: one model syncing through a cloud, managed or self-hosted, down to three devices and back.">
-  <div class="absolute inset-0 flex scale-90 items-center justify-center sm:scale-100">
-  <div class="mx-auto w-full max-w-[340px]">
+  <div class="absolute inset-4 flex flex-col justify-between">
     <!-- the sync point -->
-    <div class="flex items-center justify-center gap-2.5">
+    <div class="flex items-center justify-center gap-4">
       <span class="cop-cloud relative text-indigo-950">
-        <Cloud size={30} />
+        <Cloud size={40} />
         <span
-          class="cop-badge absolute -bottom-1 left-1/2 flex -translate-x-1/2 items-center gap-0.5 rounded border border-gray-200 bg-white px-1 text-[7px] font-semibold text-gray-600 shadow-sm">
-          <FileText size={7} className="text-violet-500" />
-          INP
+          class="cop-badge absolute -bottom-1.5 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded border border-gray-200 bg-white px-1.5 text-[12px] font-semibold text-gray-600 shadow-sm">
+          <FileText size={12} className="text-violet-500" />
+          .ejsdb
         </span>
       </span>
-      <p class="cop-caption text-[10px] leading-tight text-gray-500">
+      <p class="cop-caption text-[14px] leading-tight text-gray-500">
         Our cloud,
         <br />
         or yours.
@@ -36,7 +35,7 @@ const devices = [
     </div>
 
     <!-- trunk, bus, and drops to each device -->
-    <div class="relative mt-1.5 h-12">
+    <div class="relative h-16">
       <svg
         viewBox="0 0 300 48"
         preserveAspectRatio="none"
@@ -67,7 +66,7 @@ const devices = [
     </div>
 
     <!-- devices -->
-    <div class="mt-1 grid grid-cols-3 gap-3">
+    <div class="grid grid-cols-3 gap-4">
       {
         devices.map((device, i) => (
           <div>
@@ -75,20 +74,19 @@ const devices = [
               <div class="relative aspect-[16/10] bg-gray-100">
                 <NetworkMap class="absolute inset-0" />
                 <span
-                  class={`cop-tick-${i + 1} absolute top-1 right-1 h-2 w-2 rounded-full bg-violet-500 ring-2 ring-white`}
+                  class={`cop-tick-${i + 1} absolute top-1 right-1 h-2.5 w-2.5 rounded-full bg-violet-500 ring-2 ring-white`}
                 />
               </div>
             </div>
-            <div class="h-1 mx-4 rounded-b-lg bg-gray-300" />
-            <p class="flex items-center justify-center gap-1 mt-1.5 text-[9px] font-medium text-gray-600">
-              <device.icon size={10} className="text-gray-400" />
+            <div class="h-1.5 mx-4 rounded-b-lg bg-gray-300" />
+            <p class="flex items-center justify-center gap-1.5 mt-2 text-[12px] font-medium text-gray-600">
+              <device.icon size={16} className="text-gray-400" />
               {device.label}
             </p>
           </div>
         ))
       }
     </div>
-  </div>
   </div>
 </div>
 
