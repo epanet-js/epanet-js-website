@@ -13,7 +13,6 @@ const members = [
   { initials: "EB", name: "Elena B.", role: "Editor" },
   { initials: "MK", name: "Marcus K.", role: "Editor", changes: true },
   { initials: "PN", name: "Priya N.", role: "Viewer" },
-  { initials: "JR", name: "Jordan R.", role: "Viewer" },
 ];
 
 const roleChip = (role: string) =>
@@ -32,17 +31,15 @@ const roleChip = (role: string) =>
   <div class="absolute inset-0 overflow-hidden rounded-lg border border-gray-100 bg-white">
   <div class="absolute inset-0 flex flex-col justify-between">
   <div
-    class="flex items-baseline justify-between px-4 pt-4 pb-3 border-b border-gray-100">
-    <p class="text-[11px] font-semibold text-gray-700">Team access</p>
-    <p class="text-[10px] text-gray-400">Acme Water</p>
+    class="flex items-baseline justify-between px-4 py-3.5 border-b border-gray-100">
+    <p class="text-[16px] font-semibold text-gray-700">Team access</p>
+    <p class="text-[14px] text-gray-400">Acme Water</p>
   </div>
-  <div class="py-1 text-[10px]">
+  <div class="py-1 text-[14px]">
     {
       members.map((member, i) => (
-        <div
-          class="tac-row flex items-center gap-3 px-4 py-2.5"
-          style={`animation-delay: ${(i * 0.45).toFixed(2)}s`}>
-          <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-100 text-[8px] font-semibold text-violet-700">
+        <div class={`tac-row tac-row-${i + 1} flex items-center gap-3 px-4 py-2`}>
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-[12px] font-semibold text-violet-700">
             {member.initials}
           </span>
           <span class="font-medium text-gray-700">{member.name}</span>
@@ -50,14 +47,14 @@ const roleChip = (role: string) =>
             <span class="relative ml-auto">
               <span
                 class:list={[
-                  "tac-role-old block rounded-full border px-1.5 py-px text-[9px] font-medium",
+                  "tac-role-old block rounded-full border px-2 py-0.5 text-[12px] font-medium",
                   roleChip("Editor"),
                 ]}>
                 Editor
               </span>
               <span
                 class:list={[
-                  "tac-role-new absolute inset-0 flex items-center justify-center rounded-full border px-1.5 py-px text-[9px] font-medium",
+                  "tac-role-new absolute inset-0 flex items-center justify-center rounded-full border px-2 py-0.5 text-[12px] font-medium",
                   roleChip("Viewer"),
                 ]}>
                 Viewer
@@ -66,7 +63,7 @@ const roleChip = (role: string) =>
           ) : (
             <span
               class:list={[
-                "ml-auto rounded-full border px-1.5 py-px text-[9px] font-medium",
+                "ml-auto rounded-full border px-2 py-0.5 text-[12px] font-medium",
                 roleChip(member.role),
               ]}>
               {member.role}
@@ -76,131 +73,181 @@ const roleChip = (role: string) =>
       ))
     }
     <div
-      class="tac-invite flex items-center gap-3 border-t border-gray-50 px-4 py-2.5">
+      class="tac-invite flex items-center gap-3 border-t border-gray-50 px-4 py-1.5">
       <span
-        class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-dashed border-gray-300 text-gray-400">
+        class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-dashed border-gray-300 text-gray-400">
         <UserPlus size={10} />
       </span>
       <span class="text-gray-500">sara@acme.com</span>
       <span
-        class="ml-auto rounded-full bg-violet-500 px-1.5 py-px text-[9px] font-medium text-white">
+        class="ml-auto rounded-full bg-violet-500 px-2 py-0.5 text-[12px] font-medium text-white">
         Invite sent
       </span>
     </div>
   </div>
   <p
-    class="tac-footer px-4 py-2.5 border-t border-gray-100 text-[9px] text-gray-400">
-    5 seats · roles per member
+    class="tac-footer px-4 py-1.5 border-t border-gray-100 text-[12px] text-gray-400">
+    4 seats · roles per member
   </p>
   </div>
   </div>
 </div>
 
 <style>
-  .tac-row {
-    animation: tac-row-in 7s ease-out infinite both;
+  /* Every row/invite/footer item enters on the same 0.6s cadence and all
+     five settle by ~34% of the cycle. They then hold together and fade
+     out as one, in sync, at 88.89%-94.44% (9s cycle: t=8s to t=8.5s). */
+  .tac-row-1 {
+    animation: tac-row-1-in 9s ease-out infinite both;
   }
-  @keyframes tac-row-in {
+  @keyframes tac-row-1-in {
     0%,
-    8% {
+    3.33% {
       opacity: 0;
       transform: translateY(4px);
     }
-    13% {
+    7.78% {
       opacity: 1;
       transform: translateY(0);
     }
-    90% {
+    88.89% {
       opacity: 1;
     }
-    96%,
+    94.44%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .tac-row-2 {
+    animation: tac-row-2-in 9s ease-out infinite both;
+  }
+  @keyframes tac-row-2-in {
+    0%,
+    10% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    14.44% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    88.89% {
+      opacity: 1;
+    }
+    94.44%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .tac-row-3 {
+    animation: tac-row-3-in 9s ease-out infinite both;
+  }
+  @keyframes tac-row-3-in {
+    0%,
+    16.67% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    21.11% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    88.89% {
+      opacity: 1;
+    }
+    94.44%,
     100% {
       opacity: 0;
     }
   }
 
   .tac-invite {
-    animation: tac-invite-in 7s ease-out infinite both;
+    animation: tac-invite-in 9s ease-out infinite both;
   }
   @keyframes tac-invite-in {
     0%,
-    48% {
+    23.33% {
       opacity: 0;
       transform: translateY(4px);
     }
-    54% {
+    27.78% {
       opacity: 1;
       transform: translateY(0);
     }
-    92% {
+    88.89% {
       opacity: 1;
     }
-    98%,
-    100% {
-      opacity: 0;
-    }
-  }
-
-  /* one member's role changes from editor to viewer */
-  .tac-role-old {
-    animation: tac-role-old 7s linear infinite both;
-  }
-  @keyframes tac-role-old {
-    0%,
-    64% {
-      opacity: 1;
-    }
-    67%,
-    100% {
-      opacity: 0;
-    }
-  }
-  .tac-role-new {
-    animation: tac-role-new 7s linear infinite both;
-  }
-  @keyframes tac-role-new {
-    0%,
-    64% {
-      opacity: 0;
-    }
-    67% {
-      opacity: 1;
-      box-shadow: 0 0 0 1.5px #c4b5fd;
-    }
-    76% {
-      box-shadow: none;
-    }
-    92% {
-      opacity: 1;
-    }
-    98%,
+    94.44%,
     100% {
       opacity: 0;
     }
   }
 
   .tac-footer {
-    animation: tac-footer-in 7s ease-out infinite both;
+    animation: tac-footer-in 9s ease-out infinite both;
   }
   @keyframes tac-footer-in {
     0%,
-    78% {
+    30% {
       opacity: 0;
     }
-    84% {
+    34.44% {
       opacity: 1;
     }
-    92% {
+    88.89% {
       opacity: 1;
     }
-    98%,
+    94.44%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* the role change is a distinct event, timed after all five items have
+     settled in, not part of the entrance cadence */
+  .tac-role-old {
+    animation: tac-role-old 9s linear infinite both;
+  }
+  @keyframes tac-role-old {
+    0%,
+    44.44% {
+      opacity: 1;
+    }
+    47.78%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .tac-role-new {
+    animation: tac-role-new 9s linear infinite both;
+  }
+  @keyframes tac-role-new {
+    0%,
+    44.44% {
+      opacity: 0;
+    }
+    47.78% {
+      opacity: 1;
+      box-shadow: 0 0 0 1.5px #c4b5fd;
+    }
+    54.44% {
+      box-shadow: none;
+    }
+    88.89% {
+      opacity: 1;
+    }
+    94.44%,
     100% {
       opacity: 0;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .tac-row,
+    .tac-row-1,
+    .tac-row-2,
+    .tac-row-3,
     .tac-invite,
     .tac-role-old,
     .tac-role-new,
