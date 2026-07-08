@@ -15,22 +15,24 @@ const nodes = [
   class="relative h-[280px] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: an on-premises deployment with your users, the epanet-js application, and the model data all inside your own network.">
-  <div class="absolute inset-0 flex scale-90 flex-col items-center justify-center sm:scale-100">
+  <div class="absolute inset-4 flex flex-col items-center">
+  <div class="flex w-full flex-1 flex-col items-center justify-center">
   <div
-    class="relative rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-2 pb-4 pt-7 sm:px-5">
+    class="relative w-full rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-4 pb-9 pt-12 sm:px-6">
     <span
-      class="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-gray-200 bg-white px-2 py-0.5 text-[9px] font-medium text-gray-500 shadow-sm">
+      class="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-gray-200 bg-white px-3 py-1 text-[12px] font-medium text-gray-500 shadow-sm">
       Your network
     </span>
 
-    <div class="flex items-center justify-center gap-1.5 sm:gap-3">
+    <div class="flex items-center justify-center gap-2 sm:gap-4">
       {
         nodes.map((node, index) => (
           <>
             {index > 0 && (
               <svg
                 viewBox="0 0 24 8"
-                class="w-4 shrink-0 sm:w-7"
+                preserveAspectRatio="none"
+                class="h-2 flex-1"
                 aria-hidden="true">
                 <path
                   d="M2 4 H22"
@@ -41,11 +43,11 @@ const nodes = [
                 />
               </svg>
             )}
-            <div class="flex shrink-0 flex-col items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2.5 py-4 shadow-sm sm:px-4">
-              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
-                <node.icon size={18} />
+            <div class="flex w-[130px] shrink-0 flex-col items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2.5 py-4 shadow-sm">
+              <span class="flex h-[60px] w-[60px] items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+                <node.icon size={30} />
               </span>
-              <p class="text-[10px] font-medium text-gray-700 whitespace-nowrap">
+              <p class="text-[14px] font-medium text-gray-700 whitespace-nowrap">
                 {node.label}
               </p>
             </div>
@@ -54,8 +56,9 @@ const nodes = [
       }
     </div>
   </div>
+  </div>
 
-  <p class="mt-4 text-center text-[10px] text-gray-400">
+  <p class="mt-4 text-center text-[14px] font-medium text-gray-700">
     Runs entirely on your own infrastructure.
   </p>
   </div>
