@@ -26,7 +26,7 @@ const regions = [
       <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-between">
   <div class="flex w-full flex-1 flex-col items-center justify-center pt-2">
   <div class="mx-auto w-full max-w-[420px]">
-    <div class="grid grid-cols-3 gap-5 sm:gap-6">
+    <div class="grid grid-cols-3 gap-6">
       {
         regions.map((region, i) => (
           <div class={`drg-lane-${i + 1}`}>
@@ -35,7 +35,7 @@ const regions = [
               <span class="absolute -top-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-gray-200 bg-white px-1.5 py-px text-[10px] font-medium text-gray-500 shadow-sm">
                 {region.name}
               </span>
-              <div class="flex items-start justify-center gap-1 sm:gap-1.5">
+              <div class="flex items-start justify-center gap-1.5">
                 <div class="flex flex-col items-center gap-1">
                   <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
                     <AppWindow size={13} />
@@ -81,7 +81,7 @@ const regions = [
             </div>
 
             <!-- local machine -->
-            <div class="mx-1 sm:mx-1.5">
+            <div class="mx-1.5">
               <div class="overflow-hidden rounded-lg border-2 border-gray-300">
                 <div class="relative aspect-[3/2] bg-gray-100">
                   <div class={`drg-screen-${i + 1} absolute inset-0`}>
@@ -106,7 +106,7 @@ const regions = [
   </div>
 
     <p class="drg-footer pb-6 text-center text-[14px] font-medium text-gray-700">
-      Models are stored and served in the region you choose.
+      Models are stored and served in the region you choose
     </p>
       </div>
     </foreignObject>

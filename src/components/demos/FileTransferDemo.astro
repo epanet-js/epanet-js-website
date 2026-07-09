@@ -130,7 +130,7 @@ const generatedCss = `
     aria-hidden="true">
     <foreignObject x="0" y="0" width="480" height="320">
       <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-between">
-  <div class="flex flex-1 flex-col items-center justify-center">
+  <div class="box-border flex flex-1 flex-col items-center justify-center px-[28px] pt-[28px]">
   <!-- no cloud in the path -->
   <div class="ftr-nocloud flex justify-center">
     <span
@@ -139,9 +139,9 @@ const generatedCss = `
     </span>
   </div>
 
-  <div class="mt-2 flex items-center justify-center gap-2 sm:gap-3">
+  <div class="mt-2 flex items-center justify-center gap-3">
     <!-- sending device -->
-    <div class="ftr-desktop w-32 sm:w-40 shrink-0">
+    <div class="ftr-desktop w-40 shrink-0">
       <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
         <div class="relative aspect-[3/2] bg-gray-100">
           <NetworkMap class="absolute inset-0" />
@@ -156,7 +156,7 @@ const generatedCss = `
     </div>
 
     <!-- transfer path -->
-    <div class="relative w-20 sm:w-28 shrink-0 flex flex-col items-center">
+    <div class="relative w-28 shrink-0 flex flex-col items-center">
       <div class="relative w-full">
         <svg
           viewBox="0 0 100 16"
@@ -185,7 +185,7 @@ const generatedCss = `
     </div>
 
     <!-- receiving device -->
-    <div class="ftr-laptop w-32 sm:w-40 shrink-0">
+    <div class="ftr-laptop w-40 shrink-0">
       <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
         <div class="relative aspect-[3/2] bg-gray-100">
           <div class="ftr-screen2 absolute inset-0">
