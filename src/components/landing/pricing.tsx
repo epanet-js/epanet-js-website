@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Check, CircleMinus, InfoIcon, Minus } from "lucide-react";
 import { clsx } from "clsx";
 import { Button } from "@components/ui/landing/button";
@@ -269,12 +269,31 @@ function ComparisonHeader({ billingCycle, position }: { billingCycle: "monthly" 
   );
 }
 
-function PricingComparisonTable({ billingCycle }: { billingCycle: "monthly" | "annually" }) {
+function PricingComparisonTable({
+  billingCycle,
+  collapsibleTable = false,
+}: {
+  billingCycle: "monthly" | "annually";
+  collapsibleTable?: boolean;
+}) {
+  const [expanded, setExpanded] = useState(!collapsibleTable);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const collapse = () => {
+    setExpanded(false);
+    containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
-    <div className="mt-20 max-w-5xl mx-auto px-4 md:px-6">
+    <div ref={containerRef} className="mt-20 max-w-5xl mx-auto px-4 md:px-6 scroll-mt-24">
       <h3 className="text-2xl font-bold text-center mb-2">Compare plans</h3>
       <p className="text-center text-muted-foreground mb-10">Everything that's included in each plan.</p>
-      <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+      <div
+        className={clsx(
+          "relative rounded-xl border border-gray-200 shadow-sm",
+          expanded ? "overflow-x-auto" : "max-h-[30rem] overflow-hidden"
+        )}
+      >
         <table className="w-full text-sm border-collapse">
           <thead>
             <ComparisonHeader billingCycle={billingCycle} position="top" />
@@ -315,11 +334,31 @@ function PricingComparisonTable({ billingCycle }: { billingCycle: "monthly" | "a
               )),
             ])}
           </tbody>
-          <tfoot>
-            <ComparisonHeader billingCycle={billingCycle} position="bottom" />
-          </tfoot>
+          {expanded && (
+            <tfoot>
+              <ComparisonHeader billingCycle={billingCycle} position="bottom" />
+            </tfoot>
+          )}
         </table>
+        {!expanded && (
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white via-white/90 to-transparent flex items-end justify-center pb-6">
+            <Button variant="outline" onClick={() => setExpanded(true)}>
+              Show full comparison
+            </Button>
+          </div>
+        )}
       </div>
+      {collapsibleTable && expanded && (
+        <div className="mt-6 text-center">
+          <button
+            type="button"
+            onClick={collapse}
+            className="text-sm text-gray-500 underline hover:text-gray-700"
+          >
+            Show less
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -645,9 +684,10 @@ const SpecialPricingCard: React.FC<SpecialPricingCardProps> = ({
 // --- Main Pricing Component ---
 interface PricingProps {
   lang?: Locale;
+  collapsibleTable?: boolean;
 }
 
-export default function Pricing({ lang = "en" }: PricingProps) {
+export default function Pricing({ lang = "en", collapsibleTable = false }: PricingProps) {
   const t = useTranslations(lang);
 
   // State for billing cycle
@@ -873,7 +913,7 @@ export default function Pricing({ lang = "en" }: PricingProps) {
         </p>
       </div>
 
-      <PricingComparisonTable billingCycle={billingCycle} />
+      <PricingComparisonTable billingCycle={billingCycle} collapsibleTable={collapsibleTable} />
 
       {/* --- Special Access Section --- */}
       <div className="container mx-auto mt-20 px-4 md:px-6 relative">
