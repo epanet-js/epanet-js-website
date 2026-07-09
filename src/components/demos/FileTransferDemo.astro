@@ -129,7 +129,8 @@ const generatedCss = `
     class="absolute inset-0 h-full w-full"
     aria-hidden="true">
     <foreignObject x="0" y="0" width="480" height="320">
-      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-center">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-between">
+  <div class="flex flex-1 flex-col items-center justify-center">
   <!-- no cloud in the path -->
   <div class="ftr-nocloud flex justify-center">
     <span
@@ -178,7 +179,7 @@ const generatedCss = `
       </div>
       <!-- 4px below the arrow -->
       <span
-        class="ftr-pill mt-1 whitespace-nowrap rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[11px] font-medium text-gray-500">
+        class="ftr-pill mt-1 whitespace-nowrap rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[10px] font-medium text-gray-500">
         Email · network · USB
       </span>
     </div>
@@ -204,8 +205,9 @@ const generatedCss = `
       </p>
     </div>
   </div>
+  </div>
 
-  <p class="mt-4 text-center text-[14px] font-medium text-gray-700">
+  <p class="pb-6 text-center text-[14px] font-medium text-gray-700">
     Share your model like any other file
   </p>
       </div>

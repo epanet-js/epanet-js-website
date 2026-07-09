@@ -23,7 +23,8 @@ const regions = [
     class="absolute inset-0 h-full w-full"
     aria-hidden="true">
     <foreignObject x="0" y="0" width="480" height="320">
-      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full items-center justify-center pt-2">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-between">
+  <div class="flex w-full flex-1 flex-col items-center justify-center pt-2">
   <div class="mx-auto w-full max-w-[420px]">
     <div class="grid grid-cols-3 gap-5 sm:gap-6">
       {
@@ -101,11 +102,12 @@ const regions = [
         ))
       }
     </div>
+  </div>
+  </div>
 
-    <p class="drg-footer mt-4 text-center text-[14px] font-medium text-gray-700">
+    <p class="drg-footer pb-6 text-center text-[14px] font-medium text-gray-700">
       Models are stored and served in the region you choose.
     </p>
-  </div>
       </div>
     </foreignObject>
   </svg>
