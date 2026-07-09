@@ -97,10 +97,10 @@ const generatedCss = `
 }
 .ftr-file { animation-name: ftr-file-travel; }
 @keyframes ftr-file-travel {
-  0%, ${pct(CHIP_START)}% { opacity: 0; left: -6%; transform: translateY(calc(-50% - 16px)); }
+  0%, ${pct(CHIP_START)}% { opacity: 0; left: -6%; transform: translateY(calc(-50% - 24px)); }
   ${pct(CHIP_VISIBLE)}% { opacity: 1; }
   ${pct(CHIP_FADEOUT_START)}% { opacity: 1; }
-  ${pct(SLIDE_END)}%, 100% { opacity: 0; left: 70%; transform: translateY(calc(-50% - 16px)); }
+  ${pct(SLIDE_END)}%, 100% { opacity: 0; left: 70%; transform: translateY(calc(-50% - 24px)); }
 }
 .ftr-screen2 { animation-name: ftr-screen2-on; }
 @keyframes ftr-screen2-on {
@@ -139,7 +139,7 @@ const generatedCss = `
     </span>
   </div>
 
-  <div class="mt-2 flex items-center justify-center gap-3">
+  <div class="mt-2 flex items-start justify-center gap-2">
     <!-- sending device -->
     <div class="ftr-desktop w-40 shrink-0">
       <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
@@ -156,8 +156,9 @@ const generatedCss = `
     </div>
 
     <!-- transfer path -->
-    <div class="relative w-28 shrink-0 flex flex-col items-center">
-      <div class="relative w-full">
+    <div class="relative w-20 shrink-0 flex flex-col items-center">
+      <!-- centered to match the device displays' own height, not the labels below them -->
+      <div class="relative flex h-[107px] w-full items-center">
         <svg
           viewBox="0 0 100 16"
           class="ftr-arrow w-full"
@@ -172,16 +173,18 @@ const generatedCss = `
           <path d="M90 3.5 L98 8 L90 12.5 Z" fill="#d1d5db"></path>
         </svg>
         <span
-          class="ftr-file absolute left-0 top-1/2 flex items-center gap-1 rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[12px] font-medium text-gray-600 shadow-sm">
+          class="ftr-file absolute left-0 top-1/2 flex items-center gap-1 rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-gray-600 shadow-sm">
           <FileText size={14} className="text-violet-500" />
           .ejsdb
         </span>
       </div>
-      <!-- 4px below the arrow -->
-      <span
-        class="ftr-pill mt-1 whitespace-nowrap rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[10px] font-medium text-gray-500">
-        Email · network · USB
-      </span>
+      <!-- each transfer method on its own row -->
+      <div
+        class="ftr-pill -mt-[44px] flex flex-col items-center gap-0.5 rounded-lg border border-gray-200 bg-gray-50 px-2 py-1 text-[10px] font-medium text-gray-500">
+        <span>Email</span>
+        <span>Network</span>
+        <span>USB</span>
+      </div>
     </div>
 
     <!-- receiving device -->

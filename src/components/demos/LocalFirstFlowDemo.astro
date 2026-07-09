@@ -2,7 +2,7 @@
 // Local-first flow diagram: the app arrives from the cloud, the .inp file
 // stays on the device, and when the connection drops the simulation keeps
 // running locally.
-import { CheckCircle2, Cloud, FileText, WifiOff } from "lucide-react";
+import { Cloud, FileText, WifiOff } from "lucide-react";
 import Basemap from "./Basemap.astro";
 import { pipes, junctions, markerPoints } from "./network-geometry";
 
@@ -24,8 +24,8 @@ const STEP2_START = STEP1_START + STEP1_TO_STEP2_DELAY; // connection drops
 const APP_OPACITY_RAMP = 0.32;
 const APP_LANDED = STEP1_START + 1.6; // absolute time, not an offset
 const APP_FADE_COMPLETE = APP_LANDED + 0.2;
-const APP_LANDED_Y = 58; // px — top of the device display
-const APP_FADE_Y = 62;
+const APP_LANDED_Y = 50; // px — top of the device display
+const APP_FADE_Y = 54;
 
 // The basemap shows as soon as the screen turns on.
 const SCREEN_HIDDEN_UNTIL = APP_LANDED + 0.16;
@@ -48,7 +48,7 @@ const FILE_DELAY_AFTER_BASEMAP = 4;
 const FILE_START = SCREEN_VISIBLE + FILE_DELAY_AFTER_BASEMAP;
 const FILE_OPACITY_RAMP = 0.3;
 const FILE_MOVE_DURATION = 2;
-const FILE_MOVE_X = 100; // px — travels in from 100px to the left
+const FILE_MOVE_X = 94; // px — travels in from 94px to the left, docking flush with the monitor edge
 const FILE_END = FILE_START + FILE_MOVE_DURATION;
 const FILE_HOLD_AFTER_MOVE = 0.5;
 const FILE_FADEOUT_DURATION = 0.2;
@@ -159,8 +159,8 @@ const generatedCss = `
 }
 .lff-inp { animation-name: lff-inp-in; }
 @keyframes lff-inp-in {
-  0%, ${pct(INP_START)}% { opacity: 0; transform: translateY(3px); }
-  ${pct(INP_VISIBLE)}% { opacity: 1; transform: translateY(0); }
+  0%, ${pct(INP_START)}% { opacity: 0; transform: translate(-50%, 3px); }
+  ${pct(INP_VISIBLE)}% { opacity: 1; transform: translateX(-50%); }
   ${pct(HOLD_END)}% { opacity: 1; }
   ${pct(FADE_END)}%, 100% { opacity: 0; }
 }
@@ -207,7 +207,8 @@ ${captionWindows
     class="absolute inset-0 h-full w-full"
     aria-hidden="true">
     <foreignObject x="0" y="0" width="480" height="320">
-      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="box-border flex h-full w-full flex-col items-center justify-center px-[28px] pt-[28px]">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-between">
+  <div class="box-border flex w-full flex-1 flex-col items-center justify-center px-[28px] pt-[28px]">
     <!-- cloud: where the app comes from -->
     <div class="lff-cloud flex flex-col items-center">
       <Cloud size={26} className="text-gray-400" />
@@ -232,13 +233,13 @@ ${captionWindows
     </div>
 
     <!-- device -->
-    <div class="w-52">
+    <div class="-mt-2 w-[196px]">
       <div class="relative">
         <!-- the local file, traveling in from the left, same size as the
              offline badge; fades in and moves into the display -->
         <span
-          class="lff-file absolute left-[-100px] top-1/2 -mt-[18px] flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 shadow-sm">
-          <FileText size={22} />
+          class="lff-file absolute left-[-94px] top-1/2 -mt-[17px] flex h-[34px] w-[34px] items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 shadow-sm">
+          <FileText size={21} />
         </span>
         <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
           <div class="relative aspect-[3/2] bg-gray-100">
@@ -293,36 +294,37 @@ ${captionWindows
               </svg>
             </div>
             <span
-              class="lff-inp absolute bottom-1.5 left-1.5 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[12px] font-medium text-gray-600">
+              class="lff-inp absolute bottom-1.5 left-1/2 flex items-center gap-1 whitespace-nowrap bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[12px] font-medium text-gray-600">
               my-network.ejsdb
             </span>
             <!-- centered in the network, not the corner: the progress chip
                  runs, then hands off to the success chip -->
             <span
-              class="lff-chip-progress absolute top-1/2 left-1/2 flex flex-col items-center gap-1.5 whitespace-nowrap rounded-full border border-gray-200 bg-white px-3 py-2 text-[14px] font-medium text-gray-600 shadow-sm">
+              class="lff-chip-progress absolute top-1/2 left-1/2 flex flex-col items-center gap-1.5 whitespace-nowrap rounded-full border border-gray-200 bg-white px-3 py-2 text-[12px] font-medium text-gray-600 shadow-sm">
               Running simulation...
               <span class="h-1 w-24 rounded-full bg-gray-100 overflow-hidden">
                 <span class="lff-progress-bar block h-full rounded-full bg-violet-500"></span>
               </span>
             </span>
             <span
-              class="lff-chip-success absolute top-1/2 left-1/2 flex items-center gap-1 whitespace-nowrap rounded-full bg-green-100 px-3 py-2 text-[14px] font-medium text-green-700 shadow-sm">
-              <CheckCircle2 size={14} />
+              class="lff-chip-success absolute top-1/2 left-1/2 whitespace-nowrap rounded-full bg-green-100 px-3 py-2 text-[12px] font-medium text-green-700 shadow-sm">
               Simulation successful
             </span>
           </div>
         </div>
       </div>
-      <div class="h-1.5 mx-6 rounded-b-lg bg-gray-300"></div>
-      <p class="flex justify-center mt-2 text-[14px] font-medium text-gray-700">
-        <span class="relative inline-block h-[18px] w-56 text-center">
-          <span class="lff-caption-1 absolute inset-0 whitespace-nowrap">The application loads</span>
-          <span class="lff-caption-2 absolute inset-0 whitespace-nowrap">The device goes offline</span>
-          <span class="lff-caption-3 absolute inset-0 whitespace-nowrap">You load your local file</span>
-          <span class="lff-caption-4 absolute inset-0 whitespace-nowrap">The simulation runs locally</span>
-        </span>
-      </p>
+      <div class="h-[5.6px] mx-[22.6px] rounded-b-lg bg-gray-300"></div>
     </div>
+  </div>
+
+  <p class="flex justify-center pb-6 text-[14px] font-medium text-gray-700">
+    <span class="relative inline-block h-[18px] w-56 text-center">
+      <span class="lff-caption-1 absolute inset-0 whitespace-nowrap">The application loads</span>
+      <span class="lff-caption-2 absolute inset-0 whitespace-nowrap">The device goes offline</span>
+      <span class="lff-caption-3 absolute inset-0 whitespace-nowrap">You load your local file</span>
+      <span class="lff-caption-4 absolute inset-0 whitespace-nowrap">The simulation runs locally</span>
+    </span>
+  </p>
       </div>
     </foreignObject>
   </svg>
@@ -400,6 +402,7 @@ ${captionWindows
   }
 
   .lff-inp {
+    transform: translateX(-50%);
     animation-duration: var(--cycle);
     animation-timing-function: ease-out;
     animation-iteration-count: infinite;
@@ -470,6 +473,9 @@ ${captionWindows
     .lff-chip-progress {
       opacity: 0;
       transform: none;
+    }
+    .lff-inp {
+      transform: translateX(-50%);
     }
     .lff-progress-bar {
       width: 100%;
