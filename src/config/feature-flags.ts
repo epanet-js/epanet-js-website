@@ -18,6 +18,12 @@ const previewLaunch = import.meta.env.PUBLIC_PREVIEW_LAUNCH === "true";
 
 export const showAll: boolean = import.meta.env.DEV && !previewLaunch;
 
+// The home page renders the redesigned body when the redesign is "on" — local
+// dev, or any deploy with PUBLIC_PREVIEW_LAUNCH=true — and the old body in
+// production until launch. `showAll || previewLaunch` keeps it in lockstep with
+// the section/page gates below, so a preview deploy shows the whole launched site.
+export const showRedesignedHome: boolean = showAll || previewLaunch;
+
 type SectionFlag = keyof typeof flags.sections;
 
 const sectionPrefixes: Record<SectionFlag, string> = {
@@ -26,11 +32,11 @@ const sectionPrefixes: Record<SectionFlag, string> = {
 };
 
 export function isSectionEnabled(id: SectionFlag): boolean {
-  return showAll || flags.sections[id] !== false;
+  return showAll || previewLaunch || flags.sections[id] !== false;
 }
 
 export function isPageEnabled(href: string): boolean {
-  if (showAll) return true;
+  if (showAll || previewLaunch) return true;
   for (const [section, prefix] of Object.entries(sectionPrefixes)) {
     if (href.startsWith(prefix) && !isSectionEnabled(section as SectionFlag)) {
       return false;

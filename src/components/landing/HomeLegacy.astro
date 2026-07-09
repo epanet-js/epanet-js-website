@@ -1,0 +1,34 @@
+---
+// The previous (pre-redesign) home page body, shown in production until the
+// redesign launches. See src/pages/index.astro + src/config/feature-flags.ts
+// (showRedesignedHome). Kept as a component so the redesigned and legacy homes
+// can coexist behind one flag.
+import Features from "@components/landing/features.tsx";
+import Hero from "@components/landing/hero.tsx";
+import UserDilemma from "@components/landing/user-dilemma";
+import OpenSource from "@components/landing/open-source";
+import Pricing from "@components/landing/pricing";
+import FrequentlyAskedQuestions from "@components/landing/faq.tsx";
+import CTAJustOpen from "@components/landing/cta-just-open.tsx";
+import WhyWeBuilt from "@components/landing/why-we-built.tsx";
+import BottomCTA from "@components/landing/bottom-cta.tsx";
+import MiddleCTA from "@components/landing/newsletter-cta";
+import type { Locale } from "@i18n/utils";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "en" } = Astro.props;
+---
+
+<Hero lang={lang} client:load />
+<UserDilemma lang={lang} />
+<Features lang={lang} client:load />
+<MiddleCTA lang={lang} />
+<OpenSource lang={lang} />
+<Pricing lang={lang} client:load />
+<FrequentlyAskedQuestions lang={lang} client:load />
+<CTAJustOpen lang={lang} />
+<WhyWeBuilt lang={lang} />
+<BottomCTA lang={lang} />
