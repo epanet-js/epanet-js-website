@@ -397,26 +397,19 @@ const faqs = [
 
   <FaqList heading="Frequently asked questions" items={faqs} />
 
-  <section class="w-full py-12 md:py-16 bg-gray-50">
-    <Container>
-      <div class="max-w-3xl">
-        <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
-          Found a security issue?
-        </h2>
-        <p class="mt-4 text-muted-foreground md:text-lg">
-          We take security reports seriously. If you believe you've found a
-          vulnerability, please email us at <a
-            href="mailto:support@epanetjs.com"
-            class={linkClass}>support@epanetjs.com</a
-          > and we'll work with you to investigate and resolve it. For questions
-          about how we handle your data, see our <a
-            href="/privacy-policy"
-            class={linkClass}>Privacy Policy</a
-          > and <a href="/cookies-policy" class={linkClass}>Cookies Policy</a>.
-        </p>
-      </div>
-    </Container>
-  </section>
+  <CtaSection
+    heading="Found a security issue?"
+    subheading="We take security reports seriously. If you believe you've found a vulnerability, email us and we'll work with you to investigate and resolve it."
+    dark={false}
+    primaryCta={{ label: "Email us", href: "mailto:support@epanetjs.com" }}
+    secondaryCta={null}>
+    <p class="mt-6 text-center text-sm text-muted-foreground">
+      For questions about how we handle your data, see our <a
+        href="/privacy-policy"
+        class={linkClass}>Privacy Policy</a
+      > and <a href="/cookies-policy" class={linkClass}>Cookies Policy</a>.
+    </p>
+  </CtaSection>
 
   <CtaSection
     heading="Questions about security or compliance?"
