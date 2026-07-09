@@ -7,22 +7,24 @@
 // and kept out of the sitemap.
 import flags from "./feature-flags.json";
 
-// By default `astro dev` shows everything and production builds obey the
-// flags. To preview the launch state locally, add PUBLIC_PREVIEW_LAUNCH=true
-// to .env.local and restart the dev server. .env.local is gitignored, so the
-// preview setting can't leak into a deploy. The PUBLIC_ prefix is required:
-// the footer is a hydrated island, so the value must also reach the client
-// bundle or the two would disagree. Env values are strings, hence the
-// explicit === "true".
+// PUBLIC_PREVIEW_LAUNCH is the single "is the redesign launched?" switch. It is
+// read the SAME way locally and in every deploy, so `astro dev` shows exactly
+// what a deploy with the same value would. Flip it in .env.local (then restart
+// the dev server) to see either state:
+//
+//   true  → redesigned home + every redesign section/page. Set this in the
+//           Vercel Preview environment, and in .env.local while building.
+//   false / unset → old home + pre-launch nav: what production serves until
+//           launch. Leave it unset/false in the Vercel Production environment.
+//
+// .env.local is gitignored, so a local setting can't leak into a deploy. The
+// PUBLIC_ prefix is required: the footer is a hydrated island, so the value must
+// also reach the client bundle or server and client would disagree. Env values
+// are strings, hence the explicit === "true".
 const previewLaunch = import.meta.env.PUBLIC_PREVIEW_LAUNCH === "true";
 
-export const showAll: boolean = import.meta.env.DEV && !previewLaunch;
-
-// The home page renders the redesigned body when the redesign is "on" — local
-// dev, or any deploy with PUBLIC_PREVIEW_LAUNCH=true — and the old body in
-// production until launch. `showAll || previewLaunch` keeps it in lockstep with
-// the section/page gates below, so a preview deploy shows the whole launched site.
-export const showRedesignedHome: boolean = showAll || previewLaunch;
+// Home page swaps between HomeRedesign and HomeLegacy on this flag.
+export const showRedesignedHome: boolean = previewLaunch;
 
 type SectionFlag = keyof typeof flags.sections;
 
@@ -32,11 +34,11 @@ const sectionPrefixes: Record<SectionFlag, string> = {
 };
 
 export function isSectionEnabled(id: SectionFlag): boolean {
-  return showAll || previewLaunch || flags.sections[id] !== false;
+  return previewLaunch || flags.sections[id] !== false;
 }
 
 export function isPageEnabled(href: string): boolean {
-  if (showAll || previewLaunch) return true;
+  if (previewLaunch) return true;
   for (const [section, prefix] of Object.entries(sectionPrefixes)) {
     if (href.startsWith(prefix) && !isSectionEnabled(section as SectionFlag)) {
       return false;
