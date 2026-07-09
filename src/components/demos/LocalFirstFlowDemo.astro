@@ -201,7 +201,13 @@ ${captionWindows
   class="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: the epanet-js app loads from the cloud, your .inp file stays on your device, and the simulation keeps running when the connection drops.">
-  <div class="absolute inset-0 flex scale-[0.6] flex-col items-center justify-center sm:scale-75 lg:scale-90">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-center">
     <!-- cloud: where the app comes from -->
     <div class="lff-cloud flex flex-col items-center">
       <Cloud size={26} className="text-gray-400" />
@@ -317,7 +323,9 @@ ${captionWindows
         </span>
       </p>
     </div>
-  </div>
+      </div>
+    </foreignObject>
+  </svg>
 </div>
 
 <style define:vars={{ cycle: `${CYCLE}s` }}>

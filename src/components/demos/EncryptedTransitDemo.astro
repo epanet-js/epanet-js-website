@@ -9,7 +9,13 @@ import { Cloud, Laptop, Lock } from "lucide-react";
   class="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: traffic between your machine and the epanet-js service is encrypted in transit over HTTPS and TLS.">
-  <div class="absolute inset-[5%] flex flex-col items-center">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="box-border flex h-full w-full flex-col items-center p-4">
   <div class="flex w-full flex-1 items-center justify-center gap-6 sm:gap-9">
     <!-- the user's machine -->
     <div class="flex shrink-0 flex-col items-center gap-[15px]">
@@ -70,7 +76,9 @@ import { Cloud, Laptop, Lock } from "lucide-react";
   <p class="enc-footer mt-4 text-center text-[14px] font-medium text-gray-700">
     All traffic encrypted in transit.
   </p>
-  </div>
+      </div>
+    </foreignObject>
+  </svg>
 </div>
 
 <style>

@@ -9,7 +9,13 @@ import { Cloud, Database } from "lucide-react";
   class="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: we run the epanet-js application, and model data is read from and written to storage your organization manages, such as your own S3 bucket.">
-  <div class="absolute inset-4 flex flex-col items-center">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="box-border flex h-full w-full flex-col items-center p-4">
   <div class="flex w-full flex-1 items-center justify-center gap-4 sm:gap-6">
     <!-- the application, run by us -->
     <div
@@ -67,5 +73,7 @@ import { Cloud, Database } from "lucide-react";
   <p class="mt-4 text-center text-[14px] font-medium text-gray-700">
     Your region · Your retention · Your access
   </p>
-  </div>
+      </div>
+    </foreignObject>
+  </svg>
 </div>

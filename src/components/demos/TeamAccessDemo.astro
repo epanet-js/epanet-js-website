@@ -29,7 +29,13 @@ const roleChip = (role: string) =>
   role="img"
   aria-label="Team access panel: a member list with per-person roles, an invite going out, and one member's role changing from editor to viewer.">
   <div class="absolute inset-0 overflow-hidden rounded-lg border border-gray-100 bg-white">
-  <div class="absolute inset-0 flex flex-col justify-between">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col justify-between">
   <div
     class="flex items-baseline justify-between px-4 py-3.5 border-b border-gray-100">
     <p class="text-[16px] font-semibold text-gray-700">Team access</p>
@@ -89,7 +95,9 @@ const roleChip = (role: string) =>
     class="tac-footer px-4 py-1.5 border-t border-gray-100 text-[12px] text-gray-400">
     4 seats · roles per member
   </p>
-  </div>
+      </div>
+    </foreignObject>
+  </svg>
   </div>
 </div>
 

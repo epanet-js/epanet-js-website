@@ -16,7 +16,13 @@ const devices = [
   class="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: one model syncing through a cloud, managed or self-hosted, down to three devices and back.">
-  <div class="absolute inset-4 flex flex-col justify-between">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="box-border flex h-full w-full flex-col justify-between p-4">
     <!-- the sync point -->
     <div class="flex items-center justify-center gap-4">
       <span class="cop-cloud relative text-indigo-950">
@@ -87,7 +93,9 @@ const devices = [
         ))
       }
     </div>
-  </div>
+      </div>
+    </foreignObject>
+  </svg>
 </div>
 
 <style>

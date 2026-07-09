@@ -123,7 +123,13 @@ const generatedCss = `
   class="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: a model file moves between two computers by email, network drive, or USB, with no cloud involved.">
-  <div class="absolute inset-0 flex scale-[0.85] flex-col items-center justify-center sm:scale-100">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-center">
   <!-- no cloud in the path -->
   <div class="ftr-nocloud flex justify-center">
     <span
@@ -202,7 +208,9 @@ const generatedCss = `
   <p class="mt-4 text-center text-[14px] font-medium text-gray-700">
     Share your model like any other file
   </p>
-  </div>
+      </div>
+    </foreignObject>
+  </svg>
 </div>
 
 <style define:vars={{ cycle: `${CYCLE}s` }}>
