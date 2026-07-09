@@ -364,13 +364,18 @@ function PricingComparisonTable({
 }
 
 // --- Props Interface for Main Pricing Card ---
+interface PlanFeature {
+  label: string;
+  tooltip?: string;
+}
+
 interface MainPricingCardProps {
   name: string;
   price: string | number;
   suffix: string;
   description: string;
   titleDescription: string;
-  features: string[];
+  features: PlanFeature[];
   featureSubtitle?: string;
   comingSoonFeatures?: string[];
   comingSoonSubtitle?: string;
@@ -533,7 +538,15 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
                 {" "}
                 {/* Changed to items-start */}
                 <Check className="mr-2 mt-0.5 h-4 w-4 text-indigo-500 flex-shrink-0" />
-                <span>{feature}</span>
+                <span>{feature.label}</span>
+                {feature.tooltip && (
+                  <div className="relative group ml-1.5 self-center">
+                    <InfoIcon className="h-4 w-4 text-gray-500 cursor-pointer" />
+                    <div className="absolute z-20 bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-4 py-2 w-max max-w-xs">
+                      {feature.tooltip}
+                    </div>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -706,11 +719,12 @@ export default function Pricing({ lang = "en", collapsibleTable = false }: Prici
         annually: { price: 0, suffix: t("pricing.suffix.yearShort") },
       },
       features: [
-        t("pricing.free.feature1"),
-        t("pricing.free.feature2"),
-        t("pricing.free.feature3"),
-        t("pricing.free.feature4"),
-        t("pricing.free.feature5"),
+        { label: t("pricing.free.feature1") },
+        { label: t("pricing.free.feature2"), tooltip: t("pricing.modelBuilderTooltip") },
+        { label: t("pricing.free.feature3") },
+        { label: t("pricing.free.feature4") },
+        { label: t("pricing.free.feature5") },
+        { label: t("pricing.free.feature6") },
       ],
       buttonText: t("pricing.free.button"),
       buttonVariant: "outline" as const,
@@ -725,15 +739,18 @@ export default function Pricing({ lang = "en", collapsibleTable = false }: Prici
         annually: { price: 950, suffix: t("pricing.suffix.yearShort") },
       },
       features: [
-        t("pricing.pro.comingSoon1"),
-        t("pricing.pro.feature1"),
-        t("pricing.pro.feature2"),
+        { label: t("pricing.pro.feature1") },
+        { label: t("pricing.pro.feature2"), tooltip: t("pricing.modelBuilderTooltip") },
+        { label: t("pricing.pro.feature3") },
+        { label: t("pricing.pro.feature4") },
+        { label: t("pricing.pro.feature5") },
+        { label: t("pricing.pro.feature6") },
       ],
       featureSubtitle: t("pricing.pro.featureSubtitle"),
       comingSoonFeatures: [
+        t("pricing.pro.comingSoon1"),
         t("pricing.pro.comingSoon2"),
         t("pricing.pro.comingSoon3"),
-        t("pricing.pro.comingSoon4"),
       ],
       comingSoonSubtitle: t("pricing.pro.comingSoonSubtitle"),
       buttonText: t("pricing.pro.button"),
@@ -756,9 +773,9 @@ export default function Pricing({ lang = "en", collapsibleTable = false }: Prici
       perUserLabel: t("pricing.teams.perUser"),
       tooltipText: t("pricing.teams.tooltip"),
       features: [
-        t("pricing.teams.feature1"),
-        t("pricing.teams.feature2"),
-        t("pricing.teams.feature3"),
+        { label: t("pricing.teams.feature1") },
+        { label: t("pricing.teams.feature2") },
+        { label: t("pricing.teams.feature3") },
       ],
       featureSubtitle: t("pricing.teams.featureSubtitle"),
       comingSoonFeatures: [
@@ -786,6 +803,7 @@ export default function Pricing({ lang = "en", collapsibleTable = false }: Prici
       limitations: [
         t("pricing.personal.limitation1"),
         t("pricing.personal.limitation2"),
+        t("pricing.personal.limitation3"),
       ],
       limitationSubtitle: t("pricing.personal.limitationSubtitle"),
       buttonText: t("pricing.personal.button"),
