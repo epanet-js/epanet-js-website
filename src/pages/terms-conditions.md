@@ -131,7 +131,7 @@ Companies with particular conditions might have other payment options available 
 
 ## 7. Refund Policy
 
-The User may cancel their subscription at any time from their account on the Website or by contacting us directly via email at support@iterating.ca
+The User may cancel their subscription at any time by contacting us directly via email at support@iterating.ca
 
 Clear Refund Policy:
 

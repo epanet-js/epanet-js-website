@@ -14,9 +14,9 @@ export default function Hero({ lang = "en" }: Props) {
   return (
     <section className="w-full mt-[-6rem] 2xlplus:mt-[-7rem] pt-[8rem] pb-16 sm:pt-[9rem] sm:pb-20 md:pt-[10rem] md:pb-24 lg:pt-[11rem] lg:pb-44 xl:pt-[11rem] xl:pb-44 2xlplus:pt-[12rem] 2xlplus:pb-48 bg-gradient-to-br from-blue-50 via-purple-50 to-white overflow-hidden">
       <div className="px-4 mx-auto max-w-[76.25rem] 2xlplus:max-w-[84rem]">
-        <div className="grid gap-10 lg:grid-cols-[1fr_600px] lg:gap-12 xl:grid-cols-[1fr_600px] xl:gap-16">
+        <div className="grid gap-10 lg:grid-cols-[1fr_690px] lg:gap-12 xl:grid-cols-[1fr_690px] xl:gap-16">
           <div className="flex flex-col justify-center space-y-6">
-            <div className="space-y-3 text-center lg:text-left">
+            <div className="w-[110%] space-y-3 text-center lg:text-left">
               <p className=" md:text-xl font-bold mx-auto lg:mx-0">
                 {t("hero.brand")}
               </p>
@@ -55,7 +55,7 @@ export default function Hero({ lang = "en" }: Props) {
             {/* Container sets the size and aspect ratio */}
             {/* REMOVED overflow-hidden from this div's classes */}
             <div
-              className="hero_demoscreen relative w-full sm:max-w-[500px] md:max-w-[600px] lg:max-w-[650px] rounded-xl shadow-2xl browser-mockup with-url bg-cover bg-center bg-no-repeat"
+              className="hero_demoscreen relative w-full sm:max-w-[500px] md:max-w-[600px] lg:max-w-[690px] rounded-xl shadow-2xl bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: `url(${videoPosterUrl})`,
                 backgroundSize: "cover",
@@ -71,6 +71,7 @@ export default function Hero({ lang = "en" }: Props) {
                 muted
                 streamType="on-demand"
                 style={{
+                  display: "block",
                   width: "100%",
                   height: "auto",
                   aspectRatio: "8 / 5",
