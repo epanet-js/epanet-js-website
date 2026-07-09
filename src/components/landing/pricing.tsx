@@ -25,117 +25,285 @@ const comparisonSections: ComparisonSection[] = [
     title: "Simulation",
     rows: [
       { feature: "EPANET Toolkit 2.3.5 engine", values: ["yes", "yes", "yes"] },
-      { feature: "Steady-state and Extended Period Simulation (EPS)", values: ["yes", "yes", "yes"] },
-      { feature: "Pressure-Driven Demands (PDD)", values: ["yes", "yes", "yes"] },
-      { feature: "Simple and rule-based controls", values: ["yes", "yes", "yes"] },
-      { feature: "Water quality analysis (age, trace, chemical)", values: ["yes", "yes", "yes"] },
+      {
+        feature: "Steady-state and Extended Period Simulation (EPS)",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Pressure-Driven Demands (PDD)",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Simple and rule-based controls",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Water quality analysis (age, trace, chemical)",
+        values: ["yes", "yes", "yes"],
+      },
       { feature: "Energy consumption analysis", values: ["yes", "yes", "yes"] },
-      { feature: "Energy pricing parameters (global price, demand charge, price pattern)", indent: true, values: ["yes", "yes", "yes"] },
-      { feature: "Stop / play simulation", values: ["yes", "yes", "yes"] },
-      { feature: "Headloss formula (H-W, D-W, C-M)", values: ["yes", "yes", "yes"] },
-      { feature: "US or metric units", values: ["yes", "yes", "yes"] },
-      { feature: "Tank mixing models (complete mix, 2-compartment, FIFO, LIFO)", values: ["yes", "yes", "yes"] },
-      { feature: "Global demand multiplier", values: ["yes", "yes", "yes"] },
+      {
+        feature: "Headloss formula (H-W, D-W, C-M)",
+        values: ["yes", "yes", "yes"],
+      },
     ],
   },
   {
     title: "Network editing",
     rows: [
-      { feature: "Easy asset drawing in the map", values: ["yes", "yes", "yes"] },
-      { feature: "Snap-to-node and pipe splitting", indent: true, values: ["yes", "yes", "yes"] },
-      { feature: "Node merging and replacement", indent: true, values: ["yes", "yes", "yes"] },
-      { feature: "Redraw and reverse links", indent: true, values: ["yes", "yes", "yes"] },
-      { feature: "Customize pipe drawing defaults", indent: true, values: ["yes", "yes", "yes"] },
-      { feature: "Active topology – deactivate / reactivate assets", values: ["yes", "yes", "yes"] },
-      { feature: "Area selection (rectangular, freehand, polygonal)", values: ["yes", "yes", "yes"] },
+      {
+        feature: "Easy asset drawing in the map",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Snap-to-node and pipe splitting",
+        indent: true,
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Node merging and replacement",
+        indent: true,
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Redraw and reverse links",
+        indent: true,
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Customize pipe drawing defaults",
+        indent: true,
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Active topology – deactivate / reactivate assets",
+        values: ["yes", "yes", "yes"],
+      },
       { feature: "Batch attribute editing", values: ["yes", "yes", "yes"] },
       { feature: "Asset search", values: ["yes", "yes", "yes"] },
-      { feature: "Custom asset labels", values: ["yes", "yes", "yes"] },
     ],
   },
   {
     title: "Customer points",
     rows: [
-      { feature: "Add, edit, move, remove customer points", values: ["yes", "yes", "yes"] },
-      { feature: "Import from Shapefile or GeoJSON", values: ["yes", "yes", "yes"] },
-      { feature: "Demand allocation rules", values: ["yes", "yes", "yes"] },
+      {
+        feature: "Add, edit, move, remove customer points",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Import from Shapefile or GeoJSON",
+        values: ["yes", "yes", "yes"],
+      },
+      { feature: "Demand allocation", values: ["yes", "yes", "yes"] },
+      {
+        feature: "Rules-based allocation",
+        indent: true,
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Allocate per zone",
+        indent: true,
+        values: ["yes", "yes", "yes"],
+      },
       { feature: "Customer points data table", values: ["yes", "yes", "yes"] },
-      { feature: "Per-zone demand allocation", values: ["coming-soon", "coming-soon", "coming-soon"] },
     ],
   },
   {
     title: "Element properties",
     rows: [
-      { feature: "Define pump curves (1-point or 3-point)", values: ["yes", "yes", "yes"] },
-      { feature: "Define tank curves (diameter, area, volume)", values: ["yes", "yes", "yes"] },
-      { feature: "Define reservoir head patterns", values: ["yes", "yes", "yes"] },
-      { feature: "Demand patterns on junctions", values: ["yes", "yes", "yes"] },
-      { feature: "Edit junction demand categories", values: ["yes", "yes", "yes"] },
-      { feature: "Pump speed patterns", values: ["yes", "yes", "yes"] },
-      { feature: "Pipe material and installation year", values: ["no", "yes", "yes"] },
-      { feature: "Assign roughness", values: ["coming-soon", "coming-soon", "coming-soon"] },
-      { feature: "Pump controls", values: ["coming-soon", "coming-soon", "coming-soon"] },
-      { feature: "Custom data fields per asset", values: ["no", "coming-soon", "coming-soon"] },
+      {
+        feature:
+          "Define pumps on the asset panel or from the library (1-point, 3-point, multi-point curves)",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature:
+          "Define tank capacity on the asset panel (diameter or volume curve)",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Pump controls (level or time-based) on the asset panel",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Pipe material and installation year",
+        values: ["no", "yes", "yes"],
+      },
+      { feature: "Custom attributes", values: ["no", "yes", "yes"] },
     ],
   },
   {
     title: "Data libraries",
     rows: [
       { feature: "Curve library manager", values: ["yes", "yes", "yes"] },
-      { feature: "Patterns library (time-series patterns)", values: ["yes", "yes", "yes"] },
-      { feature: "Pipe definition library", values: ["coming-soon", "coming-soon", "coming-soon"] },
-      { feature: "Saved selection sets", values: ["no", "coming-soon", "coming-soon"] },
+      {
+        feature: "Patterns library (time-series patterns)",
+        values: ["yes", "yes", "yes"],
+      },
+      { feature: "Pipe definition library", values: ["no", "yes", "yes"] },
+      {
+        feature: "Assign roughness by material and age",
+        indent: true,
+        values: ["no", "yes", "yes"],
+      },
+      {
+        feature: "Saved selection sets",
+        values: ["no", "coming-soon", "coming-soon"],
+      },
     ],
   },
   {
     title: "Data exchange",
     rows: [
       { feature: "INP import and export", values: ["yes", "yes", "yes"] },
-      { feature: "epanet-js project format (.ejsdb)", values: ["yes", "yes", "yes"] },
-      { feature: "Custom coordinate systems and projections", values: ["yes", "yes", "yes"] },
-      { feature: "Simple X-Y grid (non-georeferenced models)", values: ["yes", "yes", "yes"] },
+      {
+        feature: "epanet-js project format (.ejsdb)",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Custom coordinate systems and projections",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Simple X-Y grid (non-georeferenced models)",
+        values: ["yes", "yes", "yes"],
+      },
       { feature: "Elevation data", values: ["yes", "yes", "yes"] },
-      { feature: "Mapbox Terrain DTM", indent: true, values: ["yes", "yes", "yes"] },
-      { feature: "GeoTIFF upload", indent: true, values: ["no", "yes", "yes"] },
-      { feature: "Export asset data (Shapefile, CSV, XLSX, GeoJSON)", values: ["yes", "yes", "yes"] },
-      { feature: "Export simulation results (CSV, XLSX)", values: ["yes", "yes", "yes"] },
-      { feature: "Third-party model importers", values: ["no", "coming-soon", "coming-soon"] },
+      {
+        feature: "Mapbox Terrain DTM",
+        indent: true,
+        values: ["yes", "yes", "yes"],
+      },
+      { feature: "GeoTIFF", indent: true, values: ["no", "yes", "yes"] },
+      {
+        feature: "Export asset data (Shapefile, CSV, XLSX, GeoJSON)",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Export simulation results (CSV, XLSX)",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Third-party model import and export",
+        values: ["no", "coming-soon", "coming-soon"],
+      },
     ],
   },
   {
     title: "Results & visualization",
     rows: [
       { feature: "Map visualization", values: ["yes", "yes", "yes"] },
-      { feature: "Basemap selection (satellite, streets, outdoors)", indent: true, values: ["yes", "yes", "yes"] },
-      { feature: "Custom tile server (XYZ, Mapbox, TileJSON)", indent: true, values: ["no", "yes", "yes"] },
-      { feature: "Custom vector file layers (GeoJSON, Shapefile)", indent: true, values: ["no", "yes", "yes"] },
-      { feature: "Local background layers", indent: true, values: ["no", "coming-soon", "coming-soon"] },
-      { feature: "Upstream and downstream trace", values: ["yes", "yes", "yes"] },
-      { feature: "Map symbology (pressure, flow, demand, head, roughness, diameter, elevation)", values: ["yes", "yes", "yes"] },
+      {
+        feature: "Basemap selection (satellite, streets, outdoors)",
+        indent: true,
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Custom tile server (XYZ, Mapbox, TileJSON)",
+        indent: true,
+        values: ["no", "yes", "yes"],
+      },
+      {
+        feature: "Custom vector file layers (GeoJSON, Shapefile)",
+        indent: true,
+        values: ["no", "yes", "yes"],
+      },
+      {
+        feature: "Local background layers",
+        indent: true,
+        values: ["no", "coming-soon", "coming-soon"],
+      },
+      {
+        feature: "Upstream and downstream trace",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature:
+          "Map symbology (pressure, flow, demand, head, roughness, diameter, elevation)",
+        values: ["yes", "yes", "yes"],
+      },
       { feature: "Flow direction arrows", values: ["yes", "yes", "yes"] },
-      { feature: "Node size and visibility settings", values: ["yes", "yes", "yes"] },
-      { feature: "Time-series quick graph", values: ["yes", "yes", "yes"] },
+      {
+        feature: "Node size and visibility settings",
+        values: ["yes", "yes", "yes"],
+      },
+      { feature: "Graphing time-series data", values: ["yes", "yes", "yes"] },
+      {
+        feature: "Quick graph in the asset panel",
+        indent: true,
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Custom graphs with multiple elements",
+        indent: true,
+        values: ["yes", "yes", "yes"],
+      },
       { feature: "Asset data tables", values: ["yes", "yes", "yes"] },
-      { feature: "Show / hide asset labels", values: ["yes", "yes", "yes"] },
-      { feature: "Hydraulic Grade Line (HGL) profile", values: ["no", "yes", "yes"] },
-      { feature: "Zone polygons – import and visualize", values: ["no", "yes", "yes"] },
-      { feature: "Time-series custom graphs", values: ["no", "yes", "yes"] },
+      {
+        feature: "Hydraulic Grade Line (HGL) profile",
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Zone polygons – import and visualize",
+        values: ["no", "yes", "yes"],
+      },
     ],
   },
   {
     title: "Network review & analysis",
     rows: [
-      { feature: "Boundary and selection trace", values: ["yes", "yes", "yes"] },
-      { feature: "Network review (orphan assets, proximity, crossing pipes, connectivity trace)", values: ["yes", "yes", "yes"] },
-      { feature: "Valve criticality analysis", values: ["no", "coming-soon", "coming-soon"] },
+      {
+        feature: "Boundary and selection trace",
+        values: ["yes", "yes", "yes"],
+      },
+      { feature: "Network review", values: ["yes", "yes", "yes"] },
+      { feature: "Orphan assets", indent: true, values: ["yes", "yes", "yes"] },
+      { feature: "Asset proximity", indent: true, values: ["yes", "yes", "yes"] },
+      { feature: "Crossing pipes", indent: true, values: ["yes", "yes", "yes"] },
+      {
+        feature: "Connectivity trace",
+        indent: true,
+        values: ["yes", "yes", "yes"],
+      },
+      {
+        feature: "Missing or invalid attribute checks",
+        values: ["no", "yes", "yes"],
+      },
+      { feature: "Pipe roughness", indent: true, values: ["no", "yes", "yes"] },
+      { feature: "Tank levels", indent: true, values: ["no", "yes", "yes"] },
+      { feature: "Pump curves", indent: true, values: ["no", "yes", "yes"] },
+      {
+        feature: "Unallocated customer points",
+        indent: true,
+        values: ["no", "yes", "yes"],
+      },
+      {
+        feature: "Valve criticality analysis",
+        values: ["no", "coming-soon", "coming-soon"],
+      },
     ],
   },
   {
     title: "Scenario management",
     rows: [
       { feature: "Create and switch scenarios", values: ["no", "yes", "yes"] },
-      { feature: "Scenarios, versioning, model history", values: ["no", "coming-soon", "coming-soon"] },
-      { feature: "Save scenarios in model / cloud", values: ["no", "coming-soon", "coming-soon"] },
+      {
+        feature:
+          "Compare scenario differences (changed attributes highlighted)",
+        values: ["no", "yes", "yes"],
+      },
+      {
+        feature: "Compare simulation results between scenarios",
+        values: ["no", "yes", "yes"],
+      },
+      {
+        feature: "Scenarios, versioning, model history",
+        values: ["no", "coming-soon", "coming-soon"],
+      },
+      {
+        feature: "Save scenarios in model / cloud",
+        values: ["no", "coming-soon", "coming-soon"],
+      },
     ],
   },
   {
@@ -143,14 +311,35 @@ const comparisonSections: ComparisonSection[] = [
     rows: [
       { feature: "GIS model import (legacy)", values: ["yes", "no", "no"] },
       { feature: "GIS model import (improved)", values: ["no", "yes", "yes"] },
+      {
+        feature: "Source projection preserved",
+        indent: true,
+        values: ["no", "yes", "yes"],
+      },
+      {
+        feature: "Attribute search in field mapping",
+        indent: true,
+        values: ["no", "yes", "yes"],
+      },
+      {
+        feature: "Model build in your language",
+        indent: true,
+        values: ["no", "yes", "yes"],
+      },
     ],
   },
   {
     title: "Team collaboration",
     rows: [
-      { feature: "Support for multiple languages", values: ["yes", "yes", "yes"] },
+      {
+        feature: "Support for multiple languages",
+        values: ["yes", "yes", "yes"],
+      },
       { feature: "Multiple team members", values: ["no", "no", "yes"] },
-      { feature: "Guest user access and privacy settings", values: ["no", "no", "yes"] },
+      {
+        feature: "Guest user access and privacy settings",
+        values: ["no", "no", "coming-soon"],
+      },
       { feature: "Organization management", values: ["no", "no", "yes"] },
     ],
   },
@@ -158,10 +347,20 @@ const comparisonSections: ComparisonSection[] = [
 
 function TableCell({ value }: { value: CellValue }) {
   if (value === "yes") {
-    return <Check className="mx-auto h-5 w-5 text-indigo-500" aria-label="Included" />;
+    return (
+      <Check
+        className="mx-auto h-5 w-5 text-indigo-500"
+        aria-label="Included"
+      />
+    );
   }
   if (value === "no") {
-    return <Minus className="mx-auto h-4 w-4 text-gray-300" aria-label="Not included" />;
+    return (
+      <Minus
+        className="mx-auto h-4 w-4 text-gray-300"
+        aria-label="Not included"
+      />
+    );
   }
   return (
     <span className="inline-flex items-center rounded-full bg-gray-200 px-2 py-0.5 text-[0.65rem] font-medium text-gray-600 whitespace-nowrap">
@@ -204,7 +403,8 @@ function getPlanHeaders(billingCycle: "monthly" | "annually"): PlanHeader[] {
       buttonText: "Get Pro",
       buttonUrl: `https://app.epanetjs.com/?dialog=upgrade&plan=pro&paymentType=${isMonthly ? "monthly" : "yearly"}&startCheckout=true`,
       buttonVariant: "default",
-      buttonClassName: "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-transparent",
+      buttonClassName:
+        "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-transparent",
     },
     {
       name: "Teams",
@@ -220,44 +420,89 @@ function getPlanHeaders(billingCycle: "monthly" | "annually"): PlanHeader[] {
   ];
 }
 
-function ComparisonHeader({ billingCycle, position }: { billingCycle: "monthly" | "annually"; position: "top" | "bottom" }) {
+function ComparisonHeader({
+  billingCycle,
+  position,
+}: {
+  billingCycle: "monthly" | "annually";
+  position: "top" | "bottom";
+}) {
   const plans = getPlanHeaders(billingCycle);
   return (
-    <tr className={clsx("bg-white", position === "top" ? "border-b border-gray-200" : "border-t border-gray-200")}>
+    <tr
+      className={clsx(
+        "bg-white",
+        position === "top"
+          ? "border-b border-gray-200"
+          : "border-t border-gray-200",
+      )}
+    >
       <th className="w-[46%] py-5 px-5 text-left align-bottom">
         <span className="sr-only">Feature</span>
       </th>
       {plans.map((plan) => (
-        <th key={plan.name} className="w-[18%] py-5 px-4 text-center font-normal">
+        <th
+          key={plan.name}
+          className="w-[18%] py-5 px-4 text-center font-normal"
+        >
           <div className="flex flex-col items-center gap-2.5">
-            <span className="font-semibold text-gray-800 text-base">{plan.name}</span>
+            <span className="font-semibold text-gray-800 text-base">
+              {plan.name}
+            </span>
             {plan.userPrice ? (
               <div className="flex items-start gap-3">
                 <div className="flex flex-col items-center">
                   <span className="whitespace-nowrap leading-none">
-                    <span className="text-2xl font-bold text-gray-900">{plan.price}</span>
-                    <span className="text-sm text-gray-500">{plan.priceSuffix}</span>
+                    <span className="text-2xl font-bold text-gray-900">
+                      {plan.price}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      {plan.priceSuffix}
+                    </span>
                   </span>
-                  {plan.priceNote && <span className="text-xs text-gray-500 mt-1">{plan.priceNote}</span>}
+                  {plan.priceNote && (
+                    <span className="text-xs text-gray-500 mt-1">
+                      {plan.priceNote}
+                    </span>
+                  )}
                 </div>
                 <div className="flex flex-col items-center pt-0.5">
                   <span className="whitespace-nowrap leading-none">
-                    <span className="text-lg font-semibold text-gray-900">{plan.userPrice}</span>
-                    <span className="text-sm text-gray-500">{plan.userPriceSuffix}</span>
+                    <span className="text-lg font-semibold text-gray-900">
+                      {plan.userPrice}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      {plan.userPriceSuffix}
+                    </span>
                   </span>
-                  {plan.userPriceNote && <span className="text-xs text-gray-500 mt-1">{plan.userPriceNote}</span>}
+                  {plan.userPriceNote && (
+                    <span className="text-xs text-gray-500 mt-1">
+                      {plan.userPriceNote}
+                    </span>
+                  )}
                 </div>
               </div>
             ) : (
               <div className="flex flex-col items-center">
                 <span className="whitespace-nowrap leading-none">
-                  <span className="text-2xl font-bold text-gray-900">{plan.price}</span>
-                  <span className="text-sm text-gray-500">{plan.priceSuffix}</span>
+                  <span className="text-2xl font-bold text-gray-900">
+                    {plan.price}
+                  </span>
+                  <span className="text-sm text-gray-500">
+                    {plan.priceSuffix}
+                  </span>
                 </span>
-                <span className="text-xs text-gray-500 mt-1 whitespace-nowrap">{plan.priceNote ?? " "}</span>
+                <span className="text-xs text-gray-500 mt-1 whitespace-nowrap">
+                  {plan.priceNote ?? " "}
+                </span>
               </div>
             )}
-            <Button size="sm" variant={plan.buttonVariant ?? "outline"} className={plan.buttonClassName} asChild>
+            <Button
+              size="sm"
+              variant={plan.buttonVariant ?? "outline"}
+              className={plan.buttonClassName}
+              asChild
+            >
               <a href={plan.buttonUrl} rel="noopener">
                 {plan.buttonText}
               </a>
@@ -281,17 +526,25 @@ function PricingComparisonTable({
 
   const collapse = () => {
     setExpanded(false);
-    containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    containerRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   return (
-    <div ref={containerRef} className="mt-20 max-w-5xl mx-auto px-4 md:px-6 scroll-mt-24">
+    <div
+      ref={containerRef}
+      className="mt-20 max-w-5xl mx-auto px-4 md:px-6 scroll-mt-24"
+    >
       <h3 className="text-2xl font-bold text-center mb-2">Compare plans</h3>
-      <p className="text-center text-muted-foreground mb-10">Everything that's included in each plan.</p>
+      <p className="text-center text-muted-foreground mb-10">
+        Everything that's included in each plan.
+      </p>
       <div
         className={clsx(
           "relative rounded-xl border border-gray-200 shadow-sm",
-          expanded ? "overflow-x-auto" : "max-h-[30rem] overflow-hidden"
+          expanded ? "overflow-x-auto" : "max-h-[30rem] overflow-hidden",
         )}
       >
         <table className="w-full text-sm border-collapse">
@@ -300,7 +553,10 @@ function PricingComparisonTable({
           </thead>
           <tbody>
             {comparisonSections.flatMap((section) => [
-              <tr key={`section-${section.title}`} className="bg-gray-100 border-t border-b border-gray-200">
+              <tr
+                key={`section-${section.title}`}
+                className="bg-gray-100 border-t border-b border-gray-200"
+              >
                 <td
                   colSpan={4}
                   className="py-2.5 px-5 text-[0.7rem] font-semibold uppercase tracking-wide text-gray-600"
@@ -316,7 +572,7 @@ function PricingComparisonTable({
                   <td
                     className={clsx(
                       "py-3 px-5 text-gray-700 leading-snug",
-                      row.indent && "pl-10 text-gray-500"
+                      row.indent && "pl-10 text-gray-500",
                     )}
                   >
                     {row.feature}
@@ -474,14 +730,18 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
               <p className="text-gray-500 text-sm">{baseCostLabel}</p>
             </div>
             <div className="flex gap-1">
-              <span className="text-xl font-bold text-gray-700 self-start">+</span>
+              <span className="text-xl font-bold text-gray-700 self-start">
+                +
+              </span>
               <div>
                 <div className="mb-1">
                   <strong className="text-xl font-bold">${userPrice}</strong>
                   <span className="text-sm text-gray-500">/{suffix}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <p className="text-gray-500 text-sm whitespace-nowrap">{perUserLabel}</p>
+                  <p className="text-gray-500 text-sm whitespace-nowrap">
+                    {perUserLabel}
+                  </p>
                   {tooltipText && (
                     <div className="relative group">
                       <InfoIcon className="h-5 w-5 text-gray-500 cursor-pointer" />
@@ -498,10 +758,7 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
           <>
             <span className="inline-block whitespace-nowrap leading-none">
               <span className="text-4xl font-bold">${price}</span>
-              <span className="inline-block text-gray-500">
-                {" "}
-                /{suffix}
-              </span>
+              <span className="inline-block text-gray-500"> /{suffix}</span>
             </span>
             <div className="flex items-center gap-2">
               <p className="text-gray-500 text-sm">{description}</p>
@@ -700,7 +957,10 @@ interface PricingProps {
   collapsibleTable?: boolean;
 }
 
-export default function Pricing({ lang = "en", collapsibleTable = false }: PricingProps) {
+export default function Pricing({
+  lang = "en",
+  collapsibleTable = false,
+}: PricingProps) {
   const t = useTranslations(lang);
 
   // State for billing cycle
@@ -720,7 +980,10 @@ export default function Pricing({ lang = "en", collapsibleTable = false }: Prici
       },
       features: [
         { label: t("pricing.free.feature1") },
-        { label: t("pricing.free.feature2"), tooltip: t("pricing.modelBuilderTooltip") },
+        {
+          label: t("pricing.free.feature2"),
+          tooltip: t("pricing.modelBuilderTooltip"),
+        },
         { label: t("pricing.free.feature3") },
         { label: t("pricing.free.feature4") },
         { label: t("pricing.free.feature5") },
@@ -740,7 +1003,10 @@ export default function Pricing({ lang = "en", collapsibleTable = false }: Prici
       },
       features: [
         { label: t("pricing.pro.feature1") },
-        { label: t("pricing.pro.feature2"), tooltip: t("pricing.modelBuilderTooltip") },
+        {
+          label: t("pricing.pro.feature2"),
+          tooltip: t("pricing.modelBuilderTooltip"),
+        },
         { label: t("pricing.pro.feature3") },
         { label: t("pricing.pro.feature4") },
         { label: t("pricing.pro.feature5") },
@@ -766,8 +1032,16 @@ export default function Pricing({ lang = "en", collapsibleTable = false }: Prici
       description: t("pricing.teams.description"),
       titleDescription: t("pricing.teams.titleDescription"),
       pricing: {
-        monthly: { price: 440, userPrice: 60, suffix: t("pricing.suffix.monthShort") },
-        annually: { price: 4400, userPrice: 600, suffix: t("pricing.suffix.yearShort") },
+        monthly: {
+          price: 440,
+          userPrice: 60,
+          suffix: t("pricing.suffix.monthShort"),
+        },
+        annually: {
+          price: 4400,
+          userPrice: 600,
+          suffix: t("pricing.suffix.yearShort"),
+        },
       },
       baseCostLabel: t("pricing.teams.baseCost"),
       perUserLabel: t("pricing.teams.perUser"),
@@ -931,7 +1205,10 @@ export default function Pricing({ lang = "en", collapsibleTable = false }: Prici
         </p>
       </div>
 
-      <PricingComparisonTable billingCycle={billingCycle} collapsibleTable={collapsibleTable} />
+      <PricingComparisonTable
+        billingCycle={billingCycle}
+        collapsibleTable={collapsibleTable}
+      />
 
       {/* --- Special Access Section --- */}
       <div className="container mx-auto mt-20 px-4 md:px-6 relative">
