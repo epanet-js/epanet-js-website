@@ -198,7 +198,7 @@ ${captionWindows
 ---
 
 <div
-  class="relative mx-auto h-[320px] w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
+  class="relative mx-auto h-80 w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: the epanet-js app loads from the cloud, your .inp file stays on your device, and the simulation keeps running when the connection drops.">
   <svg
@@ -208,7 +208,7 @@ ${captionWindows
     aria-hidden="true">
     <foreignObject x="0" y="0" width="480" height="320">
       <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-between">
-  <div class="box-border flex w-full flex-1 flex-col items-center justify-center px-[28px] pt-[28px]">
+  <div class="box-border flex w-full flex-1 flex-col items-center justify-center px-8 pt-8">
     <!-- cloud: where the app comes from -->
     <div class="lff-cloud flex flex-col items-center">
       <Cloud size={23} className="text-gray-400" />
@@ -233,12 +233,12 @@ ${captionWindows
     </div>
 
     <!-- device -->
-    <div class="-mt-2 w-[196px]">
+    <div class="-mt-2 w-48">
       <div class="relative">
         <!-- the local file, traveling in from the left, same size as the
              offline badge; fades in and moves into the display -->
         <span
-          class="lff-file absolute left-[-94px] top-1/2 -mt-[17px] flex h-[34px] w-[34px] items-center justify-center rounded-full border border-gray-200 bg-white text-purple-500 shadow-sm">
+          class="lff-file absolute -left-24 top-1/2 -mt-4 flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-purple-500 shadow-sm">
           <FileText size={21} />
         </span>
         <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
@@ -301,25 +301,25 @@ ${captionWindows
             <!-- centered in the network, not the corner: the progress chip
                  runs, then hands off to the success chip -->
             <span
-              class="lff-chip-progress absolute top-1/2 left-1/2 flex flex-col items-center gap-1.5 whitespace-nowrap rounded-full border border-gray-200 bg-white px-3 py-2 text-[12px] font-medium text-gray-600 shadow-sm">
+              class="lff-chip-progress absolute top-1/2 left-1/2 flex flex-col items-center gap-1.5 whitespace-nowrap rounded-full border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-600 shadow-sm">
               Running simulation...
               <span class="h-1 w-24 rounded-full bg-gray-100 overflow-hidden">
                 <span class="lff-progress-bar block h-full rounded-full bg-violet-500"></span>
               </span>
             </span>
             <span
-              class="lff-chip-success absolute top-1/2 left-1/2 whitespace-nowrap rounded-full bg-green-100 px-3 py-2 text-[12px] font-medium text-green-700 shadow-sm">
+              class="lff-chip-success absolute top-1/2 left-1/2 whitespace-nowrap rounded-full bg-green-100 px-3 py-2 text-xs font-medium text-green-700 shadow-sm">
               Simulation successful
             </span>
           </div>
         </div>
       </div>
-      <div class="h-[5.6px] mx-[22.6px] rounded-b-lg bg-gray-300"></div>
+      <div class="h-1.5 mx-6 rounded-b-lg bg-gray-300"></div>
     </div>
   </div>
 
-  <p class="flex justify-center pb-6 text-[14px] font-medium text-gray-700">
-    <span class="relative inline-block h-[18px] w-56 text-center">
+  <p class="flex justify-center pb-6 text-sm font-medium text-gray-700">
+    <span class="relative inline-block h-4 w-56 text-center">
       <span class="lff-caption-1 absolute inset-0 whitespace-nowrap">The application loads</span>
       <span class="lff-caption-2 absolute inset-0 whitespace-nowrap">The device goes offline</span>
       <span class="lff-caption-3 absolute inset-0 whitespace-nowrap">You load your local file</span>

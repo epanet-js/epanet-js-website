@@ -13,7 +13,7 @@ const devices = [
 ---
 
 <div
-  class="relative mx-auto h-[320px] w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
+  class="relative mx-auto h-80 w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: one model syncing through a cloud, managed or self-hosted, down to three devices and back.">
   <svg
@@ -22,18 +22,18 @@ const devices = [
     class="absolute inset-0 h-full w-full"
     aria-hidden="true">
     <foreignObject x="0" y="0" width="480" height="320">
-      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="box-border flex h-full w-full flex-col justify-between px-[28px] pb-[28px] pt-[28px]">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="box-border flex h-full w-full flex-col justify-between px-8 pb-8 pt-8">
     <!-- the sync point -->
     <div class="relative mx-auto w-fit">
       <span class="cop-cloud relative text-indigo-950">
         <Cloud size={23} />
         <span
-          class="cop-badge absolute -bottom-[24px] left-1/2 flex -translate-x-1/2 items-center gap-1 rounded border border-gray-200 bg-white px-2 py-0.5 text-[12px] font-semibold text-gray-600 shadow-sm">
+          class="cop-badge absolute -bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded border border-gray-200 bg-white px-2 py-0.5 text-xs font-semibold text-gray-600 shadow-sm">
           <FileText size={12} className="text-violet-500" />
           .ejsdb
         </span>
       </span>
-      <p class="cop-caption absolute left-full top-1/2 ml-3 -translate-y-1/2 whitespace-nowrap text-[14px] leading-tight text-gray-500">
+      <p class="cop-caption absolute left-full top-1/2 ml-3 -translate-y-1/2 whitespace-nowrap text-sm leading-tight text-gray-500">
         Our cloud,
         <br />
         or yours.
@@ -85,7 +85,7 @@ const devices = [
               </div>
             </div>
             <div class="h-1.5 mx-4 rounded-b-lg bg-gray-300" />
-            <p class="flex items-center justify-center gap-1.5 mt-2 text-[12px] font-medium text-gray-600">
+            <p class="flex items-center justify-center gap-1.5 mt-2 text-xs font-medium text-gray-600">
               <device.icon size={14} className="text-gray-400" />
               {device.label}
             </p>

@@ -14,7 +14,7 @@ const regions = [
 ---
 
 <div
-  class="relative mx-auto h-[320px] w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
+  class="relative mx-auto h-80 w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: three data regions, Europe, the United States, and Asia Pacific, each running the epanet-js app beside its own model storage and delivering models to that region's users without leaving the region.">
   <svg
@@ -74,7 +74,7 @@ const regions = [
                 <path d="M4.5 17.4 L8 22.1 L11.5 17.4 Z" fill="#d1d5db" />
               </svg>
               <span
-                class={`drg-file drg-file-${i + 1} absolute left-1/2 top-0 flex -translate-x-1/2 items-center gap-0.5 rounded border border-gray-200 bg-white px-1 py-px text-[12px] font-medium text-gray-600 shadow-sm`}>
+                class={`drg-file drg-file-${i + 1} absolute left-1/2 top-0 flex -translate-x-1/2 items-center gap-0.5 rounded border border-gray-200 bg-white px-1 py-px text-xs font-medium text-gray-600 shadow-sm`}>
                 <FileText size={11} className="text-violet-500" />
                 .ejsdb
               </span>
@@ -105,7 +105,7 @@ const regions = [
   </div>
   </div>
 
-    <p class="drg-footer pb-6 text-center text-[14px] font-medium text-gray-700">
+    <p class="drg-footer pb-6 text-center text-sm font-medium text-gray-700">
       Models are stored and served in the region you choose
     </p>
       </div>
