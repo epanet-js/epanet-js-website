@@ -211,7 +211,7 @@ ${captionWindows
   <div class="box-border flex w-full flex-1 flex-col items-center justify-center px-[28px] pt-[28px]">
     <!-- cloud: where the app comes from -->
     <div class="lff-cloud flex flex-col items-center">
-      <Cloud size={26} className="text-gray-400" />
+      <Cloud size={23} className="text-gray-400" />
     </div>
 
     <!-- link from cloud to device, cut when offline -->
@@ -238,7 +238,7 @@ ${captionWindows
         <!-- the local file, traveling in from the left, same size as the
              offline badge; fades in and moves into the display -->
         <span
-          class="lff-file absolute left-[-94px] top-1/2 -mt-[17px] flex h-[34px] w-[34px] items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 shadow-sm">
+          class="lff-file absolute left-[-94px] top-1/2 -mt-[17px] flex h-[34px] w-[34px] items-center justify-center rounded-full border border-gray-200 bg-white text-purple-500 shadow-sm">
           <FileText size={21} />
         </span>
         <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
@@ -294,8 +294,9 @@ ${captionWindows
               </svg>
             </div>
             <span
-              class="lff-inp absolute bottom-1.5 left-1/2 flex items-center gap-1 whitespace-nowrap bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[12px] font-medium text-gray-600">
-              my-network.ejsdb
+              class="lff-inp absolute bottom-1.5 left-1/2 flex items-center gap-1 whitespace-nowrap rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-gray-600 shadow-sm">
+              <FileText size={14} className="text-violet-500" />
+              .ejsdb
             </span>
             <!-- centered in the network, not the corner: the progress chip
                  runs, then hands off to the success chip -->

@@ -44,7 +44,7 @@ const roleChip = (role: string) =>
   <div class="py-1 text-[14px]">
     {
       members.map((member, i) => (
-        <div class={`tac-row tac-row-${i + 1} flex items-center gap-3 px-4 py-2`}>
+        <div class={`tac-row tac-row-${i + 1} flex items-center gap-3 px-4 py-2.5`}>
           <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-[12px] font-semibold text-violet-700">
             {member.initials}
           </span>
@@ -53,14 +53,14 @@ const roleChip = (role: string) =>
             <span class="relative ml-auto">
               <span
                 class:list={[
-                  "tac-role-old block rounded-full border px-2 py-0.5 text-[12px] font-medium",
+                  "tac-role-old block w-[62px] rounded-full border px-2.5 py-[3px] text-center text-[12px] font-medium",
                   roleChip("Editor"),
                 ]}>
                 Editor
               </span>
               <span
                 class:list={[
-                  "tac-role-new absolute inset-0 flex items-center justify-center rounded-full border px-2 py-0.5 text-[12px] font-medium",
+                  "tac-role-new absolute inset-0 flex items-center justify-center rounded-full border px-2.5 py-[3px] text-[12px] font-medium",
                   roleChip("Viewer"),
                 ]}>
                 Viewer
@@ -69,7 +69,7 @@ const roleChip = (role: string) =>
           ) : (
             <span
               class:list={[
-                "ml-auto rounded-full border px-2 py-0.5 text-[12px] font-medium",
+                "ml-auto w-[62px] rounded-full border px-2.5 py-[3px] text-center text-[12px] font-medium",
                 roleChip(member.role),
               ]}>
               {member.role}
@@ -86,13 +86,13 @@ const roleChip = (role: string) =>
       </span>
       <span class="text-gray-500">sara@acme.com</span>
       <span
-        class="ml-auto rounded-full bg-violet-500 px-2 py-0.5 text-[12px] font-medium text-white">
+        class="ml-auto rounded-full bg-violet-500 px-2.5 py-[3px] text-[12px] font-medium text-white">
         Invite sent
       </span>
     </div>
   </div>
   <p
-    class="tac-footer px-4 py-1.5 border-t border-gray-100 text-[12px] text-gray-400">
+    class="tac-footer px-4 py-2.5 border-t border-gray-100 text-[12px] text-gray-400">
     4 seats · roles per member
   </p>
       </div>

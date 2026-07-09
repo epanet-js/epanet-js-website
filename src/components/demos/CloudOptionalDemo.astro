@@ -24,16 +24,16 @@ const devices = [
     <foreignObject x="0" y="0" width="480" height="320">
       <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="box-border flex h-full w-full flex-col justify-between px-[28px] pb-[28px] pt-[28px]">
     <!-- the sync point -->
-    <div class="flex items-center justify-center gap-4">
+    <div class="relative mx-auto w-fit">
       <span class="cop-cloud relative text-indigo-950">
-        <Cloud size={40} />
+        <Cloud size={23} />
         <span
-          class="cop-badge absolute -bottom-1.5 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded border border-gray-200 bg-white px-1.5 text-[12px] font-semibold text-gray-600 shadow-sm">
+          class="cop-badge absolute -bottom-[24px] left-1/2 flex -translate-x-1/2 items-center gap-1 rounded border border-gray-200 bg-white px-2 py-0.5 text-[12px] font-semibold text-gray-600 shadow-sm">
           <FileText size={12} className="text-violet-500" />
           .ejsdb
         </span>
       </span>
-      <p class="cop-caption text-[14px] leading-tight text-gray-500">
+      <p class="cop-caption absolute left-full top-1/2 ml-3 -translate-y-1/2 whitespace-nowrap text-[14px] leading-tight text-gray-500">
         Our cloud,
         <br />
         or yours.
@@ -86,7 +86,7 @@ const devices = [
             </div>
             <div class="h-1.5 mx-4 rounded-b-lg bg-gray-300" />
             <p class="flex items-center justify-center gap-1.5 mt-2 text-[12px] font-medium text-gray-600">
-              <device.icon size={16} className="text-gray-400" />
+              <device.icon size={14} className="text-gray-400" />
               {device.label}
             </p>
           </div>
