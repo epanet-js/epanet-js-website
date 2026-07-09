@@ -14,7 +14,7 @@ const regions = [
 ---
 
 <div
-  class="relative h-[280px] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
+  class="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: three data regions, Europe, the United States, and Asia Pacific, each running the epanet-js app beside its own model storage and delivering models to that region's users without leaving the region.">
   <div class="absolute inset-0 flex scale-90 items-center justify-center pt-2 sm:scale-100">
@@ -76,7 +76,7 @@ const regions = [
             <!-- local machine -->
             <div class="mx-1 sm:mx-1.5">
               <div class="overflow-hidden rounded-lg border-2 border-gray-300">
-                <div class="relative aspect-[16/10] bg-gray-100">
+                <div class="relative aspect-[3/2] bg-gray-100">
                   <div class={`drg-screen-${i + 1} absolute inset-0`}>
                     <NetworkMap class="absolute inset-0" />
                   </div>

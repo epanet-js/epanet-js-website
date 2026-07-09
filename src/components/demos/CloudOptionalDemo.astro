@@ -13,7 +13,7 @@ const devices = [
 ---
 
 <div
-  class="relative h-[280px] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
+  class="relative aspect-[3/2] w-full overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: one model syncing through a cloud, managed or self-hosted, down to three devices and back.">
   <div class="absolute inset-4 flex flex-col justify-between">
@@ -71,7 +71,7 @@ const devices = [
         devices.map((device, i) => (
           <div>
             <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
-              <div class="relative aspect-[16/10] bg-gray-100">
+              <div class="relative aspect-[3/2] bg-gray-100">
                 <NetworkMap class="absolute inset-0" />
                 <span
                   class={`cop-tick-${i + 1} absolute top-1 right-1 h-2.5 w-2.5 rounded-full bg-violet-500 ring-2 ring-white`}
