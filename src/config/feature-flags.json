@@ -18,7 +18,7 @@
     "/who-its-for/consultants": true,
     "/who-its-for/education": true,
     "/who-its-for/humanitarian-ngos": true,
-    "/case-studies": false,
+    "/case-studies": true,
     "/compare": false
   }
 }
