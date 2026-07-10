@@ -1,10 +1,9 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import PageHero from "@components/marketing/PageHero.astro";
 import CtaSection from "@components/marketing/CtaSection.astro";
 import Media from "@components/marketing/Media.astro";
 import Container from "@components/container.astro";
-import Badge from "@components/ui/badge.astro";
+import CaseStudyHero from "@components/case-studies/CaseStudyHero.astro";
 
 export const prerender = true;
 const lang = "en";
@@ -21,15 +20,9 @@ const facts = [
   title="How Warren County Utility District brought hydraulic modeling in-house"
   description="Warren County Utility District needed to know where the water in its network was actually going. Instead of $5,000 flow meters or a consultant study, a staff engineer built a hydraulic model of 900 miles of pipe in epanet-js — in a day."
   lang={lang}>
-  <PageHero
-    title="How Warren County Utility District brought hydraulic modeling in-house"
-    subtitle="A Tennessee utility went from sending every hydraulic question to its consultant to answering most of them the same day, starting with its GIS data and one rainy afternoon."
-    primaryCta={null}
-    secondaryCta={null}
-    align="center"
-  />
+  <CaseStudyHero active="case-study" />
 
-  <section class="w-full pb-12 md:pb-16 -mt-4">
+  <section class="w-full pb-12 md:pb-16">
     <Container>
       <figure class="pt-8 max-w-4xl mx-auto">
         <Media

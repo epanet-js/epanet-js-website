@@ -22,6 +22,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Keep scroll restoration instant while a view transition is running */
+html[data-astro-transition] {
+  scroll-behavior: auto;
+}
+
 .container {
   max-width: 1342px;
 }

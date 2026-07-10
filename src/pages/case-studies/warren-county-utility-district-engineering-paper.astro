@@ -1,0 +1,394 @@
+---
+import Layout from "@layouts/Layout.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import Container from "@components/container.astro";
+import CaseStudyHero from "@components/case-studies/CaseStudyHero.astro";
+
+export const prerender = true;
+const lang = "en";
+---
+
+<Layout
+  title="Building an in-house distribution system hydraulic model at a mid-size Tennessee utility district"
+  description="A conference-paper account of how Warren County Utility District evaluated modeling options, built a full-network hydraulic model of roughly 900 miles of main from its GIS, checked it against SCADA data, and put it to work for operational screening."
+  lang={lang}>
+  <CaseStudyHero active="paper" />
+
+  <section class="w-full pt-10 md:pt-12 pb-16 md:pb-24">
+    <Container>
+      <article
+        class="max-w-3xl mx-auto prose prose-lg prose-headings:tracking-tight">
+        <h2>Abstract</h2>
+        <p>
+          Warren County Utility District serves approximately 34,000 people
+          across seven counties in middle Tennessee through roughly 14,000
+          connections. Like many utilities of its size, the district
+          historically had no distribution system hydraulic model: routine
+          hydraulic questions were referred to its consulting engineer or
+          approximated from SCADA flows and tank levels, and a model was
+          assumed to require software budgets and specialist staff the
+          district did not have.
+        </p>
+        <p>
+          A specific operational question changed that assumption. An area of
+          the system is fed by three 6-inch mains, and the district could not
+          determine how flow was actually routed among them. Temporary
+          metering was evaluated first, but at an installed cost of $5,000 to
+          $6,000 per meter across several lines, it was ruled out. The
+          district instead evaluated hydraulic modeling options: commercial
+          modeling platforms, the U.S. EPA's EPANET desktop application,
+          GIS-based toolchains that generate EPANET input files, and newer
+          web-based interfaces built on the EPANET engine. It selected a
+          no-cost, web-based EPANET implementation that could import the
+          district's GIS data directly, and staff built a connected, running
+          model of the full system after approximately eight hours of
+          self-directed onboarding.
+        </p>
+        <p>
+          This paper describes the evaluation, the model build (including
+          distribution system data corrections that were fed back into the
+          district's GIS), an informal verification against SCADA data, and
+          the applications that followed: resolving the original flow routing
+          question, screening fire hydrant and service requests, supporting
+          leak localization, and testing line extensions. It concludes with
+          lessons for other small and mid-size utilities considering bringing
+          hydraulic modeling in-house.
+        </p>
+        <p>
+          <strong>Keywords:</strong> hydraulic modeling, water distribution
+          systems, GIS, small and mid-size utilities, EPANET
+        </p>
+
+        <h2>Introduction and system background</h2>
+        <p>
+          Warren County Utility District (WCUD) is a utility district
+          headquartered in McMinnville, Tennessee, serving approximately
+          34,000 people across parts of seven counties (Warren, Grundy,
+          DeKalb, Van Buren, Cannon, Sequatchie, and White) through roughly
+          14,000 connections. The district treats surface water from the
+          Collins River at a plant rated at 4.0 MGD and operates with a staff
+          of about 65.
+        </p>
+        <p>
+          The district's in-house engineering capacity is typical of systems
+          this size: the general manager is a licensed professional engineer,
+          supported by one staff civil engineer responsible for GIS, asset
+          management, and cost estimation. Design work and formal studies are
+          performed by the district's consulting engineering firm. Over the
+          past several years the district has invested in building more
+          engineering capability internally, beginning with its GIS, and the
+          work described here is part of that effort.
+        </p>
+        <p>
+          Before this project, the district had no hydraulic model of its
+          distribution system. Hydraulic questions were handled in one of two
+          ways: referred to the consulting engineer, or approximated in-house
+          from SCADA flow data and tank levels, with judgment filling the gaps
+          between instrumented points. Both approaches work, but neither gives
+          operations staff a system-wide picture on demand, and the second
+          depends heavily on assumptions about how water actually moves
+          through the network.
+        </p>
+
+        <h2>Problem statement</h2>
+        <p>
+          The immediate driver was a flow routing question. One area of the
+          system is fed by three 6-inch mains, and the district was not
+          certain which of the lines was carrying the load, in what
+          proportions, or in which directions under normal conditions. The
+          answer mattered for operating decisions in the area and for
+          diagnosing recurring problems there.
+        </p>
+        <p>
+          The first option considered was temporary flow metering. Even with
+          installation performed by district crews, an insertion meter
+          installation was estimated at $5,000 to $6,000 per site, and
+          characterizing the area would have required metering several lines.
+          The cost was difficult to justify for a diagnostic question, and the
+          meters would only ever describe the lines they were installed on.
+        </p>
+        <p>
+          A hydraulic model offered a different trade: rather than measuring a
+          few points precisely, estimate the whole area well enough to answer
+          the routing question and reuse the same tool for future questions.
+          The district recognized from the outset that a model built on billed
+          average demands would not be exact. The working standard was whether
+          it would be close enough to inform decisions, which could be checked
+          against the SCADA data the district already collected.
+        </p>
+
+        <h2>Evaluation of modeling options</h2>
+        <p>The district set four practical requirements for a modeling tool:</p>
+        <ul>
+          <li>
+            Import the district's existing GIS data directly. With roughly 900
+            miles of main, manual network construction (or maintaining a
+            skeletonized model alongside the full GIS) was not realistic for
+            the available staff time.
+          </li>
+          <li>
+            Be learnable by existing staff without formal training. The staff
+            engineer's prior modeling experience was limited to a brief EPANET
+            module in a college hydraulics course.
+          </li>
+          <li>
+            Involve little or no acquisition cost, since the effort was itself
+            a trial with an uncertain outcome.
+          </li>
+          <li>Run on standard office hardware.</li>
+        </ul>
+        <p>Four classes of tools were reviewed against these requirements:</p>
+        <ol>
+          <li>
+            <strong>Commercial modeling platforms.</strong> The widely used
+            commercial packages are capable, mature products with vendor
+            support and advanced modules, and they remain the standard for
+            large utilities and consulting practices. However, published
+            annual license costs can approach $10,000 per seat. For a district
+            running occasional operational analyses in-house, that recurring
+            cost could not be justified, particularly for an unproven effort.
+          </li>
+          <li>
+            <strong>EPANET (U.S. EPA).</strong> The public-domain desktop
+            application is free and its analysis engine is the industry
+            reference; it is also the engine underlying most commercial
+            packages. Its limitation for this project was data handling:
+            building a 900-mile network in the desktop interface would have
+            required substantial manual work or external preprocessing.
+          </li>
+          <li>
+            <strong>GIS-based toolchains.</strong> Open-source GIS software
+            with plugins can generate EPANET input files from network layers.
+            This path was judged feasible but was the most involved option,
+            requiring staff to assemble and maintain a multi-step toolchain
+            and debug the handoffs between tools.
+          </li>
+          <li>
+            <strong>Web-based EPANET implementations.</strong> A newer class
+            of applications wraps the EPANET engine in a browser-based
+            interface with direct GIS import. The district trialed one of
+            these, epanet-js, which met all four requirements and is free to
+            use at the scale the district needed; it is referred to below
+            simply as the modeling application.
+          </li>
+        </ol>
+        <p>
+          The deciding factors were direct GIS import and the absence of an
+          acquisition cost, which together made it possible to attempt the
+          model as a low-risk trial rather than a budgeted project.
+        </p>
+
+        <h2>Model development</h2>
+        <p>
+          Staff dedicated approximately eight hours to self-directed
+          onboarding, working through short tutorial videos alongside the
+          application. No formal training course was taken and no consulting
+          assistance was engaged for the model build.
+        </p>
+        <p>
+          The network was imported directly from the district's GIS rather
+          than drawn by hand: pipes, diameters, and materials came in from the
+          existing layers, and node elevations were assigned from terrain
+          data. Demands were allocated from average consumption. Reviewing the
+          imported network against aerial imagery allowed staff to confirm
+          alignment with the GIS across the district's dispersed, multi-county
+          service area.
+        </p>
+        <p>
+          The most consequential step in the build was data validation. The
+          application's network review tools flagged connectivity errors, such
+          as mains that appeared connected on the map but were not
+          topologically joined, that had gone unnoticed in the GIS. Rather
+          than patching these only in the model, staff corrected them in the
+          source GIS as well, working through the two side by side. This
+          produced a secondary benefit that outlasted the modeling project
+          itself: the district's GIS is now topologically connected, so future
+          exports (to this model or any other analysis) start from clean data.
+          Utilities considering a model build should expect this data-repair
+          phase and budget time for it; in the district's experience it is
+          also where much of the lasting value sits.
+        </p>
+        <p>
+          The completed model contains the district's full distribution
+          network, approximately 900 miles of main, without skeletonization.
+        </p>
+
+        <h2>Verification against operational data</h2>
+        <p>
+          The district approached the first simulation results with reasonable
+          skepticism. Demands were allocated from billed averages, not
+          measured diurnal patterns, and thousands of system valves were not
+          yet individually represented, so exact agreement was never the
+          expectation.
+        </p>
+        <p>
+          Simulated flows were compared informally against the district's
+          SCADA flow and tank data. Agreement was close enough to support the
+          screening decisions the district wanted the model for, while the
+          known limitations were kept in view when interpreting results. The
+          district treats model output as a strong indicator to be confirmed
+          in the field where a decision is costly or irreversible, not as a
+          substitute for measurement. A formal calibration exercise has not
+          yet been performed and is recognized as appropriate future work if
+          the model's uses expand.
+        </p>
+
+        <h2>Applications</h2>
+        <p>
+          <strong>Flow routing.</strong> The model answered the original
+          question, and the answer differed from what staff had assumed: water
+          in the study area was not following the paths that had been inferred
+          from static reasoning. With the actual routing understood, the
+          district has since corrected several deficiencies in that area.
+        </p>
+        <p>
+          <strong>Fire hydrant and service requests.</strong> When a customer
+          requests a hydrant or a larger service connection, the district can
+          now screen the request in the model the same day. The system-wide
+          view has proven as valuable as the local answer: in one case, a
+          proposed hydrant that appeared locally acceptable was shown to draw
+          down a line at a high point roughly two miles away. In another, a
+          requested 2-inch meter was shown to depress pressures for
+          surrounding customers, allowing the district to respond quickly with
+          an informed preliminary answer and investigate alternatives.
+        </p>
+        <p>
+          <strong>Leak localization support.</strong> When a leak is suspected
+          in a general area, staff represent it as an added demand at
+          candidate locations and compare the simulated response with what is
+          observed in the field. Simulated valve operations are then used to
+          test isolation strategies before crews operate anything in the
+          ground.
+        </p>
+        <p>
+          <strong>Extension and main sizing screening.</strong> Proposed line
+          extensions and new mains are run as scenarios in-house before any
+          commitment is made. Questions that once queued behind larger
+          projects are now screened internally in hours, and those that
+          warrant detailed design proceed with better definition.
+        </p>
+        <p>
+          Within the organization, use of the model has spread beyond the
+          engineer who built it in an informal but telling way: managers and
+          operations staff now bring questions to be "run through the model"
+          as a routine step. The district plans to train additional
+          engineering staff to run scenarios directly.
+        </p>
+
+        <h2>Discussion</h2>
+        <p>
+          <strong>Effect on engineering workflow.</strong> The model has
+          changed which questions the district can answer internally, not who
+          does its engineering. Routine screening questions (hydrant requests,
+          service sizing, first-pass extension checks) are resolved in-house,
+          often the same day. The consulting engineering firm continues to
+          perform design and formal studies, and the district's view is that
+          in-house screening makes those engagements more productive: requests
+          arrive better defined, and consulting budget concentrates on work
+          that genuinely requires it. A utility considering this path should
+          treat the model as a complement to its consulting relationship
+          rather than a replacement for it.
+        </p>
+        <p>
+          <strong>Cost.</strong> Software cost for the project was zero. The
+          material investment was staff time: roughly one working day of
+          onboarding, the model build itself (dominated by GIS cleanup), and
+          incremental upkeep as the system changes. For comparison, the single
+          flow-metering exercise the model displaced had been estimated at
+          $5,000 to $6,000 per metered line.
+        </p>
+        <p>
+          <strong>Staffing and continuity.</strong> The model was built and is
+          primarily operated by one staff engineer. That concentration is a
+          known risk; the district's mitigation is to train additional staff
+          in the engineering group so that scenario runs do not depend on one
+          person's availability.
+        </p>
+        <p>
+          <strong>Limitations.</strong> Current results rest on average-demand
+          allocation, an incomplete representation of system valve status, and
+          informal verification rather than formal calibration. None of these
+          has prevented the screening uses described above, but each bounds
+          the questions the model should be asked. They also define the
+          improvement path: better demand data, complete valve representation,
+          and calibration against field measurements as higher-stakes
+          applications emerge.
+        </p>
+
+        <h2>Future work</h2>
+        <p>Three efforts are planned or underway:</p>
+        <ol>
+          <li>
+            <strong>System valves.</strong> The district maintains thousands
+            of valves in its GIS. Importing them with correct open/closed
+            status will make isolation scenarios and zone analyses more
+            faithful to actual operations.
+          </li>
+          <li>
+            <strong>Water quality analysis.</strong> The district intends to
+            simulate water age, and subsequently chlorine decay, and compare
+            results against its routine compliance sampling. If agreement is
+            reasonable, the model would help prioritize where automatic
+            flushing and blow-off points do the most good.
+          </li>
+          <li>
+            <strong>Broader internal adoption.</strong> Training additional
+            engineering staff to run scenarios directly, so the model
+            functions as a shared utility resource rather than a specialist
+            tool.
+          </li>
+        </ol>
+
+        <h2>Conclusions and recommendations</h2>
+        <p>
+          A mid-size utility district with no modeling program, no modeling
+          budget, and one staff engineer built a full-network hydraulic model
+          of roughly 900 miles of main from its existing GIS, and now uses it
+          routinely for operational screening. For utilities in a similar
+          position, the district's experience supports the following:
+        </p>
+        <ol>
+          <li>
+            <strong>The traditional barriers have narrowed.</strong> The costs
+            that historically kept hydraulic modeling out of reach for small
+            and mid-size systems, software licensing and specialist staffing,
+            no longer apply to every path into modeling. Free tools built on
+            the standard EPANET engine can now import GIS data directly.
+          </li>
+          <li>
+            <strong>GIS quality is the real prerequisite.</strong> The model
+            is only as connected as the data behind it. Utilities with a
+            maintained GIS are closer to a working model than they may assume;
+            utilities without one should see that as the first investment.
+            Expect the build to double as a GIS audit, and apply corrections
+            at the source so the value persists.
+          </li>
+          <li>
+            <strong>Average-demand models are useful sooner than expected.</strong>
+            A model allocated from billed averages, checked against existing
+            SCADA data, was sufficient for routing diagnosis, request
+            screening, and scenario comparison. Formal calibration can come
+            later, matched to the stakes of the questions being asked.
+          </li>
+          <li>
+            <strong>Start with a real question.</strong> A concrete
+            operational problem (here, flow routing that would otherwise have
+            cost five figures to meter) focuses the build, provides a natural
+            test of usefulness, and makes the case for continuing.
+          </li>
+          <li>
+            <strong>A base model compounds.</strong> Once the base network
+            exists, each new question costs hours instead of a consulting
+            engagement or a metering project, and the model grows
+            incrementally with the system.
+          </li>
+        </ol>
+      </article>
+    </Container>
+  </section>
+
+  <CtaSection
+    heading="Build a model for your system"
+    subheading="epanet-js is free to start. Import your GIS data, run your first simulation, and see what your network is actually doing."
+  />
+</Layout>
