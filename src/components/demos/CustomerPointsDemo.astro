@@ -3,7 +3,7 @@
 // cluster by cluster, and connect to the nearest pipe while an allocation
 // summary panel fills in. Labels mirror the real import flow.
 import { TriangleAlert } from "lucide-react";
-import AppWindow from "./AppWindow.astro";
+import NetworkMap from "./NetworkMap.astro";
 import { pipes } from "./network-geometry";
 
 // Each customer point hangs off a pipe from the shared network geometry:
@@ -60,189 +60,257 @@ const summary = [
   { label: "Allocated", value: "1,281", warn: false },
   { label: "Unallocated", value: "3", warn: true },
 ];
----
 
-<AppWindow
-  variant="plain"
-  label="Customer points in epanet-js: imported customer points connecting to their nearest pipes, with an allocation summary.">
-  <svg
-    viewBox="0 0 400 300"
-    preserveAspectRatio="xMidYMid slice"
-    class="absolute inset-0 w-full h-full"
-    aria-hidden="true">
-    <!-- connectors to the nearest pipe -->
-    <g stroke="#a78bfa" stroke-width="0.75">
-      {
-        points.map((pt) => (
-          <line
-            class="cp-connector"
-            x1={pt.px}
-            y1={pt.py}
-            x2={pt.cx}
-            y2={pt.cy}
-            pathLength="100"
-            style={`animation-delay: ${(pt.delay + 1.15).toFixed(2)}s`}
-          />
-        ))
-      }
-    </g>
-    <!-- customer points -->
-    <g fill="#c4b5fd" stroke="#8b5cf6" stroke-width="0.5">
-      {
-        points.map((pt) => (
-          <circle
-            class="cp-dot"
-            cx={pt.px}
-            cy={pt.py}
-            r="2"
-            style={`animation-delay: ${pt.delay.toFixed(2)}s`}
-          />
-        ))
-      }
-    </g>
-  </svg>
+// Timing: named second-based constants, generated into % keyframe stops
+// (see docs/animated-diagram-best-practices.md §6). The dot/connector
+// pop-in/draw-in shape (DOT_*/CONNECTOR_DRAWN) keeps the exact
+// absolute-second timing of the original flat 7s design; HOLD_END/FADE_END
+// are computed further down, off when the summary rows finish appearing.
+const OLD_CYCLE = 7;
+const DOT_APPEAR = 0.02 * OLD_CYCLE; // 0.14s after each dot's own delay
+const DOT_OVERSHOOT = 0.035 * OLD_CYCLE; // 0.245s
+const DOT_SETTLE = 0.05 * OLD_CYCLE; // 0.35s
+const CONNECTOR_DRAWN = 0.11 * OLD_CYCLE; // 0.77s after each connector's own delay
+const FADE_DURATION = 0.06 * OLD_CYCLE; // 0.42s, same fade length as the original design
 
-  <!-- allocation summary (top-right, like the asset panel) -->
-  <div
-    class="absolute top-2 right-2 w-[190px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
-    <div
-      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-      <p class="text-[11px] font-semibold text-gray-700">Customer points</p>
-      <p class="text-[10px] text-gray-400">customers.geojson</p>
-    </div>
-    <div class="px-3 py-1 text-[10px]">
-      {
-        summary.map((row, i) => (
-          <div
-            class:list={[
-              "cp-row flex items-center justify-between py-1",
-              i > 0 && "border-t border-gray-50",
-            ]}
-            style={`animation-delay: ${(3.5 + i * 0.55).toFixed(2)}s`}>
-            <span class="text-gray-500">{row.label}</span>
-            {row.warn ? (
-              <span class="cp-breathe flex items-center gap-1 font-medium text-amber-600 tabular-nums">
-                <TriangleAlert size={11} className="text-amber-500" />
-                {row.value}
-              </span>
-            ) : (
-              <span class="font-medium text-gray-700 tabular-nums">
-                {row.value}
-              </span>
-            )}
-          </div>
-        ))
-      }
-    </div>
-  </div>
-</AppWindow>
+// The summary panel starts collapsed to a title-only bar, grows to full
+// height (ElevationDemo's grid-rows 0fr -> 1fr trick), then rows fade in one
+// at a time — landing on the same row start times (3.5s, 4.05s, 4.6s) the
+// original flat design used.
+const ROWS_START = 3.5;
+const ROW_STAGGER = 0.55;
+const ROW_FADE_IN = 0.07 * OLD_CYCLE; // 0.49s
+const rowStart = (i: number) => ROWS_START + i * ROW_STAGGER;
 
-<style>
-  .cp-dot {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: cp-pop 7s infinite both;
+const BOX_EXPAND_DURATION = 0.5;
+const BOX_TRIGGER = ROWS_START - BOX_EXPAND_DURATION;
+const BOX_EXPAND_END = ROWS_START;
+
+// The resolved state (all rows visible, all points connected) holds for 2s
+// once the last row ("Unallocated") has settled in — long enough to read
+// comfortably — then the summary rows fade out. Everything after HOLD_END
+// (FADE_END, the box collapse, CYCLE) is derived from it, so this single
+// constant cascades through the rest of the sequence automatically.
+const HOLD_DURATION = 2;
+const HOLD_END = rowStart(summary.length - 1) + ROW_FADE_IN + HOLD_DURATION;
+const FADE_END = HOLD_END + FADE_DURATION;
+
+// Once the rows have faded out, the panel collapses back to its title-only
+// opening size — the map dots/connectors hold until that same moment and
+// fade out together with the collapse, rather than disappearing earlier.
+const COLLAPSE_WAIT = 0.3;
+const COLLAPSE_DURATION = 0.5;
+const BOX_COLLAPSE_START = FADE_END + COLLAPSE_WAIT;
+const BOX_COLLAPSE_END = BOX_COLLAPSE_START + COLLAPSE_DURATION;
+
+const END_HOLD = 1; // hold the collapsed state for 1s before the loop restarts
+const CYCLE = BOX_COLLAPSE_END + END_HOLD;
+const pct = (seconds: number) => +((seconds / CYCLE) * 100).toFixed(3);
+
+// Each row gets its own named keyframe (rather than one shared keyframe +
+// per-row animation-delay) so its stagger is baked into absolute keyframe
+// percentages instead of drifting from a zero-delay sibling animation.
+const rowsCss = summary
+  .map((_, i) => {
+    const start = rowStart(i);
+    const visible = start + ROW_FADE_IN;
+    return `
+.cp-row-${i} { animation: cp-row-in-${i} ${CYCLE}s infinite both; }
+@keyframes cp-row-in-${i} {
+  0%, ${pct(start)}% { opacity: 0; transform: translateY(4px); }
+  ${pct(visible)}%, ${pct(HOLD_END)}% { opacity: 1; transform: translateY(0); }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}`;
+  })
+  .join("\n");
+const rowClasses = summary.map((_, i) => `.cp-row-${i}`).join(",\n  ");
+
+// Dots and connectors also get their own named keyframe per point, for the
+// same reason as the rows: each pops in on its own delay, but must all fade
+// out at the exact same absolute moment (when the popover collapses). A
+// shared keyframe + per-element animation-delay can't do that — the delay
+// shifts the fade-out along with the pop-in, so points with different
+// delays would fade out at different times instead of together.
+const dotsCss = points
+  .map((pt, i) => {
+    const d = pt.delay;
+    return `
+.cp-dot-${i} { animation: cp-dot-${i} ${CYCLE}s infinite both; }
+@keyframes cp-dot-${i} {
+  0%, ${pct(d)}% { opacity: 0; transform: scale(0); }
+  ${pct(d + DOT_APPEAR)}% { opacity: 1; }
+  ${pct(d + DOT_OVERSHOOT)}% { transform: scale(1.3); }
+  ${pct(d + DOT_SETTLE)}%, ${pct(BOX_COLLAPSE_START)}% { opacity: 1; transform: scale(1); }
+  ${pct(BOX_COLLAPSE_END)}%, 100% { opacity: 0; transform: scale(1); }
+}`;
+  })
+  .join("\n");
+const dotClasses = points.map((_, i) => `.cp-dot-${i}`).join(",\n  ");
+
+const connectorsCss = points
+  .map((pt, i) => {
+    const d = pt.delay + 1.15;
+    return `
+.cp-connector-${i} { animation: cp-connector-${i} ${CYCLE}s linear infinite both; }
+@keyframes cp-connector-${i} {
+  0%, ${pct(d)}% { stroke-dashoffset: 100; opacity: 1; }
+  ${pct(d + CONNECTOR_DRAWN)}%, ${pct(BOX_COLLAPSE_START)}% { stroke-dashoffset: 0; opacity: 1; }
+  ${pct(BOX_COLLAPSE_END)}%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}`;
+  })
+  .join("\n");
+const connectorClasses = points.map((_, i) => `.cp-connector-${i}`).join(",\n  ");
+
+const generatedCss = `
+.cp-collapse {
+  display: grid;
+  grid-template-rows: minmax(0, 0fr);
+  animation: cp-collapse ${CYCLE}s linear infinite both;
+}
+@keyframes cp-collapse {
+  0%, ${pct(BOX_TRIGGER)}% { grid-template-rows: minmax(0, 0fr); }
+  ${pct(BOX_EXPAND_END)}% { grid-template-rows: minmax(0, 1fr); }
+  ${pct(BOX_COLLAPSE_START)}% { grid-template-rows: minmax(0, 1fr); }
+  ${pct(BOX_COLLAPSE_END)}%, 100% { grid-template-rows: minmax(0, 0fr); }
+}
+
+${rowsCss}
+
+.cp-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+${dotsCss}
+
+.cp-connector {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+${connectorsCss}
+
+.cp-breathe {
+  animation: cp-breathe 2.2s ease-in-out infinite;
+}
+@keyframes cp-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-collapse,
+  ${rowClasses},
+  ${dotClasses},
+  ${connectorClasses},
+  .cp-breathe {
+    animation: none;
   }
-  @keyframes cp-pop {
-    0% {
-      opacity: 0;
-      transform: scale(0);
-    }
-    2% {
-      opacity: 1;
-    }
-    3.5% {
-      transform: scale(1.3);
-    }
-    5% {
-      transform: scale(1);
-    }
-    92% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    98%,
-    100% {
-      opacity: 0;
-      transform: scale(1);
-    }
+  .cp-collapse {
+    grid-template-rows: minmax(0, 1fr);
   }
-  .cp-connector {
-    stroke-dasharray: 100;
-    stroke-dashoffset: 100;
-    animation: cp-connect 7s linear infinite both;
+  ${rowClasses} {
+    opacity: 1;
+    transform: none;
   }
-  @keyframes cp-connect {
-    0% {
-      stroke-dashoffset: 100;
-      opacity: 1;
-    }
-    11% {
-      stroke-dashoffset: 0;
-    }
-    92% {
-      stroke-dashoffset: 0;
-      opacity: 1;
-    }
-    98%,
-    100% {
-      stroke-dashoffset: 0;
-      opacity: 0;
-    }
+  ${dotClasses} {
+    opacity: 1;
+    transform: scale(1);
   }
-  .cp-row {
-    animation: cp-row-in 7s infinite both;
-  }
-  @keyframes cp-row-in {
-    0% {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    7% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    92% {
-      opacity: 1;
-    }
-    98%,
-    100% {
-      opacity: 0;
-    }
+  ${connectorClasses} {
+    stroke-dashoffset: 0;
+    opacity: 1;
   }
   .cp-breathe {
-    animation: cp-breathe 2.2s ease-in-out infinite;
+    opacity: 1;
   }
-  @keyframes cp-breathe {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.55;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .cp-dot,
-    .cp-connector,
-    .cp-row,
-    .cp-breathe {
-      animation: none;
-    }
-    .cp-dot {
-      opacity: 1;
-      transform: scale(1);
-    }
-    .cp-connector {
-      stroke-dashoffset: 0;
-      opacity: 1;
-    }
-    .cp-row {
-      opacity: 1;
-      transform: none;
-    }
-    .cp-breathe {
-      opacity: 1;
-    }
-  }
-</style>
+}
+`;
+---
+
+<div
+  class="relative mx-auto h-80 w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
+  role="img"
+  aria-label="Diagram: imported customer points connecting to their nearest pipes, with an allocation summary panel flagging the unallocated ones.">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="relative h-full w-full">
+        <NetworkMap class="absolute inset-0" />
+
+        <svg
+          viewBox="0 0 400 300"
+          preserveAspectRatio="xMidYMid slice"
+          class="absolute inset-0 w-full h-full"
+          aria-hidden="true">
+          <!-- connectors to the nearest pipe -->
+          <g stroke="#a78bfa" stroke-width="0.75">
+            {
+              points.map((pt, i) => (
+                <line
+                  class={`cp-connector cp-connector-${i}`}
+                  x1={pt.px}
+                  y1={pt.py}
+                  x2={pt.cx}
+                  y2={pt.cy}
+                  pathLength="100"
+                />
+              ))
+            }
+          </g>
+          <!-- customer points -->
+          <g fill="#c4b5fd" stroke="#8b5cf6" stroke-width="0.5">
+            {
+              points.map((pt, i) => (
+                <circle
+                  class={`cp-dot cp-dot-${i}`}
+                  cx={pt.px}
+                  cy={pt.py}
+                  r="2"
+                />
+              ))
+            }
+          </g>
+        </svg>
+
+        <!-- allocation summary (top-right, like the asset panel) -->
+        <div class="absolute top-4 right-4 w-60 bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+          <div class="flex items-baseline justify-between gap-2 px-3 pt-2.5 pb-2 border-b border-gray-100">
+            <p class="text-xs font-semibold text-gray-700 whitespace-nowrap">Customer points</p>
+            <p class="min-w-0 truncate text-xs text-gray-400">customers.geojson</p>
+          </div>
+          <div class="cp-collapse">
+            <div class="overflow-hidden">
+              <div class="px-3 py-1 text-xs">
+                {
+                  summary.map((row, i) => (
+                    <div
+                      class:list={[
+                        `cp-row-${i} flex items-center justify-between py-1`,
+                        i > 0 && "border-t border-gray-50",
+                      ]}>
+                      <span class="text-gray-500">{row.label}</span>
+                      {row.warn ? (
+                        <span class="cp-breathe flex items-center gap-1 font-medium text-amber-600 tabular-nums">
+                          <TriangleAlert size={11} className="text-amber-500" />
+                          {row.value}
+                        </span>
+                      ) : (
+                        <span class="font-medium text-gray-700 tabular-nums">
+                          {row.value}
+                        </span>
+                      )}
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </foreignObject>
+  </svg>
+</div>
+
+<style set:html={generatedCss} />
