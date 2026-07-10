@@ -18,6 +18,10 @@
   --destructive-foreground: 0 0% 98%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .container {
   max-width: 1342px;
 }
