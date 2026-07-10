@@ -14,15 +14,28 @@ import {
 export const prerender = true;
 const lang = "en";
 
-// Placeholder case studies — replace with real stories before launch.
-const studies = [
+interface Study {
+  icon: typeof Building2;
+  audience: string;
+  title: string;
+  summary: string;
+  href?: string;
+  image?: { src: string; alt: string };
+}
+
+// Example cards (no `href`) are placeholders until real stories replace them.
+const studies: Study[] = [
   {
     icon: Building2,
     audience: "Utility",
-    title: "Utility cuts model build time from weeks to days",
+    title: "How Warren County Utility District brought hydraulic modeling in-house",
     summary:
-      "A water utility imports GIS and asset data into epanet-js, stands up a working model fast, and uses it to answer operational questions in-house.",
-    href: "/case-studies/placeholder-utility",
+      "A Tennessee utility serving 34,000 people built a model of its 900 miles of pipe from GIS data and now answers fire flow, leak, and extension questions the same day.",
+    href: "/case-studies/warren-county-utility-district",
+    image: {
+      src: "/assets/case-studies/wcud-building.webp",
+      alt: "The Warren County Utility District office building in McMinnville, Tennessee.",
+    },
   },
   {
     icon: Briefcase,
@@ -69,15 +82,25 @@ const studies = [
               <a
                 href={study.href}
                 class="group flex flex-col rounded-xl border border-gray-200 shadow-sm overflow-hidden bg-white hover:border-purple-300 hover:shadow-md transition-all">
-                <div class="aspect-[16/9] w-full border-b border-gray-100 bg-gray-50 flex items-center justify-center">
-                  <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-purple-50 text-purple-600">
-                    <study.icon size={22} />
-                  </div>
-                </div>
+                {
+                  study.image ? (
+                    <img
+                      src={study.image.src}
+                      alt={study.image.alt}
+                      loading="lazy"
+                      class="aspect-[16/9] w-full object-cover border-b border-gray-100"
+                    />
+                  ) : (
+                    <div class="aspect-[16/9] w-full border-b border-gray-100 bg-gray-50 flex items-center justify-center">
+                      <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-purple-50 text-purple-600">
+                        <study.icon size={22} />
+                      </div>
+                    </div>
+                  )
+                }
                 <div class="p-6 space-y-3">
                   <div class="flex items-center gap-2">
                     <Badge color="purple">{study.audience}</Badge>
-                    <Badge color="orange">Example</Badge>
                   </div>
                   <h2 class="text-lg font-semibold text-gray-900 group-hover:text-purple-700 transition-colors">
                     {study.title}
@@ -108,8 +131,8 @@ const studies = [
         }
       </div>
       <p class="mt-8 text-sm text-gray-500 text-center">
-        These are placeholder examples. Real case studies will be published here
-        as they're ready.
+        Cards marked "Example" are placeholders. More case studies will be
+        published here as they're ready.
       </p>
     </Container>
   </section>
