@@ -63,13 +63,15 @@ const solutionsData: NavSection = {
         {
           label: "Field planning",
           href: "/solutions/field-planning",
-          description: "Design the field campaign that makes your model trustworthy.",
+          description:
+            "Design the field campaign that makes your model trustworthy.",
           icon: ClipboardList,
         },
         {
           label: "Demand analysis",
           href: "/solutions/demand-analysis",
-          description: "Build an accurate picture of demand across your network.",
+          description:
+            "Build an accurate picture of demand across your network.",
           icon: BarChart3,
         },
         {
@@ -98,13 +100,15 @@ const solutionsData: NavSection = {
         {
           label: "Operational modeling",
           href: "/solutions/operational-modeling",
-          description: "See how your network responds before you make a change.",
+          description:
+            "See how your network responds before you make a change.",
           icon: Gauge,
         },
         {
           label: "Water quality",
           href: "/solutions/water-quality",
-          description: "Track water age, source, and chlorine across the network.",
+          description:
+            "Track water age, source, and chlorine across the network.",
           icon: FlaskConical,
         },
         {
@@ -153,7 +157,8 @@ const whoItsForData: NavSection = {
         {
           label: "Humanitarian & NGOs",
           href: "/who-its-for/humanitarian-ngos",
-          description: "The best tools to get the job done for humanitarian water work.",
+          description:
+            "The best tools to get the job done for humanitarian water work.",
           icon: HeartHandshake,
         },
       ],
@@ -183,7 +188,7 @@ const resourcesData: NavSection = {
         {
           label: "Case studies",
           href: "/case-studies",
-          description: "How teams use epanet-js in the real world.",
+          description: "How teams use epanet-js.",
           icon: FileText,
         },
         {
@@ -248,7 +253,9 @@ function filterSection(section: NavSection, enabled: boolean): NavSection {
     columns: section.columns.map((column) => ({
       ...column,
       items: enabled
-        ? column.items.filter((item) => item.external || isPageEnabled(item.href))
+        ? column.items.filter(
+            (item) => item.external || isPageEnabled(item.href),
+          )
         : [],
     })),
   };
