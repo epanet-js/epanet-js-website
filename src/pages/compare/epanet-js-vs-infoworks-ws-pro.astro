@@ -1,0 +1,346 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import ComparisonTable from "@components/marketing/ComparisonTable.astro";
+import type {
+  ComparisonRow,
+  ComparisonRowGroup,
+} from "@components/marketing/ComparisonTable.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import SimulationRunDemo from "@components/demos/SimulationRunDemo.astro";
+import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
+import InpCompatReportDemo from "@components/demos/InpCompatReportDemo.astro";
+import { comparePages } from "@config/navigation";
+
+export const prerender = true;
+const lang = "en";
+
+const glanceGroups: ComparisonRowGroup[] = [
+  {
+    title: "Platform & install",
+    rows: [
+      {
+        label: "Runs on",
+        values: [
+          "Any modern browser: Mac, Windows, Linux, Chromebooks",
+          "Windows only",
+        ],
+      },
+      {
+        label: "Install and IT setup",
+        values: [
+          { text: "None", note: "open app.epanetjs.com" },
+          {
+            text: "Desktop install",
+            note: "multi-user mode needs a Windows Server workgroup database",
+          },
+        ],
+      },
+      {
+        label: "Where your model lives",
+        values: [
+          "On your machine, with opt-in cloud sharing",
+          {
+            text: "Workgroup master database",
+            note: "or a local standalone database",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Engine & compatibility",
+    rows: [
+      {
+        label: "Hydraulic engine",
+        values: [
+          { text: "EPANET 2.3", note: "Toolkit 2.3.5" },
+          { text: "Proprietary", note: "Wallingford / Innovyze lineage" },
+        ],
+      },
+      {
+        label: "Native model format",
+        values: [
+          { text: "Standard EPANET .inp", note: "plus .ejsdb project file" },
+          "Proprietary database",
+        ],
+      },
+      {
+        label: "EPANET .inp exchange",
+        values: [
+          { text: "Opens and saves .inp" },
+          {
+            text: "Imports .inp",
+            note: "exports with documented losses",
+          },
+        ],
+      },
+      { label: "Extended period simulation", values: [true, true] },
+      { label: "Pressure-driven demand", values: [true, true] },
+      { label: "Water quality analysis", values: [true, true] },
+      { label: "Scenario management", values: [true, true] },
+      {
+        label: "Transient (surge) analysis",
+        values: [false, true],
+      },
+      {
+        label: "Live operational forecasting",
+        values: [
+          false,
+          { text: "IWLive Pro", note: "licensed separately" },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Data exchange",
+    rows: [
+      {
+        label: "GIS import",
+        values: [
+          "Shapefile, GeoJSON, CAD",
+          {
+            text: "Shapefile, MapInfo, CSV, databases",
+            note: "geodatabase import needs licensed ArcGIS",
+          },
+        ],
+      },
+      {
+        label: "Results export",
+        values: [
+          "CSV, XLSX, Shapefile, GeoJSON",
+          { text: "Reports and data export" },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Licensing & pricing",
+    rows: [
+      {
+        label: "Entry price",
+        values: [
+          { text: "Free", note: "Pro $950/yr" },
+          { text: "$10,000/yr", note: "or $1,250/mo" },
+        ],
+      },
+      {
+        label: "Free plan",
+        values: [
+          true,
+          { text: "Read-only Viewer only", note: "no free modeling tier" },
+        ],
+      },
+      {
+        label: "Model size limits",
+        values: ["None on any plan", "None published; proven at large scale"],
+      },
+      { label: "Open source", values: [true, false] },
+    ],
+  },
+];
+
+const pricingRows: ComparisonRow[] = [
+  {
+    label: "How it's sold",
+    values: [
+      "Free plan, or monthly and annual subscriptions",
+      "Monthly, annual, or 3-year named-user subscription",
+    ],
+  },
+  {
+    label: "Entry price",
+    values: [
+      { text: "$0", note: "no login needed" },
+      { text: "$10,000/yr", note: "$1,250/mo, or $30,000 for 3 years" },
+    ],
+  },
+  {
+    label: "Individual license",
+    values: [
+      { text: "Pro: $950/yr", note: "or $95/mo, named user" },
+      { text: "$10,000/yr", note: "named single user" },
+    ],
+  },
+  {
+    label: "Team licensing",
+    values: [
+      {
+        text: "Teams: $4,400/yr + $600/user/yr",
+        note: "floating licenses, minimum 2",
+      },
+      {
+        text: "Per named user",
+        note: "plus self-hosted workgroup server for multi-user work",
+      },
+    ],
+  },
+  {
+    label: "Required extras",
+    values: [
+      "None",
+      {
+        text: "Windows Server workgroup database",
+        note: "for multi-user modeling",
+      },
+    ],
+  },
+  {
+    label: "Students and educators",
+    values: [
+      { text: "Free education license" },
+      { text: "Free education license" },
+    ],
+  },
+];
+
+const related = comparePages.filter(
+  (p) => p.href !== "/compare/epanet-js-vs-infoworks-ws-pro"
+);
+
+const faqs = [
+  {
+    question: "Can epanet-js open an InfoWorks WS Pro model?",
+    answer:
+      "Yes, through EPANET export. InfoWorks WS Pro exports networks to EPANET v2 .inp files, and epanet-js opens them directly. Autodesk's documentation lists what the export leaves out: water quality parameters and sources are not exported, some control rules have no direct equivalent, and Darcy-Weisbach friction is converted to local losses. The hydraulic network itself carries across. See <a href=\"/solutions/model-import\">model import</a> for details.",
+  },
+  {
+    question: "Can I move a model back to InfoWorks WS Pro?",
+    answer:
+      "Yes. epanet-js saves standard EPANET .inp files, and WS Pro imports them; Autodesk positions its EPANET import as a migration path, and since the 2025.1 release it can import several .inp files into one network as scenarios.",
+  },
+  {
+    question: "How much does InfoWorks WS Pro cost?",
+    answer:
+      "As published on Autodesk's online store in July 2026: $1,250 per month, $10,000 per year, or $30,000 for three years, per named user. Multi-user workgroup modeling also needs a self-hosted Windows Server database. epanet-js has a free plan, and Pro is $950 per year.",
+  },
+  {
+    question: "Is the simulation engine the same?",
+    answer:
+      "No. InfoWorks WS Pro uses Autodesk's proprietary engine from the Wallingford Software lineage, while epanet-js runs the open EPANET 2.3 toolkit. Moving a model between them is a conversion between different engines, not a file copy, so results should be checked after either direction of the move.",
+  },
+  {
+    question: "Do I need a server to use epanet-js with my team?",
+    answer:
+      "No. epanet-js runs entirely on each modeler's machine, and the Teams plan adds opt-in cloud sharing with workspace roles, with nothing for your IT department to install or maintain. WS Pro's multi-user mode requires deploying and administering a Workgroup Data Server on Windows Server, optionally backed by SQL Server or Oracle.",
+  },
+  {
+    question: "Is epanet-js really free?",
+    answer:
+      "Yes. The free plan runs the full EPANET 2.3 engine with no limit on model size, and covers network editing, GIS import, fire flow, and water quality. Revenue from the paid plans funds development, and the source code is public under the Functional Source License, with each release becoming MIT-licensed after two years.",
+  },
+];
+---
+
+<Layout
+  title="epanet-js vs InfoWorks WS Pro"
+  description="Compare epanet-js and Autodesk InfoWorks WS Pro: features, pricing, licensing, and how to use them together. epanet-js keeps your model in the open EPANET format, runs on your machine, and starts free."
+  lang={lang}>
+  <PageHero
+    title="epanet-js vs InfoWorks WS Pro"
+    subtitle="InfoWorks WS Pro is Autodesk's high-end water supply modeling platform, built on a proprietary engine and a workgroup database, at $10,000 per user per year. epanet-js is built on the open EPANET 2.3 standard: it runs in a browser on any machine, starts free, and keeps your model in a format every other tool can read.">
+    <SimulationRunDemo slot="media" />
+  </PageHero>
+
+  <ComparisonTable
+    heading="At a glance"
+    subheading="The essentials, side by side. Details and sources below."
+    caption="Feature comparison of epanet-js and Autodesk InfoWorks WS Pro"
+    columns={["epanet-js", "InfoWorks WS Pro"]}
+    groups={glanceGroups}
+    footnote="InfoWorks WS Pro capabilities as described in Autodesk's public product documentation, help articles, and system requirements, July 2026."
+  />
+
+  <ContentMediaRow title="What you get with epanet-js">
+    <p>
+      The whole platform is a browser tab. Your model is created, run, and
+      saved on your machine, there is no database server to stand up, and a
+      new team member is modeling the moment they open the app. Simulations
+      run locally on the EPANET 2.3 engine, from steady state to extended
+      period, with water quality and fire flow included on every plan.
+    </p>
+    <p>
+      Just as important is what happens if you ever leave: nothing. Your
+      models are standard .inp files on your own disk, readable by EPANET and
+      every tool built on it, so there is no export project standing between
+      you and your data. The free plan has no model size limit, and the code
+      is developed in the open.
+    </p>
+    <LocalFirstDiagram slot="media" />
+  </ContentMediaRow>
+
+  <ProseSection title="What InfoWorks WS Pro offers that epanet-js doesn't">
+    <p>
+      WS Pro's workgroup master database is genuinely ahead of file-based
+      tools for large modeling teams: many modelers edit the same network with
+      commits, conflict resolution, and the ability to compare and restore
+      earlier versions. It is proven at extreme scale, with all-mains models
+      cited at hundreds of thousands of links, and its pressure-related
+      demand curves make leakage and pressure-management studies a
+      first-class workflow.
+    </p>
+    <p>
+      It is also built for operations in a way epanet-js is not: live
+      telemetry feeds drive demand calibration and DMA analysis, Demand Watch
+      forecasts demand, and IWLive Pro (licensed separately) runs the model
+      continuously for burst what-ifs and pump scheduling. Transient analysis,
+      cloud simulation, and Ruby scripting for repeatable model builds round
+      out the platform.
+    </p>
+    <p>
+      A large utility running an all-mains model as operational
+      infrastructure will find real substance here. The trade is cost,
+      Windows-and-server IT, and a model that lives in a proprietary format on
+      the way in and loses data on the way out.
+    </p>
+  </ProseSection>
+
+  <ContentMediaRow title="Data in, data out: use both" reverse
+    cta={{ label: "More on model import", href: "/solutions/model-import" }}>
+    <p>
+      The two tools meet at the EPANET .inp file. WS Pro imports EPANET
+      models directly, and exports them with caveats Autodesk documents
+      itself: water quality doesn't export, some rules have no equivalent,
+      and Darcy-Weisbach friction is converted on the way out. epanet-js
+      reads and writes .inp natively; everything the EPANET format holds
+      survives the round trip.
+    </p>
+    <p>
+      That still leaves room for both. Keep WS Pro where its database and
+      operational integrations earn their cost, and give everyone else fast,
+      local modeling on the open format. When a WS Pro study needs a quick
+      side analysis, or a consultant needs to work on the network without a
+      $10,000 seat, the .inp is the bridge.
+    </p>
+    <InpCompatReportDemo slot="media" />
+  </ContentMediaRow>
+
+  <ComparisonTable
+    heading="Pricing"
+    subheading="Published prices only, as of July 2026."
+    caption="Pricing comparison of epanet-js and Autodesk InfoWorks WS Pro"
+    columns={["epanet-js", "InfoWorks WS Pro"]}
+    rows={pricingRows}
+    footnote="InfoWorks WS Pro pricing as published on Autodesk's online store (autodesk.com), July 2026, US pricing. epanet-js pricing is at epanetjs.com/pricing."
+  />
+
+  <CardGrid
+    heading="Comparing something else?"
+    items={related}
+    columns={2}
+  />
+
+  <FaqList
+    subheading="Common questions about moving between epanet-js and InfoWorks WS Pro."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Keep your model in an open format"
+    subheading="Export a .inp from InfoWorks WS Pro and see your network in epanet-js in a couple of minutes. No install, no sales call, and the free plan has no model size limit."
+  />
+</Layout>

@@ -1,0 +1,226 @@
+---
+// Extended period simulation playback demo: a time browser scrubs through
+// 24 hours of results while the extremity pipes shift amber to red at the
+// evening peak and recover overnight.
+import { Play } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import { pipes, junctions } from "./network-geometry";
+
+// The pipes that worsen at the evening peak: the critical extremities plus
+// the two outermost low-pressure pipes feeding them.
+const peakPipes = pipes.filter(
+  ([x1, , x2, , zone]) =>
+    zone === "critical" || (zone === "low" && Math.min(x1, x2) >= 300),
+);
+
+// Junction dots sit above pipes in NetworkMap, so redraw the affected ones
+// over the overlay strokes to preserve the stacking order of the base map.
+const peakJunctions = junctions.filter(([x, y]) =>
+  peakPipes.some(
+    ([x1, y1, x2, y2]) => (x1 === x && y1 === y) || (x2 === x && y2 === y),
+  ),
+);
+
+const ticks = [0, 25, 50, 75, 100];
+const times = ["06:00", "12:00", "18:00", "00:00"];
+---
+
+<AppWindow
+  variant="pressure"
+  label="Extended period simulation in epanet-js: playing through 24 hours of results as pressures shift across the day.">
+  <!-- evening-peak color shift over the base pressure map -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <g stroke-width="2.5" stroke-linecap="round" fill="none">
+      {
+        peakPipes.map(([x1, y1, x2, y2], i) => (
+          <Fragment>
+            <line
+              class="ep-peak-amber"
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              stroke="#f59e0b"
+              style={`animation-delay: ${i * 0.06}s`}
+            />
+            <line
+              class="ep-peak-red"
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              stroke="#ef4444"
+              style={`animation-delay: ${i * 0.06}s`}
+            />
+          </Fragment>
+        ))
+      }
+    </g>
+    <g stroke="#ffffff" stroke-width="1">
+      {
+        peakJunctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r="3.5" fill="#312e81" />
+        ))
+      }
+    </g>
+  </svg>
+
+  <!-- time browser (bottom-center, like the app) -->
+  <div
+    class="absolute bottom-2 left-1/2 -translate-x-1/2 w-[240px] max-w-[80%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div class="flex items-center gap-2 px-2.5 py-2">
+      <span
+        class="ep-play flex items-center justify-center w-5 h-5 rounded bg-violet-600 text-white shrink-0">
+        <Play size={12} className="fill-current" />
+      </span>
+      <span class="relative flex-1 h-1 rounded-full bg-gray-100">
+        {
+          ticks.map((p) => (
+            <span
+              class="absolute top-1/2 w-px h-1.5 -translate-x-1/2 -translate-y-1/2 bg-gray-300/70"
+              style={`left: ${p}%`}
+            />
+          ))
+        }
+        <span class="ep-thumb absolute inset-0">
+          <span
+            class="absolute -top-0.5 left-0 -ml-1 w-2 h-2 rounded-full bg-violet-600"
+          ></span>
+        </span>
+      </span>
+      <span
+        class="relative block w-[34px] shrink-0 text-[10px] tabular-nums text-gray-600 text-right">
+        <span class="invisible">00:00</span>
+        {
+          times.map((t, i) => (
+            <span
+              class:list={[
+                "ep-time absolute inset-0 text-right",
+                t === "12:00" && "ep-time-noon",
+              ]}
+              style={`animation-delay: ${i * 2}s`}>
+              {t}
+            </span>
+          ))
+        }
+      </span>
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  /* playhead travels the full track linearly across the day */
+  .ep-thumb {
+    animation: ep-thumb 8s linear infinite both;
+  }
+  @keyframes ep-thumb {
+    0%,
+    4% {
+      transform: translateX(0);
+    }
+    88%,
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* clock readout crossfades in quarters of the day */
+  .ep-time {
+    opacity: 0;
+    animation: ep-time 8s linear infinite both;
+  }
+  @keyframes ep-time {
+    0% {
+      opacity: 0;
+    }
+    3%,
+    25% {
+      opacity: 1;
+    }
+    29%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* play button breathes so the panel always reads as playing */
+  .ep-play {
+    animation: ep-breathe 2s ease-in-out infinite;
+  }
+  @keyframes ep-breathe {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.06);
+    }
+  }
+
+  /* extremities worsen at the evening peak, then recover overnight */
+  .ep-peak-amber {
+    animation: ep-peak-amber 8s ease-in-out infinite both;
+  }
+  .ep-peak-red {
+    opacity: 0;
+    animation: ep-peak-red 8s ease-in-out infinite both;
+  }
+  @keyframes ep-peak-amber {
+    0%,
+    45% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 0;
+    }
+    88%,
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes ep-peak-red {
+    0%,
+    45% {
+      opacity: 0;
+    }
+    75% {
+      opacity: 0.9;
+    }
+    88%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ep-thumb,
+    .ep-time,
+    .ep-play,
+    .ep-peak-amber,
+    .ep-peak-red {
+      animation: none;
+    }
+    .ep-thumb {
+      transform: translateX(60%);
+    }
+    .ep-time {
+      opacity: 0;
+    }
+    .ep-time-noon {
+      opacity: 1;
+    }
+    .ep-play {
+      transform: none;
+    }
+    .ep-peak-amber {
+      opacity: 1;
+    }
+    .ep-peak-red {
+      opacity: 0;
+    }
+  }
+</style>

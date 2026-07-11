@@ -1,0 +1,307 @@
+---
+// Water age demo: the map recolors by water age as fresh water spreads from
+// the tank outward through the network, band by band, with an age legend
+// in hours and a small water quality panel.
+import { Clock } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import LegendPanel from "./LegendPanel.astro";
+import { pipes } from "./network-geometry";
+
+// Pipe indexes into the shared geometry, grouped into age bands by travel
+// time from the tank. `swap` reorders endpoints so the dashoffset draw
+// travels away from the source.
+type BandPipe = { index: number; swap?: boolean };
+
+const bands: {
+  color: string;
+  cls: string;
+  stagger: boolean;
+  pipes: BandPipe[];
+}[] = [
+  {
+    color: "#3b82f6",
+    cls: "wa-band1",
+    stagger: false,
+    pipes: [{ index: 0 }, { index: 1 }, { index: 2 }],
+  },
+  {
+    color: "#22c55e",
+    cls: "wa-band2",
+    stagger: true,
+    pipes: [{ index: 3 }, { index: 4 }, { index: 5, swap: true }, { index: 6 }],
+  },
+  {
+    color: "#f59e0b",
+    cls: "wa-band3",
+    stagger: true,
+    pipes: [
+      { index: 7, swap: true },
+      { index: 8 },
+      { index: 9 },
+      { index: 10 },
+      { index: 11 },
+      { index: 12, swap: true },
+      { index: 13, swap: true },
+    ],
+  },
+  {
+    color: "#ef4444",
+    cls: "wa-band4",
+    stagger: true,
+    pipes: [
+      { index: 15 },
+      { index: 16 },
+      { index: 14, swap: true },
+      { index: 17 },
+      { index: 18 },
+      { index: 19 },
+    ],
+  },
+];
+
+const segment = ({ index, swap }: BandPipe) => {
+  const [x1, y1, x2, y2] = pipes[index];
+  return swap ? { x1: x2, y1: y2, x2: x1, y2: y1 } : { x1, y1, x2, y2 };
+};
+
+const legendEntries = [
+  { color: "#3b82f6", label: "< 6" },
+  { color: "#22c55e", label: "6 – 12" },
+  { color: "#f59e0b", label: "12 – 24" },
+  { color: "#ef4444", label: "> 24" },
+];
+---
+
+<AppWindow
+  variant="plain"
+  label="Water age in epanet-js: the network coloring by water age as it spreads from the source, with a legend in hours.">
+  <!-- age coloring overlay: same viewBox as NetworkMap so strokes align -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <g stroke-width="2.5" stroke-linecap="round" fill="none">
+      {
+        bands.map((band) =>
+          band.pipes.map((p, i) => {
+            const { x1, y1, x2, y2 } = segment(p);
+            return (
+              <line
+                class={band.cls}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke={band.color}
+                pathLength="100"
+                style={
+                  band.stagger
+                    ? `animation-delay: ${(i * 0.12).toFixed(2)}s`
+                    : undefined
+                }
+              />
+            );
+          }),
+        )
+      }
+    </g>
+  </svg>
+
+  <!-- age legend (top-left, like the app's result legend) -->
+  <div class="wa-legend absolute top-2 left-2">
+    <LegendPanel title="Water age (h)" entries={legendEntries} />
+  </div>
+
+  <!-- water quality panel (top-right) -->
+  <div
+    class="wa-panel absolute top-2 right-2 w-[160px] max-w-[60%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">Water quality</p>
+      <p class="text-[10px] text-gray-400">Age</p>
+    </div>
+    <p class="flex items-center gap-1.5 px-3 py-2 text-[10px] text-gray-500">
+      <Clock size={11} className="text-gray-400 shrink-0" />
+      Extended period · 72 h
+    </p>
+  </div>
+</AppWindow>
+
+<style>
+  /* band 1: freshest water at the source crossfades in over the navy base */
+  .wa-band1 {
+    opacity: 0;
+    animation: wa-flood 8s ease-in-out infinite both;
+  }
+  @keyframes wa-flood {
+    0%,
+    4% {
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* bands 2-4 draw along the pipe so the color travels away from the tank */
+  .wa-band2,
+  .wa-band3,
+  .wa-band4 {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+  .wa-band2 {
+    animation: wa-draw-2 8s linear infinite both;
+  }
+  .wa-band3 {
+    animation: wa-draw-3 8s linear infinite both;
+  }
+  .wa-band4 {
+    animation: wa-draw-4 8s linear infinite both;
+  }
+  @keyframes wa-draw-2 {
+    0%,
+    20% {
+      stroke-dashoffset: 100;
+    }
+    31% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes wa-draw-3 {
+    0%,
+    32.5% {
+      stroke-dashoffset: 100;
+    }
+    43.5% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  /* band 4 breathes during the hold so the loop never sits still */
+  @keyframes wa-draw-4 {
+    0%,
+    45% {
+      stroke-dashoffset: 100;
+    }
+    56% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    64% {
+      opacity: 0.85;
+    }
+    72% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 0.85;
+    }
+    88% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+
+  .wa-legend {
+    animation: wa-legend-in 8s ease-out infinite both;
+  }
+  @keyframes wa-legend-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    8% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .wa-panel {
+    animation: wa-panel-in 8s ease-out infinite both;
+  }
+  @keyframes wa-panel-in {
+    0%,
+    10% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    16% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wa-band1,
+    .wa-band2,
+    .wa-band3,
+    .wa-band4,
+    .wa-legend,
+    .wa-panel {
+      animation: none;
+    }
+    .wa-band1 {
+      opacity: 1;
+    }
+    .wa-band2,
+    .wa-band3,
+    .wa-band4 {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .wa-legend,
+    .wa-panel {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

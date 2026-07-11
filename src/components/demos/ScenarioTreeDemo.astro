@@ -1,0 +1,465 @@
+---
+// Scenario tree concept for staged planning (unshipped): stage scenarios
+// branch off the main model with per-stage change chips. Moving a project
+// from Year 5 to Year 10 clears the Year 10 deficit check.
+import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
+---
+
+<div
+  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-4 sm:p-5 select-none"
+  role="img"
+  aria-label="A scenario tree with Year 5, Year 10, and Year 20 stages branching from the main model. Moving the pump station B project from the Year 5 stage to the Year 10 stage clears the Year 10 peak deficit check.">
+  <div class="mx-auto max-w-[280px]">
+    <div class="relative">
+      <!-- connector column: trunk plus an elbow into each stage row -->
+      <svg
+        class="absolute left-0 top-0 overflow-visible"
+        width="16"
+        height="174"
+        viewBox="0 0 16 174"
+        fill="none"
+        aria-hidden="true">
+        <path
+          class="sn-draw"
+          pathLength="100"
+          d="M16 12 H12 Q8 12 8 16 V158"
+          stroke="#d1d5db"
+          stroke-width="1.5"
+          stroke-linecap="round"></path>
+        <path
+          class="sn-draw"
+          pathLength="100"
+          style="animation-delay: 0.4s"
+          d="M8 36 Q8 40 12 40 H16"
+          stroke="#d1d5db"
+          stroke-width="1.5"
+          stroke-linecap="round"></path>
+        <path
+          class="sn-elbow-y10"
+          pathLength="100"
+          style="animation-delay: 0.6s, 0s"
+          d="M8 108 Q8 112 12 112 H16"
+          stroke="#d1d5db"
+          stroke-width="1.5"
+          stroke-linecap="round"></path>
+        <path
+          class="sn-draw"
+          pathLength="100"
+          style="animation-delay: 0.8s"
+          d="M8 154 Q8 158 12 158 H16"
+          stroke="#d1d5db"
+          stroke-width="1.5"
+          stroke-linecap="round"></path>
+      </svg>
+
+      <div class="pl-4">
+        <div
+          class="sn-row flex items-center gap-1.5 h-6 px-2 rounded-md border border-gray-100 bg-white shadow-sm text-[11px] text-gray-500"
+          style="animation-delay: 0.1s">
+          <GitBranch size={11} className="text-gray-400" />
+          Main
+        </div>
+
+        <div
+          class="sn-row mt-1 flex items-center gap-1.5 h-6 px-2 rounded-md border border-gray-100 bg-white shadow-sm text-[11px] font-medium text-gray-700"
+          style="animation-delay: 0.4s">
+          <GitBranch size={11} className="text-gray-400" />
+          Year 5
+        </div>
+        <div
+          class="sn-chip-a ml-6 mt-1 w-fit h-[18px] flex items-center px-1.5 rounded border border-violet-200 border-l-2 border-l-violet-500 bg-violet-50 text-[9px] text-violet-700">
+          Trunk main upgrade
+        </div>
+        <!-- moving project, copy under Year 5: pops in, fades out, slot collapses -->
+        <div class="sn-chip-out ml-6 overflow-hidden">
+          <div
+            class="mt-1 w-fit h-[18px] flex items-center px-1.5 rounded border border-violet-200 border-l-2 border-l-violet-500 bg-violet-50 text-[9px] text-violet-700">
+            Pump station B
+          </div>
+        </div>
+
+        <div
+          class="sn-row mt-1 flex items-center gap-1.5 h-6 px-2 rounded-md border border-gray-100 bg-white shadow-sm text-[11px] font-medium text-gray-700"
+          style="animation-delay: 0.7s">
+          <GitBranch size={11} className="text-gray-400" />
+          Year 10
+        </div>
+        <div
+          class="sn-chip-b ml-6 mt-1 w-fit h-[18px] flex items-center px-1.5 rounded border border-violet-200 border-l-2 border-l-violet-500 bg-violet-50 text-[9px] text-violet-700">
+          NE zone reinforcement
+        </div>
+        <!-- moving project, copy under Year 10: slot expands, fades in -->
+        <div class="sn-chip-in ml-6 overflow-hidden">
+          <div
+            class="mt-1 w-fit h-[18px] flex items-center px-1.5 rounded border border-violet-200 border-l-2 border-l-violet-500 bg-violet-50 text-[9px] text-violet-700">
+            Pump station B
+          </div>
+        </div>
+
+        <div
+          class="sn-row mt-1 flex items-center gap-1.5 h-6 px-2 rounded-md border border-gray-100 bg-white shadow-sm text-[11px] font-medium text-gray-700"
+          style="animation-delay: 1s">
+          <GitBranch size={11} className="text-gray-400" />
+          Year 20
+        </div>
+      </div>
+
+      <!-- dashed move arc from the Year 5 chip to the Year 10 chip slot -->
+      <div
+        class="sn-arc absolute left-[112px] top-[78px] w-[72px] h-[68px] pointer-events-none">
+        <svg class="w-full h-full" viewBox="0 0 72 68" fill="none" aria-hidden="true">
+          <path
+            class="sn-arc-dash"
+            pathLength="100"
+            d="M8 9 C 48 14, 48 54, 8 59"
+            stroke="#8b5cf6"
+            stroke-width="1.5"
+            stroke-dasharray="3 2"
+            stroke-linecap="round"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- result strip: amber deficit crossfades to green once the move lands -->
+    <div class="grid mt-3">
+      <div
+        class="sn-strip-amber col-start-1 row-start-1 flex items-center gap-1.5 text-[10px] rounded-md border border-amber-200 bg-amber-50 text-amber-700 px-2.5 py-1.5">
+        <TriangleAlert size={11} className="shrink-0" />
+        <span>Year 10 peak deficit</span>
+        <span class="ml-auto font-medium tabular-nums">2.1 l/s</span>
+      </div>
+      <div
+        class="sn-strip-green col-start-1 row-start-1 flex items-center gap-1.5 text-[10px] rounded-md border border-green-200 bg-green-50 text-green-700 px-2.5 py-1.5">
+        <CheckCircle2 size={11} className="shrink-0" />
+        <span>Year 10 peak deficit</span>
+        <span class="ml-auto font-medium tabular-nums">0.0 l/s</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* 8s cycle. Build 0-20%, chips 20-38%, move 45-66%, result 70-80%,
+     fade-reset 92-100%. Collapsed/expanded chip slots swap symmetrically
+     (same window, same easing) so total tree height stays constant. */
+
+  .sn-row {
+    animation: sn-row-in 8s ease-in-out infinite both;
+  }
+  @keyframes sn-row-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    6% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+  }
+
+  .sn-draw,
+  .sn-elbow-y10 {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+  .sn-draw {
+    animation: sn-draw-in 8s ease-in-out infinite both;
+  }
+  /* Year 10 elbow also glides with the row as the chip slots swap; it
+     resets to the base position at 5.5-7%, while nothing nearby is visible. */
+  .sn-elbow-y10 {
+    animation:
+      sn-draw-in 8s ease-in-out infinite both,
+      sn-shift 8s ease-in-out infinite both;
+  }
+  @keyframes sn-draw-in {
+    0% {
+      stroke-dashoffset: 100;
+      opacity: 1;
+    }
+    10% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes sn-shift {
+    0%,
+    5.5% {
+      transform: translateY(-22px);
+    }
+    7%,
+    54% {
+      transform: translateY(0);
+    }
+    62%,
+    100% {
+      transform: translateY(-22px);
+    }
+  }
+
+  .sn-chip-a,
+  .sn-chip-b,
+  .sn-chip-out {
+    transform-origin: 0 50%;
+  }
+  .sn-chip-a {
+    animation: sn-chip-pop-a 8s ease-in-out infinite both;
+  }
+  @keyframes sn-chip-pop-a {
+    0%,
+    21% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    25% {
+      opacity: 1;
+      transform: scale(1.04);
+    }
+    27% {
+      transform: scale(1);
+    }
+    92% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+  .sn-chip-b {
+    animation: sn-chip-pop-b 8s ease-in-out infinite both;
+  }
+  @keyframes sn-chip-pop-b {
+    0%,
+    30% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    34% {
+      opacity: 1;
+      transform: scale(1.04);
+    }
+    36% {
+      transform: scale(1);
+    }
+    92% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  .sn-chip-out {
+    animation: sn-out 8s ease-in-out infinite both;
+  }
+  @keyframes sn-out {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+      max-height: 0px;
+    }
+    5.5% {
+      max-height: 0px;
+    }
+    7% {
+      max-height: 22px;
+    }
+    25% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    29% {
+      opacity: 1;
+      transform: scale(1.04);
+    }
+    31% {
+      transform: scale(1);
+    }
+    52% {
+      opacity: 1;
+    }
+    54% {
+      max-height: 22px;
+    }
+    60% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    62% {
+      max-height: 0px;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.9);
+      max-height: 0px;
+    }
+  }
+
+  .sn-chip-in {
+    animation: sn-in 8s ease-in-out infinite both;
+  }
+  @keyframes sn-in {
+    0% {
+      opacity: 0;
+      max-height: 22px;
+    }
+    5.5% {
+      max-height: 22px;
+    }
+    7% {
+      max-height: 0px;
+    }
+    54% {
+      max-height: 0px;
+    }
+    56% {
+      opacity: 0;
+    }
+    62% {
+      max-height: 22px;
+    }
+    65% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+      max-height: 22px;
+    }
+  }
+
+  .sn-arc {
+    animation: sn-arc-reveal 8s ease-in-out infinite both;
+  }
+  @keyframes sn-arc-reveal {
+    0%,
+    45% {
+      clip-path: inset(0 0 100% 0);
+      opacity: 1;
+    }
+    58% {
+      clip-path: inset(0 0 0% 0);
+      opacity: 1;
+    }
+    66%,
+    100% {
+      clip-path: inset(0 0 0% 0);
+      opacity: 0;
+    }
+  }
+  .sn-arc-dash {
+    animation: sn-march 0.5s linear infinite;
+  }
+  @keyframes sn-march {
+    to {
+      stroke-dashoffset: -5;
+    }
+  }
+
+  .sn-strip-amber {
+    animation: sn-amber 8s ease-in-out infinite both;
+  }
+  @keyframes sn-amber {
+    0%,
+    36% {
+      opacity: 0;
+    }
+    42%,
+    70% {
+      opacity: 1;
+    }
+    78%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .sn-strip-green {
+    animation: sn-green 8s ease-in-out infinite both;
+  }
+  @keyframes sn-green {
+    0%,
+    72% {
+      opacity: 0;
+    }
+    80%,
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sn-row,
+    .sn-draw,
+    .sn-elbow-y10,
+    .sn-chip-a,
+    .sn-chip-b,
+    .sn-chip-out,
+    .sn-chip-in,
+    .sn-arc,
+    .sn-arc-dash,
+    .sn-strip-amber,
+    .sn-strip-green {
+      animation: none;
+    }
+    .sn-row {
+      opacity: 1;
+      transform: none;
+    }
+    .sn-draw,
+    .sn-elbow-y10 {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .sn-elbow-y10 {
+      transform: translateY(-22px);
+    }
+    .sn-chip-a,
+    .sn-chip-b {
+      opacity: 1;
+      transform: none;
+    }
+    .sn-chip-out {
+      opacity: 0;
+      max-height: 0px;
+    }
+    .sn-chip-in {
+      opacity: 1;
+      max-height: 22px;
+    }
+    .sn-arc {
+      opacity: 0;
+    }
+    .sn-strip-amber {
+      opacity: 0;
+    }
+    .sn-strip-green {
+      opacity: 1;
+    }
+  }
+</style>

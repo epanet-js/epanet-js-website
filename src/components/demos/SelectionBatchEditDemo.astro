@@ -1,0 +1,303 @@
+---
+// Batch editing demo: a polygon selection lassoes part of the network, the
+// pipes inside highlight, and a single roughness edit is applied to every
+// selected pipe at once, confirmed by a toast.
+import AppWindow from "./AppWindow.astro";
+import { CheckCircle2 } from "lucide-react";
+import { pipes, junctions } from "./network-geometry";
+
+// Everything with both endpoints inside the lasso region gets selected.
+const inSelection = (x: number, y: number) => x >= 222 && y >= 128;
+const selectedPipes = pipes.filter(
+  ([x1, y1, x2, y2]) => inSelection(x1, y1) && inSelection(x2, y2),
+);
+const selectedJunctions = junctions.filter(([x, y]) => inSelection(x, y));
+---
+
+<AppWindow
+  variant="plain"
+  label="Batch editing in epanet-js: a polygon selection over part of the network and one edit applied to every selected pipe.">
+  <!-- map overlay: lasso polygon + selection highlights -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <polygon
+      class="sb-lasso"
+      points="222,128 382,132 386,252 226,238"
+      fill="#8b5cf6"
+      stroke="#8b5cf6"
+      stroke-width="1"
+      stroke-dasharray="4 3"
+      pathLength="100"></polygon>
+    <g stroke="#8b5cf6" stroke-width="2.5" stroke-linecap="round">
+      {
+        selectedPipes.map(([x1, y1, x2, y2], i) => (
+          <line
+            class="sb-sel"
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            style={`animation-delay: ${i * 0.07}s`}
+          />
+        ))
+      }
+    </g>
+    <g fill="none" stroke="#8b5cf6" stroke-width="1.5">
+      {
+        selectedJunctions.map(([x, y], i) => (
+          <circle
+            class="sb-sel"
+            cx={x}
+            cy={y}
+            r="6"
+            style={`animation-delay: ${0.35 + i * 0.07}s`}
+          />
+        ))
+      }
+    </g>
+  </svg>
+
+  <!-- selection panel -->
+  <div
+    class="sb-panel absolute top-2 right-2 w-[200px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">Selection</p>
+      <p class="text-[10px] text-gray-400">14 pipes</p>
+    </div>
+    <div class="px-3 py-2.5 space-y-1.5 text-[10px]">
+      <div class="sb-row flex items-center justify-between">
+        <span class="text-gray-500">Diameter (mm)</span>
+        <span class="text-gray-700 tabular-nums">Mixed</span>
+      </div>
+      <div
+        class="sb-row flex items-center justify-between"
+        style="animation-delay: 0.15s">
+        <span class="text-gray-500">Roughness</span>
+        <span class="relative inline-block tabular-nums">
+          <span class="sb-val-before text-gray-700">Mixed</span>
+          <span
+            class="sb-val-after absolute inset-0 text-right font-semibold text-violet-600">
+            100
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="sb-row flex gap-1.5 px-3 pb-2.5" style="animation-delay: 0.3s">
+      <span
+        class="sb-apply rounded bg-violet-600 text-white text-[10px] font-medium px-2.5 py-1">
+        Apply
+      </span>
+      <span
+        class="rounded border border-gray-200 text-gray-600 text-[10px] px-2.5 py-1">
+        Clear
+      </span>
+    </div>
+  </div>
+
+  <!-- confirmation toast -->
+  <div
+    class="sb-toast absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-white rounded-lg border border-gray-100 shadow-md px-2.5 py-1.5">
+    <CheckCircle2 size={11} className="text-green-500" />
+    <span class="text-[10px] text-gray-600 whitespace-nowrap">
+      Updated 14 pipes
+    </span>
+  </div>
+</AppWindow>
+
+<style>
+  /* Lasso: dashed outline draws around the zone, fill tints in as it
+     closes, then the ants keep marching slowly until deselect. */
+  .sb-lasso {
+    fill-opacity: 0.06;
+    animation: sb-lasso 7.5s linear infinite both;
+  }
+  @keyframes sb-lasso {
+    0% {
+      stroke-dashoffset: 100;
+      fill-opacity: 0;
+      opacity: 1;
+    }
+    12% {
+      fill-opacity: 0;
+    }
+    18% {
+      stroke-dashoffset: 0;
+    }
+    22% {
+      fill-opacity: 0.06;
+    }
+    62% {
+      opacity: 1;
+    }
+    74%,
+    100% {
+      stroke-dashoffset: -21;
+      opacity: 0;
+    }
+  }
+
+  /* Selected pipes and junction halos fade in staggered, then deselect. */
+  .sb-sel {
+    animation: sb-sel-fade 7.5s infinite both;
+  }
+  @keyframes sb-sel-fade {
+    0%,
+    16% {
+      opacity: 0;
+    }
+    21%,
+    62% {
+      opacity: 1;
+    }
+    72%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .sb-panel {
+    animation: sb-panel-in 7.5s infinite both;
+  }
+  @keyframes sb-panel-in {
+    0%,
+    31% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    35%,
+    92% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    98%,
+    100% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+  }
+
+  .sb-row {
+    animation: sb-row-in 7.5s infinite both;
+  }
+  @keyframes sb-row-in {
+    0%,
+    34% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    40%,
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Roughness value: "Mixed" crossfades to the typed "100". */
+  .sb-val-before {
+    animation: sb-val-out 7.5s infinite both;
+  }
+  .sb-val-after {
+    animation: sb-val-in 7.5s infinite both;
+  }
+  @keyframes sb-val-out {
+    0%,
+    46% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes sb-val-in {
+    0%,
+    46% {
+      opacity: 0;
+    }
+    50%,
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Apply button dips like a click right before the toast confirms. */
+  .sb-apply {
+    animation: sb-apply-pulse 7.5s infinite both;
+  }
+  @keyframes sb-apply-pulse {
+    0%,
+    52% {
+      filter: brightness(1);
+    }
+    54.5% {
+      filter: brightness(0.8);
+    }
+    58%,
+    100% {
+      filter: brightness(1);
+    }
+  }
+
+  .sb-toast {
+    animation: sb-toast-pop 7.5s infinite both;
+  }
+  @keyframes sb-toast-pop {
+    0%,
+    60% {
+      opacity: 0;
+      transform: translate(-50%, 6px);
+    }
+    65%,
+    92% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    98%,
+    100% {
+      opacity: 0;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sb-lasso,
+    .sb-sel,
+    .sb-panel,
+    .sb-row,
+    .sb-val-before,
+    .sb-val-after,
+    .sb-apply,
+    .sb-toast {
+      animation: none;
+    }
+    .sb-lasso {
+      stroke-dashoffset: 0;
+      fill-opacity: 0.06;
+      opacity: 1;
+    }
+    .sb-sel {
+      opacity: 1;
+    }
+    .sb-panel,
+    .sb-row {
+      opacity: 1;
+      transform: none;
+    }
+    .sb-val-before {
+      opacity: 0;
+    }
+    .sb-val-after {
+      opacity: 1;
+    }
+    .sb-apply {
+      filter: none;
+    }
+    .sb-toast {
+      opacity: 0;
+    }
+  }
+</style>

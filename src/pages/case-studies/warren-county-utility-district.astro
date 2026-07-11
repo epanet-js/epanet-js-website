@@ -1,0 +1,250 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import Media from "@components/marketing/Media.astro";
+import Container from "@components/container.astro";
+import Badge from "@components/ui/badge.astro";
+
+export const prerender = true;
+const lang = "en";
+
+const facts = [
+  { value: "34,000", label: "people served" },
+  { value: "900 miles", label: "of pipe" },
+  { value: "14,000", label: "connections" },
+  { value: "7", label: "Tennessee counties" },
+];
+---
+
+<Layout
+  title="How Warren County Utility District brought hydraulic modeling in-house"
+  description="Warren County Utility District needed to know where the water in its network was actually going. Instead of $5,000 flow meters or a consultant study, a staff engineer built a hydraulic model of 900 miles of pipe in epanet-js — in a day."
+  lang={lang}>
+  <PageHero
+    title="How Warren County Utility District brought hydraulic modeling in-house"
+    subtitle="A Tennessee utility went from sending every hydraulic question to its consultant to answering most of them the same day, starting with its GIS data and one rainy afternoon."
+    primaryCta={null}
+    secondaryCta={null}
+    align="center"
+  />
+
+  <section class="w-full pb-12 md:pb-16 -mt-4">
+    <Container>
+      <figure class="pt-8 max-w-4xl mx-auto">
+        <Media
+          src="/assets/case-studies/wcud-building.webp"
+          alt="The Warren County Utility District office building in McMinnville, Tennessee."
+        />
+        <figcaption class="mt-3 text-sm text-muted-foreground text-center">
+          Warren County Utility District, McMinnville, Tennessee.
+        </figcaption>
+      </figure>
+      <div
+        class="mt-10 flex flex-wrap justify-center gap-x-10 gap-y-3 text-sm text-muted-foreground">
+        {
+          facts.map((fact) => (
+            <span>
+              <strong class="font-semibold text-gray-900">{fact.value}</strong>{" "}
+              {fact.label}
+            </span>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  <section class="w-full pb-16 md:pb-24">
+    <Container>
+      <article class="max-w-3xl mx-auto prose prose-lg prose-headings:tracking-tight">
+        <p>
+          Warren County Utility District serves around 34,000 people spread
+          across seven Tennessee counties, through roughly 900 miles of pipe
+          and 14,000 connections. It runs on a staff of about 65, and for most
+          of its history the engineering behind the system came from outside: a
+          contracted firm handles the studies, the designs, and any hydraulic
+          analysis the district needed.
+        </p>
+        <p>
+          Wyatt Wilson is working to change that. A civil engineer covering
+          GIS, asset management, and cost estimation, he is one of only two
+          engineers on staff (the general manager is the district's PE). Over
+          the past couple of years the district has been deliberately building
+          engineering capability in-house, and a hydraulic model turned out to
+          be one of the first big steps.
+        </p>
+
+        <h2>Diagnosing the flow routing problem</h2>
+        <p>
+          The push came from a specific problem. One area of the system is fed
+          by three six-inch mains, and nobody was sure which route the
+          water was actually taking. The obvious fix was to put flow meters on
+          the lines, but even installed in-house, a meter runs $5,000 to
+          $6,000. Multiply that across several lines and the idea was ruled
+          out quickly.
+        </p>
+        <p>
+          Until then, questions like this went one of two ways: send them to
+          the consultant, or reason it out from SCADA flows and tank
+          levels and a good deal of assumption. "We didn't really have a tool
+          like this to use," Wyatt says. What the district needed was a way to
+          see the hydraulics between its sensors, without digging up roads to
+          add more of them.
+        </p>
+        <p>
+          Wyatt remembered EPANET from a week-long stretch of a college
+          hydraulics class, so that's what he Googled. He knew the classic
+          desktop program would be a slog at their scale, with no practical
+          way to bring in 900 miles of GIS data. Commercial modeling suites
+          were never on the table; annual licenses can run to $10,000.
+          Scrolling the search results, he spotted epanet-js, watched every
+          short video and webinar he could find, and decided it looked like a
+          fit.
+        </p>
+
+        <h2>Learning the software and building the model in a single day</h2>
+        <p>
+          Getting started did not require a training course or a budget line.
+          It required a rainy day.
+        </p>
+
+        <figure class="not-prose my-10 text-left">
+          <blockquote
+            class="relative text-xl md:text-2xl font-medium tracking-tight text-gray-900 leading-snug">
+            <span
+              aria-hidden="true"
+              class="absolute md:-left-2 -top-1 -translate-x-full text-8xl md:text-7xl font-serif leading-none bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+              >&ldquo;</span
+            >I picked a rainy day, opened it up, and played with it, watching
+            the videos on one screen and the model on the other. After an
+            eight-hour day of playing around, I felt like I knew everything I
+            could do with it.
+          </blockquote>
+          <figcaption class="mt-4 mx-0 mb-0 text-sm font-medium text-muted-foreground">
+            Wyatt Wilson, Warren County Utility District
+          </figcaption>
+        </figure>
+
+        <p>
+          Two things made the model itself practical to build. The first was
+          GIS import: the district's pipe network went straight into epanet-js
+          instead of being redrawn by hand. "That would have been a
+          nightmare," Wyatt says. The second was the satellite basemap. Laid
+          over imagery and roads, a system spanning seven counties could be
+          checked against the district's GIS piece by piece, rather than
+          floating on a blank screen.
+        </p>
+        <p>
+          The network cleaning tools then caught the connectivity errors
+          hiding in the data, and paid off beyond the model. "That was one of
+          the best tools in there, in my opinion," Wyatt says. "We could see
+          the connectivity problems in the model, and I was able to put it
+          side by side with our GIS and fix them at the source. So when I need
+          that data again, it's all connected."
+        </p>
+        <p>
+          Along the way, Wyatt leaned on short videos and ended up in a
+          running conversation with Iterating, the team behind epanet-js. He
+          came to epanet-js early, and an engineer putting a 900-mile system
+          through the tool had a clear view of where it needed to grow. His
+          feedback and feature requests helped shape the product as it was
+          built. "To be able to work with the guys that have created this
+          thing has been really cool," he says.
+        </p>
+
+        <h2>What the model showed</h2>
+        <p>
+          With the model running, the district finally got its answer about
+          the problem area, and it wasn't the one they expected. The water was
+          not flowing the way they had assumed, and knowing the real routes
+          has let them fix a string of issues there since.
+        </p>
+        <p>
+          Wyatt also checked the model against the district's SCADA flow data:
+        </p>
+
+        <figure class="not-prose my-10 text-left">
+          <blockquote
+            class="relative text-xl md:text-2xl font-medium tracking-tight text-gray-900 leading-snug">
+            <span
+              aria-hidden="true"
+              class="absolute md:-left-2 -top-1 -translate-x-full text-8xl md:text-7xl font-serif leading-none bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+              >&ldquo;</span
+            >It's obviously not perfect. You're never going to get it perfect
+            when you're going off average consumption. But it's really darn
+            close. Close enough to give you the information you need to
+            know.
+          </blockquote>
+          <figcaption class="mt-4 mx-0 mb-0 text-sm font-medium text-muted-foreground">
+            Wyatt Wilson, Warren County Utility District
+          </figcaption>
+        </figure>
+
+        <p>
+          From there the model worked its way into the daily routine. When a
+          customer requests a fire hydrant, the district plugs the location in
+          and sees the whole picture: whether the hydrant works, and whether
+          it drags down a water line at a high spot two miles away. When
+          hunting a leak, they add a demand where they suspect it sits and
+          watch what the water should be doing around it, then open and close
+          valves in the model to test how to isolate it. 
+        </p>
+        <p>
+          That speed changed how the rest of the district sees the tool. Wyatt
+          is still the main user, but he isn't the only one asking the
+          questions. "My colleague came in and said, hey, plug that into the
+          model, see what the model says."
+        </p>
+        <p>
+          Line extensions and new mains get the same treatment. Instead of
+          guessing, or sending the question out and waiting for a response, the district sits down and runs the scenario. The routine
+          hydraulic questions get answered in-house the same day, and the
+          consulting budget is saved for the harder problems where that
+          expertise really counts.
+        </p>
+
+        <h2>What's next</h2>
+        <p>
+          The to-do list is practical. The district has thousands of system valves
+          to bring into the model so that closed and open statuses match the real
+          network. Water quality modeling is next on the list, tracking water age
+          and chlorine decay over time and then comparing results against the sampling
+          the district already does. And Wyatt wants to get more staff involved and educated
+          on what the model can do so its benefits can be used even more widely throughout the utility.
+        </p>
+        <p>
+          His advice for other utilities is direct. Smaller systems get left
+          behind on hydraulic modeling for two reasons, the price of the
+          software and the lack of in-house engineers to run it, and the first
+          of those barriers is now gone.
+        </p>
+
+        <figure class="not-prose my-10 text-left">
+          <blockquote
+            class="relative text-xl md:text-2xl font-medium tracking-tight text-gray-900 leading-snug">
+            <span
+              aria-hidden="true"
+              class="absolute md:-left-2 -top-1 -translate-x-full text-8xl md:text-7xl font-serif leading-none bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+              >&ldquo;</span
+            >You're at $0 to start. I would urge anyone to try to build a model
+            for their system. The sooner you get the base model built, the
+            easier it is to add to as you add lines and customers.
+          </blockquote>
+          <figcaption class="mt-4 mx-0 mb-0 text-sm font-medium text-muted-foreground">
+            Wyatt Wilson, Warren County Utility District
+          </figcaption>
+        </figure>
+
+        <p>
+          Warren County built theirs in a day. It started raining, and Wyatt
+          opened a tab.
+        </p>
+      </article>
+    </Container>
+  </section>
+
+  <CtaSection
+    heading="Build a model for your system"
+    subheading="epanet-js is free to start. Import your GIS data, run your first simulation, and see what your network is actually doing."
+  />
+</Layout>

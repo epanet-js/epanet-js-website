@@ -1,0 +1,345 @@
+---
+// Hydraulic profile (long-section) concept: ground line and hydraulic grade
+// line drawing in along a path from J12 to J288, with a pressure band and a
+// flagged low-pressure pinch point. Roadmap concept, not a shipped view.
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+// Station ticks sit on the ground line; each fades in as the left-to-right
+// ground reveal (0-28% of the 7s cycle) passes its x position. The fade-in
+// offset for each station ((x / 240) * 28%) is baked into a per-station
+// keyframe (pp-tick-in-0..3) rather than an animation-delay, so the shared
+// fade-out stays in sync with the end-of-cycle reset.
+const stations = [
+  { x: 8, gy: 76.7, label: "J12" },
+  { x: 86, gy: 69.6, label: "PMP-1" },
+  { x: 158, gy: 70, label: "T2" },
+  { x: 228, gy: 65.2, label: "J288" },
+];
+---
+
+<div
+  class:list={[
+    "bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+    className,
+  ]}
+  role="img"
+  aria-label="Hydraulic profile in epanet-js: ground line and hydraulic grade line along a path from J12 to J288, with a low-pressure point flagged at 11.2 m, below the 15 m target.">
+  <div
+    class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+    <p class="text-[11px] font-semibold text-gray-700">Hydraulic profile</p>
+    <p class="text-[10px] text-gray-400">J12 → J288</p>
+  </div>
+  <div class="px-3 pt-2.5 pb-2">
+    <div class="relative">
+      <svg viewBox="0 0 240 110" class="w-full" aria-hidden="true">
+        <!-- ground long-section, revealed left to right -->
+        <polygon
+          class="pp-ground"
+          points="0,78 30,73 62,76 92,68 124,73 158,70 190,64 214,69 240,62 240,110 0,110"
+          fill="#e5e7eb"></polygon>
+
+        <!-- station ticks and labels -->
+        {
+          stations.map((s, i) => (
+            <g class:list={["pp-tick", `pp-tick-${i}`]}>
+              <line
+                x1={s.x}
+                y1={s.gy - 3}
+                x2={s.x}
+                y2={s.gy + 3}
+                stroke="#9ca3af"
+                stroke-width="1"
+              />
+              <text
+                x={s.x}
+                y="104"
+                text-anchor="middle"
+                font-size="7"
+                fill="#9ca3af">
+                {s.label}
+              </text>
+            </g>
+          ))
+        }
+
+        <!-- pressure band between HGL and ground -->
+        <polygon
+          class="pp-band"
+          points="4,30 40,36 84,42 88,24 120,30 158,34 190,54 212,50 236,44 236,63.1 214,69 190,64 158,70 124,73 92,68 62,76 30,73 4,77.3"
+          fill="#8b5cf6"></polygon>
+
+        <!-- hydraulic grade line, with a recovery jump at PMP-1 -->
+        <polyline
+          class="pp-hgl"
+          pathLength="100"
+          points="4,30 40,36 84,42 88,24 120,30 158,34 190,54 212,50 236,44"
+          fill="none"
+          stroke="#8b5cf6"
+          stroke-width="1.5"></polyline>
+
+        <!-- pinch point where the HGL comes closest to ground -->
+        <circle
+          class="pp-dot"
+          cx="190"
+          cy="54"
+          r="2.5"
+          fill="#f59e0b"
+          stroke="#fff"
+          stroke-width="0.75"></circle>
+      </svg>
+      <div
+        class="pp-chip absolute top-[6%] right-[5%] rounded bg-white border border-gray-100 shadow-md px-1.5 py-0.5 text-[9px] tabular-nums text-amber-600 whitespace-nowrap">
+        11.2 m · below 15 m target
+      </div>
+    </div>
+    <div class="flex gap-3 text-[9px] text-gray-400 mt-1">
+      <span class="flex items-center gap-1">
+        <span class="w-2.5 h-1.5 bg-gray-200"></span> Ground
+      </span>
+      <span class="flex items-center gap-1">
+        <span class="w-2.5 h-0.5 bg-violet-500"></span> HGL
+      </span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pp-ground {
+    animation: pp-ground-reveal 7s linear infinite both;
+  }
+  @keyframes pp-ground-reveal {
+    0% {
+      clip-path: inset(0 100% 0 0);
+      opacity: 1;
+    }
+    28% {
+      clip-path: inset(0 0 0 0);
+    }
+    92% {
+      clip-path: inset(0 0 0 0);
+      opacity: 1;
+    }
+    98%,
+    100% {
+      clip-path: inset(0 0 0 0);
+      opacity: 0;
+    }
+  }
+  /* Per-station fade-in offsets ((x / 240) * 28% of the cycle, +5% ramp)
+     match the moment the ground reveal passes each station; fade-out offsets
+     are identical and undelayed so all labels clear before the reset. */
+  .pp-tick-0 {
+    animation: pp-tick-in-0 7s linear infinite both;
+  }
+  .pp-tick-1 {
+    animation: pp-tick-in-1 7s linear infinite both;
+  }
+  .pp-tick-2 {
+    animation: pp-tick-in-2 7s linear infinite both;
+  }
+  .pp-tick-3 {
+    animation: pp-tick-in-3 7s linear infinite both;
+  }
+  @keyframes pp-tick-in-0 {
+    0%,
+    0.9% {
+      opacity: 0;
+    }
+    5.9% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pp-tick-in-1 {
+    0%,
+    10% {
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pp-tick-in-2 {
+    0%,
+    18.4% {
+      opacity: 0;
+    }
+    23.4% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pp-tick-in-3 {
+    0%,
+    26.6% {
+      opacity: 0;
+    }
+    31.6% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .pp-hgl {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: pp-hgl-draw 7s linear infinite both;
+  }
+  @keyframes pp-hgl-draw {
+    0%,
+    24% {
+      stroke-dashoffset: 100;
+      opacity: 1;
+    }
+    52% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  .pp-band {
+    opacity: 0;
+    animation: pp-band-in 7s linear infinite both;
+  }
+  @keyframes pp-band-in {
+    0%,
+    50% {
+      opacity: 0;
+    }
+    64% {
+      opacity: 0.1;
+    }
+    92% {
+      opacity: 0.1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .pp-dot {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation:
+      pp-dot-in 7s linear infinite both,
+      pp-dot-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pp-dot-in {
+    0%,
+    60% {
+      opacity: 0;
+    }
+    63% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pp-dot-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.35);
+    }
+  }
+  .pp-chip {
+    animation: pp-chip-in 7s ease-out infinite both;
+  }
+  @keyframes pp-chip-in {
+    0%,
+    66% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    76% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    98%,
+    100% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pp-ground,
+    .pp-tick,
+    .pp-tick-0,
+    .pp-tick-1,
+    .pp-tick-2,
+    .pp-tick-3,
+    .pp-hgl,
+    .pp-band,
+    .pp-dot,
+    .pp-chip {
+      animation: none;
+    }
+    .pp-ground {
+      clip-path: inset(0 0 0 0);
+      opacity: 1;
+    }
+    .pp-tick {
+      opacity: 1;
+    }
+    .pp-hgl {
+      stroke-dashoffset: 0;
+    }
+    .pp-band {
+      opacity: 0.1;
+    }
+    .pp-dot {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .pp-chip {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

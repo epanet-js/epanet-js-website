@@ -1,0 +1,95 @@
+---
+// Security page diagram: we run the epanet-js application; model data is
+// read from and written to a storage layer the customer manages, such as
+// their own S3 bucket.
+import { Cloud, Database } from "lucide-react";
+---
+
+<div
+  class="relative mx-auto h-80 w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
+  role="img"
+  aria-label="Diagram: we run the epanet-js application, and model data is read from and written to storage your organization manages, such as your own S3 bucket.">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-between">
+  <div class="box-border flex w-full flex-1 flex-col items-center justify-center px-8 pt-8">
+  <div class="flex w-full items-center justify-center gap-6">
+    <!-- the application, run by us -->
+    <div
+      class="box-border flex w-40 shrink-0 flex-col items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2 py-3 shadow-sm">
+      <span
+        class="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+        <Cloud size={23} />
+      </span>
+      <p class="text-xs font-medium text-gray-700 whitespace-nowrap">
+        epanet-js app
+      </p>
+      <p class="-mt-1 text-xs text-gray-400 whitespace-nowrap">
+        We host and update it
+      </p>
+    </div>
+
+    <!-- reads and writes, both directions -->
+    <div class="relative flex flex-1 min-w-0 flex-col items-center justify-center gap-8 self-stretch">
+      <!-- writes: app to storage -->
+      <svg
+        viewBox="0 0 80 12"
+        preserveAspectRatio="none"
+        class="h-3 w-full"
+        aria-hidden="true">
+        <path
+          d="M10 6 H70"
+          fill="none"
+          stroke="#d1d5db"
+          stroke-width="2"
+          stroke-dasharray="5 4"></path>
+        <path d="M70 1.5 L78 6 L70 10.5 Z" fill="#d1d5db"></path>
+      </svg>
+      <!-- reads: storage back to app -->
+      <svg
+        viewBox="0 0 80 12"
+        preserveAspectRatio="none"
+        class="h-3 w-full"
+        aria-hidden="true">
+        <path
+          d="M10 6 H70"
+          fill="none"
+          stroke="#d1d5db"
+          stroke-width="2"
+          stroke-dasharray="5 4"></path>
+        <path d="M10 1.5 L2 6 L10 10.5 Z" fill="#d1d5db"></path>
+      </svg>
+      <span
+        class="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-500">
+        Model reads and writes
+      </span>
+    </div>
+
+    <!-- the storage layer, managed by the customer -->
+    <div
+      class="box-border flex w-40 shrink-0 flex-col items-center gap-1.5 rounded-lg border-2 border-gray-300 bg-gray-50 px-2 py-3">
+      <span
+        class="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+        <Database size={23} />
+      </span>
+      <p class="text-xs font-medium text-gray-700 whitespace-nowrap">
+        Your storage
+      </p>
+      <p class="-mt-1 text-xs text-gray-400 whitespace-nowrap">
+        S3 bucket you manage
+      </p>
+    </div>
+  </div>
+  </div>
+
+  <p class="pb-6 text-center text-sm font-medium text-gray-700">
+    Your region · Your retention · Your access
+  </p>
+      </div>
+    </foreignObject>
+  </svg>
+</div>

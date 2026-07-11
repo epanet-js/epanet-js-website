@@ -1,0 +1,316 @@
+---
+// Logger placement demo: proposed pressure loggers drop onto the map one by
+// one, each adding a coverage halo, while the share of demand observable
+// climbs in the placement panel.
+import AppWindow from "./AppWindow.astro";
+
+// Explicit reveal order (pin/halo 1-4) rather than markerPoints' own order
+// or a west-to-east sort — the placement panel has moved corners a few
+// times, and each of these has been hand-picked to land clear of it.
+const sortedMarkerPoints: [number, number][] = [
+  [100, 130],
+  [270, 65],
+  [240, 210],
+  [360, 150],
+];
+
+const coverageSteps = ["0%", "52%", "71%", "86%", "94%"];
+---
+
+<AppWindow
+  variant="plain"
+  hideHeader
+  hideFooter
+  label="Logger placement in epanet-js: proposed pressure loggers dropping onto the map one by one while the coverage figure climbs to 94% of demand observable.">
+  <!-- proposed loggers with coverage halos -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    {
+      sortedMarkerPoints.map(([x, y], i) => (
+        <circle
+          class={`lp-halo lp-halo-${i + 1}`}
+          cx={x}
+          cy={y}
+          r="64"
+          fill="#8b5cf6"
+          fill-opacity="0.12"
+        />
+      ))
+    }
+    {
+      sortedMarkerPoints.map(([x, y], i) => (
+        <circle
+          class={`lp-pin lp-pin-${i + 1}`}
+          cx={x}
+          cy={y}
+          r="5"
+          fill="#8b5cf6"
+          stroke="#ffffff"
+          stroke-width="1.5"
+        />
+      ))
+    }
+  </svg>
+
+  <!-- placement panel -->
+  <div
+    class="lp-panel absolute bottom-2 left-2 w-[180px] max-w-[70%] bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[12px] font-semibold text-gray-700">Logger placement</p>
+      <p class="text-[11px] text-gray-400">DMA-3</p>
+    </div>
+    <div class="px-3 py-2">
+      <div class="flex items-center justify-between text-[12px]">
+        <span class="text-gray-500">Demand observable</span>
+        <span class="relative inline-block min-w-[28px] text-right font-medium text-gray-700 tabular-nums">
+          {
+            coverageSteps.map((step, i) => (
+              <span
+                class:list={[
+                  `lp-cov-${i}`,
+                  i > 0 && "absolute inset-0 bg-white text-right",
+                ]}>
+                {step}
+              </span>
+            ))
+          }
+        </span>
+      </div>
+      <div class="mt-1.5 h-1 rounded-full bg-gray-100 overflow-hidden">
+        <div class="lp-progress h-full rounded-full bg-violet-500"></div>
+      </div>
+    </div>
+    <p
+      class="lp-footer px-3 py-1.5 border-t border-gray-100 text-[12px] text-gray-500">
+      4 loggers proposed
+    </p>
+  </div>
+</AppWindow>
+
+<style>
+  /* pins drop in one at a time with a small bounce */
+  .lp-pin {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+  }
+  .lp-pin-1 {
+    animation: lp-drop-1 8s ease-out infinite both;
+  }
+  .lp-pin-2 {
+    animation: lp-drop-2 8s ease-out infinite both;
+  }
+  .lp-pin-3 {
+    animation: lp-drop-3 8s ease-out infinite both;
+  }
+  .lp-pin-4 {
+    animation: lp-drop-4 8s ease-out infinite both;
+  }
+  @keyframes lp-drop-1 {
+    0%, 10% { opacity: 0; transform: translateY(-12px); }
+    13% { opacity: 1; transform: translateY(0); }
+    14.5% { transform: translateY(-3px); }
+    16% { transform: translateY(0); }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes lp-drop-2 {
+    0%, 24% { opacity: 0; transform: translateY(-12px); }
+    27% { opacity: 1; transform: translateY(0); }
+    28.5% { transform: translateY(-3px); }
+    30% { transform: translateY(0); }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes lp-drop-3 {
+    0%, 38% { opacity: 0; transform: translateY(-12px); }
+    41% { opacity: 1; transform: translateY(0); }
+    42.5% { transform: translateY(-3px); }
+    44% { transform: translateY(0); }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes lp-drop-4 {
+    0%, 52% { opacity: 0; transform: translateY(-12px); }
+    55% { opacity: 1; transform: translateY(0); }
+    56.5% { transform: translateY(-3px); }
+    58% { transform: translateY(0); }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+
+  /* each halo spreads once its logger lands */
+  .lp-halo {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+  }
+  .lp-halo-1 {
+    animation: lp-halo-1 8s ease-out infinite both;
+  }
+  .lp-halo-2 {
+    animation: lp-halo-2 8s ease-out infinite both;
+  }
+  .lp-halo-3 {
+    animation: lp-halo-3 8s ease-out infinite both;
+  }
+  .lp-halo-4 {
+    animation: lp-halo-4 8s ease-out infinite both;
+  }
+  @keyframes lp-halo-1 {
+    0%, 13% { opacity: 0; transform: scale(0.2); }
+    20% { opacity: 1; transform: scale(1); }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes lp-halo-2 {
+    0%, 27% { opacity: 0; transform: scale(0.2); }
+    34% { opacity: 1; transform: scale(1); }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes lp-halo-3 {
+    0%, 41% { opacity: 0; transform: scale(0.2); }
+    48% { opacity: 1; transform: scale(1); }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes lp-halo-4 {
+    0%, 55% { opacity: 0; transform: scale(0.2); }
+    62% { opacity: 1; transform: scale(1); }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+
+  .lp-panel {
+    animation: lp-panel-in 8s ease-out infinite both;
+  }
+  @keyframes lp-panel-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    6% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* coverage value steps up just after each logger lands */
+  .lp-cov-0 {
+    animation: lp-cov-0 8s linear infinite both;
+  }
+  .lp-cov-1 {
+    animation: lp-cov-1 8s linear infinite both;
+  }
+  .lp-cov-2 {
+    animation: lp-cov-2 8s linear infinite both;
+  }
+  .lp-cov-3 {
+    animation: lp-cov-3 8s linear infinite both;
+  }
+  .lp-cov-4 {
+    animation: lp-cov-4 8s linear infinite both;
+  }
+  @keyframes lp-cov-0 {
+    0%, 14% { opacity: 1; }
+    15%, 100% { opacity: 0; }
+  }
+  @keyframes lp-cov-1 {
+    0%, 14% { opacity: 0; }
+    15%, 28% { opacity: 1; }
+    29%, 100% { opacity: 0; }
+  }
+  @keyframes lp-cov-2 {
+    0%, 28% { opacity: 0; }
+    29%, 42% { opacity: 1; }
+    43%, 100% { opacity: 0; }
+  }
+  @keyframes lp-cov-3 {
+    0%, 42% { opacity: 0; }
+    43%, 56% { opacity: 1; }
+    57%, 100% { opacity: 0; }
+  }
+  @keyframes lp-cov-4 {
+    0%, 56% { opacity: 0; }
+    57% { opacity: 1; }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+
+  .lp-progress {
+    width: 0;
+    animation: lp-progress 8s ease-in-out infinite both;
+  }
+  @keyframes lp-progress {
+    0%, 13% { width: 0; }
+    16%, 27% { width: 52%; }
+    30%, 41% { width: 71%; }
+    44%, 55% { width: 86%; }
+    58% { width: 94%; }
+    100% { width: 94%; }
+  }
+
+  .lp-footer {
+    animation: lp-footer-in 8s ease-out infinite both;
+  }
+  @keyframes lp-footer-in {
+    0%,
+    64% {
+      opacity: 0;
+    }
+    70% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lp-pin,
+    .lp-halo,
+    .lp-panel,
+    .lp-cov-0,
+    .lp-cov-1,
+    .lp-cov-2,
+    .lp-cov-3,
+    .lp-cov-4,
+    .lp-progress,
+    .lp-footer {
+      animation: none;
+    }
+    .lp-pin,
+    .lp-halo,
+    .lp-panel,
+    .lp-cov-4,
+    .lp-footer {
+      opacity: 1;
+      transform: none;
+    }
+    .lp-cov-0,
+    .lp-cov-1,
+    .lp-cov-2,
+    .lp-cov-3 {
+      opacity: 0;
+    }
+    .lp-progress {
+      width: 94%;
+    }
+  }
+</style>

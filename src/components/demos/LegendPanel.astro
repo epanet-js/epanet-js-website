@@ -1,0 +1,47 @@
+---
+// Floating map legend, like the app's result legend panel.
+interface Entry {
+  color: string;
+  label: string;
+}
+
+interface Props {
+  title?: string;
+  entries?: Entry[];
+  class?: string;
+}
+
+const defaultEntries: Entry[] = [
+  { color: "#3b82f6", label: "> 60" },
+  { color: "#22c55e", label: "40 – 60" },
+  { color: "#f59e0b", label: "20 – 40" },
+  { color: "#ef4444", label: "< 20" },
+];
+
+const {
+  title = "Pressure (m)",
+  entries = defaultEntries,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  class:list={[
+    "bg-white rounded-lg border border-gray-100 shadow-md px-3 py-2.5",
+    className,
+  ]}>
+  <p class="text-[11px] font-semibold text-gray-700 mb-1.5">{title}</p>
+  <ul class="space-y-1">
+    {
+      entries.map((entry) => (
+        <li class="flex items-center gap-2 text-[10px] text-gray-500">
+          <span
+            class="w-3 h-3 rounded-sm shrink-0"
+            style={`background-color: ${entry.color}`}
+          />
+          {entry.label}
+        </li>
+      ))
+    }
+  </ul>
+</div>

@@ -1,0 +1,258 @@
+---
+// Automatic elevation assignment demo: a sampling sweep crosses the map and
+// disappears off the right edge, nodes pick up ground-level tags as it
+// passes, then a sources panel expands (once the sweep is gone) to show the
+// prioritized elevation sources and a completion count.
+import { CheckCircle2 } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+
+const sources = [
+  { name: "survey-2024.tif", resolution: "0.5 m" },
+  { name: "lidar-city.tif", resolution: "1 m" },
+  { name: "Global terrain", resolution: "30 m" },
+];
+
+// Elevation tags sit just above junctions from network-geometry.ts. The map
+// SVG (400x300 viewBox, xMidYMid slice) is center-cropped vertically inside
+// AppWindow's 16:10 canvas, so top% = y * 0.4 - 10 keeps the HTML chips
+// aligned with the rendered junctions (left maps straight through). The
+// northeast junctions sit under the sources panel (top-right, 210px wide),
+// so tagged nodes stay south and west of it.
+const tags = [
+  { x: 90, y: 70, label: "104.2 m" },
+  { x: 150, y: 60, label: "101.8 m" },
+  { x: 210, y: 75, label: "97.5 m" },
+  { x: 100, y: 130, label: "96.1 m" },
+  { x: 240, y: 210, label: "88.9 m" },
+  { x: 300, y: 220, label: "87.6 m" },
+];
+const leftPct = (x: number) => ((x / 400) * 100).toFixed(1);
+const topPct = (y: number) => (y * 0.4 - 10).toFixed(1);
+
+// Timing is baked directly into per-index @keyframes below (no
+// animation-delay). animation-delay only defers an infinite animation's
+// FIRST play — every loop after that runs back-to-back on the element's own
+// fixed period, permanently out of phase with anything that has a different
+// delay. On repeat loops that let a tag from the *previous* sweep pass
+// still be sitting visible while a *new* sweep was already crossing the
+// map. Baking absolute times with zero delay for every element keeps them
+// all on the same cycle boundary, so nothing can drift out of sync.
+const CYCLE = 9.5;
+const toPct = (seconds: number) => +((seconds / CYCLE) * 100).toFixed(3);
+
+// The sweep fades in shortly after it starts, travels left to right, then
+// fades out as it exits past the right edge (translateX(600%), well beyond
+// the map) rather than stopping in view. SWEEP_ARRIVE is the moment it's
+// fully gone — everything else keys off that.
+const SWEEP_APPEAR = 0.6;
+const SWEEP_FADE_START = 2.4;
+const SWEEP_ARRIVE = 3;
+
+// The sources panel stays collapsed (title only) until 0.5s after the sweep
+// settles at the right edge, then expands to fit the sources + count.
+const BOX_TRIGGER = SWEEP_ARRIVE + 0.5;
+const BOX_EXPAND_DURATION = 0.5;
+const BOX_EXPAND_END = BOX_TRIGGER + BOX_EXPAND_DURATION;
+
+const ROW_GAP = 0.45;
+const ENTRANCE = 0.42;
+const HOLD_END = 8;
+const FADE_END = 8.4;
+const COLLAPSE_WAIT = 0.3;
+const COLLAPSE_DURATION = 0.5;
+const BOX_COLLAPSE_START = FADE_END + COLLAPSE_WAIT;
+const BOX_COLLAPSE_END = BOX_COLLAPSE_START + COLLAPSE_DURATION;
+
+// Sources appear one at a time right as the box finishes expanding; the
+// count swap happens partway through the hold.
+const rowStart = (i: number) => BOX_EXPAND_END + i * ROW_GAP;
+const footerStart = rowStart(sources.length);
+const COUNT_SWAP = HOLD_END - 0.5;
+
+// Tags trail the sweep across its own travel window (fade-in to arrival),
+// proportional to each tag's x position.
+const tagStart = (x: number) => SWEEP_APPEAR + (x / 400) * (SWEEP_ARRIVE - SWEEP_APPEAR);
+
+const rowCss = [...sources.map((_, i) => rowStart(i)), footerStart]
+  .map(
+    (start, i) => `
+.el-row-${i} { animation-name: el-row-in-${i}; }
+@keyframes el-row-in-${i} {
+  0%, ${toPct(start)}% { opacity: 0; }
+  ${toPct(start + ENTRANCE)}% { opacity: 1; }
+  ${toPct(HOLD_END)}% { opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}`,
+  )
+  .join("\n");
+
+const tagCss = tags
+  .map((tag, i) => {
+    const start = tagStart(tag.x);
+    return `
+.el-tag-${i} { animation-name: el-tag-in-${i}; }
+@keyframes el-tag-in-${i} {
+  0%, ${toPct(start)}% { opacity: 0; transform: translateY(3px); }
+  ${toPct(start + ENTRANCE)}% { opacity: 1; transform: translateY(0); }
+  ${toPct(HOLD_END)}% { opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}`;
+  })
+  .join("\n");
+
+const sweepCss = `
+@keyframes el-sweep {
+  0% { transform: translateX(-120%); opacity: 0; }
+  ${toPct(SWEEP_APPEAR)}% { opacity: 1; }
+  ${toPct(SWEEP_FADE_START)}% { opacity: 1; }
+  ${toPct(SWEEP_ARRIVE)}%, 100% { transform: translateX(600%); opacity: 0; }
+}`;
+
+const collapseCss = `
+@keyframes el-collapse {
+  0%, ${toPct(BOX_TRIGGER)}% { grid-template-rows: minmax(0, 0fr); }
+  ${toPct(BOX_EXPAND_END)}% { grid-template-rows: minmax(0, 1fr); }
+  ${toPct(BOX_COLLAPSE_START)}% { grid-template-rows: minmax(0, 1fr); }
+  ${toPct(BOX_COLLAPSE_END)}%, 100% { grid-template-rows: minmax(0, 0fr); }
+}`;
+
+const countCss = `
+@keyframes el-count-out {
+  0%, ${toPct(COUNT_SWAP)}% { opacity: 1; }
+  ${toPct(COUNT_SWAP + 0.2)}%, 100% { opacity: 0; }
+}
+@keyframes el-count-in {
+  0%, ${toPct(COUNT_SWAP)}% { opacity: 0; }
+  ${toPct(COUNT_SWAP + 0.2)}%, 100% { opacity: 1; }
+}`;
+
+const generatedCss = `${sweepCss}\n${collapseCss}\n${countCss}\n${rowCss}\n${tagCss}`;
+---
+
+<AppWindow
+  variant="plain"
+  hideHeader
+  hideFooter
+  label="Automatic elevation assignment in epanet-js: nodes picking up ground levels from prioritized elevation sources.">
+  <!-- sampling sweep across the map -->
+  <div
+    class="el-sweep absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-violet-400/15 to-transparent pointer-events-none">
+  </div>
+
+  <!-- per-node elevation tags -->
+  {
+    tags.map((tag, i) => (
+      <div
+        class="absolute -translate-x-1/2 -translate-y-full -mt-1.5 pointer-events-none"
+        style={`left: ${leftPct(tag.x)}%; top: ${topPct(tag.y)}%`}>
+        <div class={`el-tag el-tag-${i} bg-white/90 rounded px-1 py-px text-[9px] tabular-nums text-gray-600 shadow-sm border border-gray-100 whitespace-nowrap`}>
+          {tag.label}
+        </div>
+      </div>
+    ))
+  }
+
+  <!-- elevation sources panel -->
+  <div class="absolute top-2 right-2 w-[210px] max-w-[70%] bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
+    <div class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[12px] font-semibold text-gray-700">Elevation sources</p>
+      <p class="text-[11px] text-gray-400">Priority order</p>
+    </div>
+    <div class="el-collapse">
+      <div class="overflow-hidden">
+        <div class="px-3 py-2 space-y-1.5">
+          {
+            sources.map((source, i) => (
+              <div class={`el-row el-row-${i} flex items-center gap-1.5`}>
+                <span class="shrink-0 w-4 h-4 rounded bg-gray-100 text-[10px] text-gray-500 flex items-center justify-center">
+                  {i + 1}
+                </span>
+                <span class="text-[12px] text-gray-700">{source.name}</span>
+                <span class="ml-auto text-[11px] text-gray-400 tabular-nums">
+                  {source.resolution}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+        <div class={`el-row el-row-${sources.length} flex items-center gap-1 px-3 py-2 border-t border-gray-100 text-[12px] text-gray-600`}>
+          <CheckCircle2 size={14} className="text-green-500 shrink-0" />
+          <span class="relative tabular-nums">
+            <span class="el-count-before">1,272</span>
+            <span class="el-count-after absolute inset-0">1,284</span>
+          </span>
+          <span>nodes elevated</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</AppWindow>
+
+<style define:vars={{ cycle: `${CYCLE}s` }}>
+  /* rows/footer fade in one at a time; the exact entrance time for each
+     comes from the generated per-index keyframes (el-row-in-N below) */
+  .el-row {
+    opacity: 0;
+    animation-duration: var(--cycle);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  /* map tags pop in as the sweep passes their position; per-index keyframes
+     (el-tag-in-N) set the exact time */
+  .el-tag {
+    opacity: 0;
+    transform: translateY(3px);
+    animation-duration: var(--cycle);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  /* sweeps left to right once, fading in, then holds at the right edge for
+     the rest of the cycle instead of fading out mid-loop */
+  .el-sweep {
+    animation: el-sweep var(--cycle) linear infinite both;
+  }
+  /* the sources panel's own height: collapsed to 0fr (just the title) until
+     the sweep settles + 0.5s, then expands to fit the sources + count (grid
+     rows interpolate to a track's natural content height, unlike plain
+     "height" which can't animate to/from auto) */
+  .el-collapse {
+    display: grid;
+    grid-template-rows: minmax(0, 0fr);
+    animation: el-collapse var(--cycle) linear infinite both;
+  }
+  .el-count-before {
+    animation: el-count-out var(--cycle) infinite both;
+  }
+  .el-count-after {
+    animation: el-count-in var(--cycle) infinite both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .el-row,
+    .el-tag,
+    .el-sweep,
+    .el-collapse,
+    .el-count-before,
+    .el-count-after {
+      animation: none;
+    }
+    .el-row,
+    .el-tag {
+      opacity: 1;
+      transform: none;
+    }
+    .el-sweep {
+      opacity: 0;
+    }
+    .el-collapse {
+      grid-template-rows: minmax(0, 1fr);
+    }
+    .el-count-before {
+      opacity: 0;
+    }
+    .el-count-after {
+      opacity: 1;
+    }
+  }
+</style>
+
+<style set:html={generatedCss} />

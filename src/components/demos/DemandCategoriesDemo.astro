@@ -1,0 +1,269 @@
+---
+// Demand categories demo: one junction's demand broken into residential,
+// commercial, and leakage categories, each with its own base demand and
+// pattern chip, summing to the total in a stacked bar.
+import AppWindow from "./AppWindow.astro";
+
+const categories = [
+  { label: "Domestic", pattern: "RES-24h", value: "0.42 l/s" },
+  { label: "Commercial", pattern: "COM-24h", value: "0.18 l/s" },
+  { label: "Leakage", pattern: "Continuous", value: "0.07 l/s" },
+];
+
+// Stacked bar segments matching the category shares of the 0.67 l/s total.
+const segments = [
+  { width: "63%", cls: "bg-violet-500" },
+  { width: "27%", cls: "bg-violet-300" },
+  { width: "10%", cls: "bg-gray-300" },
+];
+
+// Timing is baked directly into @keyframes below (no animation-delay).
+// animation-delay only defers an infinite animation's FIRST play — every
+// loop after that runs back-to-back on the element's own fixed period,
+// permanently out of phase with anything that has a different delay (like
+// the zero-delay ring/panel). On repeat loops that let rows 2-3 and bar
+// segments 2-3 still be holding visible well past when everything else had
+// already reset for a new cycle. Baking absolute times with zero delay for
+// every element — including the single-instance ring/panel/total, so
+// stretching CYCLE below only adds a trailing pause instead of also
+// extending how long they stay visible — keeps everything on one boundary.
+const CYCLE = 9.5;
+const toPct = (seconds: number) => +((seconds / CYCLE) * 100).toFixed(3);
+
+// Everything is shifted this many seconds later than the original cut, so
+// the whole sequence starts later without changing its own pacing/shape.
+const START_DELAY = 0.5;
+
+const RING_HIDE_END = 0.21 + START_DELAY;
+const RING_VISIBLE = 0.56 + START_DELAY;
+const PANEL_VISIBLE = 0.42 + START_DELAY;
+const TOTAL_HIDE_END = 3.36 + START_DELAY;
+const TOTAL_VISIBLE = 3.78 + START_DELAY;
+
+const ROW_STAGGER = 0.84;
+const ROW_ENTRANCE_START = 0.84 + START_DELAY;
+const ROW_ENTRANCE = 0.35;
+const ROW_HOLD_END = 8.3 + START_DELAY;
+const ROW_FADE_END = 8.72 + START_DELAY;
+
+const SEG_STAGGER = 0.42;
+const SEG_GROW_START = 3.78 + START_DELAY;
+const SEG_GROW = 0.7;
+const SEG_HOLD_END = 8.44 + START_DELAY;
+const SEG_FADE_END = 8.86 + START_DELAY;
+
+// Shared by the ring, panel, and total — everything holds until here, then
+// fades out together, followed by a short pause (CYCLE - FADE_END) before
+// the loop restarts.
+const HOLD_END = 8.44 + START_DELAY;
+const FADE_END = 8.86 + START_DELAY;
+
+const singleCss = `
+.dc-ring { animation-name: dc-ring-in; }
+@keyframes dc-ring-in {
+  0%, ${toPct(RING_HIDE_END)}% { opacity: 0; }
+  ${toPct(RING_VISIBLE)}% { opacity: 1; }
+  ${toPct(HOLD_END)}% { opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}
+.dc-panel { animation-name: dc-panel-in; }
+@keyframes dc-panel-in {
+  0%, ${toPct(START_DELAY)}% { opacity: 0; transform: translateY(4px); }
+  ${toPct(PANEL_VISIBLE)}% { opacity: 1; transform: translateY(0); }
+  ${toPct(HOLD_END)}% { opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}
+.dc-total { animation-name: dc-total-in; }
+@keyframes dc-total-in {
+  0%, ${toPct(TOTAL_HIDE_END)}% { opacity: 0; }
+  ${toPct(TOTAL_VISIBLE)}% { opacity: 1; }
+  ${toPct(HOLD_END)}% { opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}`;
+
+const rowCss = categories
+  .map((_, i) => {
+    const start = ROW_ENTRANCE_START + i * ROW_STAGGER;
+    return `
+.dc-row-${i} { animation-name: dc-row-in-${i}; }
+@keyframes dc-row-in-${i} {
+  0%, ${toPct(start)}% { opacity: 0; transform: translateY(4px); }
+  ${toPct(start + ROW_ENTRANCE)}% { opacity: 1; transform: translateY(0); }
+  ${toPct(ROW_HOLD_END)}% { opacity: 1; }
+  ${toPct(ROW_FADE_END)}%, 100% { opacity: 0; }
+}`;
+  })
+  .join("\n");
+
+const segCss = segments
+  .map((_, i) => {
+    const start = SEG_GROW_START + i * SEG_STAGGER;
+    return `
+.dc-seg-${i} { animation-name: dc-seg-grow-${i}; }
+@keyframes dc-seg-grow-${i} {
+  0%, ${toPct(start)}% { transform: scaleX(0); opacity: 1; }
+  ${toPct(start + SEG_GROW)}% { transform: scaleX(1); }
+  ${toPct(SEG_HOLD_END)}% { transform: scaleX(1); opacity: 1; }
+  ${toPct(SEG_FADE_END)}%, 100% { transform: scaleX(1); opacity: 0; }
+}`;
+  })
+  .join("\n");
+
+const generatedCss = `${singleCss}\n${rowCss}\n${segCss}`;
+---
+
+<AppWindow
+  variant="plain"
+  hideHeader
+  hideFooter
+  label="Demand categories in epanet-js: junction J288's demand split into domestic, commercial, and leakage categories, each with its own pattern, summing in a stacked bar.">
+  <!-- selected junction highlight at [160, 140] -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <circle
+      class="dc-ring"
+      cx="160"
+      cy="140"
+      r="7"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="2"></circle>
+    <circle
+      class="dc-pulse"
+      cx="160"
+      cy="140"
+      r="7"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="1.5"></circle>
+  </svg>
+
+  <!-- asset panel: demands tab for J288 -->
+  <div class="dc-panel absolute top-2 right-2 w-[210px] max-w-[70%] bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
+    <div class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[12px] font-semibold text-gray-700">Demands · J288</p>
+      <p class="text-[11px] text-gray-400">3 categories</p>
+    </div>
+    <div class="py-1 text-[12px]">
+      {
+        categories.map((cat, i) => (
+          <div class={`dc-row dc-row-${i} flex items-center justify-between gap-1 px-3 py-1`}>
+            <span class="flex items-center gap-1.5 min-w-0">
+              <span class="text-gray-600">{cat.label}</span>
+              <span class="rounded border border-gray-200 bg-gray-50 px-1 text-[10px] text-gray-500 whitespace-nowrap">
+                {cat.pattern}
+              </span>
+            </span>
+            <span class="font-medium text-gray-700 tabular-nums">
+              {cat.value}
+            </span>
+          </div>
+        ))
+      }
+      <div
+        class="dc-total flex items-center justify-between border-t border-gray-100 mt-1 px-3 py-1.5">
+        <span class="font-medium text-gray-600">Total</span>
+        <span class="font-semibold text-gray-800 tabular-nums">0.67 l/s</span>
+      </div>
+      <div class="px-3 pb-2">
+        <div class="flex h-1.5 gap-px overflow-hidden rounded-full bg-gray-100">
+          {
+            segments.map((seg, i) => (
+              <span
+                class:list={[`dc-seg dc-seg-${i} h-full`, seg.cls]}
+                style={`width: ${seg.width}`}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</AppWindow>
+
+<style define:vars={{ cycle: `${CYCLE}s` }}>
+  /* opacity/transform keyframe stops for the ring, panel, and total are
+     generated (dc-ring-in / dc-panel-in / dc-total-in, below) since they
+     depend on CYCLE */
+  .dc-ring {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .dc-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: dc-pulse 1.8s ease-out infinite;
+  }
+  @keyframes dc-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    70%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  .dc-panel {
+    opacity: 0;
+    transform: translateY(4px);
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  /* rows fade in one at a time; the exact entrance time for each comes from
+     the generated per-index keyframes (dc-row-in-N below) */
+  .dc-row {
+    opacity: 0;
+    transform: translateY(4px);
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  .dc-total {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  /* bar segments grow one at a time; the generated per-index keyframes
+     (dc-seg-grow-N below) set the exact grow time */
+  .dc-seg {
+    transform: scaleX(0);
+    transform-origin: left;
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dc-ring,
+    .dc-pulse,
+    .dc-panel,
+    .dc-row,
+    .dc-total,
+    .dc-seg {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .dc-pulse {
+      opacity: 0;
+    }
+  }
+</style>
+
+<style set:html={generatedCss} />

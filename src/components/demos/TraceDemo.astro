@@ -1,0 +1,460 @@
+---
+// Connectivity trace demo: a selected junction traces upstream to the tank,
+// then a boundary trace spreads outward and stops at a closed valve. Overlay
+// strokes reuse the shared network geometry so they sit exactly on the base pipes.
+import AppWindow from "./AppWindow.astro";
+import { pipes } from "./network-geometry";
+
+type Segment = [number, number, number, number];
+
+// Pull a pipe from the shared geometry, optionally swapping its endpoints so
+// the dashoffset draw starts from the trace's travelling end.
+const seg = (index: number, swap = false): Segment => {
+  const [x1, y1, x2, y2] = pipes[index];
+  return swap ? [x2, y2, x1, y1] : [x1, y1, x2, y2];
+};
+
+// Upstream path: selected junction (170,200) back to the tank at (40,50).
+const upstream: Segment[] = [
+  seg(8, true), // (170,200) -> (160,140)
+  seg(5), // (160,140) -> (150,60)
+  seg(1, true), // (150,60) -> (90,70)
+  seg(0, true), // (90,70) -> (40,50)
+];
+
+// The boundary wave stops at a closed valve halfway along the
+// (210,75)-(270,65) pipe, so the last stroke only covers half of it.
+const [vx1, vy1, vx2, vy2] = pipes[9];
+const valveApproach: Segment = [vx1, vy1, (vx1 + vx2) / 2, (vy1 + vy2) / 2];
+
+// Boundary trace: hops outward from the junction, one hop per draw wave.
+const boundary: { line: Segment; hop: number }[] = [
+  { line: seg(8, true), hop: 1 }, // (170,200) -> (160,140)
+  { line: seg(10, true), hop: 1 }, // (170,200) -> (110,195)
+  { line: seg(11), hop: 1 }, // (170,200) -> (240,210)
+  { line: seg(5), hop: 2 }, // (160,140) -> (150,60)
+  { line: seg(13, true), hop: 2 }, // (160,140) -> (230,150)
+  { line: seg(3), hop: 3 }, // (150,60) -> (210,75)
+  { line: valveApproach, hop: 4 }, // (210,75) -> closed valve at (240,70)
+];
+---
+
+<AppWindow
+  variant="plain"
+  label="Tracing in epanet-js: an upstream trace from a junction back to the source, then a boundary trace stopping at a closed valve.">
+  <!-- trace overlay: same viewBox as NetworkMap so strokes line up exactly -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <!-- upstream trace -->
+    <g stroke="#8b5cf6" stroke-width="2.5" stroke-linecap="round" fill="none">
+      {
+        upstream.map(([x1, y1, x2, y2], i) => (
+          <line
+            class={`tr-up tr-up-${i + 1}`}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            pathLength="100"
+          />
+        ))
+      }
+    </g>
+
+    <!-- boundary trace -->
+    <g stroke="#8b5cf6" stroke-width="2.5" stroke-linecap="round" fill="none">
+      {
+        boundary.map(({ line: [x1, y1, x2, y2], hop }) => (
+          <line
+            class={`tr-b tr-b-${hop}`}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            pathLength="100"
+          />
+        ))
+      }
+    </g>
+
+    <!-- closed valve at (240,70): gray until the trace reaches it, then red -->
+    <g
+      class="tr-valve-gray"
+      fill="#6b7280"
+      stroke="#ffffff"
+      stroke-width="0.75"
+      stroke-linejoin="round">
+      <path d="M234 66 L240 70 L234 74 Z"></path>
+      <path d="M246 66 L240 70 L246 74 Z"></path>
+    </g>
+    <g
+      class="tr-valve-red"
+      fill="#ef4444"
+      stroke="#ffffff"
+      stroke-width="0.75"
+      stroke-linejoin="round">
+      <path d="M234 66 L240 70 L234 74 Z"></path>
+      <path d="M246 66 L240 70 L246 74 Z"></path>
+    </g>
+
+    <!-- selected junction -->
+    <circle
+      class="tr-ring"
+      cx="170"
+      cy="200"
+      r="7"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="2"></circle>
+  </svg>
+
+  <!-- trace panel (top-right, like the asset panel) -->
+  <div
+    class="absolute top-2 right-2 w-[170px] max-w-[60%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">Trace</p>
+      <p class="text-[10px] text-gray-400">Connectivity</p>
+    </div>
+    <div class="px-3 py-2 space-y-1.5 text-[10px]">
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500">Mode</span>
+        <span class="relative font-medium text-gray-700">
+          <span class="tr-swap-a">Upstream</span>
+          <span class="tr-swap-b absolute inset-y-0 right-0 whitespace-nowrap">
+            Boundary
+          </span>
+        </span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500">Start node</span>
+        <span class="font-medium text-gray-700 tabular-nums">J34</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500">Selected</span>
+        <span class="relative text-gray-700 tabular-nums">
+          <span class="tr-swap-a">4 pipes</span>
+          <span class="tr-swap-b absolute inset-y-0 right-0 whitespace-nowrap">
+            7 pipes
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  /* selected junction: gentle pulse for the whole cycle */
+  .tr-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: tr-ring-pulse 2s ease-in-out infinite;
+  }
+  @keyframes tr-ring-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.7;
+    }
+  }
+
+  /* upstream trace: segments draw junction -> tank (5-40%), then dim to a
+     faint highlight while the boundary trace runs, then fade for the reset */
+  .tr-up {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+  .tr-up-1 {
+    animation:
+      tr-up-d1 8s linear infinite both,
+      tr-up-fade 8s ease-in-out infinite both;
+  }
+  .tr-up-2 {
+    animation:
+      tr-up-d2 8s linear infinite both,
+      tr-up-fade 8s ease-in-out infinite both;
+  }
+  .tr-up-3 {
+    animation:
+      tr-up-d3 8s linear infinite both,
+      tr-up-fade 8s ease-in-out infinite both;
+  }
+  .tr-up-4 {
+    animation:
+      tr-up-d4 8s linear infinite both,
+      tr-up-fade 8s ease-in-out infinite both;
+  }
+  @keyframes tr-up-d1 {
+    0%,
+    5% {
+      stroke-dashoffset: 100;
+    }
+    14%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tr-up-d2 {
+    0%,
+    14% {
+      stroke-dashoffset: 100;
+    }
+    23%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tr-up-d3 {
+    0%,
+    23% {
+      stroke-dashoffset: 100;
+    }
+    32%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tr-up-d4 {
+    0%,
+    32% {
+      stroke-dashoffset: 100;
+    }
+    40%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tr-up-fade {
+    0%,
+    42% {
+      opacity: 1;
+    }
+    50%,
+    92% {
+      opacity: 0.25;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* boundary trace: hops spread outward from the junction (50-78%) */
+  .tr-b {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+  .tr-b-1 {
+    animation:
+      tr-b-d1 8s linear infinite both,
+      tr-out 8s ease-in-out infinite both;
+  }
+  .tr-b-2 {
+    animation:
+      tr-b-d2 8s linear infinite both,
+      tr-out 8s ease-in-out infinite both;
+  }
+  .tr-b-3 {
+    animation:
+      tr-b-d3 8s linear infinite both,
+      tr-out 8s ease-in-out infinite both;
+  }
+  .tr-b-4 {
+    animation:
+      tr-b-d4 8s linear infinite both,
+      tr-out 8s ease-in-out infinite both;
+  }
+  @keyframes tr-b-d1 {
+    0%,
+    50% {
+      stroke-dashoffset: 100;
+    }
+    57%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tr-b-d2 {
+    0%,
+    57% {
+      stroke-dashoffset: 100;
+    }
+    64%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tr-b-d3 {
+    0%,
+    64% {
+      stroke-dashoffset: 100;
+    }
+    71%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tr-b-d4 {
+    0%,
+    71% {
+      stroke-dashoffset: 100;
+    }
+    78%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tr-out {
+    0%,
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* closed valve: gray crossfades to red as the wave arrives, then pulses */
+  .tr-valve-gray {
+    animation: tr-valve-off 8s ease-in-out infinite both;
+  }
+  .tr-valve-red {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation:
+      tr-valve-on 8s ease-in-out infinite both,
+      tr-valve-pulse 8s ease-in-out infinite both;
+  }
+  @keyframes tr-valve-off {
+    0%,
+    75% {
+      opacity: 1;
+    }
+    80%,
+    92% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes tr-valve-on {
+    0%,
+    75% {
+      opacity: 0;
+    }
+    80%,
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes tr-valve-pulse {
+    0%,
+    79% {
+      transform: scale(1);
+    }
+    82% {
+      transform: scale(1.35);
+    }
+    85% {
+      transform: scale(1);
+    }
+    88% {
+      transform: scale(1.3);
+    }
+    91%,
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* panel values: Upstream/4 pipes swap to Boundary/7 pipes at ~48% */
+  .tr-swap-a {
+    animation: tr-swap-out 8s ease-in-out infinite both;
+  }
+  .tr-swap-b {
+    animation: tr-swap-in 8s ease-in-out infinite both;
+  }
+  @keyframes tr-swap-out {
+    0%,
+    44% {
+      opacity: 1;
+    }
+    50%,
+    93% {
+      opacity: 0;
+    }
+    99%,
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes tr-swap-in {
+    0%,
+    44% {
+      opacity: 0;
+    }
+    50%,
+    93% {
+      opacity: 1;
+    }
+    99%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tr-ring,
+    .tr-up,
+    .tr-up-1,
+    .tr-up-2,
+    .tr-up-3,
+    .tr-up-4,
+    .tr-b,
+    .tr-b-1,
+    .tr-b-2,
+    .tr-b-3,
+    .tr-b-4,
+    .tr-valve-gray,
+    .tr-valve-red,
+    .tr-swap-a,
+    .tr-swap-b {
+      animation: none;
+    }
+    .tr-ring {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .tr-up {
+      stroke-dashoffset: 0;
+      opacity: 0.25;
+    }
+    .tr-b {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .tr-valve-gray {
+      opacity: 0;
+    }
+    .tr-valve-red {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .tr-swap-a {
+      opacity: 0;
+    }
+    .tr-swap-b {
+      opacity: 1;
+    }
+  }
+</style>

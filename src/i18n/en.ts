@@ -9,6 +9,9 @@ export const ui = {
 
   // ── Navbar ──
   "nav.home": "Home",
+  "nav.solutions": "Solutions",
+  "nav.whoItsFor": "Who it's for",
+  "nav.resources": "Resources",
   "nav.pricing": "Pricing",
   "nav.blog": "Blog",
   "nav.language.es": "Cambiar a español",
@@ -17,10 +20,10 @@ export const ui = {
 
   // ── Hero ──
   "hero.brand": "epanet-js",
-  "hero.titlePart1": "The EPANET you know — but modern, enhanced, and ",
-  "hero.titleHighlight": "entirely in your browser.",
+  "hero.titlePart1": "The fastest, easiest way to ",
+  "hero.titleHighlight": "build and use hydraulic models.",
   "hero.description":
-    "No installs. No forced cloud storage. Just fast, local-first water modeling — powered by the engine you already trust.",
+    "From GIS data to a running model in minutes — then calibrate, plan, and operate your water network with confidence. Powered by the EPANET engine you trust, modernised for the way you work today.",
   "hero.cta": "Launch epanet-js. No login needed.",
   "hero.ctaSecondary": "Book a demo",
 
@@ -39,9 +42,9 @@ export const ui = {
 
   // ── Features ──
   "features.heading":
-    "epanet-js gives you full control with a local-first, browser-based EPANET experience",
+    "Work faster, with more confidence, from first model to daily use",
   "features.subheading":
-    "Model quickly and securely with local-first file-saving and a faster, smoother interface — all on top of the trusted EPANET engine.",
+    "An intuitive, modern interface that gets you to answers quickly — local-first and secure, all on top of the trusted EPANET engine.",
 
   "features.dataControl.title": "Your data, your control",
   "features.dataControl.p1":
@@ -129,27 +132,34 @@ export const ui = {
   "pricing.billedMonthly": "Billed monthly",
   "pricing.billedYearly": "Billed yearly",
 
+  "pricing.modelBuilderTooltip":
+    "The new Pro model builder adds pipe year & materials, projection preservation and multiple languages, with custom attributes and null values coming soon. The Legacy builder is kept for maintenance only.",
+
   "pricing.free.name": "Free",
   "pricing.free.titleDescription": "For everyone.",
   "pricing.free.description": "",
-  "pricing.free.feature1": "Web based EPANET model",
-  "pricing.free.feature2": "Background maps and satellite",
-  "pricing.free.feature3": "Automated Elevations",
-  "pricing.free.feature4": "No limits on sizes",
-  "pricing.free.feature5": "Community Support",
+  "pricing.free.feature1": "Web-based EPANET model",
+  "pricing.free.feature2": "Legacy model builder",
+  "pricing.free.feature3": "Background maps and satellite",
+  "pricing.free.feature4": "Automated elevations",
+  "pricing.free.feature5": "No limits on sizes",
+  "pricing.free.feature6": "Community support",
   "pricing.free.button": "Launch epanet-js now",
 
   "pricing.pro.name": "Pro",
   "pricing.pro.titleDescription": "Advanced modeling & scenarios",
   "pricing.pro.description": "Individual named license",
-  "pricing.pro.featureSubtitle": "Everything in free, and:",
-  "pricing.pro.feature1": "Professional support",
-  "pricing.pro.feature2": "Custom layers",
+  "pricing.pro.featureSubtitle": "Everything in Free, and:",
+  "pricing.pro.feature1": "Scenarios",
+  "pricing.pro.feature2": "Pro model builder",
+  "pricing.pro.feature3": "Professional support",
+  "pricing.pro.feature4": "Custom attributes",
+  "pricing.pro.feature5": "Custom map layers",
+  "pricing.pro.feature6": "Custom elevation sources",
   "pricing.pro.comingSoonSubtitle": "Coming soon:",
-  "pricing.pro.comingSoon1": "Scenarios",
-  "pricing.pro.comingSoon2": "Cloud storage",
-  "pricing.pro.comingSoon3": "Point in time restore - 30 days",
-  "pricing.pro.comingSoon4": "Demand analysis",
+  "pricing.pro.comingSoon1": "Cloud storage",
+  "pricing.pro.comingSoon2": "Point in time restore - 30 days",
+  "pricing.pro.comingSoon3": "Demand analysis",
   "pricing.pro.button": "Get Pro",
   "pricing.pro.popular": "Most popular",
 
@@ -180,16 +190,17 @@ export const ui = {
     "Available for non-commercial projects, learning, and student work.",
 
   "pricing.personal.name": "Personal",
-  "pricing.personal.description": "For curious minds and personal growth.",
-  "pricing.personal.limitationSubtitle": "Everything in pro, but:",
-  "pricing.personal.limitation1": "Community support only",
-  "pricing.personal.limitation2": "Non-commercial usage",
+  "pricing.personal.description": "Try it out yourself.",
+  "pricing.personal.limitationSubtitle": "Everything in Pro, but:",
+  "pricing.personal.limitation1": "No Pro model builder",
+  "pricing.personal.limitation2": "No professional support",
+  "pricing.personal.limitation3": "Non-commercial usage",
   "pricing.personal.button": "Buy personal access",
 
   "pricing.education.name": "Education",
   "pricing.education.description": "Free for students and teachers.",
-  "pricing.education.limitationSubtitle": "Everything in pro, but:",
-  "pricing.education.limitation1": "Community support only",
+  "pricing.education.limitationSubtitle": "Everything in Personal for free!",
+  "pricing.education.limitation1": "Requires a school email",
   "pricing.education.limitation2": "Non-commercial usage",
   "pricing.education.button": "Use your school email account",
 

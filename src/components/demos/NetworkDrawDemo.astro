@@ -1,0 +1,401 @@
+---
+// Drawing tools demo: pipes drawn click by click over the basemap, the cursor
+// leading each segment and a junction popping in at every placed vertex.
+import { MousePointer2, Circle, Triangle, RectangleHorizontal } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import Basemap from "./Basemap.astro";
+
+// The pipe route being drawn, as vertices in the shared 400x300 map viewBox.
+const vertices: [number, number][] = [
+  [60, 150],
+  [140, 130],
+  [220, 160],
+  [300, 140],
+];
+
+const segments: [number, number, number, number][] = [
+  [60, 150, 140, 130],
+  [140, 130, 220, 160],
+  [220, 160, 300, 140],
+];
+---
+
+<AppWindow
+  bare
+  hideHeader
+  hideFooter
+  hideSimulate
+  floatingTools
+  label="Drawing a water network in epanet-js: pipes drawn over the basemap with junctions placed at each click.">
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <Basemap />
+
+    <g class="nd-scene">
+      <!-- pipe segments, drawn one click at a time -->
+      <g fill="none" stroke="#3730a3" stroke-width="2.5" stroke-linecap="round">
+        {
+          segments.map(([x1, y1, x2, y2], i) => (
+            <line
+              class={`nd-seg nd-seg-${i + 1}`}
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              pathLength="100"
+            />
+          ))
+        }
+      </g>
+
+      <!-- one-shot pulse ring on the final placed vertex -->
+      <circle
+        class="nd-ring"
+        cx="300"
+        cy="140"
+        r="8"
+        fill="none"
+        stroke="#8b5cf6"
+        stroke-width="2.5"></circle>
+
+      <!-- junctions, popping in at each placed vertex -->
+      <g stroke="#ffffff" stroke-width="1">
+        {
+          vertices.map(([x, y], i) => (
+            <circle
+              class={`nd-junction nd-j${i + 1}`}
+              cx={x}
+              cy={y}
+              r="3.5"
+              fill="#312e81"
+            />
+          ))
+        }
+      </g>
+    </g>
+  </svg>
+
+  <!-- floating toolbar — mirrors the real app's absolute top-2 centered bar -->
+  <div class="absolute top-2 inset-x-0 z-10 flex justify-center pointer-events-none" aria-hidden="true">
+    <div class="pointer-events-none flex items-center bg-white rounded border border-gray-200 shadow-md p-[4px] gap-0">
+      <!-- pointer -->
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded text-gray-400">
+        <MousePointer2 size={14} />
+      </span>
+      <!-- pipe — active -->
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded bg-violet-500 text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+          <path d="M4 15v6a.997.997 0 0 1-1 1 .997.997 0 0 1-1-1V3a.997.997 0 0 1 1-1 .997.997 0 0 1 1 1v6h16V3a.997.997 0 0 1 1-1 .997.997 0 0 1 1 1v18a.997.997 0 0 1-1 1 .997.997 0 0 1-1-1v-6H4Z" />
+        </svg>
+      </span>
+      <!-- circle / junction -->
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded text-gray-400">
+        <Circle size={14} />
+      </span>
+      <!-- triangle / reservoir -->
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded text-gray-400">
+        <Triangle size={14} />
+      </span>
+      <!-- rectangle / tank -->
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded text-gray-400">
+        <RectangleHorizontal size={14} />
+      </span>
+      <!-- valve -->
+      <span class="flex items-center justify-center w-[24px] h-[24px] rounded text-gray-400">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" width="14" height="14">
+          <path d="M3 3v18L21 3v18L3 3"/>
+        </svg>
+      </span>
+    </div>
+  </div>
+
+  <!--
+    Cursor: a full-size layer translated by container percentages so the icon
+    at its top-left corner lands on each vertex.
+  -->
+  <div
+    class="nd-cursor pointer-events-none absolute left-0 top-0 w-full h-full"
+    aria-hidden="true">
+    <MousePointer2
+      size={32}
+      fill="#ffffff"
+      className="-ml-0.5 -mt-0.5 text-gray-700 drop-shadow-sm"
+    />
+  </div>
+
+  <!-- drawing hint chip -->
+  <div
+    class="nd-chip absolute bottom-[15px] left-[15px] bg-white rounded-lg border border-gray-200 shadow-md px-5 py-[15px]">
+    <p class="flex items-center gap-2.5 text-[12px] font-medium text-gray-700">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" class="text-violet-600">
+        <path d="M4 15v6a.997.997 0 0 1-1 1 .997.997 0 0 1-1-1V3a.997.997 0 0 1 1-1 .997.997 0 0 1 1 1v6h16V3a.997.997 0 0 1 1-1 .997.997 0 0 1 1 1v18a.997.997 0 0 1-1 1 .997.997 0 0 1-1-1v-6H4Z" />
+      </svg>
+      Drawing pipe P-12
+    </p>
+    <p class="mt-[5px] text-[12px] text-gray-400">Click to add a junction</p>
+  </div>
+</AppWindow>
+
+<style>
+  /* The whole drawn route fades together at the end of the 7s cycle. */
+  .nd-scene {
+    animation: nd-scene 7s linear infinite both;
+  }
+  @keyframes nd-scene {
+    0%,
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Segments draw sequentially, each trailing the cursor by ~1% of cycle. */
+  .nd-seg {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation-duration: 7s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .nd-seg-1 {
+    animation-name: nd-seg-1;
+  }
+  .nd-seg-2 {
+    animation-name: nd-seg-2;
+  }
+  .nd-seg-3 {
+    animation-name: nd-seg-3;
+  }
+  @keyframes nd-seg-1 {
+    0%,
+    9% {
+      stroke-dashoffset: 100;
+    }
+    21%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes nd-seg-2 {
+    0%,
+    24% {
+      stroke-dashoffset: 100;
+    }
+    36%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes nd-seg-3 {
+    0%,
+    39% {
+      stroke-dashoffset: 100;
+    }
+    51%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Junctions pop in the moment the route reaches their vertex. */
+  .nd-junction {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0);
+    animation-duration: 7s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .nd-j1 {
+    animation-name: nd-j1;
+  }
+  .nd-j2 {
+    animation-name: nd-j2;
+  }
+  .nd-j3 {
+    animation-name: nd-j3;
+  }
+  .nd-j4 {
+    animation-name: nd-j4;
+  }
+  @keyframes nd-j1 {
+    0%,
+    6% {
+      transform: scale(0);
+    }
+    7.5% {
+      transform: scale(1.3);
+    }
+    9%,
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes nd-j2 {
+    0%,
+    21% {
+      transform: scale(0);
+    }
+    22.5% {
+      transform: scale(1.3);
+    }
+    24%,
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes nd-j3 {
+    0%,
+    36% {
+      transform: scale(0);
+    }
+    37.5% {
+      transform: scale(1.3);
+    }
+    39%,
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes nd-j4 {
+    0%,
+    51% {
+      transform: scale(0);
+    }
+    52.5% {
+      transform: scale(1.3);
+    }
+    54%,
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* One pulse ring when the last vertex is placed. */
+  .nd-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    animation: nd-ring 7s ease-out infinite both;
+  }
+  @keyframes nd-ring {
+    0%,
+    51% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    54% {
+      opacity: 0.8;
+    }
+    63%,
+    100% {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+  }
+
+  /*
+    Cursor waypoints as container percentages. The 400x300 viewBox is
+    cover-cropped into the 16/10 canvas, so x maps to x/4 % and the visible
+    y span is 25-275, mapping y to (y - 25)/2.5 %:
+    (60,150) -> 15%,50%  (140,130) -> 35%,42%
+    (220,160) -> 55%,54% (300,140) -> 75%,46%
+  */
+  .nd-cursor {
+    animation: nd-cursor 7s ease-in-out infinite both;
+  }
+  @keyframes nd-cursor {
+    0% {
+      transform: translate(7.5%, 68%);
+      opacity: 0;
+    }
+    3% {
+      opacity: 1;
+    }
+    6%,
+    8% {
+      transform: translate(15%, 50%);
+    }
+    20%,
+    23% {
+      transform: translate(35%, 42%);
+    }
+    35%,
+    38% {
+      transform: translate(55%, 54%);
+    }
+    50%,
+    55% {
+      transform: translate(75%, 46%);
+    }
+    74% {
+      transform: translate(79%, 53%);
+    }
+    92% {
+      transform: translate(81.5%, 57%);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(81.5%, 57%);
+      opacity: 0;
+    }
+  }
+
+  .nd-chip {
+    opacity: 0;
+    animation: nd-chip 7s linear infinite both;
+  }
+  @keyframes nd-chip {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    4% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nd-scene,
+    .nd-seg,
+    .nd-junction,
+    .nd-ring,
+    .nd-cursor,
+    .nd-chip {
+      animation: none;
+    }
+    .nd-scene {
+      opacity: 1;
+    }
+    .nd-seg {
+      stroke-dashoffset: 0;
+    }
+    .nd-junction {
+      transform: scale(1);
+    }
+    .nd-ring {
+      opacity: 0;
+    }
+    .nd-cursor {
+      opacity: 0;
+    }
+    .nd-chip {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

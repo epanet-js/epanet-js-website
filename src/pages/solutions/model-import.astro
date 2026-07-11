@@ -1,0 +1,266 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import Media from "@components/marketing/Media.astro";
+import InpCompatReportDemo from "@components/demos/InpCompatReportDemo.astro";
+import ProjectionFinderDemo from "@components/demos/ProjectionFinderDemo.astro";
+import ResultsExportDemo from "@components/demos/ResultsExportDemo.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { FileText, CheckCircle2, MapPin, Download } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: FileText,
+    title: "Standard formats, no converters",
+    description:
+      "Open a .inp directly. No conversion utilities, no intermediate exports, no format of our own you're forced into.",
+  },
+  {
+    icon: CheckCircle2,
+    title: "The same engine, the same results",
+    description:
+      "epanet-js runs the EPANET 2.3 toolkit unmodified, so an imported model simulates exactly as it does in EPANET.",
+  },
+  {
+    icon: MapPin,
+    title: "On the map in seconds",
+    description:
+      "The projection finder places a model with local coordinates onto the basemap, with no reprojection beforehand.",
+  },
+  {
+    icon: Download,
+    title: "Data out as easily as data in",
+    description:
+      "Export the model and results to .inp, GeoJSON, CSV, Shapefile, or XLSX whenever you need to work elsewhere.",
+  },
+];
+
+const related = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) => i.href !== "/solutions/model-import")
+  .slice(0, 3);
+
+const faqs = [
+  {
+    question: "What formats does epanet-js open?",
+    answer:
+      "Standard EPANET <strong>.inp</strong> files, and epanet-js's own <strong>.ejsdb</strong> project file. Since every major modeling platform can export .inp, that covers models built almost anywhere.",
+  },
+  {
+    question: "What's the difference between model import and GIS import?",
+    answer:
+      "Model import brings in a finished hydraulic model, with demands, patterns, and controls already defined. GIS import builds a new model from your asset data, such as pipe shapefiles. If you're starting from GIS rather than from a model, see <a href='/solutions/model-build' class='font-medium text-indigo-600 hover:text-indigo-800 transition-colors'>model building</a>.",
+  },
+  {
+    question: "How do I move a model from InfoWater, WaterCAD, or InfoWorks?",
+    answer:
+      "Export a .inp from the tool you're in and open it in epanet-js. InfoWater Pro exports through its Exchange menu, WaterCAD and WaterGEMS through File &gt; Export &gt; EPANET, and InfoWorks WS Pro exports to EPANET v2 with caveats Autodesk documents. The comparison pages cover what carries across from <a href='/compare/epanet-js-vs-infowater' class='font-medium text-indigo-600 hover:text-indigo-800 transition-colors'>InfoWater Pro</a>, <a href='/compare/epanet-js-vs-watercad-watergems' class='font-medium text-indigo-600 hover:text-indigo-800 transition-colors'>WaterCAD and WaterGEMS</a>, and <a href='/compare/epanet-js-vs-infoworks-ws-pro' class='font-medium text-indigo-600 hover:text-indigo-800 transition-colors'>InfoWorks WS Pro</a> in detail.",
+  },
+  {
+    question: "What does .ejsdb store that .inp can't?",
+    answer:
+      "Everything a standard .inp holds, plus the data the EPANET format has no place for: customer points and zones among them. You can keep working in plain .inp if interchange matters more, and save to .ejsdb when you want the whole project in one file.",
+  },
+  {
+    question: "What if my model has no real-world coordinates?",
+    answer:
+      "Open it anyway. The projection finder appears when coordinates aren't recognized: search by the projection's name or EPSG code, or by the town the network serves, and pick the candidate that seats the model correctly on the basemap. The model stays in its original coordinate system throughout.",
+  },
+  {
+    question: "Does my model stay on my machine?",
+    answer:
+      "Yes. epanet-js is local-first: your model and results live and simulate on your machine, and opening a file doesn't upload it anywhere. See <a href='/security' class='font-medium text-indigo-600 hover:text-indigo-800 transition-colors'>security</a> for the details.",
+  },
+];
+---
+
+<Layout
+  title="Model import"
+  description="Bring an existing hydraulic model into epanet-js from any platform and keep working on the open EPANET engine."
+  lang={lang}>
+  <PageHero
+    title="Bring your existing model into epanet-js"
+    subtitle="Import a model you already have and pick up where you left off, on the open EPANET engine.">
+    <Media
+      slot="media"
+      src="/assets/blog/progress-report/2026-03/2026-03-00-projection.png"
+      alt="An imported model placed on a real-world basemap with the network projection finder in epanet-js."
+    />
+  </PageHero>
+
+  <ProseSection title="Start from the model you already have">
+    <p>
+      Models outlive the tools they were built in. They arrive from a previous
+      consultant, an expired license, a colleague who has moved on, and the
+      question is always the same: can I open this and keep working? With
+      epanet-js the answer is yes, because it works in the format the whole
+      industry already shares.
+    </p>
+    <p>
+      Every major modeling platform reads and writes EPANET <strong>.inp</strong>
+      files. epanet-js opens them directly, places them on a real-world basemap,
+      and runs them on the same engine that produced their results in the first
+      place. There is no migration project, just a file to open.
+    </p>
+  </ProseSection>
+
+  <ContentMediaRow title="Open any EPANET .inp">
+    <p>
+      epanet-js fully supports standard .inp files on the EPANET 2.3 engine (the
+      current toolkit, 2.3.5, run unmodified), so an imported model behaves
+      exactly as it does in EPANET: the same solver, the same options, the same
+      numbers. Data that other tools often drop, such as energy price and
+      quality patterns, is imported and stored so nothing is lost moving
+      between programs.
+    </p>
+    <p>
+      Alongside .inp there's the native <strong>.ejsdb</strong> project file. It
+      stores everything a .inp can, plus the data that doesn't fit the EPANET
+      format, customer points and zones among them, so a project grows beyond
+      what .inp was designed to hold without leaving the standard behind.
+    </p>
+    <Media
+      slot="media"
+      src="/assets/blog/progress-report/2026-05/2026-05-02-file-format.webp"
+      alt="The epanet-js .ejsdb project file, which stores customer points and zones that a standard .inp can't."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="An import report you can trust" reverse>
+    <p>
+      An inherited model deserves more than a silent open. When epanet-js reads
+      a .inp it reports what it found, section by section: how many junctions,
+      pipes, and demand patterns came in, and which items deserve a closer look,
+      such as rule-based controls whose behavior you'll want to confirm.
+    </p>
+    <p>
+      That turns the first hour with an unfamiliar model from archaeology into
+      review. You know immediately whether the file is complete, what scale
+      you're dealing with, and where to focus before trusting the results.
+    </p>
+    <InpCompatReportDemo slot="media" framed />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Put an inherited model on the map in seconds">
+    <p>
+      Many older models live in a local coordinate grid, and putting one onto a
+      real map used to mean reprojecting the coordinates in an external tool
+      before you could start. epanet-js handles it at import. When a file's
+      coordinates aren't geographic, the projection finder opens: search by the
+      projection's name or EPSG code, or simply by the town the network serves,
+      and candidate coordinate systems are listed for you to try.
+    </p>
+    <p>
+      Pick one and the network seats onto the basemap, so you can confirm at a
+      glance that the pipes follow the streets. The model stays in its original
+      coordinate system; nothing is converted or altered.
+    </p>
+    <ProjectionFinderDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Coming from InfoWater, WaterCAD, or InfoWorks">
+    <p>
+      The incumbent platforms all speak EPANET. InfoWater Pro exports .inp from
+      its Exchange menu, WaterCAD and WaterGEMS through File &gt; Export &gt;
+      EPANET, and InfoWorks WS Pro exports to EPANET v2 with documented caveats.
+      The network, demands, patterns, and controls carry across as standard
+      EPANET data; tool-specific extras such as scenario configurations stay
+      behind.
+    </p>
+    <p>
+      That also means you don't have to choose. Plenty of teams run epanet-js
+      alongside an incumbent, doing day-to-day work here and moving the model
+      back when a client or a specific feature requires it. The comparison pages
+      for <a
+        href="/compare/epanet-js-vs-infowater"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >InfoWater Pro</a
+      >, <a
+        href="/compare/epanet-js-vs-watercad-watergems"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >WaterCAD and WaterGEMS</a
+      >, and <a
+        href="/compare/epanet-js-vs-infoworks-ws-pro"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >InfoWorks WS Pro</a
+      > cover the round trip in both directions.
+    </p>
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Data out as easily as data in" reverse>
+    <p>
+      Import is only half of avoiding lock-in. Everything you build in epanet-js
+      leaves as cleanly as it arrived: save the model as a standard .inp, export
+      assets to GeoJSON, CSV, Shapefile, or XLSX, and download full time-series
+      simulation results to CSV or XLSX with exactly the properties you choose.
+    </p>
+    <p>
+      Your GIS team gets layers it can use, your reports get tables, and the
+      next tool in the chain, whatever it is, gets a format it reads. The model
+      you import today is never trapped here tomorrow.
+    </p>
+    <ResultsExportDemo slot="media" />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    heading="What model import gives you"
+    items={benefits}
+    columns={4}
+  />
+
+  <CtaSection
+    heading="Bring your model across"
+    subheading="Open your .inp in epanet-js free and see it on the map in minutes, or book a demo to talk through your migration."
+    dark={false}
+  />
+
+  <ProseSection title="Import is the start, not the point">
+    <p>
+      Once the model is in, everything else on this site applies to it: run
+      extended period simulations and <a
+        href="/solutions/operational-modeling"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >operational scenarios</a
+      >, check <a
+        href="/solutions/fire-flow"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >fire flow</a
+      > capacity, analyze <a
+        href="/solutions/water-quality"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >water quality</a
+      >, or bring in customer data for <a
+        href="/solutions/demand-analysis"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >demand analysis</a
+      >. An inherited model stops being a liability and becomes the asset it was
+      supposed to be.
+    </p>
+  </ProseSection>
+
+  <CardGrid
+    heading="Where to next"
+    subheading="Importing your model is the first step."
+    items={related}
+    columns={3}
+  />
+
+  <FaqList
+    subheading="The questions teams ask most about bringing an existing model into epanet-js."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Open your model where the work is easier"
+    subheading="Bring your .inp into epanet-js and keep every export path open. Launch epanet-js or book a demo."
+  />
+</Layout>

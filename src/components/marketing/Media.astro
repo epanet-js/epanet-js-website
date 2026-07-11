@@ -1,0 +1,44 @@
+---
+interface Props {
+  src: string;
+  alt?: string;
+  poster?: string;
+  /** Set false for media with transparent backgrounds that shouldn't be boxed. */
+  frame?: boolean;
+  class?: string;
+}
+
+const { src, alt = "", poster, frame = true, class: className } = Astro.props;
+
+const isVideo = src.endsWith(".mp4") || src.endsWith(".webm");
+---
+
+{
+  isVideo ? (
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster={poster}
+      class:list={[
+        "w-full",
+        frame && "rounded-xl border border-gray-200 shadow-lg",
+        className,
+      ]}>
+      <source src={src} type="video/mp4" />
+    </video>
+  ) : (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      class:list={[
+        "w-full",
+        frame && "rounded-xl border border-gray-200 shadow-lg",
+        className,
+      ]}
+    />
+  )
+}

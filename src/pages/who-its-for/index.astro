@@ -1,0 +1,134 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { whoItsFor, solutions } from "@config/navigation";
+import { Zap, Lock, Cpu, Scale } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const solutionItems = solutions.columns.flatMap((c) => c.items);
+const audienceItems = whoItsFor.columns[0].items;
+
+const benefits = [
+  {
+    icon: Zap,
+    title: "Speed to a working model",
+    description:
+      "Whatever you do with the network, you get from data to a running model in minutes, not weeks.",
+  },
+  {
+    icon: Lock,
+    title: "Own your data",
+    description:
+      "Local-first by default. Your network — or your client's — stays on your machine unless you choose otherwise.",
+  },
+  {
+    icon: Cpu,
+    title: "The real EPANET engine",
+    description:
+      "The same trusted engine the industry runs, so skills and models carry across teams and tools.",
+  },
+  {
+    icon: Scale,
+    title: "Affordable and open",
+    description:
+      "A free tier, free for education, fair per-seat pricing, and source that's public from day one.",
+  },
+];
+
+const faqs = [
+  {
+    question: "Is there a free option?",
+    answer:
+      "Yes. You can launch epanet-js and build models on the free tier without logging in. Paid plans add professional features and team licensing — see <a href=\"/pricing\">pricing</a>.",
+  },
+  {
+    question: "Is it really free for education?",
+    answer:
+      "Students and teachers get free access for non-commercial learning and coursework, with eligibility detected from your school email. See <a href=\"/who-its-for/education\">education</a> for how it works.",
+  },
+  {
+    question: "Do you support humanitarian and nonprofit work?",
+    answer:
+      "Yes — affordable and free options mean more of your funding reaches the communities you serve. Tell us about your project on the <a href=\"/who-its-for/humanitarian-ngos\">humanitarian &amp; NGOs</a> page.",
+  },
+  {
+    question: "How does licensing work for a team?",
+    answer:
+      "Teams use shared, per-seat licensing with self-service seat management and invoicing. The full breakdown is on the <a href=\"/pricing\">pricing page</a>.",
+  },
+  {
+    question: "Can consultants keep client data confidential?",
+    answer:
+      "Yes. Because epanet-js is local-first, sensitive client data stays on your machine rather than someone else's cloud. Read more on <a href=\"/security\">security</a>.",
+  },
+];
+---
+
+<Layout
+  title="Who it's for"
+  description="Whatever your role — utility, consultant, educator, or NGO — epanet-js helps you build and use hydraulic models faster, keep your data in your hands, and work on the trusted EPANET engine."
+  lang={lang}>
+  <PageHero
+    title="Whatever your role, get to the answer faster"
+    subtitle="epanet-js is built for everyone who works with water networks — from utilities running the system every day to students learning the craft. Find your fit."
+    align="center"
+  />
+
+  <ProseSection
+    title="Different jobs, the same need"
+    align="center">
+    <p>
+      A utility operator, a consultant on a deadline, a professor in a computer
+      lab, and an engineer designing a community supply are doing very different
+      work. What they share is the need to get to a trustworthy model quickly,
+      keep their data in their hands, and not have the software get in the way.
+    </p>
+    <p>
+      That's what epanet-js is built for. The same tool serves all of them
+      because it's fast to a working model, local-first, runs anywhere, and is
+      built on the EPANET engine the whole industry already trusts.
+    </p>
+  </ProseSection>
+
+  {audienceItems.length > 0 && <CardGrid items={audienceItems} columns={4} />}
+
+  <BenefitGrid
+    heading="The common ground, whatever your role"
+    items={benefits}
+    columns={4}
+  />
+
+  <CtaSection
+    heading="Ready to see it for your team?"
+    subheading="Launch epanet-js free, or book a demo tailored to how you work."
+    dark={false}
+  />
+
+  {
+    solutionItems.length > 0 && (
+      <CardGrid
+        heading="See what epanet-js can do"
+        subheading="The everyday jobs the tool helps teams get done."
+        items={solutionItems}
+        columns={4}
+      />
+    )
+  }
+
+  <FaqList
+    subheading="Common questions about fit, access, and pricing."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Find your fit"
+    subheading="Whatever your role, the fastest way to see it is to try it. Launch epanet-js free, or book a demo."
+  />
+</Layout>

@@ -5,6 +5,20 @@ import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 import react from "@astrojs/react";
 import vercel from "@astrojs/vercel";
+import featureFlags from "./src/config/feature-flags.json";
+
+// Staged-launch flags: pages flagged off in feature-flags.json still build,
+// but are kept out of the sitemap (they're also unlinked from nav/footer —
+// see src/config/feature-flags.ts). Prefix matching means disabling
+// "/compare" also drops the three vs-pages, and a disabled section drops
+// its hub and every child page.
+const flagDisabledPaths = [
+  ...Object.entries(featureFlags.pages)
+    .filter(([, enabled]) => !enabled)
+    .map(([path]) => path),
+  ...(featureFlags.sections.solutions ? [] : ["/solutions"]),
+  ...(featureFlags.sections.whoItsFor ? [] : ["/who-its-for"]),
+];
 
 // https://astro.build/config
 export default defineConfig({
@@ -67,6 +81,14 @@ export default defineConfig({
     mdx(),
     icon(),
     sitemap({
+      filter: (page) => {
+        // Internal animation gallery; noindex and kept out of the sitemap.
+        if (page === "https://epanetjs.com/demos/") return false;
+        const path = new URL(page).pathname.replace(/\/$/, "");
+        return !flagDisabledPaths.some(
+          (disabled) => path === disabled || path.startsWith(disabled + "/"),
+        );
+      },
       i18n: {
         defaultLocale: "en",
         locales: { en: "en", es: "es" },

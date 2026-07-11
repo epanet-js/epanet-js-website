@@ -1,0 +1,366 @@
+---
+// Network review demo: a checklist of model checks (orphan assets, pipe
+// proximity, crossing pipes, connectivity) with the map flagging each issue
+// in turn and a count ticking down as one is resolved.
+import NetworkMap from "./NetworkMap.astro";
+
+const checks: {
+  label: string;
+  value: string;
+  resolvedValue?: string;
+  sel?: string;
+}[] = [
+  { label: "Orphan assets", value: "3", resolvedValue: "2", sel: "nr-sel-1" },
+  { label: "Pipe proximity", value: "5", sel: "nr-sel-2" },
+  { label: "Crossing pipes", value: "2" },
+  { label: "Connectivity", value: "1 subnetwork" },
+];
+
+// Timing: named second-based constants, generated into % keyframe stops
+// (see docs/animated-diagram-best-practices.md §6). OLD_* mirrors the
+// original hand-picked 8s cycle for the interaction phase (row 1 highlighted
+// -> check/count resolves -> row 2 highlighted), reused via SHIFT below so
+// every stage in that phase stays exactly as far apart from its neighbors as
+// it always was — only the anchor (when the highlight phase starts) moves.
+const OLD_CYCLE = 8;
+const OLD_FILL_END = 0.13 * OLD_CYCLE; // 1.04s
+const OLD_ROW_FADE_IN = 0.07 * OLD_CYCLE; // 0.56s
+const OLD_ROW_HOLD_END = 0.9 * OLD_CYCLE;
+const OLD_ROW_FADE_END = 0.96 * OLD_CYCLE;
+const OLD_SEL1_START = 0.15 * OLD_CYCLE;
+const OLD_SEL1_FULL = 0.19 * OLD_CYCLE;
+const OLD_SEL1_HOLD_END = 0.5 * OLD_CYCLE;
+const OLD_SEL1_FADE_END = 0.56 * OLD_CYCLE;
+const OLD_RING1_HOLD_END = 0.36 * OLD_CYCLE;
+const OLD_RING1_FADE_END = 0.4 * OLD_CYCLE;
+const OLD_COUNT_START = 0.37 * OLD_CYCLE;
+const OLD_COUNT_END = 0.43 * OLD_CYCLE;
+const OLD_CHECK_POP = 0.41 * OLD_CYCLE;
+const OLD_CHECK_SETTLE = 0.45 * OLD_CYCLE;
+const OLD_SEL2_START = 0.52 * OLD_CYCLE;
+const OLD_SEL2_FULL = 0.58 * OLD_CYCLE;
+const OLD_RING2_START = 0.54 * OLD_CYCLE;
+const OLD_RING2_FULL = 0.59 * OLD_CYCLE;
+
+const FILL_DURATION = OLD_FILL_END + 1; // fill takes 1s longer
+const GAP_FILL_TO_ROWS = 0.5; // popover starts expanding 0.5s after the bar hits 100%
+const BOX_TRIGGER = FILL_DURATION + GAP_FILL_TO_ROWS;
+
+// The popover grows from a title-only bar to its full height (ElevationDemo's
+// grid-rows 0fr -> 1fr trick), then rows fade in one at a time inside that
+// already-expanded space.
+const BOX_EXPAND_DURATION = 0.5;
+const BOX_EXPAND_END = BOX_TRIGGER + BOX_EXPAND_DURATION;
+
+const ROW_STAGGER = 0.25;
+const ROW_FADE_IN = OLD_ROW_FADE_IN;
+const rowStart = (i: number) => BOX_EXPAND_END + i * ROW_STAGGER;
+const ROWS_DONE = rowStart(checks.length - 1) + ROW_FADE_IN;
+
+// The row highlight only starts once every row has settled in.
+const GAP_ROWS_TO_SEL = 0.5;
+const SEL1_START = ROWS_DONE + GAP_ROWS_TO_SEL;
+const SHIFT = SEL1_START - OLD_SEL1_START;
+
+const SEL1_FULL = OLD_SEL1_FULL + SHIFT;
+const SEL1_HOLD_END = OLD_SEL1_HOLD_END + SHIFT;
+const SEL1_FADE_END = OLD_SEL1_FADE_END + SHIFT;
+const RING1_HOLD_END = OLD_RING1_HOLD_END + SHIFT;
+const RING1_FADE_END = OLD_RING1_FADE_END + SHIFT;
+const COUNT_START = OLD_COUNT_START + SHIFT;
+const COUNT_END = OLD_COUNT_END + SHIFT;
+const CHECK_POP = OLD_CHECK_POP + SHIFT;
+const CHECK_SETTLE = OLD_CHECK_SETTLE + SHIFT;
+const SEL2_START = OLD_SEL2_START + SHIFT;
+const SEL2_FULL = OLD_SEL2_FULL + SHIFT;
+const RING2_START = OLD_RING2_START + SHIFT;
+const RING2_FULL = OLD_RING2_FULL + SHIFT;
+
+// Where the content rows, the "Pipe proximity" highlight, and the map
+// markers (ring 2 / checkmark) hold, then fade out together.
+const INTERACTION_HOLD_END = OLD_ROW_HOLD_END + SHIFT;
+const INTERACTION_FADE_END = OLD_ROW_FADE_END + SHIFT;
+
+// Once the rows have faded out, the popover collapses back to its
+// title-only opening size (ElevationDemo's el-collapse closing phase).
+const COLLAPSE_WAIT = 0.3;
+const COLLAPSE_DURATION = 0.5;
+const BOX_COLLAPSE_START = INTERACTION_FADE_END + COLLAPSE_WAIT;
+const BOX_COLLAPSE_END = BOX_COLLAPSE_START + COLLAPSE_DURATION;
+
+const END_HOLD = 1; // hold the collapsed state for 1s before the loop restarts
+const CYCLE = BOX_COLLAPSE_END + END_HOLD;
+const pct = (seconds: number) => +((seconds / CYCLE) * 100).toFixed(3);
+
+// Each row gets its own named keyframe (rather than one shared keyframe +
+// per-row animation-delay) so its stagger is baked into absolute keyframe
+// percentages instead of drifting from a zero-delay sibling animation. Rows
+// fade in on their own staggered schedule, then all fade out together at
+// INTERACTION_HOLD_END/INTERACTION_FADE_END, in sync with the "Pipe
+// proximity" highlight and the map markers.
+const rowsCss = checks
+  .map((_, i) => {
+    const start = rowStart(i);
+    const visible = start + ROW_FADE_IN;
+    return `
+.nr-row-${i} { animation: nr-row-in-${i} ${CYCLE}s infinite both; }
+@keyframes nr-row-in-${i} {
+  0%, ${pct(start)}% { opacity: 0; transform: translateY(4px); }
+  ${pct(visible)}%, ${pct(INTERACTION_HOLD_END)}% { opacity: 1; transform: translateY(0); }
+  ${pct(INTERACTION_FADE_END)}%, 100% { opacity: 0; }
+}`;
+  })
+  .join("\n");
+const rowClasses = checks.map((_, i) => `.nr-row-${i}`).join(",\n  ");
+
+const generatedCss = `
+.nr-collapse {
+  display: grid;
+  grid-template-rows: minmax(0, 0fr);
+  animation: nr-collapse ${CYCLE}s linear infinite both;
+}
+@keyframes nr-collapse {
+  0%, ${pct(BOX_TRIGGER)}% { grid-template-rows: minmax(0, 0fr); }
+  ${pct(BOX_EXPAND_END)}% { grid-template-rows: minmax(0, 1fr); }
+  ${pct(BOX_COLLAPSE_START)}% { grid-template-rows: minmax(0, 1fr); }
+  ${pct(BOX_COLLAPSE_END)}%, 100% { grid-template-rows: minmax(0, 0fr); }
+}
+
+${rowsCss}
+
+.nr-progress-bar { width: 0; animation: nr-progress ${CYCLE}s infinite both; }
+@keyframes nr-progress {
+  0% { width: 0; opacity: 1; }
+  ${pct(FILL_DURATION)}% { width: 100%; opacity: 1; }
+  ${pct(BOX_COLLAPSE_START)}% { width: 100%; opacity: 1; }
+  ${pct(BOX_COLLAPSE_END)}%, 100% { width: 0; opacity: 1; }
+}
+
+.nr-sel-1 { opacity: 0; animation: nr-sel1 ${CYCLE}s infinite both; }
+@keyframes nr-sel1 {
+  0%, ${pct(SEL1_START)}% { opacity: 0; }
+  ${pct(SEL1_FULL)}%, ${pct(SEL1_HOLD_END)}% { opacity: 1; }
+  ${pct(SEL1_FADE_END)}%, 100% { opacity: 0; }
+}
+.nr-sel-2 { opacity: 0; animation: nr-sel2 ${CYCLE}s infinite both; }
+@keyframes nr-sel2 {
+  0%, ${pct(SEL2_START)}% { opacity: 0; }
+  ${pct(SEL2_FULL)}%, ${pct(INTERACTION_HOLD_END)}% { opacity: 1; }
+  ${pct(INTERACTION_FADE_END)}%, 100% { opacity: 0; }
+}
+
+.nr-count-before { animation: nr-count-out ${CYCLE}s infinite both; }
+@keyframes nr-count-out {
+  0%, ${pct(COUNT_START)}% { opacity: 1; }
+  ${pct(COUNT_END)}%, 100% { opacity: 0; }
+}
+.nr-count-after { opacity: 0; animation: nr-count-in ${CYCLE}s infinite both; }
+@keyframes nr-count-in {
+  0%, ${pct(COUNT_START)}% { opacity: 0; }
+  ${pct(COUNT_END)}%, 100% { opacity: 1; }
+}
+
+.nr-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+}
+.nr-ring-1 {
+  animation: nr-ring1-vis ${CYCLE}s both infinite, nr-ring-pulse 1.8s ease-in-out infinite;
+}
+.nr-ring-2 {
+  animation: nr-ring2-vis ${CYCLE}s both infinite, nr-ring-pulse 1.8s ease-in-out infinite;
+}
+@keyframes nr-ring1-vis {
+  0%, ${pct(SEL1_START)}% { opacity: 0; }
+  ${pct(SEL1_FULL)}%, ${pct(RING1_HOLD_END)}% { opacity: 1; }
+  ${pct(RING1_FADE_END)}%, 100% { opacity: 0; }
+}
+@keyframes nr-ring2-vis {
+  0%, ${pct(RING2_START)}% { opacity: 0; }
+  ${pct(RING2_FULL)}%, ${pct(INTERACTION_HOLD_END)}% { opacity: 1; }
+  ${pct(INTERACTION_FADE_END)}%, 100% { opacity: 0; }
+}
+@keyframes nr-ring-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+}
+
+.nr-check {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation: nr-check-in ${CYCLE}s infinite both;
+}
+@keyframes nr-check-in {
+  0%, ${pct(COUNT_START)}% { opacity: 0; transform: scale(0.5); }
+  ${pct(CHECK_POP)}% { opacity: 1; transform: scale(1.15); }
+  ${pct(CHECK_SETTLE)}%, ${pct(INTERACTION_HOLD_END)}% { opacity: 1; transform: scale(1); }
+  ${pct(INTERACTION_FADE_END)}%, 100% { opacity: 0; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nr-collapse,
+  ${rowClasses},
+  .nr-progress-bar,
+  .nr-sel-1,
+  .nr-sel-2,
+  .nr-count-before,
+  .nr-count-after,
+  .nr-ring-1,
+  .nr-ring-2,
+  .nr-check {
+    animation: none;
+  }
+  .nr-collapse {
+    grid-template-rows: minmax(0, 1fr);
+  }
+  ${rowClasses} {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .nr-progress-bar {
+    width: 100%;
+    opacity: 1;
+  }
+  .nr-sel-1 {
+    opacity: 1;
+  }
+  .nr-sel-2 {
+    opacity: 0;
+  }
+  .nr-count-before {
+    opacity: 1;
+  }
+  .nr-count-after {
+    opacity: 0;
+  }
+  .nr-ring-1 {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .nr-ring-2 {
+    opacity: 0;
+  }
+  .nr-check {
+    opacity: 0;
+  }
+}
+`;
+---
+
+<div
+  class="relative mx-auto h-80 w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
+  role="img"
+  aria-label="Diagram: a network review checklist flags model issues — orphan assets, pipe proximity, crossing pipes, connectivity — with the map highlighting each one as it's found and the count dropping as it's resolved.">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="relative h-full w-full">
+        <NetworkMap class="absolute inset-0" />
+
+        <!-- review checklist (top-left) -->
+        <div class="absolute left-4 top-4 w-52 bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+          <div class="px-3 pt-2.5 pb-2 border-b border-gray-100">
+            <div class="flex items-baseline justify-between">
+              <p class="text-xs font-semibold text-gray-700">Network review</p>
+              <p class="text-xs text-gray-400">4 checks</p>
+            </div>
+            <div class="mt-1.5 h-0.5 rounded-full bg-gray-100 overflow-hidden">
+              <div class="nr-progress-bar h-full bg-violet-500"></div>
+            </div>
+          </div>
+          <div class="nr-collapse">
+            <div class="overflow-hidden">
+              <div class="py-1">
+                {
+                  checks.map((check, i) => (
+                    <div class={`nr-row-${i} relative`}>
+                      <div class="flex items-center justify-between gap-2 px-3 py-1 border-l-2 border-transparent text-xs text-gray-600">
+                        <span>{check.label}</span>
+                        {check.resolvedValue ? (
+                          <span class="relative inline-block tabular-nums text-gray-700">
+                            <span class="nr-count-before">{check.value}</span>
+                            <span class="nr-count-after absolute inset-0">
+                              {check.resolvedValue}
+                            </span>
+                          </span>
+                        ) : (
+                          <span class="tabular-nums text-gray-700">{check.value}</span>
+                        )}
+                      </div>
+                      {check.sel && (
+                        <div
+                          class:list={[
+                            check.sel,
+                            "absolute inset-0 flex items-center justify-between gap-2 px-3 py-1 border-l-2 border-violet-500 bg-violet-50 text-xs font-medium text-violet-700",
+                          ]}>
+                          <span>{check.label}</span>
+                          {check.resolvedValue ? (
+                            <span class="relative inline-block tabular-nums">
+                              <span class="nr-count-before">{check.value}</span>
+                              <span class="nr-count-after absolute inset-0">
+                                {check.resolvedValue}
+                              </span>
+                            </span>
+                          ) : (
+                            <span class="tabular-nums">{check.value}</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- issue highlights over the map -->
+        <svg
+          viewBox="0 0 400 300"
+          preserveAspectRatio="xMidYMid slice"
+          class="absolute inset-0 w-full h-full"
+          aria-hidden="true">
+          <circle
+            class="nr-ring nr-ring-1"
+            cx="330"
+            cy="80"
+            r="8"
+            fill="none"
+            stroke="#8b5cf6"
+            stroke-width="2.5"></circle>
+          <g class="nr-check">
+            <circle
+              cx="330"
+              cy="80"
+              r="7"
+              fill="#22c55e"
+              stroke="#ffffff"
+              stroke-width="1"></circle>
+            <path
+              d="M326.8 80.3 L329.3 82.8 L333.5 77.5"
+              fill="none"
+              stroke="#ffffff"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </g>
+          <circle
+            class="nr-ring nr-ring-2"
+            cx="110"
+            cy="195"
+            r="8"
+            fill="none"
+            stroke="#8b5cf6"
+            stroke-width="2.5"></circle>
+        </svg>
+      </div>
+    </foreignObject>
+  </svg>
+</div>
+
+<style set:html={generatedCss} />

@@ -3,11 +3,13 @@
 import Container from "@components/container.astro";
 import Link from "@components/ui/link.astro";
 import Dropdown from "./dropdown.astro";
+import MegaMenu from "./mega-menu.astro";
 import { StickyHeader, Astronav, MenuItems, MenuIcon } from "astro-navbar";
 import { LogoIconAndWordmarkIcon } from "@components/landing/icons";
 import { Globe } from "lucide-react";
 import { useTranslations, localePath } from "@i18n/utils";
 import type { Locale } from "@i18n/utils";
+import { solutions, whoItsFor, resources } from "@config/navigation";
 
 interface Props {
   lang?: Locale;
@@ -18,20 +20,45 @@ const t = useTranslations(lang);
 
 const prefix = lang === "es" ? "/es" : "";
 
+// Mega-menu sections whose items are all feature-flagged off (see
+// src/config/feature-flags.ts) are dropped from the navbar entirely.
 const menuitems = [
   {
     title: t("nav.home"),
     path: prefix + "/",
   },
   {
+    type: "mega",
+    title: t("nav.solutions"),
+    columns: solutions.columns,
+    hubHref: solutions.hubHref,
+    width: "lg",
+    layout: "rows",
+  },
+  {
+    type: "mega",
+    title: t("nav.whoItsFor"),
+    columns: whoItsFor.columns,
+    hubHref: whoItsFor.hubHref,
+    width: "sm",
+  },
+  {
     title: t("nav.pricing"),
     path: prefix + "/pricing",
   },
   {
-    title: t("nav.blog"),
-    path: "/blog",  // Blog stays English-only
+    type: "mega",
+    title: t("nav.resources"),
+    columns: resources.columns,
+    width: "sm",
   },
-];
+].filter(
+  (item) =>
+    item.type !== "mega" ||
+    item.columns.some(
+      (column) => column.items.length > 0 || column.secondaryItems?.length
+    )
+);
 
 // Language switcher: link to alternate locale
 const currentPath = Astro.url.pathname;
@@ -40,7 +67,17 @@ const alternatePath = localePath(currentPath, alternateLang);
 const currentLang = lang === "en" ? "EN" : "ES";
 
 // Routes that are English-only — hide language toggle there
-const englishOnlyRoutes = ["/blog", "/cookies-policy", "/privacy-policy", "/terms-conditions"];
+const englishOnlyRoutes = [
+  "/blog",
+  "/cookies-policy",
+  "/privacy-policy",
+  "/terms-conditions",
+  "/solutions",
+  "/who-its-for",
+  "/security",
+  "/case-studies",
+  "/compare",
+];
 const isEnglishOnlyPage = englishOnlyRoutes.some(
   (route) => currentPath === route || currentPath.startsWith(route + "/")
 );
@@ -72,6 +109,17 @@ const isEnglishOnlyPage = englishOnlyRoutes.some(
               {
                 menuitems.map((item, index) => (
                   <>
+                    {item.type === "mega" && (
+                      <MegaMenu
+                        title={item.title}
+                        columns={item.columns}
+                        hubHref={item.hubHref}
+                        width={item.width}
+                        layout={item.layout}
+                        lastItem={index === menuitems.length - 1}
+                      />
+                    )}
+
                     {item.children && (
                       <Dropdown
                         title={item.title}
@@ -80,7 +128,7 @@ const isEnglishOnlyPage = englishOnlyRoutes.some(
                       />
                     )}
 
-                    {!item.children && (
+                    {!item.type && !item.children && (
                       <li>
                         <a
                           href={item.path}

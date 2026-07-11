@@ -1,0 +1,310 @@
+---
+import Features from "@components/landing/features.tsx";
+import Hero from "@components/landing/hero.tsx";
+import TrustedBy from "@components/landing/trusted-by.tsx";
+import UserDilemma from "@components/landing/user-dilemma";
+import OpenSource from "@components/landing/open-source";
+import Pricing from "@components/landing/pricing";
+import FrequentlyAskedQuestions from "@components/landing/faq.tsx";
+import WhyWeBuilt from "@components/landing/why-we-built.tsx";
+import BottomCTA from "@components/landing/bottom-cta.tsx";
+import MiddleCTA from "@components/landing/newsletter-cta";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import Media from "@components/marketing/Media.astro";
+import CalibrationReviewDemo from "@components/demos/CalibrationReviewDemo.astro";
+import FireFlowDemo from "@components/demos/FireFlowDemo.astro";
+import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions, whoItsFor } from "@config/navigation";
+import { Cpu, Lock, MonitorOff, Unlock, Server, ShieldCheck, Eye } from "lucide-react";
+import type { Locale } from "@i18n/utils";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "en" } = Astro.props;
+
+const allWorkflows = solutions.columns.flatMap((c) => c.items);
+const audienceItems = whoItsFor.columns[0].items;
+
+const linkClass =
+  "font-medium text-indigo-600 hover:text-indigo-800 transition-colors";
+
+const whyBenefits = [
+  {
+    icon: Cpu,
+    title: "The engine you trust",
+    description:
+      "Built on EPANET 2.3, the same engine the industry has relied on for decades. Open any .inp file and keep your work.",
+  },
+  {
+    icon: Lock,
+    title: "Local-first and private",
+    description:
+      "Models run and save on your machine by default. Nothing leaves your control unless you choose the cloud.",
+  },
+  {
+    icon: MonitorOff,
+    title: "Nothing to install",
+    description:
+      "Runs in any modern browser on Mac, Windows, and Linux. No installs, no IT tickets, no waiting.",
+  },
+  {
+    icon: Unlock,
+    title: "Open and affordable",
+    description:
+      "Public source from day one under an FSL license, with a free tier and fair pricing. No proprietary lock-in.",
+  },
+];
+
+const securityBenefits = [
+  {
+    icon: Lock,
+    title: "Local-first by default",
+    description:
+      "Models run and save directly on your machine. Nothing is uploaded unless you choose to.",
+  },
+  {
+    icon: Server,
+    title: "Your data, your control",
+    description:
+      "Data-residency options and a self-hosted, on-premise deployment for teams that need complete ownership.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Encrypted in transit",
+    description:
+      "All traffic is served over HTTPS/TLS, so anything that does move is encrypted end to end.",
+  },
+  {
+    icon: Eye,
+    title: "Open and auditable",
+    description:
+      "Source is public from day one, becoming fully open after two years, so our security can be reviewed.",
+  },
+];
+---
+
+<Hero lang={lang} client:load />
+<TrustedBy />
+
+<ProseSection
+  title="One tool, from the first pipe to the master plan"
+  align="center">
+  <p>
+    Building the network, loading demand, planning the field campaign,
+    calibrating, operating day to day, planning years ahead. Each stage
+    usually means a different tool, and the handoffs between them are where
+    time leaks away. epanet-js does the whole lifecycle on one model, so the
+    next step is always right where you left off.
+  </p>
+</ProseSection>
+
+{
+  allWorkflows.length > 0 && (
+    <CardGrid
+      heading="Everything you need across the modeling lifecycle"
+      subheading="From building your model to running it every day — epanet-js helps you get to the answer faster. Most workflows are available now, with more on the way."
+      items={allWorkflows}
+      columns={4}
+    />
+  )
+}
+
+<ContentMediaRow
+  title="Go from GIS to a running model in an afternoon">
+  <p>
+    Import your Shapefile, GeoJSON, CAD, or an existing <strong>.inp</strong>,
+    draw what your records don't cover, and let automatic elevations, snapping,
+    and the Network Review handle the tedious setup. What used to take weeks of
+    file-wrangling becomes a same-day job.
+  </p>
+  <p>
+    <a href="/solutions/model-build" class={linkClass}>Explore model building →</a>
+  </p>
+  <Media
+    slot="media"
+    src="/assets/blog/progress-report/2025-07/model-build-quick.mp4"
+  />
+</ContentMediaRow>
+
+<ContentMediaRow
+  title="Calibrate against the field, with an engineer in control"
+  reverse>
+  <p>
+    epanet-js breaks the network into zones, searches many parameter
+    combinations, and proposes the most likely fit, then documents every
+    option so you can accept, adjust, or reject it. A defensible calibration,
+    far faster than tuning by hand.
+  </p>
+  <p>
+    <a href="/solutions/calibration" class={linkClass}>Explore calibration →</a>
+  </p>
+  <CalibrationReviewDemo slot="media" framed />
+</ContentMediaRow>
+
+<ContentMediaRow
+  title="Answer a capacity question in a right-click">
+  <p>
+    Run available, needed, and designed fire flow across every hydrant, or
+    right-click any point for a full pressure-and-flow curve. Thousands of
+    simulations in your browser turn a week-long capacity enquiry into minutes.
+  </p>
+  <p>
+    <a href="/solutions/fire-flow" class={linkClass}>Explore fire flow →</a>
+  </p>
+  <FireFlowDemo slot="media" />
+</ContentMediaRow>
+
+<ContentMediaRow
+  title="Test the change before you touch a valve"
+  reverse>
+  <p>
+    Model a shutdown, a valve closure, or a rezoning, see the whole system
+    respond, and compare options against a baseline. Walk into the field
+    knowing what will happen, with a record you can reproduce and defend later.
+  </p>
+  <p>
+    <a href="/solutions/operational-modeling" class={linkClass}>Explore operational modeling →</a>
+  </p>
+  <Media
+    slot="media"
+    src="/assets/blog/progress-report/2025-12/time-control.mp4"
+  />
+</ContentMediaRow>
+
+<CtaSection
+  heading="See it on your own network"
+  subheading="Launch epanet-js free in your browser, with no login and no install, or book a demo to see how it fits your workflow."
+  dark={false}
+/>
+
+<UserDilemma lang={lang} />
+<Features lang={lang} client:load />
+
+<BenefitGrid
+  heading="Trusted, private, and open"
+  items={whyBenefits}
+  columns={4}
+/>
+
+{
+  audienceItems.length > 0 && (
+    <>
+      <ProseSection
+        title="Built for every role in the water industry"
+        align="center">
+        <p>
+          A utility operator, a consultant on a deadline, a professor in a computer
+          lab, and an engineer designing a community supply do very different work.
+          What they share is the need to get to a trustworthy model quickly, keep
+          their data in their hands, and not fight the software. epanet-js is built
+          for all of them.
+        </p>
+      </ProseSection>
+
+      <CardGrid
+        items={audienceItems}
+        columns={4}
+      />
+    </>
+  )
+}
+
+<ContentMediaRow
+  title="Own your network and your model">
+  <p>
+    The team responsible for the network should be able to open, understand,
+    and trust its model any day of the week. epanet-js keeps your data local by
+    default, opens your existing models without conversion, and is priced to be
+    something a utility can use every day, not a once-a-study luxury.
+  </p>
+  <p>
+    <a href="/who-its-for/utilities" class={linkClass}>For utilities →</a>
+  </p>
+  <Media
+    slot="media"
+    src="/assets/images/epanet-js-app.png"
+    alt="epanet-js in the browser showing a network with color-coded simulation results and the asset properties panel."
+  />
+</ContentMediaRow>
+
+<ContentMediaRow
+  title="Faster models, confidential by default"
+  reverse>
+  <p>
+    On a fixed-fee project, every hour spent fighting software is an hour that
+    doesn't bill. epanet-js compresses setup time, produces calibrations you
+    can defend, and keeps client data on your machine rather than someone
+    else's cloud.
+  </p>
+  <p>
+    <a href="/who-its-for/consultants" class={linkClass}>For consultants →</a>
+  </p>
+  <LocalFirstDiagram slot="media" />
+</ContentMediaRow>
+
+<ProseSection>
+  <p>
+    Teaching or learning the craft? epanet-js runs in any browser and is
+    <a href="/who-its-for/education" class={linkClass}>free for education</a>,
+    so students model on the real engine from day one. Doing humanitarian water
+    work? Professional modeling that runs on modest hardware means more of your
+    funding reaches the communities you serve. See
+    <a href="/who-its-for/humanitarian-ngos" class={linkClass}>humanitarian &amp; NGOs</a>.
+  </p>
+</ProseSection>
+
+<CtaSection
+  heading="Find the fit for your team"
+  subheading="However you work with the network, the fastest way to see it is to try it. Launch epanet-js free, or book a demo tailored to how you work."
+/>
+
+<ProseSection
+  title="Your data stays yours">
+  <p>
+    Hydraulic models hold sensitive information about critical infrastructure.
+    epanet-js is local-first by design: by default, your models never leave
+    your machine. The cloud is an option when you want it, not a requirement,
+    and for teams that need more there are data-residency options and a
+    self-hosted deployment.
+  </p>
+  <p>
+    <a href="/security" class={linkClass}>Read about security and privacy →</a>
+  </p>
+</ProseSection>
+
+<BenefitGrid items={securityBenefits} columns={4} />
+
+<MiddleCTA lang={lang} />
+<OpenSource lang={lang} />
+
+<CtaSection
+  heading="Put epanet-js to work on your network"
+  subheading="Launch it free and import your data right now, or book a demo to walk through it with us."
+  dark={false}
+/>
+
+<Pricing lang={lang} collapsibleTable client:load />
+<FrequentlyAskedQuestions lang={lang} client:load />
+
+<ProseSection
+  title="Everything connects back to one model">
+  <p>
+    Wherever you start, the rest is right where you left off. Dig into the
+    <a href="/solutions" class={linkClass}>solutions</a> across the lifecycle,
+    find the path for
+    <a href="/who-its-for" class={linkClass}>your team</a>, read how we handle
+    <a href="/security" class={linkClass}>security</a>, follow what's next on the
+    <a href="https://roadmap.epanetjs.com" target="_blank" rel="noopener noreferrer" class={linkClass}>public roadmap</a>,
+    or learn the workflow in the
+    <a href="https://help.epanetjs.com" target="_blank" rel="noopener noreferrer" class={linkClass}>Help Center</a>.
+  </p>
+</ProseSection>
+
+<WhyWeBuilt lang={lang} />
+<BottomCTA lang={lang} />

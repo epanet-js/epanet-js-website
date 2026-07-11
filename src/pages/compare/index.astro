@@ -1,0 +1,72 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { comparePages } from "@config/navigation";
+
+export const prerender = true;
+const lang = "en";
+---
+
+<Layout
+  title="Compare hydraulic modeling software"
+  description="How epanet-js compares with Autodesk InfoWater Pro, Bentley OpenFlows WaterCAD and WaterGEMS, and Autodesk InfoWorks WS Pro: features, pricing, licensing, and how to use them together."
+  lang={lang}>
+  <PageHero
+    align="center"
+    title="How epanet-js compares"
+    subtitle="Side-by-side comparisons of epanet-js and the commercial water modeling tools it works alongside. What you get, what you give up, and what each one costs."
+  />
+
+  <ProseSection title="The tools you already use" align="center">
+    <p>
+      InfoWater Pro, WaterCAD, WaterGEMS, and InfoWorks WS Pro are capable
+      products with decades of development behind them. Utilities and
+      consultants pay for them because they do real work. These comparisons
+      don't pretend otherwise.
+    </p>
+    <p>
+      They lay out the trade instead. epanet-js gives you the EPANET 2.3
+      engine, an interface built for fast day-to-day modeling, models that stay
+      on your machine, published prices with a free tier, and open source code.
+      The incumbents cover specialized analysis epanet-js doesn't, surge
+      studies and SCADA connections among them, backed by large support
+      organizations, at subscriptions that reach five figures a year on
+      Windows desktops.
+    </p>
+    <p>
+      And because models move in and out of epanet-js as standard EPANET .inp
+      files, this is never a switch-or-nothing decision. Everyday modeling can
+      live in epanet-js while a commercial seat handles the specialized
+      analysis that needs one.
+    </p>
+  </ProseSection>
+
+  <CardGrid
+    heading="Pick a comparison"
+    subheading="Each page covers features, pricing, and how the two tools work together."
+    items={comparePages}
+    columns={3}
+  />
+
+  <ProseSection title="How these comparisons are made">
+    <p>
+      Every claim about a competitor comes from public vendor documentation:
+      product pages, official help articles, published system requirements, and
+      store listings. Competitor prices are quoted only as the vendor publishes
+      them, with the date noted on each page. Our own prices come from the
+      <a
+        href="/pricing"
+        class="font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+        >pricing page</a
+      >. If you spot something out of date, tell us and we'll correct it.
+    </p>
+  </ProseSection>
+
+  <CtaSection
+    heading="See it next to your current tool"
+    subheading="Open your own model in epanet-js and judge the difference on your network, not ours."
+  />
+</Layout>

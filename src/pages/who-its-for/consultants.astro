@@ -1,0 +1,209 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import Media from "@components/marketing/Media.astro";
+import CalibrationPanel from "@components/demos/CalibrationPanel.astro";
+import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
+import ResultsExportDemo from "@components/demos/ResultsExportDemo.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { Rocket, Sparkles, ShieldCheck, Wallet } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: Rocket,
+    title: "Speed to billable insight",
+    description:
+      "Get from a client's data to a working model in minutes, so more of your time goes to analysis, not setup.",
+  },
+  {
+    icon: Sparkles,
+    title: "A modern experience",
+    description:
+      "Undo/redo, satellite basemaps, and instant simulation — the quality-of-life tools that make every project smoother.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Confidential by default",
+    description:
+      "Local-first means sensitive client data stays on your machine, not on someone else's cloud.",
+  },
+  {
+    icon: Wallet,
+    title: "Margins that work",
+    description:
+      "Affordable, per-seat pricing without the bloat — so your tooling doesn't eat your project budget.",
+  },
+];
+
+const workflows = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) =>
+    [
+      "/solutions/model-build",
+      "/solutions/calibration",
+      "/solutions/fire-flow",
+      "/solutions/operational-modeling",
+      "/solutions/field-planning",
+      "/solutions/planning",
+    ].includes(i.href),
+  );
+
+const faqs = [
+  {
+    question: "Does client data stay confidential?",
+    answer:
+      "Yes. epanet-js is local-first, so a client's network data stays on your machine and is never uploaded unless you choose to. That makes confidentiality the default, not an add-on. See <a href=\"/security\">security</a>.",
+  },
+  {
+    question: "Can I exchange models with clients on other tools?",
+    answer:
+      "Yes. epanet-js opens and works with standard EPANET <strong>.inp</strong> files, so you can take a client's existing model in and hand a model back without a proprietary format getting in the way.",
+  },
+  {
+    question: "Can I use epanet-js alongside InfoWater or WaterCAD?",
+    answer:
+      "Yes, and many consultants do. Every major platform imports and exports standard .inp, so you can do the fast model building and testing in epanet-js and deliver through the tool the client requires. See how they compare: <a href=\"/compare/epanet-js-vs-infowater\">InfoWater Pro</a>, <a href=\"/compare/epanet-js-vs-watercad-watergems\">WaterCAD / WaterGEMS</a>, and <a href=\"/compare/epanet-js-vs-infoworks-ws-pro\">InfoWorks WS Pro</a>.",
+  },
+  {
+    question: "How does licensing work for a consultancy?",
+    answer:
+      "Teams use shared, per-seat licensing with self-service seat management and invoicing, so you can scale up for a big project and back down afterward. The full breakdown is on the <a href=\"/pricing\">pricing page</a>.",
+  },
+  {
+    question: "Are the calibrated models defensible?",
+    answer:
+      "That's the point of assisted calibration. Every suggested change is recorded with its reasoning and the alternatives considered, so your deliverable comes with a clear, auditable trail. See <a href=\"/solutions/calibration\">calibration</a>.",
+  },
+  {
+    question: "How quickly can I get a new starter productive?",
+    answer:
+      "There's nothing to install and the interface is modern, so a new engineer can open a browser and be building a real model the same day, rather than spending a week learning the software's quirks.",
+  },
+];
+---
+
+<Layout
+  title="For consultants"
+  description="Build models faster and deliver more for every client. epanet-js gives consultants a fast, modern, local-first modeling tool with defensible assisted calibration and EPANET-compatible interchange."
+  lang={lang}>
+  <PageHero
+    title="Build models faster, deliver more for every client"
+    subtitle="Spend less time fighting software and more time delivering insight. epanet-js helps consultants turn data into trustworthy models — fast — while keeping client data private."
+  />
+
+  <ProseSection
+    title="Your margin is the time between data and insight">
+    <p>
+      On a fixed-fee project, every hour spent wrangling files, fixing geometry,
+      and fighting an installation is an hour that doesn't bill. The faster you
+      get to a working, trustworthy model, the more of the project goes to the
+      analysis clients actually pay for.
+    </p>
+    <p>
+      epanet-js is built to compress that setup time and keep the work
+      defensible, so you can take on more projects, deliver them with confidence,
+      and protect your margins while you do it.
+    </p>
+  </ProseSection>
+
+  <ContentMediaRow title="From data to model in minutes">
+    <p>
+      Import a client's GIS or <strong>.inp</strong> file, build on a real-world
+      basemap, and run simulations instantly. Auto-junctions, automatic
+      elevations, and the Network Review handle the tedious setup, so a job that
+      used to take days of file-wrangling is done in an afternoon.
+    </p>
+    <p>
+      The speed to a working model is the speed to a model you can start charging
+      for.
+    </p>
+    <Media
+      slot="media"
+      src="/assets/blog/progress-report/2025-07/model-build-quick.mp4"
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Calibrated models you can defend"
+    reverse>
+    <p>
+      Assisted calibration produces models that match field observations, and it
+      records every decision: the options considered, their likelihood, and why a
+      value was chosen. Your deliverable arrives with a transparent, auditable
+      trail rather than a black-box result.
+    </p>
+    <p>
+      When a client or a reviewer asks how you arrived at a number, the answer is
+      already documented.
+    </p>
+    <CalibrationPanel slot="media" class="w-full max-w-[300px] mx-auto" />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Client data that stays with you">
+    <p>
+      Consultants hold data that isn't theirs to expose. Because epanet-js is
+      local-first, a client's network stays on your machine and is never uploaded
+      unless you choose to — so confidentiality is the default, and the answer to
+      a security questionnaire is a short one.
+    </p>
+    <LocalFirstDiagram slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    title="Deliver in the format the client requires"
+    reverse>
+    <p>
+      A deliverable arrives in whatever format the client's standards say it
+      does. epanet-js keeps every exit open: hand back a standard
+      <strong>.inp</strong> model, export assets as GeoJSON, CSV, Shapefile, or
+      XLSX for the client's GIS, and pull full time-series results into the
+      tables your report needs.
+    </p>
+    <p>
+      When a client requires InfoWater, WaterCAD, or InfoWorks, that isn't a
+      reason to give up the speed. All of them exchange .inp, so you can build,
+      calibrate, and test options in epanet-js, then finalize the deliverable in
+      the platform the client runs. The fast tool and the required tool work on
+      the same model.
+    </p>
+    <ResultsExportDemo slot="media" />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    heading="Tooling that respects your time and your margins"
+    items={benefits}
+    columns={4}
+  />
+
+  <CtaSection
+    heading="Win more work with faster models"
+    subheading="Launch epanet-js free, or book a demo to see it on a real project."
+    dark={false}
+  />
+
+  <CardGrid
+    heading="Workflows for consultants"
+    subheading="The jobs epanet-js helps you deliver for clients."
+    items={workflows}
+    columns={3}
+  />
+
+  <FaqList
+    subheading="The questions consultants ask most about epanet-js."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Deliver more for every client"
+    subheading="See how much faster a project starts in epanet-js. Launch it free, or book a demo on a real project."
+  />
+</Layout>

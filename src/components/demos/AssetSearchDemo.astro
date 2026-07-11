@@ -1,0 +1,278 @@
+---
+// Asset search demo: typing "J288" into search, the recent-searches list
+// collapses, the map zooms to the junction, and it pulses with its label.
+// The map sits in a zoom wrapper; the search UI stays outside it so only
+// the map scales.
+import { Search } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import NetworkMap from "./NetworkMap.astro";
+---
+
+<AppWindow
+  bare
+  hideHeader
+  hideFooter
+  label="Asset search in epanet-js: typing J288 into search, the map zooming to the junction, and the junction pulsing with its label.">
+  <!-- zoom wrapper: scales around the junction at [160, 140] in the
+       400x300 viewBox, which lands at 40% / 46% of the 16:10 canvas -->
+  <div class="asr-zoom absolute inset-0 will-change-transform">
+    <NetworkMap variant="plain" class="absolute inset-0" />
+    <svg
+      viewBox="0 0 400 300"
+      preserveAspectRatio="xMidYMid slice"
+      class="absolute inset-0 w-full h-full"
+      aria-hidden="true">
+      <g class="asr-target">
+        <circle
+          cx="160"
+          cy="140"
+          r="7"
+          fill="none"
+          stroke="#8b5cf6"
+          stroke-width="2"></circle>
+        <circle
+          class="asr-pulse"
+          cx="160"
+          cy="140"
+          r="7"
+          fill="none"
+          stroke="#8b5cf6"
+          stroke-width="1.5"></circle>
+      </g>
+    </svg>
+    <span
+      class="asr-label absolute left-[42%] top-[48%] rounded border border-gray-200 bg-white px-1 py-px text-[8px] font-medium text-gray-700 shadow-sm">
+      J288
+    </span>
+  </div>
+
+  <!-- search field and recent searches (outside the zoom wrapper) -->
+  <div class="absolute top-2 left-2 w-[160px] max-w-[60%]">
+    <div
+      class="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2 py-1.5 shadow-md">
+      <Search size={14} className="shrink-0 text-gray-400" />
+      <span class="flex items-center text-[12px] font-medium text-gray-700">
+        <span class="asr-ch asr-ch-1"><span>J</span></span>
+        <span class="asr-ch asr-ch-2"><span>2</span></span>
+        <span class="asr-ch asr-ch-3"><span>8</span></span>
+        <span class="asr-ch asr-ch-4"><span>8</span></span>
+        <span class="asr-caret ml-px inline-block h-3 w-px bg-violet-500">
+        </span>
+      </span>
+    </div>
+    <div
+      class="asr-dropdown mt-1 origin-top overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md">
+      <p
+        class="px-2 pt-1.5 pb-0.5 text-[10px] font-medium uppercase tracking-wide text-gray-400">
+        Recent
+      </p>
+      <p class="border-t border-gray-50 px-2 py-1 text-[12px] text-gray-600">
+        T2
+      </p>
+      <p class="border-t border-gray-50 px-2 py-1 text-[12px] text-gray-600">
+        PMP-1
+      </p>
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  /* the map flies to the junction once the search lands */
+  .asr-zoom {
+    transform-origin: 40% 46%;
+    animation: asr-zoom 8s ease-in-out infinite both;
+  }
+  @keyframes asr-zoom {
+    0%,
+    36% {
+      transform: scale(1);
+    }
+    56% {
+      transform: scale(1.8);
+    }
+    94% {
+      transform: scale(1.8);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* "J288" types out one character at a time — each character's grid column
+     grows from 0 to its natural width (the same to-content-size trick used
+     for the floating boxes elsewhere), so the caret sitting after them
+     shifts right as each letter "types in" instead of standing still while
+     already-reserved space just fades visible */
+  .asr-ch {
+    display: inline-grid;
+    grid-template-columns: minmax(0, 0fr);
+    overflow: hidden;
+    opacity: 0;
+  }
+  .asr-ch-1 {
+    animation: asr-ch-1 8s linear infinite both;
+  }
+  .asr-ch-2 {
+    animation: asr-ch-2 8s linear infinite both;
+  }
+  .asr-ch-3 {
+    animation: asr-ch-3 8s linear infinite both;
+  }
+  .asr-ch-4 {
+    animation: asr-ch-4 8s linear infinite both;
+  }
+  @keyframes asr-ch-1 {
+    0%, 10% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+    11% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    96% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    100% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+  }
+  @keyframes asr-ch-2 {
+    0%, 16% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+    17% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    96% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    100% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+  }
+  @keyframes asr-ch-3 {
+    0%, 22% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+    23% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    96% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    100% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+  }
+  @keyframes asr-ch-4 {
+    0%, 28% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+    29% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    96% { grid-template-columns: minmax(0, 1fr); opacity: 1; }
+    100% { grid-template-columns: minmax(0, 0fr); opacity: 0; }
+  }
+
+  .asr-caret {
+    animation: asr-caret-blink 1s steps(1) infinite;
+  }
+  @keyframes asr-caret-blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* recent searches show while typing, then collapse */
+  .asr-dropdown {
+    animation: asr-dropdown 8s ease-in-out infinite both;
+  }
+  @keyframes asr-dropdown {
+    0%,
+    10.25% {
+      opacity: 0;
+      transform: scaleY(0.8);
+    }
+    14.25% {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+    40.25% {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+    44.25%,
+    100% {
+      opacity: 0;
+      transform: scaleY(0);
+    }
+  }
+
+  /* the junction highlights and pulses once the map arrives */
+  .asr-target {
+    animation: asr-target-in 8s ease-out infinite both;
+  }
+  @keyframes asr-target-in {
+    0%,
+    56% {
+      opacity: 0;
+    }
+    60% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    97%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .asr-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: asr-pulse 1.8s ease-out infinite;
+  }
+  @keyframes asr-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    70%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  .asr-label {
+    animation: asr-label-in 8s ease-out infinite both;
+  }
+  @keyframes asr-label-in {
+    0%,
+    58% {
+      opacity: 0;
+      transform: translateY(2px);
+    }
+    62% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    97%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .asr-zoom,
+    .asr-ch-1,
+    .asr-ch-2,
+    .asr-ch-3,
+    .asr-ch-4,
+    .asr-caret,
+    .asr-dropdown,
+    .asr-target,
+    .asr-pulse,
+    .asr-label {
+      animation: none;
+    }
+    .asr-zoom {
+      transform: scale(1.8);
+    }
+    .asr-ch {
+      grid-template-columns: minmax(0, 1fr);
+      opacity: 1;
+    }
+    .asr-target,
+    .asr-label {
+      opacity: 1;
+      transform: none;
+    }
+    .asr-caret,
+    .asr-dropdown,
+    .asr-pulse {
+      opacity: 0;
+    }
+  }
+</style>

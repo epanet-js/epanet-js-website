@@ -1,0 +1,215 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import Media from "@components/marketing/Media.astro";
+import DeploymentOptionsDiagram from "@components/demos/DeploymentOptionsDiagram.astro";
+import LicenseTimelineDemo from "@components/demos/LicenseTimelineDemo.astro";
+import BenefitGrid from "@components/marketing/BenefitGrid.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import { solutions } from "@config/navigation";
+import { Eye, Gauge, Lock, Unlock } from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+const benefits = [
+  {
+    icon: Eye,
+    title: "Understand your system",
+    description:
+      "Build a clear, current picture of how your network behaves under real conditions.",
+  },
+  {
+    icon: Gauge,
+    title: "Run it better",
+    description:
+      "Test operational changes, check capacity, and answer everyday questions with evidence.",
+  },
+  {
+    icon: Lock,
+    title: "Own your data",
+    description:
+      "Local-first by default — your network data stays on your machine unless you choose otherwise.",
+  },
+  {
+    icon: Unlock,
+    title: "No lock-in",
+    description:
+      "EPANET-compatible and affordable. No proprietary formats holding your model hostage.",
+  },
+];
+
+const workflows = solutions.columns
+  .flatMap((c) => c.items)
+  .filter((i) =>
+    [
+      "/solutions/model-build",
+      "/solutions/calibration",
+      "/solutions/fire-flow",
+      "/solutions/operational-modeling",
+      "/solutions/demand-analysis",
+      "/solutions/planning",
+    ].includes(i.href),
+  );
+
+const faqs = [
+  {
+    question: "Can we run epanet-js under our own infrastructure?",
+    answer:
+      "Yes. epanet-js is local-first by default, and for teams that need it we offer data-residency options and a self-hosted / on-premise deployment for complete ownership of your environment and data. See <a href=\"/security\">security</a>.",
+  },
+  {
+    question: "Is our network data private?",
+    answer:
+      "By default everything runs and saves in your browser, on your machine — nothing is uploaded unless you explicitly choose the cloud. The most sensitive data simply never leaves your control.",
+  },
+  {
+    question: "Can we bring in our existing model?",
+    answer:
+      "Yes. Open any EPANET <strong>.inp</strong> file, from version 2.3 back through earlier releases, and import your GIS data directly. There's no proprietary conversion step.",
+  },
+  {
+    question: "Will it handle a large network?",
+    answer:
+      "There's no practical size limit. Networks from a few hundred pipes up to several hundred thousand junctions open, edit, and run.",
+  },
+  {
+    question: "How does the cost compare to commercial tools?",
+    answer:
+      "epanet-js is built to be affordable and fairly priced, with a free tier to start. Many teams see a large reduction against legacy licenses. The details are on the <a href=\"/pricing\">pricing page</a>.",
+  },
+  {
+    question: "How do I see what's next for utilities?",
+    answer:
+      "We build in the open. Follow what's in progress and vote on what matters most to your team on our <a href=\"https://roadmap.epanetjs.com\" target=\"_blank\" rel=\"noopener noreferrer\">public roadmap</a>.",
+  },
+];
+---
+
+<Layout
+  title="For utilities"
+  description="Take control of your network and your model. epanet-js helps utilities understand and run their water network with confidence, keep data local, and avoid proprietary lock-in."
+  lang={lang}>
+  <PageHero
+    title="Take control of your network and your model"
+    subtitle="Understand your system, run it better, and keep your data in your hands. epanet-js gives utilities a modern, affordable way to model the network they're responsible for.">
+    <Media
+      slot="media"
+      src="/assets/images/epanet-js-app.png"
+      alt="epanet-js in the browser showing a utility network with color-coded simulation results."
+    />
+  </PageHero>
+
+  <ProseSection
+    title="You own the network. You should own the model too.">
+    <p>
+      The utility is responsible for the network every hour of every day, yet the
+      model that represents it often lives inside expensive software, in a
+      proprietary format, on someone else's terms. When the license lapses or the
+      consultant moves on, the understanding can go with it.
+    </p>
+    <p>
+      epanet-js puts the model back in your hands. It's built on the open EPANET
+      engine, keeps your data local by default, and is priced to be something a
+      utility team can actually own and use every day — not a once-a-study
+      luxury.
+    </p>
+  </ProseSection>
+
+  <ContentMediaRow
+    title="A model that reflects your real network">
+    <p>
+      Bring in your GIS and asset data and build a model that mirrors what's
+      actually in the ground. Elevations come from a worldwide source or your own
+      survey data, demand is allocated from your customer records, and the
+      Network Review checks connectivity before you rely on a result.
+    </p>
+    <p>
+      See pressures, flows, and capacity color-coded across the service area, and
+      stop relying on guesswork or out-of-date studies.
+    </p>
+    <Media
+      slot="media"
+      src="/assets/landing/Complex.webp"
+      alt="A large, complex water network model with color-coded results across the service area."
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Make changes with confidence" reverse>
+    <p>
+      Test shutdowns, valve operations, and demand changes in the model before
+      you act in the field, and check fire flow capacity wherever a development
+      enquiry or a hydrant question lands. Brief your operators with clear,
+      visual answers and reduce the risk of surprises.
+    </p>
+    <p>
+      Because the work happens against a model you keep current, the answer you
+      give today is one you can reproduce and defend tomorrow.
+    </p>
+    <Media
+      slot="media"
+      src="/assets/blog/progress-report/2025-12/time-control.mp4"
+    />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Local-first, with options when you need them">
+    <p>
+      By default, your network never leaves your machine — models run and save
+      locally in the browser, and nothing is uploaded unless you choose to. For
+      teams with specific requirements, there are data-residency options and a
+      self-hosted, on-premise deployment.
+    </p>
+    <p>
+      It's a simple principle: the safest data is the data that never leaves your
+      control.
+    </p>
+    <DeploymentOptionsDiagram slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow title="Built on EPANET, open and affordable" reverse>
+    <p>
+      epanet-js runs the EPANET 2.3 engine and opens standard <strong>.inp</strong>
+      files, so your model is never trapped in a format only one vendor can read.
+      The source is public from day one and becomes fully open after two years.
+    </p>
+    <p>
+      That openness, paired with fair pricing and a free tier, means a utility can
+      adopt the tool widely without the budget conversation that usually limits
+      modeling to a single seat.
+    </p>
+    <LicenseTimelineDemo slot="media" />
+  </ContentMediaRow>
+
+  <BenefitGrid
+    heading="Built for the teams who run the network"
+    items={benefits}
+    columns={4}
+  />
+
+  <CtaSection
+    heading="See epanet-js on your network"
+    subheading="Launch it free, or book a demo to talk through your utility's needs."
+    dark={false}
+  />
+
+  <CardGrid
+    heading="Workflows for utilities"
+    subheading="The everyday jobs epanet-js helps your team get done."
+    items={workflows}
+    columns={3}
+  />
+
+  <FaqList
+    subheading="The questions utility teams ask most about epanet-js."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Take control of your model"
+    subheading="See epanet-js on your own network. Launch it free, or book a demo to talk through your utility's needs."
+  />
+</Layout>

@@ -6,6 +6,7 @@
       "@lib/*": ["lib/*"],
       "@utils/*": ["utils/*"],
       "@components/*": ["components/*"],
+      "@config/*": ["config/*"],
       "@layouts/*": ["layouts/*"],
       "@assets/*": ["assets/*"],
       "@pages/*": ["pages/*"],

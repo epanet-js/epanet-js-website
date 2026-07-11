@@ -1,0 +1,258 @@
+---
+// File transfer diagram: a model moves between two machines the
+// traditional way, by email, network drive, or USB, with no cloud in the
+// path. The second machine opens it and picks up where the first left off.
+import {
+  CheckCircle2,
+  FileText,
+  Laptop,
+  Monitor,
+  WifiOff,
+} from "lucide-react";
+import NetworkMap from "./NetworkMap.astro";
+
+// Intro fades in four 1s stages, in order: the offline icon, the sending
+// device (whole component), the receiving device (whole component), then
+// the arrow/label/file chip group — which then continues its existing
+// slide-to-the-laptop motion once visible.
+const toPct = (seconds: number, cycle: number) =>
+  +((seconds / cycle) * 100).toFixed(3);
+
+const STAGE_FADE = 1;
+const STAGE1_START = 0; // offline icon
+const STAGE2_START = STAGE1_START + STAGE_FADE; // office desktop (whole component)
+const STAGE3_START = STAGE2_START + STAGE_FADE; // site laptop (whole component)
+const STAGE4_START = STAGE3_START + STAGE_FADE; // arrow + pill (at rest)
+const STAGE4_END = STAGE4_START + STAGE_FADE;
+
+// The .ejsdb chip appears 1s after the arrow/pill, fading in while it
+// slides out of the office desktop (opacity ramps up during the first
+// 0.3s of the slide) and fading out while it slides the last 0.3s onto
+// the site laptop, so the slide's arrival and the fade-out's completion
+// land on the exact same instant — no stop-then-fade two-step.
+const CHIP_DELAY_AFTER_ARROW = 1;
+const CHIP_START = STAGE4_START + CHIP_DELAY_AFTER_ARROW;
+const CHIP_FADE_IN_DURATION = 0.3; // quick opacity ramp as it starts sliding
+const CHIP_VISIBLE = CHIP_START + CHIP_FADE_IN_DURATION;
+const SLIDE_START = CHIP_START;
+const SLIDE_DURATION = 1.76;
+const SLIDE_END = SLIDE_START + SLIDE_DURATION; // slide's arrival, in position
+const CHIP_FADEOUT_DURATION = 0.3;
+const CHIP_FADEOUT_START = SLIDE_END - CHIP_FADEOUT_DURATION; // fade-out overlaps the slide's tail
+
+// The receiving screen lights up right as the chip arrives, then the
+// checkmark bounces in once the screen is visible.
+const SCREEN2_START = SLIDE_END;
+const SCREEN2_FADE_DURATION = 0.5;
+const SCREEN2_VISIBLE = SCREEN2_START + SCREEN2_FADE_DURATION;
+
+const CHECK_WAIT_AFTER_SCREEN2 = 0.3;
+const CHECK_START = SCREEN2_VISIBLE + CHECK_WAIT_AFTER_SCREEN2;
+const CHECK_PEAK_OFFSET = 0.4; // reaches overshoot scale
+const CHECK_SETTLE_OFFSET = 0.64; // settles to scale 1
+const CHECK_PEAK = CHECK_START + CHECK_PEAK_OFFSET;
+const CHECK_SETTLE = CHECK_START + CHECK_SETTLE_OFFSET;
+
+const FINAL_HOLD = 2;
+const HOLD_END = CHECK_SETTLE + FINAL_HOLD;
+const FADE_END = HOLD_END + 0.5;
+const CYCLE = FADE_END + 0.3;
+const pct = (seconds: number) => toPct(seconds, CYCLE);
+
+const generatedCss = `
+.ftr-nocloud { animation-name: ftr-nocloud-in; }
+@keyframes ftr-nocloud-in {
+  0%, ${pct(STAGE1_START)}% { opacity: 0; }
+  ${pct(STAGE1_START + STAGE_FADE)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-desktop { animation-name: ftr-desktop-in; }
+@keyframes ftr-desktop-in {
+  0%, ${pct(STAGE2_START)}% { opacity: 0; }
+  ${pct(STAGE2_START + STAGE_FADE)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-laptop { animation-name: ftr-laptop-in; }
+@keyframes ftr-laptop-in {
+  0%, ${pct(STAGE3_START)}% { opacity: 0; }
+  ${pct(STAGE3_START + STAGE_FADE)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-arrow { animation-name: ftr-arrow-in; }
+@keyframes ftr-arrow-in {
+  0%, ${pct(STAGE4_START)}% { opacity: 0; }
+  ${pct(STAGE4_END)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-pill { animation-name: ftr-pill-in; }
+@keyframes ftr-pill-in {
+  0%, ${pct(STAGE4_START)}% { opacity: 0; }
+  ${pct(STAGE4_END)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-file { animation-name: ftr-file-travel; }
+@keyframes ftr-file-travel {
+  0%, ${pct(CHIP_START)}% { opacity: 0; left: -6%; transform: translateY(calc(-50% - 24px)); }
+  ${pct(CHIP_VISIBLE)}% { opacity: 1; }
+  ${pct(CHIP_FADEOUT_START)}% { opacity: 1; }
+  ${pct(SLIDE_END)}%, 100% { opacity: 0; left: 70%; transform: translateY(calc(-50% - 24px)); }
+}
+.ftr-screen2 { animation-name: ftr-screen2-on; }
+@keyframes ftr-screen2-on {
+  0%, ${pct(SCREEN2_START)}% { opacity: 0; }
+  ${pct(SCREEN2_VISIBLE)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.ftr-check { animation-name: ftr-check-in; }
+@keyframes ftr-check-in {
+  0%, ${pct(CHECK_START)}% { opacity: 0; transform: scale(0.6); }
+  ${pct(CHECK_PEAK)}% { opacity: 1; transform: scale(1.15); }
+  ${pct(CHECK_SETTLE)}% { transform: scale(1); }
+  ${pct(HOLD_END)}% { opacity: 1; transform: scale(1); }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}`;
+---
+
+<div
+  class="relative mx-auto h-80 w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
+  role="img"
+  aria-label="Diagram: a model file moves between two computers by email, network drive, or USB, with no cloud involved.">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-between">
+  <div class="box-border flex flex-1 flex-col items-center justify-center px-8 pt-8">
+  <!-- no cloud in the path -->
+  <div class="ftr-nocloud flex justify-center">
+    <span
+      class="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 shadow-sm">
+      <WifiOff size={22} />
+    </span>
+  </div>
+
+  <div class="mt-2 flex items-start justify-center gap-2">
+    <!-- sending device -->
+    <div class="ftr-desktop w-40 shrink-0">
+      <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
+        <div class="relative aspect-[3/2] bg-gray-100">
+          <NetworkMap class="absolute inset-0" />
+        </div>
+      </div>
+      <div class="h-1.5 mx-5 rounded-b-lg bg-gray-300"></div>
+      <p
+        class="flex items-center justify-center gap-1.5 mt-2 text-xs font-medium text-gray-700">
+        <Monitor size={14} className="text-gray-400" />
+        Office desktop
+      </p>
+    </div>
+
+    <!-- transfer path -->
+    <div class="relative w-20 shrink-0 flex flex-col items-center">
+      <!-- centered to match the device displays' own height, not the labels below them -->
+      <div class="relative flex h-[104px] w-full items-center">
+        <svg
+          viewBox="0 0 100 16"
+          class="ftr-arrow w-full"
+          aria-hidden="true">
+          <path
+            d="M10 8 H90"
+            fill="none"
+            stroke="#d1d5db"
+            stroke-width="2"
+            stroke-dasharray="5 4"></path>
+          <path d="M10 3.5 L2 8 L10 12.5 Z" fill="#d1d5db"></path>
+          <path d="M90 3.5 L98 8 L90 12.5 Z" fill="#d1d5db"></path>
+        </svg>
+        <span
+          class="ftr-file absolute left-0 top-1/2 flex items-center gap-1 rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-gray-600 shadow-sm">
+          <FileText size={14} className="text-violet-500" />
+          .ejsdb
+        </span>
+      </div>
+      <!-- each transfer method on its own row -->
+      <div
+        class="ftr-pill -mt-11 flex flex-col items-center gap-0.5 rounded-lg border border-gray-200 bg-gray-50 px-2 py-1 text-[10px] font-medium text-gray-500"
+        <span>Email</span>
+        <span>Network</span>
+        <span>USB</span>
+      </div>
+    </div>
+
+    <!-- receiving device -->
+    <div class="ftr-laptop w-40 shrink-0">
+      <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
+        <div class="relative aspect-[3/2] bg-gray-100">
+          <div class="ftr-screen2 absolute inset-0">
+            <NetworkMap class="absolute inset-0" />
+          </div>
+          <span
+            class="ftr-check absolute top-1 right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white text-green-500 shadow-sm">
+            <CheckCircle2 size={14} />
+          </span>
+        </div>
+      </div>
+      <div class="h-1.5 mx-5 rounded-b-lg bg-gray-300"></div>
+      <p
+        class="flex items-center justify-center gap-1.5 mt-2 text-xs font-medium text-gray-700">
+        <Laptop size={14} className="text-gray-400" />
+        Site laptop
+      </p>
+    </div>
+  </div>
+  </div>
+
+  <p class="pb-6 text-center text-sm font-medium text-gray-700">
+    Share your model like any other file
+  </p>
+      </div>
+    </foreignObject>
+  </svg>
+</div>
+
+<style define:vars={{ cycle: `${CYCLE}s` }}>
+  .ftr-nocloud,
+  .ftr-desktop,
+  .ftr-laptop,
+  .ftr-arrow,
+  .ftr-pill,
+  .ftr-file,
+  .ftr-screen2,
+  .ftr-check {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ftr-nocloud,
+    .ftr-desktop,
+    .ftr-laptop,
+    .ftr-arrow,
+    .ftr-pill,
+    .ftr-file,
+    .ftr-screen2,
+    .ftr-check {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .ftr-file {
+      opacity: 0;
+    }
+    .ftr-check {
+      transform: scale(1);
+    }
+  }
+</style>
+
+<style set:html={generatedCss} />

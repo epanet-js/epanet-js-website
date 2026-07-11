@@ -1,0 +1,879 @@
+---
+// Internal animation gallery: every animated demo component in
+// src/components/demos/, grouped by product lifecycle, with a short
+// description and where each one could be used. Not linked from navigation,
+// noindex, and excluded from the sitemap (see astro.config.mjs).
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Badge from "@components/ui/badge.astro";
+
+import AppWindow from "@components/demos/AppWindow.astro";
+import AssetSearchDemo from "@components/demos/AssetSearchDemo.astro";
+import BrowserAppDemo from "@components/demos/BrowserAppDemo.astro";
+import CalibrationPanel from "@components/demos/CalibrationPanel.astro";
+import CalibrationReviewDemo from "@components/demos/CalibrationReviewDemo.astro";
+import CalibrationScatterDemo from "@components/demos/CalibrationScatterDemo.astro";
+import ChlorineBoosterDemo from "@components/demos/ChlorineBoosterDemo.astro";
+import CloudOptionalDemo from "@components/demos/CloudOptionalDemo.astro";
+import CloudYourStorageDiagram from "@components/demos/CloudYourStorageDiagram.astro";
+import ControlRuleDemo from "@components/demos/ControlRuleDemo.astro";
+import CustomerPointsDemo from "@components/demos/CustomerPointsDemo.astro";
+import DataRegionsDemo from "@components/demos/DataRegionsDemo.astro";
+import DataTableDemo from "@components/demos/DataTableDemo.astro";
+import DemandAllocationDemo from "@components/demos/DemandAllocationDemo.astro";
+import DemandCategoriesDemo from "@components/demos/DemandCategoriesDemo.astro";
+import DemandScalingDemo from "@components/demos/DemandScalingDemo.astro";
+import DeploymentOptionsDiagram from "@components/demos/DeploymentOptionsDiagram.astro";
+import ElevationDemo from "@components/demos/ElevationDemo.astro";
+import EncryptedTransitDemo from "@components/demos/EncryptedTransitDemo.astro";
+import EpsPlaybackDemo from "@components/demos/EpsPlaybackDemo.astro";
+import FieldDataImportDemo from "@components/demos/FieldDataImportDemo.astro";
+import FileTransferDemo from "@components/demos/FileTransferDemo.astro";
+import FireFlowDemo from "@components/demos/FireFlowDemo.astro";
+import FlushingPlanDemo from "@components/demos/FlushingPlanDemo.astro";
+import GisImportDemo from "@components/demos/GisImportDemo.astro";
+import HydrantTestPlanDemo from "@components/demos/HydrantTestPlanDemo.astro";
+import InpCompatReportDemo from "@components/demos/InpCompatReportDemo.astro";
+import LegendPanel from "@components/demos/LegendPanel.astro";
+import LicenseTimelineDemo from "@components/demos/LicenseTimelineDemo.astro";
+import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
+import LocalFirstFlowDemo from "@components/demos/LocalFirstFlowDemo.astro";
+import LoggerPlacementDemo from "@components/demos/LoggerPlacementDemo.astro";
+import NetworkDrawDemo from "@components/demos/NetworkDrawDemo.astro";
+import NetworkMap from "@components/demos/NetworkMap.astro";
+import NetworkReviewDemo from "@components/demos/NetworkReviewDemo.astro";
+import NightFlowDemo from "@components/demos/NightFlowDemo.astro";
+import ObservedOverlayDemo from "@components/demos/ObservedOverlayDemo.astro";
+import OnPremDeploymentDiagram from "@components/demos/OnPremDeploymentDiagram.astro";
+import PatternEditorDemo from "@components/demos/PatternEditorDemo.astro";
+import PressureFlowCurveDemo from "@components/demos/PressureFlowCurveDemo.astro";
+import PressureLeakageDemo from "@components/demos/PressureLeakageDemo.astro";
+import ProfilePlotDemo from "@components/demos/ProfilePlotDemo.astro";
+import ProjectionFinderDemo from "@components/demos/ProjectionFinderDemo.astro";
+import PumpCurveDemo from "@components/demos/PumpCurveDemo.astro";
+import PumpScheduleDemo from "@components/demos/PumpScheduleDemo.astro";
+import ResultsExportDemo from "@components/demos/ResultsExportDemo.astro";
+import ScenarioCompareDemo from "@components/demos/ScenarioCompareDemo.astro";
+import ScenarioTreeDemo from "@components/demos/ScenarioTreeDemo.astro";
+import SelectionBatchEditDemo from "@components/demos/SelectionBatchEditDemo.astro";
+import ShutdownPlanDemo from "@components/demos/ShutdownPlanDemo.astro";
+import SimulationRunDemo from "@components/demos/SimulationRunDemo.astro";
+import SourceTraceDemo from "@components/demos/SourceTraceDemo.astro";
+import SustainableOpenSourceDemo from "@components/demos/SustainableOpenSourceDemo.astro";
+import TankOperationsDemo from "@components/demos/TankOperationsDemo.astro";
+import TeamAccessDemo from "@components/demos/TeamAccessDemo.astro";
+import TimeSeriesPlotDemo from "@components/demos/TimeSeriesPlotDemo.astro";
+import TraceDemo from "@components/demos/TraceDemo.astro";
+import ValveCriticalityDemo from "@components/demos/ValveCriticalityDemo.astro";
+import WaterAgeDemo from "@components/demos/WaterAgeDemo.astro";
+import WaterBalanceDemo from "@components/demos/WaterBalanceDemo.astro";
+import ZoneFitDemo from "@components/demos/ZoneFitDemo.astro";
+
+export const prerender = true;
+const lang = "en";
+
+// How an entry is wrapped in its preview area. `window` and `diagram`
+// components frame themselves; `panel` and `map` need a sized box.
+type Frame = "window" | "diagram" | "panel" | "map";
+
+interface DemoEntry {
+  name: string;
+  description: string;
+  useOn: string;
+  frame: Frame;
+  /** Routes currently using the component. Absent or empty means new. */
+  usedOn?: string[];
+  /** Depicts an unshipped feature; pages must caption it as a concept. */
+  concept?: boolean;
+  component: any;
+  props?: Record<string, unknown>;
+  previewClass?: string;
+}
+
+interface DemoSection {
+  id: string;
+  title: string;
+  entries: DemoEntry[];
+}
+
+const frameClass: Record<Frame, string> = {
+  window: "w-full",
+  diagram: "w-full",
+  panel: "w-full max-w-[300px] mx-auto",
+  map: "w-full aspect-[16/10] rounded-xl border border-gray-200 overflow-hidden bg-gray-100",
+};
+
+const sections: DemoSection[] = [
+  {
+    id: "build",
+    title: "Build your model",
+    entries: [
+      {
+        name: "GisImportDemo",
+        description:
+          "A shapefile drops onto the map and the network appears, pipe by pipe, with an import summary counting features.",
+        useOn:
+          "/solutions/model-build (GIS import row) and /solutions/model-import.",
+        frame: "window",
+        component: GisImportDemo,
+      },
+      {
+        name: "NetworkDrawDemo",
+        description:
+          "Pipes drawn click by click over the basemap, with junctions placed at each vertex and a drawing hint chip.",
+        useOn: "/solutions/model-build and education content.",
+        frame: "window",
+        component: NetworkDrawDemo,
+      },
+      {
+        name: "InpCompatReportDemo",
+        description:
+          "Opening an .inp file produces a compatibility report: counts per section, with anything that needs review flagged. Also renders unframed as a standalone panel.",
+        useOn: "/solutions/model-import.",
+        frame: "window",
+        component: InpCompatReportDemo,
+        props: { framed: true },
+      },
+      {
+        name: "ProjectionFinderDemo",
+        description:
+          "The projection finder: search a coordinate system, pick an EPSG candidate, and the model seats onto the basemap.",
+        useOn: "/solutions/model-import hero.",
+        frame: "diagram",
+        component: ProjectionFinderDemo,
+      },
+      {
+        name: "ElevationDemo",
+        description:
+          "Nodes pick up ground levels from a prioritized stack of elevation sources, from your own GeoTIFFs down to global terrain.",
+        useOn: "/solutions/model-build (ground levels row).",
+        frame: "window",
+        component: ElevationDemo,
+      },
+      {
+        name: "NetworkReviewDemo",
+        description:
+          "The network review checklist walks through orphans, near-misses, and crossings while the map highlights each issue.",
+        useOn: "/solutions/model-import and model quality content.",
+        frame: "diagram",
+        component: NetworkReviewDemo,
+      },
+      {
+        name: "CustomerPointsDemo",
+        description:
+          "Imported customer points connect to their nearest pipes, with an allocation summary flagging the strays.",
+        useOn: "/solutions/demand-analysis (allocation row).",
+        frame: "diagram",
+        component: CustomerPointsDemo,
+      },
+      {
+        name: "DemandAllocationDemo",
+        description:
+          "Metered inflow allocated across three demand zones, each with a daily consumption profile, reconciling in a balance check.",
+        useOn:
+          "Demand analysis content: flow balance, district metering, non-revenue water.",
+        frame: "diagram",
+        usedOn: ["/solutions/demand-analysis"],
+        concept: true,
+        component: DemandAllocationDemo,
+      },
+      {
+        name: "AssetSearchDemo",
+        description:
+          "Typing J288 into asset search: recent searches show, the map zooms to the junction, and it pulses with its label.",
+        useOn: "/solutions/model-build and homepage micro-interactions.",
+        frame: "window",
+        component: AssetSearchDemo,
+      },
+    ],
+  },
+  {
+    id: "demand",
+    title: "Demand analysis",
+    entries: [
+      {
+        name: "NightFlowDemo",
+        description:
+          "A 24-hour DMA inflow trace with the minimum night flow window highlighted and the leakage band shaded below it.",
+        useOn: "/solutions/demand-analysis (night flow row).",
+        frame: "panel",
+        component: NightFlowDemo,
+        previewClass: "w-full max-w-[340px] mx-auto",
+      },
+      {
+        name: "PressureLeakageDemo",
+        description:
+          "A PRV setting steps down twice and the estimated leakage falls with it, the downstream pipes shifting from amber to green.",
+        useOn: "/solutions/demand-analysis and /solutions/operational-modeling.",
+        frame: "window",
+        component: PressureLeakageDemo,
+      },
+      {
+        name: "DemandCategoriesDemo",
+        description:
+          "One junction's demand broken into domestic, commercial, and leakage categories, each with its assigned pattern, summing in a stacked bar.",
+        useOn: "/solutions/demand-analysis.",
+        frame: "window",
+        component: DemandCategoriesDemo,
+      },
+      {
+        name: "DemandScalingDemo",
+        description:
+          "Allocated demand falls short of metered inflow until a scaling factor closes the gap and the balance check turns green.",
+        useOn: "/solutions/demand-analysis (balance row).",
+        frame: "window",
+        component: DemandScalingDemo,
+      },
+      {
+        name: "WaterBalanceDemo",
+        description:
+          "An annual water balance as a waterfall: system input split into billed water, unbilled use, and apparent and real losses, with NRW bracketed.",
+        useOn: "/solutions/demand-analysis and non-revenue water content.",
+        frame: "panel",
+        component: WaterBalanceDemo,
+        previewClass: "w-full max-w-[360px] mx-auto",
+      },
+    ],
+  },
+  {
+    id: "field-planning",
+    title: "Field planning",
+    entries: [
+      {
+        name: "LoggerPlacementDemo",
+        description:
+          "Proposed loggers drop onto the map one by one, each adding a coverage halo while the coverage figure climbs to 94%.",
+        useOn: "/solutions/field-planning hero.",
+        frame: "window",
+        component: LoggerPlacementDemo,
+      },
+      {
+        name: "HydrantTestPlanDemo",
+        description:
+          "A planned hydrant test: the test hydrant pulses, observation points get their expected drawdowns, and the plan panel lists each one.",
+        useOn: "/solutions/field-planning and /solutions/calibration.",
+        frame: "window",
+        component: HydrantTestPlanDemo,
+      },
+      {
+        name: "FieldDataImportDemo",
+        description:
+          "A logger CSV drops in and sparkline chips appear at each monitoring point, with a summary of loggers, duration, and interval.",
+        useOn: "/solutions/field-planning and /solutions/calibration.",
+        frame: "window",
+        component: FieldDataImportDemo,
+      },
+      {
+        name: "ObservedOverlayDemo",
+        description:
+          "Observed pressure readings land over the simulated trace, with the residual gap shaded and the mean error read off.",
+        useOn: "/solutions/calibration and /solutions/field-planning.",
+        frame: "panel",
+        component: ObservedOverlayDemo,
+        previewClass: "w-full max-w-[340px] mx-auto",
+      },
+    ],
+  },
+  {
+    id: "simulate",
+    title: "Simulate & analyze",
+    entries: [
+      {
+        name: "SimulationRunDemo",
+        description:
+          "Press Simulate: a progress toast, then the network recolors by pressure and the legend appears.",
+        useOn: "Homepage and education content.",
+        frame: "window",
+        component: SimulationRunDemo,
+      },
+      {
+        name: "EpsPlaybackDemo",
+        description:
+          "An extended period simulation playing through 24 hours, with the time browser advancing and the extremities shifting at the evening peak.",
+        useOn: "/solutions/operational-modeling and /who-its-for/utilities.",
+        frame: "window",
+        component: EpsPlaybackDemo,
+      },
+      {
+        name: "SelectionBatchEditDemo",
+        description:
+          "A polygon selection over part of the network, then one roughness edit applied to every pipe in it.",
+        useOn: "/who-its-for/consultants and /solutions/model-build.",
+        frame: "window",
+        component: SelectionBatchEditDemo,
+      },
+      {
+        name: "TraceDemo",
+        description:
+          "An upstream trace runs back to the source, then a boundary trace spreads to the closed valve that bounds the zone.",
+        useOn: "/solutions/model-build and /solutions/operational-modeling.",
+        frame: "window",
+        component: TraceDemo,
+      },
+      {
+        name: "PumpCurveDemo",
+        description:
+          "Pump and system curves meet at the operating point, with efficiency and energy readouts. Renders framed over the app window or standalone.",
+        useOn: "/solutions/operational-modeling and planning content.",
+        frame: "panel",
+        component: PumpCurveDemo,
+      },
+      {
+        name: "PatternEditorDemo",
+        description:
+          "A 24-hour demand pattern rising bar by bar, with the 1.0 baseline and the evening peak called out.",
+        useOn: "/solutions/demand-analysis and education content.",
+        frame: "panel",
+        component: PatternEditorDemo,
+      },
+      {
+        name: "CalibrationReviewDemo",
+        description:
+          "The calibration assistant over a pressure-colored map: a suggested roughness change with simulated pressures converging toward the observed trace.",
+        useOn: "Calibration pages and hero slots that need a framed app view.",
+        frame: "window",
+        usedOn: ["/", "/solutions/calibration"],
+        concept: true,
+        component: CalibrationReviewDemo,
+        props: { framed: true },
+      },
+      {
+        name: "CalibrationPanel",
+        description:
+          "The standalone calibration assistant panel: one suggested parameter change with accept, adjust, and reject controls and an observed-versus-simulated graph.",
+        useOn:
+          "Anywhere a single panel reads better than a full app window, such as narrow media slots.",
+        frame: "panel",
+        usedOn: ["/solutions/calibration", "/who-its-for/consultants"],
+        concept: true,
+        component: CalibrationPanel,
+      },
+    ],
+  },
+  {
+    id: "calibration",
+    title: "Calibration",
+    entries: [
+      {
+        name: "CalibrationScatterDemo",
+        description:
+          "An observed-versus-simulated scatter pulls toward the 1:1 line as the model improves, the RMSE chip dropping from 4.8 to 1.2 m.",
+        useOn: "/solutions/calibration (fit row).",
+        frame: "panel",
+        component: CalibrationScatterDemo,
+      },
+      {
+        name: "ZoneFitDemo",
+        description:
+          "The network splits into three colored zones with a fit figure per zone, and the worst-fitting zone pulses for attention.",
+        useOn: "/solutions/calibration.",
+        frame: "window",
+        component: ZoneFitDemo,
+      },
+    ],
+  },
+  {
+    id: "water-quality",
+    title: "Water quality",
+    entries: [
+      {
+        name: "WaterAgeDemo",
+        description:
+          "Water age spreads from the source band by band, coloring the network with a legend in hours.",
+        useOn: "/solutions/water-quality hero.",
+        frame: "window",
+        component: WaterAgeDemo,
+      },
+      {
+        name: "SourceTraceDemo",
+        description:
+          "Water from two treatment works meets mid-network, with the blend share shifting through the day.",
+        useOn: "/solutions/water-quality.",
+        frame: "window",
+        component: SourceTraceDemo,
+      },
+      {
+        name: "ChlorineBoosterDemo",
+        description:
+          "Chlorine residual decays along the network until a booster lifts the tail back above the 0.2 mg/l minimum, the map tint following.",
+        useOn: "/solutions/water-quality.",
+        frame: "window",
+        component: ChlorineBoosterDemo,
+      },
+      {
+        name: "FlushingPlanDemo",
+        description:
+          "A unidirectional flushing sequence: three mains highlight in order, each hitting its velocity target as the checklist ticks off.",
+        useOn: "/solutions/water-quality and operations content.",
+        frame: "window",
+        concept: true,
+        component: FlushingPlanDemo,
+      },
+    ],
+  },
+  {
+    id: "fire-flow",
+    title: "Fire flow & criticality",
+    entries: [
+      {
+        name: "FireFlowDemo",
+        description:
+          "Fire flow analysis over a pass/fail map: the results panel fills in available flow per junction while failing nodes pulse red.",
+        useOn: "Fire flow pages and capacity-check content.",
+        frame: "window",
+        usedOn: ["/", "/solutions/fire-flow"],
+        component: FireFlowDemo,
+      },
+      {
+        name: "PressureFlowCurveDemo",
+        description:
+          "The right-click capacity check: a pressure and flow curve with the available flow read off at the residual target. Renders framed over the app window or standalone.",
+        useOn: "/solutions/fire-flow (capacity curve row).",
+        frame: "panel",
+        component: PressureFlowCurveDemo,
+      },
+      {
+        name: "ValveCriticalityDemo",
+        description:
+          "Closing one valve grays out the segment it isolates and reports the customers affected.",
+        useOn: "/solutions/valve-criticality.",
+        frame: "window",
+        concept: true,
+        component: ValveCriticalityDemo,
+      },
+    ],
+  },
+  {
+    id: "scenarios",
+    title: "Scenarios & planning",
+    entries: [
+      {
+        name: "ScenarioCompareDemo",
+        description:
+          "The scenario switcher and quick graph, with Main and Scenario #1 pressure traces drawing in for comparison.",
+        useOn: "Planning and operations pages that discuss what-if testing.",
+        frame: "window",
+        usedOn: ["/solutions/planning", "/solutions/operational-modeling"],
+        component: ScenarioCompareDemo,
+      },
+      {
+        name: "ScenarioTreeDemo",
+        description:
+          "A staged plan as a scenario tree: change sets per year, and one project moved between years to close a deficit.",
+        useOn: "/solutions/planning and pricing content.",
+        frame: "diagram",
+        concept: true,
+        component: ScenarioTreeDemo,
+      },
+      {
+        name: "ProfilePlotDemo",
+        description:
+          "A long-section from node to node: ground line, hydraulic grade line, and the pinch point below target.",
+        useOn: "/solutions/planning and roadmap content.",
+        frame: "panel",
+        concept: true,
+        component: ProfilePlotDemo,
+        previewClass: "w-full max-w-[340px] mx-auto",
+      },
+    ],
+  },
+  {
+    id: "operations",
+    title: "Operations",
+    entries: [
+      {
+        name: "TankOperationsDemo",
+        description:
+          "A tank's 24-hour level trace with the pump switching at the setpoints.",
+        useOn: "/solutions/operational-modeling and /who-its-for/utilities.",
+        frame: "panel",
+        component: TankOperationsDemo,
+        previewClass: "w-full max-w-[340px] mx-auto",
+      },
+      {
+        name: "ControlRuleDemo",
+        description:
+          "A control rule types out, the tank level falls to its setpoint, and the pump pill flips on at the trigger.",
+        useOn: "/solutions/operational-modeling.",
+        frame: "panel",
+        component: ControlRuleDemo,
+        previewClass: "w-full max-w-[340px] mx-auto",
+      },
+      {
+        name: "PumpScheduleDemo",
+        description:
+          "Pump runs shift out of the peak tariff band on a 24-hour strip and the daily energy cost drops 23%.",
+        useOn: "/solutions/operational-modeling and energy content.",
+        frame: "panel",
+        component: PumpScheduleDemo,
+        previewClass: "w-full max-w-[360px] mx-auto",
+      },
+      {
+        name: "ShutdownPlanDemo",
+        description:
+          "Two valves close, the isolated main grays out while the length and customer counts fill in, and a detour path draws around it.",
+        useOn:
+          "/solutions/operational-modeling and /solutions/valve-criticality.",
+        frame: "window",
+        concept: true,
+        component: ShutdownPlanDemo,
+      },
+    ],
+  },
+  {
+    id: "reporting",
+    title: "Reporting & export",
+    entries: [
+      {
+        name: "TimeSeriesPlotDemo",
+        description:
+          "Three assets selected as chips, then their pressure, level, and flow traces draw on one shared 24-hour chart.",
+        useOn: "/solutions/operational-modeling and reporting content.",
+        frame: "panel",
+        concept: true,
+        component: TimeSeriesPlotDemo,
+        previewClass: "w-full max-w-[360px] mx-auto",
+      },
+      {
+        name: "DataTableDemo",
+        description:
+          "A sortable pipe table populates, re-sorts by diameter, and one cell edit updates the matching label on the map.",
+        useOn: "/solutions/model-build and reporting content.",
+        frame: "window",
+        concept: true,
+        component: DataTableDemo,
+      },
+      {
+        name: "ResultsExportDemo",
+        description:
+          "Export formats picked one after another, with GeoJSON, CSV, and XLSX files each checking off as ready.",
+        useOn:
+          "/solutions/model-import, reporting content, and /who-its-for/consultants.",
+        frame: "panel",
+        concept: true,
+        component: ResultsExportDemo,
+      },
+    ],
+  },
+  {
+    id: "platform",
+    title: "Platform",
+    entries: [
+      {
+        name: "LocalFirstDiagram",
+        description:
+          "Your model on your device, with an optional dashed link to cloud collaboration. Explains the local-first storage model.",
+        useOn: "Security, privacy, and audience pages that explain data ownership.",
+        frame: "diagram",
+        usedOn: [
+          "/",
+          "/who-its-for/consultants",
+          "/who-its-for/humanitarian-ngos",
+        ],
+        component: LocalFirstDiagram,
+      },
+      {
+        name: "DeploymentOptionsDiagram",
+        description:
+          "Three deployment paths side by side: managed cloud, a chosen data region, and self-hosted.",
+        useOn: "Security and utility-audience pages covering IT requirements.",
+        frame: "diagram",
+        usedOn: ["/who-its-for/utilities"],
+        component: DeploymentOptionsDiagram,
+      },
+      {
+        name: "DataRegionsDemo",
+        description:
+          "Three data regions side by side, each running the epanet-js app beside its own model storage: files drop to that region's users and nothing crosses from one region to another.",
+        useOn: "/security (data residency) and /who-its-for/utilities (IT requirements).",
+        frame: "diagram",
+        component: DataRegionsDemo,
+      },
+      {
+        name: "CloudYourStorageDiagram",
+        description:
+          "We run the application while model reads and writes go to a storage layer the customer manages, such as their own S3 bucket.",
+        useOn: "/security (enterprise, customer-managed storage).",
+        frame: "diagram",
+        usedOn: ["/security"],
+        component: CloudYourStorageDiagram,
+      },
+      {
+        name: "OnPremDeploymentDiagram",
+        description:
+          "Your users, the epanet-js application, and the model data all inside a dashed network boundary.",
+        useOn: "/security (enterprise, on-premises deployment).",
+        frame: "diagram",
+        usedOn: ["/security"],
+        component: OnPremDeploymentDiagram,
+      },
+      {
+        name: "BrowserAppDemo",
+        description:
+          "The URL types out, the app loads in the browser tab, and the no-install, no-login, runs-on-your-device chips land.",
+        useOn:
+          "Homepage, /security, and /who-its-for/utilities (IT requirements).",
+        frame: "diagram",
+        component: BrowserAppDemo,
+      },
+      {
+        name: "LocalFirstFlowDemo",
+        description:
+          "The app arrives from the cloud, the .inp stays on the device, and the connection drops without stopping the simulation.",
+        useOn: "/security and audience pages explaining local-first.",
+        frame: "diagram",
+        usedOn: ["/security"],
+        component: LocalFirstFlowDemo,
+      },
+      {
+        name: "FileTransferDemo",
+        description:
+          "A model file moves between two machines the traditional way, email, network drive, or USB, with no cloud in the path.",
+        useOn: "/security and /who-its-for/humanitarian-ngos.",
+        frame: "diagram",
+        usedOn: ["/security"],
+        component: FileTransferDemo,
+      },
+      {
+        name: "CloudOptionalDemo",
+        description:
+          "One model syncing from a cloud, ours or yours, down to three devices and back.",
+        useOn: "/security and collaboration content.",
+        frame: "diagram",
+        usedOn: ["/security"],
+        component: CloudOptionalDemo,
+      },
+      {
+        name: "EncryptedTransitDemo",
+        description:
+          "Traffic between your machine and the application shuttles through a TLS lock in both directions.",
+        useOn: "/security (encrypted in transit row).",
+        frame: "diagram",
+        usedOn: ["/security"],
+        component: EncryptedTransitDemo,
+      },
+      {
+        name: "TeamAccessDemo",
+        description:
+          "A member list with per-person roles, an invite going out, and a role change applying.",
+        useOn: "/pricing and /security.",
+        frame: "panel",
+        usedOn: ["/security"],
+        component: TeamAccessDemo,
+      },
+      {
+        name: "LicenseTimelineDemo",
+        description:
+          "Source code public from day one under the FSL, becoming fully open MIT two years on.",
+        useOn: "/security (open and auditable row) and open-source content.",
+        frame: "diagram",
+        component: LicenseTimelineDemo,
+      },
+      {
+        name: "SustainableOpenSourceDemo",
+        description:
+          "The open-source cycle: people use the app, some pay for advanced features, and developers reinvest in the app.",
+        useOn: "Open-source story content and /pricing.",
+        frame: "diagram",
+        component: SustainableOpenSourceDemo,
+      },
+    ],
+  },
+  {
+    id: "primitives",
+    title: "Primitives",
+    entries: [
+      {
+        name: "AppWindow (plain)",
+        description:
+          "The stylized app frame: toolbar, 16:10 map canvas, and status bar. Floating panels go in the default slot; building block for window demos.",
+        useOn: "Compose inside other demos rather than placing directly on pages.",
+        frame: "window",
+        usedOn: ["(used by all window demos)"],
+        component: AppWindow,
+        props: { variant: "plain" },
+      },
+      {
+        name: "AppWindow (pressure)",
+        description:
+          "The app frame with the network colored by pressure zone, from blue at the source to red at the extremities.",
+        useOn: "Compose inside other demos rather than placing directly on pages.",
+        frame: "window",
+        usedOn: ["(used by all window demos)"],
+        component: AppWindow,
+        props: { variant: "pressure" },
+      },
+      {
+        name: "AppWindow (passfail)",
+        description:
+          "The app frame with junctions colored green or red by result status; failing junctions pulse.",
+        useOn: "Compose inside other demos rather than placing directly on pages.",
+        frame: "window",
+        usedOn: ["(used by all window demos)"],
+        component: AppWindow,
+        props: { variant: "passfail" },
+      },
+      {
+        name: "NetworkMap (plain)",
+        description:
+          "The illustrative network on its own: navy pipes and junctions over the light basemap. Geometry is shared via network-geometry.ts for overlay demos.",
+        useOn: "Bare map media slots; pair with LegendPanel.",
+        frame: "map",
+        usedOn: ["/who-its-for/humanitarian-ngos"],
+        component: NetworkMap,
+        props: { variant: "plain" },
+      },
+      {
+        name: "NetworkMap (pressure)",
+        description: "The network colored by pressure zone.",
+        useOn: "Bare map media slots; pair with the pressure LegendPanel.",
+        frame: "map",
+        usedOn: ["/solutions/calibration"],
+        component: NetworkMap,
+        props: { variant: "pressure" },
+      },
+      {
+        name: "NetworkMap (passfail)",
+        description:
+          "The network with pass/fail junction coloring and pulsing failures.",
+        useOn: "Results-focused media slots without the app chrome.",
+        frame: "map",
+        component: NetworkMap,
+        props: { variant: "passfail" },
+      },
+      {
+        name: "NetworkMap (markers)",
+        description:
+          "The plain network with pulsing violet monitoring-point markers, as used for field planning.",
+        useOn: "Field planning and monitoring content.",
+        frame: "map",
+        usedOn: ["/solutions/field-planning"],
+        component: NetworkMap,
+        props: { variant: "plain", markers: true },
+      },
+      {
+        name: "LegendPanel (pressure)",
+        description:
+          "The floating result legend with the default pressure ranges.",
+        useOn: "Overlay on any map; defaults match the pressure palette.",
+        frame: "panel",
+        usedOn: ["/solutions/calibration", "/who-its-for/humanitarian-ngos"],
+        component: LegendPanel,
+        previewClass: "w-fit mx-auto",
+      },
+      {
+        name: "LegendPanel (custom)",
+        description:
+          "The same legend with custom title and entries, here as monitoring locations.",
+        useOn: "Any map overlay that needs its own categories.",
+        frame: "panel",
+        usedOn: ["/solutions/field-planning"],
+        component: LegendPanel,
+        props: {
+          title: "Monitoring",
+          entries: [
+            { color: "#8b5cf6", label: "Proposed logger" },
+            { color: "#312e81", label: "Existing junction" },
+          ],
+        },
+        previewClass: "w-fit mx-auto",
+      },
+    ],
+  },
+];
+
+const usageBadge = (entry: DemoEntry) =>
+  entry.usedOn?.length
+    ? `In use on ${entry.usedOn.length} page${entry.usedOn.length === 1 ? "" : "s"}`
+    : "New";
+---
+
+<Layout
+  title="Animation gallery"
+  description="Internal reference of the animated demo components used across the site."
+  lang={lang}
+  noindex>
+  <Container class="py-12 md:py-16">
+    <header class="max-w-2xl">
+      <h1 class="text-3xl font-bold tracking-tight md:text-4xl">
+        Animation gallery
+      </h1>
+      <p class="mt-3 text-gray-600 md:text-lg">
+        Every animated demo component in <code
+          class="text-sm bg-gray-100 rounded px-1.5 py-0.5">
+          src/components/demos/
+        </code>, with a short description and where each one could be used.
+        Internal reference: not linked from navigation and excluded from search
+        engines.
+      </p>
+    </header>
+
+    <nav class="mt-6 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+      {
+        sections.map((section) => (
+          <a
+            href={`#${section.id}`}
+            class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">
+            {section.title}
+          </a>
+        ))
+      }
+    </nav>
+
+    {
+      sections.map((section) => (
+        <section id={section.id} class="mt-14 scroll-mt-24">
+          <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
+            {section.title}
+          </h2>
+          {section.entries.length === 0 ? (
+            <p class="mt-4 text-sm text-gray-400">No components yet.</p>
+          ) : (
+            <div class="mt-6 grid gap-6 lg:grid-cols-2 items-start">
+              {section.entries.map((entry) => (
+                <article class="flex flex-col rounded-xl border border-gray-200 shadow-sm bg-white overflow-hidden [content-visibility:auto] [contain-intrinsic-size:auto_480px]">
+                  <div class="flex items-center justify-center bg-gray-50 border-b border-gray-100 p-4 sm:p-6">
+                    <div class={entry.previewClass ?? frameClass[entry.frame]}>
+                      <entry.component {...(entry.props ?? {})} />
+                    </div>
+                  </div>
+                  <div class="p-5">
+                    <div class="flex items-center justify-between gap-3 flex-wrap">
+                      <h3 class="font-mono text-sm font-semibold text-gray-900">
+                        {entry.name}
+                      </h3>
+                      <div class="flex items-center gap-1.5">
+                        <Badge
+                          color={entry.usedOn?.length ? "DEFAULT" : "purple"}
+                          class="!px-2 !py-0.5 !text-[11px] whitespace-nowrap">
+                          {usageBadge(entry)}
+                        </Badge>
+                        {entry.concept && (
+                          <Badge
+                            color="orange"
+                            class="!px-2 !py-0.5 !text-[11px] whitespace-nowrap">
+                            Concept
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    <p class="mt-2 text-sm text-gray-500">{entry.description}</p>
+                    <p class="mt-2 text-xs text-gray-500">
+                      <span class="font-medium text-gray-600">Use it on:</span>{" "}
+                      {entry.useOn}
+                    </p>
+                    {entry.usedOn?.length && (
+                      <p class="mt-1 text-xs text-gray-400">
+                        {entry.usedOn.join(" · ")}
+                      </p>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+      ))
+    }
+  </Container>
+</Layout>

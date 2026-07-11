@@ -1,0 +1,247 @@
+---
+// Water balance demo: an annual non-revenue-water waterfall. System input
+// breaks down step by step into billed authorized consumption, unbilled use,
+// apparent losses, and real losses, with the NRW share bracketed at the end.
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+// Horizontal waterfall rows. Bar area spans x 60-230 (170 units = 100%).
+const barX = (pct: number) => 60 + (170 * pct) / 100;
+const barW = (pct: number) => (170 * pct) / 100;
+
+const rows = [
+  { label: "System input", start: 0, width: 100, color: "#312e81" },
+  { label: "Billed", start: 0, width: 62, color: "#22c55e", value: "62%" },
+  { label: "Unbilled", start: 62, width: 4, color: "#9ca3af", value: "4%" },
+  { label: "Apparent", start: 66, width: 9, color: "#f59e0b", value: "9%" },
+  { label: "Real losses", start: 75, width: 25, color: "#ef4444", value: "25%" },
+];
+
+// Bar tops at y 4/24/44/64/84, bar height 11.
+const rowY = (i: number) => 4 + i * 20;
+
+// Dashed connectors at each step boundary, from the bottom of one bar to the
+// top of the next.
+const connectors = rows
+  .slice(1)
+  .map((row, i) => ({ x: barX(row.start), y1: rowY(i) + 11, y2: rowY(i + 1) }));
+---
+
+<div
+  class:list={[
+    "bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+    className,
+  ]}
+  role="img"
+  aria-label="Water balance panel: a waterfall splitting system input into billed consumption, unbilled use, apparent losses, and real losses, with non-revenue water bracketed at 38%.">
+  <div
+    class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+    <p class="text-[11px] font-semibold text-gray-700">Water balance</p>
+    <p class="text-[10px] text-gray-400">Annual</p>
+  </div>
+  <div class="px-3 py-2.5">
+    <svg viewBox="0 0 250 114" class="w-full" aria-hidden="true">
+      {
+        rows.map((row, i) => (
+          <g class={`wb-g${i + 1}`}>
+            {i > 0 && (
+              <line
+                x1={connectors[i - 1].x}
+                y1={connectors[i - 1].y1}
+                x2={connectors[i - 1].x}
+                y2={connectors[i - 1].y2}
+                stroke="#d1d5db"
+                stroke-width="0.75"
+                stroke-dasharray="2 2"
+              />
+            )}
+            <text
+              x="54"
+              y={rowY(i) + 8}
+              text-anchor="end"
+              font-size="7"
+              fill="#6b7280">
+              {row.label}
+            </text>
+            <rect
+              class={`wb-b${i + 1}`}
+              x={barX(row.start)}
+              y={rowY(i)}
+              width={barW(row.width)}
+              height="11"
+              rx="1.5"
+              fill={row.color}
+            />
+            {row.value &&
+              (row.start + row.width >= 100 ? (
+                <text
+                  x={barX(100) - 3}
+                  y={rowY(i) + 8}
+                  text-anchor="end"
+                  font-size="6.5"
+                  fill="#ffffff">
+                  {row.value}
+                </text>
+              ) : (
+                <text
+                  x={barX(row.start + row.width) + 3}
+                  y={rowY(i) + 8}
+                  font-size="6.5"
+                  fill="#6b7280">
+                  {row.value}
+                </text>
+              ))}
+          </g>
+        ))
+      }
+
+      <!-- NRW bracket spanning unbilled + apparent + real losses -->
+      <g class="wb-nrw">
+        <path
+          d={`M${barX(62)} 98 v3 H${barX(100)} v-3`}
+          fill="none"
+          stroke="#dc2626"
+          stroke-width="0.75"></path>
+        <text
+          x={barX(81)}
+          y="110"
+          text-anchor="middle"
+          font-size="6.5"
+          font-weight="600"
+          fill="#dc2626">
+          Non-revenue water 38%
+        </text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<style>
+  /* each step fades in as a group while its bar grows from the left */
+  .wb-g1 {
+    animation: wb-g-in-1 8s ease-out infinite both;
+  }
+  .wb-g2 {
+    animation: wb-g-in-2 8s ease-out infinite both;
+  }
+  .wb-g3 {
+    animation: wb-g-in-3 8s ease-out infinite both;
+  }
+  .wb-g4 {
+    animation: wb-g-in-4 8s ease-out infinite both;
+  }
+  .wb-g5 {
+    animation: wb-g-in-5 8s ease-out infinite both;
+  }
+  @keyframes wb-g-in-1 {
+    0%, 6% { opacity: 0; }
+    10% { opacity: 1; }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes wb-g-in-2 {
+    0%, 20% { opacity: 0; }
+    24% { opacity: 1; }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes wb-g-in-3 {
+    0%, 33% { opacity: 0; }
+    37% { opacity: 1; }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes wb-g-in-4 {
+    0%, 45% { opacity: 0; }
+    49% { opacity: 1; }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+  @keyframes wb-g-in-5 {
+    0%, 57% { opacity: 0; }
+    61% { opacity: 1; }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+
+  .wb-b1,
+  .wb-b2,
+  .wb-b3,
+  .wb-b4,
+  .wb-b5 {
+    transform-box: fill-box;
+    transform-origin: left;
+  }
+  .wb-b1 {
+    animation: wb-b-grow-1 8s ease-in-out infinite both;
+  }
+  .wb-b2 {
+    animation: wb-b-grow-2 8s ease-in-out infinite both;
+  }
+  .wb-b3 {
+    animation: wb-b-grow-3 8s ease-in-out infinite both;
+  }
+  .wb-b4 {
+    animation: wb-b-grow-4 8s ease-in-out infinite both;
+  }
+  .wb-b5 {
+    animation: wb-b-grow-5 8s ease-in-out infinite both;
+  }
+  @keyframes wb-b-grow-1 {
+    0%, 8% { transform: scaleX(0); }
+    16% { transform: scaleX(1); }
+    100% { transform: scaleX(1); }
+  }
+  @keyframes wb-b-grow-2 {
+    0%, 22% { transform: scaleX(0); }
+    30% { transform: scaleX(1); }
+    100% { transform: scaleX(1); }
+  }
+  @keyframes wb-b-grow-3 {
+    0%, 35% { transform: scaleX(0); }
+    42% { transform: scaleX(1); }
+    100% { transform: scaleX(1); }
+  }
+  @keyframes wb-b-grow-4 {
+    0%, 47% { transform: scaleX(0); }
+    54% { transform: scaleX(1); }
+    100% { transform: scaleX(1); }
+  }
+  @keyframes wb-b-grow-5 {
+    0%, 59% { transform: scaleX(0); }
+    67% { transform: scaleX(1); }
+    100% { transform: scaleX(1); }
+  }
+
+  .wb-nrw {
+    animation: wb-nrw-in 8s ease-out infinite both;
+  }
+  @keyframes wb-nrw-in {
+    0%, 72% { opacity: 0; }
+    78% { opacity: 1; }
+    92% { opacity: 1; }
+    98%, 100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wb-g1,
+    .wb-g2,
+    .wb-g3,
+    .wb-g4,
+    .wb-g5,
+    .wb-b1,
+    .wb-b2,
+    .wb-b3,
+    .wb-b4,
+    .wb-b5,
+    .wb-nrw {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

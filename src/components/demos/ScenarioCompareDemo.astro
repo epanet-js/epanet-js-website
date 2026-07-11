@@ -1,0 +1,100 @@
+---
+// Scenario comparison demo: the app's scenario switcher and quick graph,
+// with Main and Scenario #1 traces drawing in over the map.
+import { GitBranch, Plus } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+---
+
+<AppWindow
+  variant="plain"
+  label="Scenarios in epanet-js: a scenario switcher and a quick graph comparing results between the main model and a scenario.">
+  <!-- scenario switcher (bottom-left, like the app) -->
+  <div
+    class="absolute bottom-2 left-2 w-[150px] bg-white rounded-lg border border-gray-100 shadow-md py-1.5 text-[11px]">
+    <p class="flex items-center gap-1.5 px-3 py-1 text-gray-600">
+      <GitBranch size={11} className="text-gray-400" />
+      Main
+    </p>
+    <p
+      class="flex items-center gap-1.5 px-3 py-1 font-medium text-violet-600 bg-violet-50 border-l-2 border-violet-500">
+      <GitBranch size={11} />
+      Scenario #1
+    </p>
+    <p class="flex items-center gap-1.5 px-3 py-1 text-gray-400">
+      <Plus size={11} />
+      Create new scenario
+    </p>
+  </div>
+
+  <!-- quick graph (top-right, like the asset panel) -->
+  <div
+    class="absolute top-2 right-2 w-[230px] max-w-[68%] bg-white rounded-lg border border-gray-100 shadow-md px-3 pt-2.5 pb-2">
+    <div class="flex items-baseline justify-between">
+      <p class="text-[11px] font-semibold text-gray-700">Quick graph</p>
+      <p class="text-[10px] text-gray-400">Pressure (m)</p>
+    </div>
+    <svg viewBox="0 0 200 70" class="w-full mt-1.5" aria-hidden="true">
+      <g stroke="#f3f4f6" stroke-width="1">
+        <line x1="0" y1="18" x2="200" y2="18"></line>
+        <line x1="0" y1="36" x2="200" y2="36"></line>
+        <line x1="0" y1="54" x2="200" y2="54"></line>
+      </g>
+      <polyline
+        class="sc-line sc-line-main"
+        pathLength="100"
+        points="0,30 25,22 50,34 75,20 100,32 125,18 150,30 175,22 200,28"
+        fill="none"
+        stroke="#9ca3af"
+        stroke-width="1.5"></polyline>
+      <polyline
+        class="sc-line sc-line-scenario"
+        pathLength="100"
+        points="0,48 25,40 50,54 75,38 100,52 125,36 150,50 175,40 200,46"
+        fill="none"
+        stroke="#8b5cf6"
+        stroke-width="1.5"></polyline>
+    </svg>
+    <div class="flex gap-3 text-[9px] text-gray-400 mt-1">
+      <span class="flex items-center gap-1">
+        <span class="w-2.5 h-0.5 bg-gray-400"></span> Main
+      </span>
+      <span class="flex items-center gap-1">
+        <span class="w-2.5 h-0.5 bg-violet-500"></span> Scenario #1
+      </span>
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  .sc-line {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: sc-draw 6s linear infinite both;
+  }
+  .sc-line-scenario {
+    animation-delay: 0.7s;
+  }
+  @keyframes sc-draw {
+    0% {
+      stroke-dashoffset: 100;
+    }
+    45% {
+      stroke-dashoffset: 0;
+    }
+    90% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    96%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sc-line {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

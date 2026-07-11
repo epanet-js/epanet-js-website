@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "solutions": false,
+    "whoItsFor": false
+  },
+  "pages": {
+    "/solutions/model-build": true,
+    "/solutions/field-planning": true,
+    "/solutions/demand-analysis": true,
+    "/solutions/calibration": true,
+    "/solutions/model-import": true,
+    "/solutions/planning": true,
+    "/solutions/operational-modeling": true,
+    "/solutions/water-quality": true,
+    "/solutions/fire-flow": true,
+    "/solutions/valve-criticality": true,
+    "/who-its-for/utilities": true,
+    "/who-its-for/consultants": true,
+    "/who-its-for/education": true,
+    "/who-its-for/humanitarian-ngos": true,
+    "/case-studies": true,
+    "/compare": false
+  }
+}

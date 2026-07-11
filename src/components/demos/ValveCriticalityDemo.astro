@@ -1,0 +1,335 @@
+---
+// Valve criticality concept demo (unshipped): closing valve V-114 grays out
+// the segment it isolates, rings the cut-off junctions, and a results panel
+// reports the customers and demand affected.
+import AppWindow from "./AppWindow.astro";
+import { pipes } from "./network-geometry";
+
+// Pipes beyond the closed valve, ordered outward; the delay staggers the
+// gray-out so it spreads away from the valve.
+const findPipe = (x1: number, y1: number, x2: number, y2: number) =>
+  pipes.find(([a, b, c, d]) => a === x1 && b === y1 && c === x2 && d === y2)!;
+
+const outOfServicePipes = [
+  { pipe: findPipe(270, 65, 330, 80), delay: 0 },
+  { pipe: findPipe(310, 160, 330, 80), delay: 0.15 },
+  { pipe: findPipe(310, 160, 360, 150), delay: 0.3 },
+];
+
+// Junctions that lose supply, in the same outward order.
+const outOfServiceNodes: { x: number; y: number; delay: number }[] = [
+  { x: 330, y: 80, delay: 0.15 },
+  { x: 310, y: 160, delay: 0.3 },
+  { x: 360, y: 150, delay: 0.45 },
+];
+
+const rows = [
+  { label: "Customers affected", value: "142" },
+  { label: "Demand isolated", value: "4.6 l/s" },
+  { label: "Backup valves", value: "0" },
+];
+---
+
+<AppWindow
+  variant="plain"
+  label="Valve criticality concept in epanet-js: closing one valve isolates part of the network and reports the customers affected.">
+  <!-- map overlay: closed valve, out-of-service segment, isolation rings -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <!-- pipes dropping out of service -->
+    <g stroke="#d1d5db" stroke-width="2.5" stroke-linecap="round">
+      {
+        outOfServicePipes.map(({ pipe: [x1, y1, x2, y2], delay }) => (
+          <line
+            class="vc-pipe-out"
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            style={`animation-delay: ${delay}s`}
+          />
+        ))
+      }
+    </g>
+
+    <!-- junctions losing supply -->
+    <g fill="#9ca3af" stroke="#ffffff" stroke-width="1">
+      {
+        outOfServiceNodes.map(({ x, y, delay }) => (
+          <circle
+            class="vc-pipe-out"
+            cx={x}
+            cy={y}
+            r="3.5"
+            style={`animation-delay: ${delay}s`}
+          />
+        ))
+      }
+    </g>
+
+    <!-- isolation rings -->
+    <g fill="none" stroke="#ef4444" stroke-width="1.5">
+      {
+        outOfServiceNodes.map(({ x, y }, i) => (
+          <circle
+            class="vc-ring"
+            cx={x}
+            cy={y}
+            r="6"
+            style={`animation-delay: ${i * 0.15}s`}
+          />
+        ))
+      }
+    </g>
+
+    <!-- valve V-114: open (gray) crossfading to closed (red) -->
+    <g class="vc-valve-gray">
+      <path
+        d="M233 65 L240 70 L233 75 Z"
+        fill="#6b7280"
+        stroke="#ffffff"
+        stroke-width="0.75"></path>
+      <path
+        d="M247 65 L240 70 L247 75 Z"
+        fill="#6b7280"
+        stroke="#ffffff"
+        stroke-width="0.75"></path>
+    </g>
+    <g class="vc-valve-red">
+      <path
+        d="M233 65 L240 70 L233 75 Z"
+        fill="#ef4444"
+        stroke="#ffffff"
+        stroke-width="0.75"></path>
+      <path
+        d="M247 65 L240 70 L247 75 Z"
+        fill="#ef4444"
+        stroke="#ffffff"
+        stroke-width="0.75"></path>
+    </g>
+  </svg>
+
+  <!-- results panel -->
+  <div
+    class="absolute top-2 right-2 w-[200px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">Valve criticality</p>
+      <p class="text-[10px] text-gray-400">V-114</p>
+    </div>
+    <div class="py-1 text-[10px]">
+      {
+        rows.map((row, i) => (
+          <div
+            class="vc-row flex items-center justify-between px-3 py-1"
+            style={`animation-delay: ${i * 0.6}s`}>
+            <span class="text-gray-500">{row.label}</span>
+            <span class="font-medium text-gray-700 tabular-nums">
+              {row.value}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+    <div class="px-3 py-2 border-t border-gray-100">
+      <span
+        class="vc-pill inline-block rounded-full bg-red-100 text-red-600 text-[10px] font-medium px-2 py-0.5">
+        Critical
+      </span>
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  .vc-pipe-out {
+    animation: vc-pipe-out 7s infinite both;
+  }
+  @keyframes vc-pipe-out {
+    0%,
+    12% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .vc-valve-gray {
+    animation: vc-valve-gray 7s infinite both;
+  }
+  @keyframes vc-valve-gray {
+    0%,
+    4% {
+      opacity: 1;
+    }
+    12%,
+    92% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .vc-valve-red {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: vc-valve-red 7s infinite both;
+  }
+  @keyframes vc-valve-red {
+    0%,
+    4% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    8% {
+      opacity: 0.7;
+      transform: scale(1.45);
+    }
+    12% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    16% {
+      transform: scale(1);
+    }
+    92% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  .vc-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: vc-ring 7s infinite both;
+  }
+  @keyframes vc-ring {
+    0%,
+    28% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    33% {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+    38% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.18);
+    }
+    62% {
+      transform: scale(1);
+    }
+    74% {
+      transform: scale(1.18);
+    }
+    86% {
+      transform: scale(1);
+    }
+    92% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  .vc-row {
+    animation: vc-row-in 7s infinite both;
+  }
+  @keyframes vc-row-in {
+    0%,
+    35% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    42% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .vc-pill {
+    animation: vc-pill 7s infinite both;
+  }
+  @keyframes vc-pill {
+    0%,
+    60% {
+      opacity: 0;
+    }
+    66% {
+      opacity: 1;
+    }
+    74% {
+      opacity: 0.55;
+    }
+    82% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 0.6;
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vc-pipe-out,
+    .vc-valve-gray,
+    .vc-valve-red,
+    .vc-ring,
+    .vc-row,
+    .vc-pill {
+      animation: none;
+    }
+    .vc-pipe-out {
+      opacity: 1;
+    }
+    .vc-valve-gray {
+      opacity: 0;
+    }
+    .vc-valve-red {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .vc-ring {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .vc-row {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .vc-pill {
+      opacity: 1;
+    }
+  }
+</style>

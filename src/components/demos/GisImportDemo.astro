@@ -1,0 +1,503 @@
+---
+// GIS import demo: a shapefile chip drops onto the map, a progress popover
+// appears below it and fills in, then both fade out and the network draws
+// in over the basemap. Everything is sequential — each stage waits for the
+// previous one to finish before it starts.
+import { FileUp, CheckCircle2 } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import Basemap from "./Basemap.astro";
+import { pipes, junctions } from "./network-geometry";
+
+// Orient each pipe so it draws from its west endpoint, then sweep west to east.
+const drawnPipes = pipes
+  .map(([x1, y1, x2, y2]) =>
+    x1 <= x2 ? [x1, y1, x2, y2] : [x2, y2, x1, y1],
+  )
+  .sort((a, b) => a[0] - b[0]);
+
+const sortedJunctions = [...junctions].sort((a, b) => a[0] - b[0]);
+
+// Total cycle length. Every keyframe percentage below is a fraction of this,
+// so this is the one number to touch to stretch/compress the whole sequence.
+const CYCLE = 12.5;
+const toPct = (seconds: number) => +((seconds / CYCLE) * 100).toFixed(3);
+
+// Network drawing only starts once the chip + popover have fully faded out
+// (see the "fade" breakpoints on .gis-chip / .gis-panel below).
+const NETWORK_START = 5.25;
+
+// Every pipe/junction gets its own dedicated @keyframes with the draw time
+// baked directly into the percentages (no animation-delay). With 20+ pipes
+// staggered across a couple of seconds, a shared keyframe + per-item delay
+// would let a pipe's "reset to undrawn" drift out of sync with the group's
+// fade — on repeat loops it'd flash in already-drawn instead of animating.
+// Baking absolute timing per element keeps every reset aligned with the
+// group's own cycle boundary, so nothing leaks between loops.
+const PIPE_STAGGER = 0.11;
+const PIPE_DRAW = 0.4;
+const pipeTimings = drawnPipes.map((_, i) => {
+  const start = NETWORK_START + i * PIPE_STAGGER;
+  return { start, end: start + PIPE_DRAW };
+});
+
+// Junctions must not pop before the network has actually grown into them.
+// The pipe draw order is a simple west-to-east index sort, not a true
+// graph traversal — so a pipe leaving a junction can be scheduled to start
+// before the (different) pipe that actually connects that junction back to
+// the rest of the network has finished arriving. Triggering a junction's
+// pop off that early "departure" (as an earlier version of this did) made
+// it — and the branch growing out of it — appear to sprout from nowhere,
+// disconnected from the still-incomplete incoming pipe. Using only each
+// junction's earliest ARRIVING pipe avoids that: every junction here has
+// at least one, since none of them are pure sources like the tank.
+const NODE_BUFFER = 0.05;
+const NODE_BOUNCE = 0.15;
+const NODE_SETTLE = 0.2;
+const arrivalTimeByX = new Map<number, number>();
+drawnPipes.forEach(([, , x2], i) => {
+  const { end } = pipeTimings[i];
+  const prev = arrivalTimeByX.get(x2);
+  if (prev === undefined || end < prev) arrivalTimeByX.set(x2, end);
+});
+const nodeTimings = sortedJunctions.map(([x]) => {
+  const start = (arrivalTimeByX.get(x) ?? NETWORK_START) + NODE_BUFFER;
+  return { start, bounce: start + NODE_BOUNCE, settle: start + NODE_SETTLE };
+});
+// The tank is a pure source (nothing arrives at it) — it pops as soon as
+// its own outgoing pipe (the first one, index 0) starts drawing.
+const tankTiming = (() => {
+  const start = pipeTimings[0].start + NODE_BUFFER;
+  return { start, bounce: start + NODE_BOUNCE, settle: start + NODE_SETTLE };
+})();
+
+// The dash-reveal technique below always uncovers a line starting from
+// whichever end the browser treats as the path's t=0 — a single hairline
+// sliver of a mostly-hidden stroke, with round linecaps, reads as a floating
+// dot rather than a line for the first instant of the reveal. Usually that's
+// masked by nearby already-drawn geometry, but a pipe reaching into an
+// otherwise-empty part of the map (nothing drawn near it yet) makes that
+// instant plainly visible. Fading opacity in over the first slice of the
+// draw window — instead of jumping straight to fully opaque — means the
+// line is already a real, visible-length segment by the time it's shown at
+// all, regardless of which end actually reveals first.
+const PIPE_FADE_IN = PIPE_DRAW * 0.3;
+const pipeCss = pipeTimings
+  .map(
+    ({ start, end }, i) => `
+.gis-pipe-${i} { animation-name: gis-pipe-draw-${i}; }
+@keyframes gis-pipe-draw-${i} {
+  0%, ${toPct(start)}% { stroke-dashoffset: 100; opacity: 0; }
+  ${toPct(start + PIPE_FADE_IN)}% { opacity: 1; }
+  ${toPct(end)}%, 100% { stroke-dashoffset: 0; opacity: 1; }
+}`,
+  )
+  .join("\n");
+
+const nodeCss = nodeTimings
+  .map(
+    ({ start, bounce, settle }, i) => `
+.gis-node-${i} { animation-name: gis-node-pop-${i}; }
+@keyframes gis-node-pop-${i} {
+  0%, ${toPct(start)}% { transform: scale(0); }
+  ${toPct(bounce)}% { transform: scale(1.25); }
+  ${toPct(settle)}%, 100% { transform: scale(1); }
+}`,
+  )
+  .join("\n");
+
+const tankCss = `
+.gis-tank { animation-name: gis-tank-pop; }
+@keyframes gis-tank-pop {
+  0%, ${toPct(tankTiming.start)}% { transform: scale(0); }
+  ${toPct(tankTiming.bounce)}% { transform: scale(1.25); }
+  ${toPct(tankTiming.settle)}%, 100% { transform: scale(1); }
+}`;
+
+const generatedCss = `${pipeCss}\n${nodeCss}\n${tankCss}`;
+
+const summary = [
+  { label: "Pipes", value: "1,407" },
+  { label: "Junctions", value: "1,284" },
+  { label: "Demand patterns", value: "6" },
+];
+---
+
+<AppWindow
+  bare
+  hideHeader
+  hideFooter
+  label="GIS import in epanet-js: a shapefile loading onto the map as pipes and junctions appear, with an import summary popover.">
+  <!-- map: basemap plus the imported network drawing in -->
+  <svg
+    viewBox="0 0 400 300"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <Basemap />
+
+    <!-- whole network fades in/out together once drawing starts -->
+    <g class="gis-network">
+      <g stroke="#3730a3" stroke-width="2.5" stroke-linecap="round">
+        {
+          drawnPipes.map(([x1, y1, x2, y2], i) => (
+            <line
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              pathLength="100"
+              class={`gis-pipe gis-pipe-${i}`}
+            />
+          ))
+        }
+      </g>
+
+      <g stroke="#ffffff" stroke-width="1">
+        {
+          sortedJunctions.map(([x, y], i) => (
+            <circle
+              cx={x}
+              cy={y}
+              r="3.5"
+              fill="#312e81"
+              class={`gis-node gis-node-${i}`}
+            />
+          ))
+        }
+      </g>
+
+      <!-- tank at the supply point pops first -->
+      <path
+        d="M40 42 L48 56 L32 56 Z"
+        fill="#312e81"
+        stroke="#ffffff"
+        stroke-width="1"
+        class="gis-node gis-tank"></path>
+    </g>
+  </svg>
+
+  <!-- dropped file chip, with the progress popover stacked directly below it -->
+  <div class="absolute top-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+    <div
+      class="gis-chip flex items-center gap-2 bg-white rounded-lg border border-gray-200 shadow-md pl-2 pr-3 py-2">
+      <span
+        class="flex items-center justify-center w-6 h-6 rounded bg-violet-50 text-violet-600">
+        <FileUp size={14} />
+      </span>
+      <span class="text-[12px] font-medium text-gray-700">network.shp</span>
+      <span class="text-[11px] text-gray-400">2.1 MB</span>
+    </div>
+
+    <div
+      class="gis-panel w-[190px] max-w-full bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
+      <div class="px-3 pt-2.5 pb-2 border-b border-gray-100">
+        <div class="flex items-baseline justify-between">
+          <p class="text-[12px] font-semibold text-gray-700">GIS import</p>
+          <p class="text-[11px] text-gray-400">network.shp</p>
+        </div>
+        <div class="mt-2 h-0.5 rounded-full bg-gray-100 overflow-hidden">
+          <div class="gis-progress-bar h-full bg-violet-500"></div>
+        </div>
+      </div>
+      <div class="py-1 text-[12px]">
+        {
+          summary.map((row, i) => (
+            <div class={`gis-row gis-row-${i} flex items-center justify-between px-3 py-1`}>
+              <span class="text-gray-500">{row.label}</span>
+              <span class="font-medium text-gray-700 tabular-nums">
+                {row.value}
+              </span>
+            </div>
+          ))
+        }
+      </div>
+      <p
+        class="gis-footer flex items-center gap-1 px-3 py-1.5 border-t border-gray-100 text-[12px] text-green-600">
+        <span class="gis-check inline-flex">
+          <CheckCircle2 size={14} />
+        </span>
+        All features connected
+      </p>
+    </div>
+  </div>
+</AppWindow>
+
+<style define:vars={{ cycle: `${CYCLE}s` }}>
+  /* pipes draw west to east once the network group is visible; the exact
+     draw window for each pipe comes from the generated per-index keyframes
+     below (gis-pipe-draw-N) */
+  .gis-pipe {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    opacity: 0;
+    animation-duration: var(--cycle);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  /* junctions and tank pop in just behind the pipe front; per-index
+     keyframes (gis-node-pop-N / gis-tank-pop) set the exact pop time */
+  .gis-node {
+    transform: scale(0);
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-duration: var(--cycle);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  /* the whole drawn network fades in once the popover is gone, holds, then
+     fades out together before the cycle loops */
+  .gis-network {
+    opacity: 0;
+    animation: gis-network-fade var(--cycle) infinite both;
+  }
+  @keyframes gis-network-fade {
+    0%,
+    42% {
+      opacity: 0;
+    }
+    42.8% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* shapefile chip drops in first, holds, then fades out with the popover */
+  .gis-chip {
+    animation: gis-chip-in var(--cycle) infinite both;
+  }
+  @keyframes gis-chip-in {
+    0% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    3.6% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    38% {
+      opacity: 1;
+    }
+    42% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* progress popover appears below the chip once it has landed */
+  .gis-panel {
+    animation: gis-panel-in var(--cycle) infinite both;
+  }
+  @keyframes gis-panel-in {
+    0%,
+    6% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    9.2% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    38% {
+      opacity: 1;
+    }
+    42% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* progress bar fills once the popover is visible and stays filled — it
+     only disappears when the whole popover fades out with everything else */
+  .gis-progress-bar {
+    width: 0;
+    animation: gis-progress var(--cycle) linear infinite both;
+  }
+  @keyframes gis-progress {
+    0%,
+    9.2% {
+      width: 0;
+      opacity: 1;
+    }
+    18% {
+      width: 100%;
+      opacity: 1;
+    }
+    38% {
+      width: 100%;
+      opacity: 1;
+    }
+    42% {
+      width: 100%;
+      opacity: 0;
+    }
+    100% {
+      width: 100%;
+      opacity: 0;
+    }
+  }
+
+  /* feature counts populate one at a time as the progress bar finishes */
+  .gis-row {
+    animation-duration: var(--cycle);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .gis-row-0 {
+    animation-name: gis-row-in-0;
+  }
+  .gis-row-1 {
+    animation-name: gis-row-in-1;
+  }
+  .gis-row-2 {
+    animation-name: gis-row-in-2;
+  }
+  @keyframes gis-row-in-0 {
+    0%,
+    18% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    20.4% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    38% {
+      opacity: 1;
+    }
+    42% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes gis-row-in-1 {
+    0%,
+    20.8% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    23.2% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    38% {
+      opacity: 1;
+    }
+    42% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes gis-row-in-2 {
+    0%,
+    23.6% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    26% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    38% {
+      opacity: 1;
+    }
+    42% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* connectivity confirmation lands last, right before the wait + fade */
+  .gis-footer {
+    animation: gis-footer-in var(--cycle) infinite both;
+  }
+  @keyframes gis-footer-in {
+    0%,
+    27.6% {
+      opacity: 0;
+    }
+    30% {
+      opacity: 1;
+    }
+    38% {
+      opacity: 1;
+    }
+    42% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  .gis-check {
+    animation: gis-check-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes gis-check-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.12);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gis-pipe,
+    .gis-node,
+    .gis-network,
+    .gis-chip,
+    .gis-panel,
+    .gis-progress-bar,
+    .gis-row,
+    .gis-footer,
+    .gis-check {
+      animation: none;
+    }
+    .gis-pipe {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .gis-node {
+      transform: scale(1);
+    }
+    .gis-network {
+      opacity: 1;
+    }
+    .gis-chip,
+    .gis-panel,
+    .gis-row {
+      opacity: 1;
+      transform: none;
+    }
+    .gis-footer {
+      opacity: 1;
+    }
+    .gis-progress-bar {
+      width: 100%;
+      opacity: 0;
+    }
+  }
+</style>
+
+<style set:html={generatedCss} />

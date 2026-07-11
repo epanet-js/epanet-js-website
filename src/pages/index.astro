@@ -1,29 +1,13 @@
 ---
-import Features from "@components/landing/features.tsx";
-import Hero from "@components/landing/hero.tsx";
 import Layout from "@layouts/Layout.astro";
-import UserDilemma from "@components/landing/user-dilemma";
-import OpenSource from "@components/landing/open-source";
-import Pricing from "@components/landing/pricing";
-import FrequentlyAskedQuestions from "@components/landing/faq.tsx";
-import CTAJustOpen from "@components/landing/cta-just-open.tsx";
-import WhyWeBuilt from "@components/landing/why-we-built.tsx";
-import BottomCTA from "@components/landing/bottom-cta.tsx";
-import MiddleCTA from "@components/landing/newsletter-cta";
+import HomeRedesign from "@components/landing/HomeRedesign.astro";
+import HomeLegacy from "@components/landing/HomeLegacy.astro";
+import { showRedesignedHome } from "@config/feature-flags";
 
 export const prerender = false;
 const lang = "en";
 ---
 
 <Layout footerMargin={false} lang={lang}>
-  <Hero lang={lang} client:load />
-  <UserDilemma lang={lang} />
-  <Features lang={lang} client:load />
-  <MiddleCTA lang={lang} />
-  <OpenSource lang={lang} />
-  <Pricing lang={lang} client:load />
-  <FrequentlyAskedQuestions lang={lang} client:load />
-  <CTAJustOpen lang={lang} />
-  <WhyWeBuilt lang={lang} />
-  <BottomCTA lang={lang} />
+  {showRedesignedHome ? <HomeRedesign lang={lang} /> : <HomeLegacy lang={lang} />}
 </Layout>

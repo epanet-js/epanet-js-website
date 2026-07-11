@@ -1,0 +1,271 @@
+---
+// Team access demo: a workspace member list with per-person roles, an
+// invite going out, and a role change applying.
+import { UserPlus } from "lucide-react";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const members = [
+  { initials: "EB", name: "Elena B.", role: "Editor" },
+  { initials: "MK", name: "Marcus K.", role: "Editor", changes: true },
+  { initials: "PN", name: "Priya N.", role: "Viewer" },
+];
+
+const roleChip = (role: string) =>
+  role === "Editor"
+    ? "border-violet-100 bg-violet-50 text-violet-700"
+    : "border-gray-200 bg-gray-100 text-gray-500";
+---
+
+<div
+  class:list={[
+    "relative mx-auto h-80 w-[480px] rounded-lg shadow-md select-none",
+    className,
+  ]}
+  role="img"
+  aria-label="Team access panel: a member list with per-person roles, an invite going out, and one member's role changing from editor to viewer.">
+  <div class="absolute inset-0 overflow-hidden rounded-lg border border-gray-100 bg-white">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col justify-between">
+  <div
+    class="flex items-baseline justify-between px-4 py-3.5 border-b border-gray-100">
+    <p class="text-base font-semibold text-gray-700">Team access</p>
+    <p class="text-sm text-gray-400">Acme Water</p>
+  </div>
+  <div class="py-1 text-sm">
+    {
+      members.map((member, i) => (
+        <div class={`tac-row tac-row-${i + 1} flex items-center gap-3 px-4 py-2.5`}>
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-xs font-semibold text-violet-700">
+            {member.initials}
+          </span>
+          <span class="font-medium text-gray-700">{member.name}</span>
+          {member.changes ? (
+            <span class="relative ml-auto">
+              <span
+                class:list={[
+                  "tac-role-old block w-16 rounded-full border px-2.5 py-1 text-center text-xs font-medium",
+                  roleChip("Editor"),
+                ]}>
+                Editor
+              </span>
+              <span
+                class:list={[
+                  "tac-role-new absolute inset-0 flex items-center justify-center rounded-full border px-2.5 py-1 text-xs font-medium",
+                  roleChip("Viewer"),
+                ]}>
+                Viewer
+              </span>
+            </span>
+          ) : (
+            <span
+              class:list={[
+                "ml-auto w-16 rounded-full border px-2.5 py-1 text-center text-xs font-medium",
+                roleChip(member.role),
+              ]}>
+              {member.role}
+            </span>
+          )}
+        </div>
+      ))
+    }
+    <div
+      class="tac-invite flex items-center gap-3 border-t border-gray-50 px-4 py-1.5">
+      <span
+        class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-dashed border-gray-300 text-gray-400">
+        <UserPlus size={10} />
+      </span>
+      <span class="text-gray-500">sara@acme.com</span>
+      <span
+        class="ml-auto rounded-full bg-violet-500 px-2.5 py-1 text-xs font-medium text-white">
+        Invite sent
+      </span>
+    </div>
+  </div>
+  <p
+    class="tac-footer px-4 py-2.5 border-t border-gray-100 text-xs text-gray-400">
+    4 seats · roles per member
+  </p>
+      </div>
+    </foreignObject>
+  </svg>
+  </div>
+</div>
+
+<style>
+  /* Every row/invite/footer item enters on the same 0.6s cadence and all
+     five settle by ~34% of the cycle. They then hold together and fade
+     out as one, in sync, at 88.89%-94.44% (9s cycle: t=8s to t=8.5s). */
+  .tac-row-1 {
+    animation: tac-row-1-in 9s ease-out infinite both;
+  }
+  @keyframes tac-row-1-in {
+    0%,
+    3.33% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    7.78% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    88.89% {
+      opacity: 1;
+    }
+    94.44%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .tac-row-2 {
+    animation: tac-row-2-in 9s ease-out infinite both;
+  }
+  @keyframes tac-row-2-in {
+    0%,
+    10% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    14.44% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    88.89% {
+      opacity: 1;
+    }
+    94.44%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .tac-row-3 {
+    animation: tac-row-3-in 9s ease-out infinite both;
+  }
+  @keyframes tac-row-3-in {
+    0%,
+    16.67% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    21.11% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    88.89% {
+      opacity: 1;
+    }
+    94.44%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .tac-invite {
+    animation: tac-invite-in 9s ease-out infinite both;
+  }
+  @keyframes tac-invite-in {
+    0%,
+    23.33% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    27.78% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    88.89% {
+      opacity: 1;
+    }
+    94.44%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .tac-footer {
+    animation: tac-footer-in 9s ease-out infinite both;
+  }
+  @keyframes tac-footer-in {
+    0%,
+    30% {
+      opacity: 0;
+    }
+    34.44% {
+      opacity: 1;
+    }
+    88.89% {
+      opacity: 1;
+    }
+    94.44%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* the role change is a distinct event, timed after all five items have
+     settled in, not part of the entrance cadence */
+  .tac-role-old {
+    animation: tac-role-old 9s linear infinite both;
+  }
+  @keyframes tac-role-old {
+    0%,
+    44.44% {
+      opacity: 1;
+    }
+    47.78%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .tac-role-new {
+    animation: tac-role-new 9s linear infinite both;
+  }
+  @keyframes tac-role-new {
+    0%,
+    44.44% {
+      opacity: 0;
+    }
+    47.78% {
+      opacity: 1;
+      box-shadow: 0 0 0 1.5px #c4b5fd;
+    }
+    54.44% {
+      box-shadow: none;
+    }
+    88.89% {
+      opacity: 1;
+    }
+    94.44%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tac-row-1,
+    .tac-row-2,
+    .tac-row-3,
+    .tac-invite,
+    .tac-role-old,
+    .tac-role-new,
+    .tac-footer {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .tac-role-old {
+      opacity: 0;
+    }
+  }
+</style>

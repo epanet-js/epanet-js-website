@@ -1,0 +1,338 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import ProseSection from "@components/marketing/ProseSection.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import ComparisonTable from "@components/marketing/ComparisonTable.astro";
+import type {
+  ComparisonRow,
+  ComparisonRowGroup,
+} from "@components/marketing/ComparisonTable.astro";
+import CardGrid from "@components/marketing/CardGrid.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import GisImportDemo from "@components/demos/GisImportDemo.astro";
+import NetworkDrawDemo from "@components/demos/NetworkDrawDemo.astro";
+import InpCompatReportDemo from "@components/demos/InpCompatReportDemo.astro";
+import { comparePages } from "@config/navigation";
+
+export const prerender = true;
+const lang = "en";
+
+const glanceGroups: ComparisonRowGroup[] = [
+  {
+    title: "Platform & install",
+    rows: [
+      {
+        label: "Runs on",
+        values: [
+          "Any modern browser: Mac, Windows, Linux, Chromebooks",
+          "Windows only, inside Esri ArcGIS Pro",
+        ],
+      },
+      {
+        label: "Install and IT setup",
+        values: [
+          { text: "None", note: "open app.epanetjs.com" },
+          {
+            text: "ArcGIS Pro + InfoWater Pro",
+            note: "version pairing managed by you",
+          },
+        ],
+      },
+      {
+        label: "Extra software required",
+        values: [
+          "None",
+          { text: "Esri ArcGIS Pro license", note: "sold separately by Esri" },
+        ],
+      },
+      {
+        label: "Where your model lives",
+        values: [
+          "On your machine, with opt-in cloud sharing",
+          "On your Windows workstation",
+        ],
+      },
+    ],
+  },
+  {
+    title: "Engine & compatibility",
+    rows: [
+      {
+        label: "Hydraulic engine",
+        values: [
+          { text: "EPANET 2.3", note: "Toolkit 2.3.5" },
+          { text: "EPANET-derived", note: "with Autodesk extensions" },
+        ],
+      },
+      { label: "Opens and saves EPANET .inp", values: [true, true] },
+      {
+        label: "Extended period simulation",
+        values: [true, true],
+      },
+      { label: "Pressure-driven demand", values: [true, true] },
+      {
+        label: "Water quality, including multi-species (MSX)",
+        values: [true, true],
+      },
+      { label: "Fire flow analysis", values: [true, true] },
+      { label: "Scenario management", values: [true, true] },
+      {
+        label: "Transient (surge) analysis",
+        values: [false, { text: "InfoSurge", note: "included since 2025" }],
+      },
+      {
+        label: "SCADA and telemetry connection",
+        values: [false, true],
+      },
+    ],
+  },
+  {
+    title: "Data exchange",
+    rows: [
+      {
+        label: "GIS import",
+        values: [
+          "Shapefile, GeoJSON, CAD",
+          "Esri geodatabase, shapefile",
+        ],
+      },
+      {
+        label: "Customer points and demand allocation",
+        values: [true, true],
+      },
+      {
+        label: "Results export",
+        values: [
+          "CSV, XLSX, Shapefile, GeoJSON",
+          "GIS and tabular exchange, ODBC",
+        ],
+      },
+    ],
+  },
+  {
+    title: "Licensing & pricing",
+    rows: [
+      {
+        label: "Entry price",
+        values: [
+          { text: "Free", note: "Pro $950/yr" },
+          { text: "$10,000/yr", note: "plus ArcGIS Pro, sold separately" },
+        ],
+      },
+      { label: "Free plan", values: [true, false] },
+      {
+        label: "Try it without talking to sales",
+        values: [true, false],
+      },
+      {
+        label: "Model size limits",
+        values: ["None on any plan", "None published"],
+      },
+      { label: "Open source", values: [true, false] },
+    ],
+  },
+];
+
+const pricingRows: ComparisonRow[] = [
+  {
+    label: "How it's sold",
+    values: [
+      "Free plan, or monthly and annual subscriptions",
+      "Monthly, annual, or 3-year subscription",
+    ],
+  },
+  {
+    label: "Entry price",
+    values: [
+      { text: "$0", note: "no login needed" },
+      { text: "$10,000/yr", note: "or $1,250/mo" },
+    ],
+  },
+  {
+    label: "Individual license",
+    values: [
+      { text: "Pro: $950/yr", note: "or $95/mo, named user" },
+      { text: "$10,000/yr", note: "named single user" },
+    ],
+  },
+  {
+    label: "Team licensing",
+    values: [
+      {
+        text: "Teams: $4,400/yr + $600/user/yr",
+        note: "floating licenses, minimum 2",
+      },
+      { text: "Per named user", note: "one active user per license" },
+    ],
+  },
+  {
+    label: "Occasional use",
+    values: [
+      { text: "Free plan", note: "no model size limit" },
+      { text: "Autodesk Flex tokens", note: "42 tokens/day, about $126/day" },
+    ],
+  },
+  {
+    label: "Required extras",
+    values: [
+      "None",
+      {
+        text: "Esri ArcGIS Pro license",
+        note: "price not published; quote from Esri",
+      },
+    ],
+  },
+  {
+    label: "Students and educators",
+    values: [
+      { text: "Free education license" },
+      { text: "Free education license", note: "ArcGIS Pro not included" },
+    ],
+  },
+];
+
+const related = comparePages.filter(
+  (p) => p.href !== "/compare/epanet-js-vs-infowater"
+);
+
+const faqs = [
+  {
+    question: "Can epanet-js open an InfoWater Pro model?",
+    answer:
+      "Yes. Export your model to EPANET format from InfoWater Pro (Autodesk documents the steps in its InfoWater Pro help) and open the .inp file in epanet-js. The network, demands, patterns, and controls carry across as standard .inp data. See <a href=\"/solutions/model-import\">model import</a> for details.",
+  },
+  {
+    question: "Can I move a model back to InfoWater Pro afterwards?",
+    answer:
+      "Yes. epanet-js saves standard EPANET .inp files, and InfoWater Pro imports EPANET models through the same Exchange menu. Data moves in both directions, so trying epanet-js doesn't commit you to anything.",
+  },
+  {
+    question: "How much does InfoWater Pro cost?",
+    answer:
+      "As published on Autodesk's online store in July 2026: $10,000 per user per year, or $1,250 per month. It also requires an Esri ArcGIS Pro license, which is sold separately and has no published price. epanet-js has a free plan, and Pro is $950 per year.",
+  },
+  {
+    question: "Do I need ArcGIS Pro to run epanet-js?",
+    answer:
+      "No. epanet-js imports Shapefile and GeoJSON data directly and runs on your machine with nothing to install. InfoWater Pro runs as an extension inside ArcGIS Pro, so it needs a licensed, version-compatible ArcGIS Pro installation.",
+  },
+  {
+    question: "Do the two tools give the same results?",
+    answer:
+      "Both are built on the EPANET engine lineage. epanet-js runs the current EPANET 2.3 toolkit unmodified, so its results match EPANET exactly. Autodesk describes InfoWater Pro's analysis as based on the EPANET engine with its own extensions, such as pressure-driven leakage.",
+  },
+  {
+    question: "Is epanet-js really free?",
+    answer:
+      "The free plan is a full modeling tool: EPANET 2.3 engine, network editing, GIS import, fire flow, water quality, and no limit on model size. Paid plans add team features and advanced visualization, and they fund the project. The source code is public under the Functional Source License and becomes MIT after two years.",
+  },
+];
+---
+
+<Layout
+  title="epanet-js vs InfoWater Pro"
+  description="Compare epanet-js and Autodesk InfoWater Pro: features, pricing, licensing, and how to use them together. epanet-js runs the EPANET 2.3 engine on your machine, starts free, and reads and writes the same .inp files."
+  lang={lang}>
+  <PageHero
+    title="epanet-js vs InfoWater Pro"
+    subtitle="InfoWater Pro is Autodesk's water modeling extension for Esri ArcGIS Pro, priced at $10,000 per user per year plus an ArcGIS Pro license. epanet-js runs the EPANET 2.3 engine in a browser on any machine, starts free, and exchanges standard .inp files with InfoWater in both directions.">
+    <GisImportDemo slot="media" />
+  </PageHero>
+
+  <ComparisonTable
+    heading="At a glance"
+    subheading="The essentials, side by side. Details and sources below."
+    caption="Feature comparison of epanet-js and Autodesk InfoWater Pro"
+    columns={["epanet-js", "InfoWater Pro"]}
+    groups={glanceGroups}
+    footnote="InfoWater Pro capabilities as described in Autodesk's public product documentation and system requirements, July 2026."
+  />
+
+  <ContentMediaRow title="What you get with epanet-js">
+    <p>
+      epanet-js is built around the everyday work: draw pipes that snap and
+      split automatically, batch-edit properties across a selection, undo
+      anything, press Shift + Enter, and read results seconds later. There is
+      no install, no license server, and no version pairing between your
+      modeling tool and your GIS. A browser on any machine is enough, and your
+      model stays on that machine unless you choose to share it.
+    </p>
+    <p>
+      You also know exactly what it costs. Prices are published, the free plan
+      has no model size limit, and the source code is public. Choosing
+      epanet-js supports the continued development of EPANET and of free,
+      open tools for the water industry.
+    </p>
+    <NetworkDrawDemo slot="media" />
+  </ContentMediaRow>
+
+  <ProseSection title="What InfoWater Pro offers that epanet-js doesn't">
+    <p>
+      InfoWater Pro's defining strength is its home inside ArcGIS Pro. If your
+      team's data and workflows live in Esri's ecosystem, the model sits
+      directly on your geodatabase, Esri's spatial analysis is available inside
+      the modeling environment, and results publish to ArcGIS Online. That
+      integration is the product, and epanet-js doesn't replicate it.
+    </p>
+    <p>
+      The subscription also includes analysis epanet-js doesn't offer:
+      InfoSurge transient (surge) analysis, cloud-parallelized batch runs with
+      results on Info360 dashboards, and SCADA and telemetry connections for
+      checking the model against live operations. Autodesk backs it with a
+      large support organization, on-demand training, and a public roadmap.
+    </p>
+    <p>
+      If your work depends on those capabilities, InfoWater Pro earns its
+      seat. The question worth asking is how much of your team's time is spent
+      there, and how much is spent on everyday model building and analysis
+      that doesn't need any of it.
+    </p>
+  </ProseSection>
+
+  <ContentMediaRow title="Data in, data out: use both" reverse
+    cta={{ label: "More on model import", href: "/solutions/model-import" }}>
+    <p>
+      Because InfoWater Pro and epanet-js both speak EPANET, you don't have to
+      choose. Export a .inp from InfoWater Pro and it opens in epanet-js with
+      demands, patterns, and controls intact; save it back out and InfoWater
+      Pro reads it again. Autodesk publishes a step-by-step guide for exactly
+      this round trip.
+    </p>
+    <p>
+      That makes a practical split possible: do the model building, the
+      day-to-day edits, and the routine analysis in epanet-js, on any machine,
+      at published prices, and keep an InfoWater Pro seat for the surge runs
+      or ArcGIS-native deliverables that need one. Consultants who must hand
+      over an InfoWater model can still do most of the work in epanet-js and
+      deliver in the client's required format.
+    </p>
+    <InpCompatReportDemo slot="media" />
+  </ContentMediaRow>
+
+  <ComparisonTable
+    heading="Pricing"
+    subheading="Published prices only, as of July 2026."
+    caption="Pricing comparison of epanet-js and Autodesk InfoWater Pro"
+    columns={["epanet-js", "InfoWater Pro"]}
+    rows={pricingRows}
+    footnote="InfoWater Pro pricing as published on Autodesk's online store (autodesk.com), July 2026, US pricing. Esri does not publish ArcGIS Pro pricing. epanet-js pricing is at epanetjs.com/pricing."
+  />
+
+  <CardGrid
+    heading="Comparing something else?"
+    items={related}
+    columns={2}
+  />
+
+  <FaqList
+    subheading="Common questions about moving between epanet-js and InfoWater Pro."
+    items={faqs}
+  />
+
+  <CtaSection
+    heading="Open your model in epanet-js"
+    subheading="Export a .inp from InfoWater Pro and see your own network in epanet-js in a couple of minutes. No install, no sales call, and the free plan has no model size limit."
+  />
+</Layout>

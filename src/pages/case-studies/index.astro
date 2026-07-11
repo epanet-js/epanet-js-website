@@ -1,0 +1,142 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PageHero from "@components/marketing/PageHero.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import Container from "@components/container.astro";
+import Badge from "@components/ui/badge.astro";
+import {
+  Building2,
+  Briefcase,
+  GraduationCap,
+  HeartHandshake,
+} from "lucide-react";
+
+export const prerender = true;
+const lang = "en";
+
+interface Study {
+  icon: typeof Building2;
+  audience: string;
+  title: string;
+  summary: string;
+  href?: string;
+  image?: { src: string; alt: string };
+}
+
+// Example cards (no `href`) are placeholders until real stories replace them.
+const studies: Study[] = [
+  {
+    icon: Building2,
+    audience: "Utility",
+    title: "How Warren County Utility District brought hydraulic modeling in-house",
+    summary:
+      "A Tennessee utility serving 34,000 people built a model of its 900 miles of pipe from GIS data and now answers fire flow, leak, and extension questions the same day.",
+    href: "/case-studies/warren-county-utility-district",
+    image: {
+      src: "/assets/case-studies/wcud-building.webp",
+      alt: "The Warren County Utility District office building in McMinnville, Tennessee.",
+    },
+  },
+  //{
+  //  icon: Briefcase,
+  //  audience: "Consultant",
+  //  title: "Consultancy delivers a calibrated model on a tight deadline",
+  //  summary:
+  //    "An engineering consultant uses assisted calibration to produce a defensible, well-documented model for a client under time pressure.",
+  //},
+  //{
+  //  icon: GraduationCap,
+  //  audience: "Education",
+  //  title: "University runs a full water modeling course in the browser",
+  //  summary:
+  //    "A professor teaches hydraulic modeling with zero installs, getting students to their first working model within a single lab session.",
+  //},
+  //{
+  //  icon: HeartHandshake,
+  //  audience: "Humanitarian & NGO",
+  //  title: "NGO designs a community water supply in the field",
+  //  summary:
+  //    "A humanitarian team plans and analyzes a community water network on modest hardware, on location, without expensive software.",
+  //},
+];
+---
+
+<Layout
+  title="Case studies"
+  description="How teams use epanet-js in the real world — utilities, consultants, educators, and NGOs."
+  lang={lang}>
+  <PageHero
+    title="How teams use epanet-js"
+    subtitle="Real stories from the people building, calibrating, and operating water networks with epanet-js"
+    primaryCta={{ label: "Share your story", href: "mailto:support@epanetjs.com" }}
+    secondaryCta={{ label: "Launch epanet-js", href: "https://app.epanetjs.com" }}
+    align="center"
+  />
+
+  <section class="w-full py-12 md:py-16">
+    <Container>
+      <div class="grid gap-6 sm:grid-cols-2">
+        {
+          studies.map((study) =>
+            study.href ? (
+              <a
+                href={study.href}
+                class="group flex flex-col rounded-xl border border-gray-200 shadow-sm overflow-hidden bg-white hover:border-purple-300 hover:shadow-md transition-all">
+                {
+                  study.image ? (
+                    <img
+                      src={study.image.src}
+                      alt={study.image.alt}
+                      loading="lazy"
+                      class="aspect-[16/9] w-full object-cover border-b border-gray-100"
+                    />
+                  ) : (
+                    <div class="aspect-[16/9] w-full border-b border-gray-100 bg-gray-50 flex items-center justify-center">
+                      <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-purple-50 text-purple-600">
+                        <study.icon size={22} />
+                      </div>
+                    </div>
+                  )
+                }
+                <div class="p-6 space-y-3">
+                  <div class="flex items-center gap-2">
+                    <Badge color="purple">{study.audience}</Badge>
+                  </div>
+                  <h2 class="text-lg font-semibold text-gray-900 group-hover:text-purple-700 transition-colors">
+                    {study.title}
+                  </h2>
+                  <p class="text-sm text-muted-foreground">{study.summary}</p>
+                </div>
+              </a>
+            ) : (
+              <article class="flex flex-col rounded-xl border border-gray-200 shadow-sm overflow-hidden bg-white">
+                <div class="aspect-[16/9] w-full border-b border-gray-100 bg-gray-50 flex items-center justify-center">
+                  <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-purple-50 text-purple-600">
+                    <study.icon size={22} />
+                  </div>
+                </div>
+                <div class="p-6 space-y-3">
+                  <div class="flex items-center gap-2">
+                    <Badge color="purple">{study.audience}</Badge>
+                    <Badge color="orange">Example</Badge>
+                  </div>
+                  <h2 class="text-lg font-semibold text-gray-900">
+                    {study.title}
+                  </h2>
+                  <p class="text-sm text-muted-foreground">{study.summary}</p>
+                </div>
+              </article>
+            ),
+          )
+        }
+      </div>
+    </Container>
+  </section>
+
+  <CtaSection
+    heading="Have a story to tell?"
+    subheading="If epanet-js has made a difference to your work, we'd love to feature it. Get in touch."
+    primaryCta={{ label: "Share your story", href: "mailto:support@epanetjs.com" }}
+    secondaryCta={{ label: "Book a call", href: "https://cal.com/epanet-js/" }}
+  />
+</Layout>
