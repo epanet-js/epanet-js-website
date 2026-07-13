@@ -16,7 +16,7 @@ export default function Hero({ lang = "en" }: Props) {
       <div className="px-4 mx-auto max-w-[76.25rem] 2xlplus:max-w-[84rem]">
         <div className="grid gap-10 lg:grid-cols-[1fr_690px] lg:gap-12 xl:grid-cols-[1fr_690px] xl:gap-16">
           <div className="flex flex-col justify-center space-y-6">
-            <div className="w-[110%] space-y-3 text-center lg:text-left">
+            <div className="lg:w-[110%] space-y-3 text-center lg:text-left">
               <p className=" md:text-xl font-bold mx-auto lg:mx-0">
                 {t("hero.brand")}
               </p>
