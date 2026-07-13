@@ -14,6 +14,76 @@ export const ui = {
   "nav.resources": "Resources",
   "nav.pricing": "Pricing",
   "nav.blog": "Blog",
+  "nav.resources.security.label": "Security",
+  "nav.resources.security.description":
+    "How we keep your data private and in your control",
+  "nav.resources.blog.label": "Blog",
+  "nav.resources.blog.description":
+    "Product updates and water modeling insights",
+  "nav.resources.caseStudies.label": "Case studies",
+  "nav.resources.caseStudies.description": "How teams use epanet-js",
+  "nav.resources.compare.label": "Compare",
+  "nav.resources.compare.description":
+    "How epanet-js stacks up against the incumbent tools",
+  "nav.resources.roadmap.label": "Roadmap",
+  "nav.resources.helpCenter.label": "Help Center",
+  "nav.resources.toolkit.label": "Toolkit",
+
+  "nav.solutions.heading.build": "Build your model",
+  "nav.solutions.heading.use": "Use your model",
+  "nav.solutions.modelBuild.label": "Model building",
+  "nav.solutions.modelBuild.description":
+    "Turn GIS and asset data into a working model, fast",
+  "nav.solutions.fieldPlanning.label": "Field planning",
+  "nav.solutions.fieldPlanning.description":
+    "Design the field campaign that makes your model trustworthy",
+  "nav.solutions.demandAnalysis.label": "Demand analysis",
+  "nav.solutions.demandAnalysis.description":
+    "Build an accurate picture of demand across your network",
+  "nav.solutions.calibration.label": "Calibration",
+  "nav.solutions.calibration.description":
+    "Assisted tuning that makes your model match the field",
+  "nav.solutions.modelImport.label": "Model import",
+  "nav.solutions.modelImport.description":
+    "Bring in an existing model from any platform",
+  "nav.solutions.planning.label": "Planning",
+  "nav.solutions.planning.description":
+    "Plan your network and investment years ahead",
+  "nav.solutions.operationalModeling.label": "Operational modeling",
+  "nav.solutions.operationalModeling.description":
+    "See how your network responds before you make a change",
+  "nav.solutions.waterQuality.label": "Water quality",
+  "nav.solutions.waterQuality.description":
+    "Track water age, source, and chlorine across the network",
+  "nav.solutions.fireFlow.label": "Fire flow",
+  "nav.solutions.fireFlow.description":
+    "Find available flow and capacity across your network",
+  "nav.solutions.valveCriticality.label": "Valve criticality",
+  "nav.solutions.valveCriticality.description":
+    "Find the valves that isolate each part of the network",
+
+  "nav.whoItsFor.utilities.label": "Utilities",
+  "nav.whoItsFor.utilities.description":
+    "Take control of your network and your model",
+  "nav.whoItsFor.consultants.label": "Consultants",
+  "nav.whoItsFor.consultants.description":
+    "Build models faster and deliver more for every client",
+  "nav.whoItsFor.education.label": "Education",
+  "nav.whoItsFor.education.description":
+    "Learn on the real tools the industry uses",
+  "nav.whoItsFor.humanitarianNgos.label": "Humanitarian & NGOs",
+  "nav.whoItsFor.humanitarianNgos.description":
+    "The best tools to get the job done for humanitarian water work",
+
+  "nav.compare.infowater.label": "epanet-js vs InfoWater",
+  "nav.compare.infowater.description":
+    "How epanet-js compares with Autodesk InfoWater Pro",
+  "nav.compare.watercadWatergems.label": "epanet-js vs WaterCAD/WaterGEMS",
+  "nav.compare.watercadWatergems.description":
+    "How epanet-js compares with Bentley OpenFlows WaterCAD and WaterGEMS",
+  "nav.compare.infoworksWsPro.label": "epanet-js vs InfoWorks WS Pro",
+  "nav.compare.infoworksWsPro.description":
+    "How epanet-js compares with Autodesk InfoWorks WS Pro",
   "nav.language.es": "Cambiar a español",
   "nav.language.en": "Switch to English",
   "nav.launch": "Launch epanet-js",

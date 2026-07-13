@@ -20,6 +20,8 @@ import {
   Scale,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import type { TranslationKey } from "@i18n/utils";
+import { ui as en } from "@i18n/en";
 import { isPageEnabled, isSectionEnabled } from "./feature-flags";
 
 export interface NavItem {
@@ -28,12 +30,41 @@ export interface NavItem {
   description?: string;
   icon?: LucideIcon;
   external?: boolean;
+  labelKey?: TranslationKey;
+  descriptionKey?: TranslationKey;
+}
+
+// Builds a translatable NavItem: label/description come from en.ts (the
+// single source of truth for the English copy) via labelKey/descriptionKey,
+// so the same string isn't hand-duplicated in navigation.ts.
+function translatableItem(
+  item: Omit<NavItem, "label" | "description"> & {
+    labelKey: TranslationKey;
+    descriptionKey?: TranslationKey;
+  },
+): NavItem {
+  return {
+    ...item,
+    label: en[item.labelKey],
+    description: item.descriptionKey ? en[item.descriptionKey] : undefined,
+  };
 }
 
 export interface NavColumn {
   heading?: string;
   items: NavItem[];
   secondaryItems?: NavItem[];
+  headingKey?: TranslationKey;
+}
+
+// Same idea as translatableItem, for a column's heading text.
+function translatableColumn(
+  column: Omit<NavColumn, "heading"> & { headingKey?: TranslationKey },
+): NavColumn {
+  return {
+    ...column,
+    heading: column.headingKey ? en[column.headingKey] : undefined,
+  };
 }
 
 export interface NavSection {
@@ -51,80 +82,76 @@ const solutionsData: NavSection = {
   label: "Solutions",
   hubHref: "/solutions",
   columns: [
-    {
-      heading: "Build your model",
+    translatableColumn({
+      headingKey: "nav.solutions.heading.build",
       items: [
-        {
-          label: "Model building",
+        translatableItem({
           href: "/solutions/model-build",
-          description: "Turn GIS and asset data into a working model, fast.",
           icon: Hammer,
-        },
-        {
-          label: "Field planning",
+          labelKey: "nav.solutions.modelBuild.label",
+          descriptionKey: "nav.solutions.modelBuild.description",
+        }),
+        translatableItem({
           href: "/solutions/field-planning",
-          description:
-            "Design the field campaign that makes your model trustworthy.",
           icon: ClipboardList,
-        },
-        {
-          label: "Demand analysis",
+          labelKey: "nav.solutions.fieldPlanning.label",
+          descriptionKey: "nav.solutions.fieldPlanning.description",
+        }),
+        translatableItem({
           href: "/solutions/demand-analysis",
-          description:
-            "Build an accurate picture of demand across your network.",
           icon: BarChart3,
-        },
-        {
-          label: "Calibration",
+          labelKey: "nav.solutions.demandAnalysis.label",
+          descriptionKey: "nav.solutions.demandAnalysis.description",
+        }),
+        translatableItem({
           href: "/solutions/calibration",
-          description: "Assisted tuning that makes your model match the field.",
           icon: SlidersHorizontal,
-        },
+          labelKey: "nav.solutions.calibration.label",
+          descriptionKey: "nav.solutions.calibration.description",
+        }),
       ],
-    },
-    {
-      heading: "Use your model",
+    }),
+    translatableColumn({
+      headingKey: "nav.solutions.heading.use",
       items: [
-        {
-          label: "Model import",
+        translatableItem({
           href: "/solutions/model-import",
-          description: "Bring in an existing model from any platform.",
           icon: Import,
-        },
-        {
-          label: "Planning",
+          labelKey: "nav.solutions.modelImport.label",
+          descriptionKey: "nav.solutions.modelImport.description",
+        }),
+        translatableItem({
           href: "/solutions/planning",
-          description: "Plan your network and investment years ahead.",
           icon: CalendarRange,
-        },
-        {
-          label: "Operational modeling",
+          labelKey: "nav.solutions.planning.label",
+          descriptionKey: "nav.solutions.planning.description",
+        }),
+        translatableItem({
           href: "/solutions/operational-modeling",
-          description:
-            "See how your network responds before you make a change.",
           icon: Gauge,
-        },
-        {
-          label: "Water quality",
+          labelKey: "nav.solutions.operationalModeling.label",
+          descriptionKey: "nav.solutions.operationalModeling.description",
+        }),
+        translatableItem({
           href: "/solutions/water-quality",
-          description:
-            "Track water age, source, and chlorine across the network.",
           icon: FlaskConical,
-        },
-        {
-          label: "Fire flow",
+          labelKey: "nav.solutions.waterQuality.label",
+          descriptionKey: "nav.solutions.waterQuality.description",
+        }),
+        translatableItem({
           href: "/solutions/fire-flow",
-          description: "Find available flow and capacity across your network.",
           icon: Flame,
-        },
-        {
-          label: "Valve criticality",
+          labelKey: "nav.solutions.fireFlow.label",
+          descriptionKey: "nav.solutions.fireFlow.description",
+        }),
+        translatableItem({
           href: "/solutions/valve-criticality",
-          description: "Find the valves that isolate each part of the network.",
           icon: Waypoints,
-        },
+          labelKey: "nav.solutions.valveCriticality.label",
+          descriptionKey: "nav.solutions.valveCriticality.description",
+        }),
       ],
-    },
+    }),
   ],
 };
 
@@ -136,31 +163,30 @@ const whoItsForData: NavSection = {
   columns: [
     {
       items: [
-        {
-          label: "Utilities",
+        translatableItem({
           href: "/who-its-for/utilities",
-          description: "Take control of your network and your model.",
           icon: Building2,
-        },
-        {
-          label: "Consultants",
+          labelKey: "nav.whoItsFor.utilities.label",
+          descriptionKey: "nav.whoItsFor.utilities.description",
+        }),
+        translatableItem({
           href: "/who-its-for/consultants",
-          description: "Build models faster and deliver more for every client.",
           icon: Briefcase,
-        },
-        {
-          label: "Education",
+          labelKey: "nav.whoItsFor.consultants.label",
+          descriptionKey: "nav.whoItsFor.consultants.description",
+        }),
+        translatableItem({
           href: "/who-its-for/education",
-          description: "Learn on the real tools the industry uses.",
           icon: GraduationCap,
-        },
-        {
-          label: "Humanitarian & NGOs",
+          labelKey: "nav.whoItsFor.education.label",
+          descriptionKey: "nav.whoItsFor.education.description",
+        }),
+        translatableItem({
           href: "/who-its-for/humanitarian-ngos",
-          description:
-            "The best tools to get the job done for humanitarian water work.",
           icon: HeartHandshake,
-        },
+          labelKey: "nav.whoItsFor.humanitarianNgos.label",
+          descriptionKey: "nav.whoItsFor.humanitarianNgos.description",
+        }),
       ],
     },
   ],
@@ -173,47 +199,47 @@ const resourcesData: NavSection = {
   columns: [
     {
       items: [
-        {
-          label: "Security",
+        translatableItem({
           href: "/security",
-          description: "How we keep your data private and in your control.",
           icon: ShieldCheck,
-        },
-        {
-          label: "Blog",
+          labelKey: "nav.resources.security.label",
+          descriptionKey: "nav.resources.security.description",
+        }),
+        translatableItem({
           href: "/blog",
-          description: "Product updates and water modeling insights.",
           icon: Newspaper,
-        },
-        {
-          label: "Case studies",
+          labelKey: "nav.resources.blog.label",
+          descriptionKey: "nav.resources.blog.description",
+        }),
+        translatableItem({
           href: "/case-studies",
-          description: "How teams use epanet-js.",
           icon: FileText,
-        },
-        {
-          label: "Compare",
+          labelKey: "nav.resources.caseStudies.label",
+          descriptionKey: "nav.resources.caseStudies.description",
+        }),
+        translatableItem({
           href: "/compare",
-          description: "How epanet-js stacks up against the incumbent tools.",
           icon: Scale,
-        },
+          labelKey: "nav.resources.compare.label",
+          descriptionKey: "nav.resources.compare.description",
+        }),
       ],
       secondaryItems: [
-        {
-          label: "Roadmap",
+        translatableItem({
           href: "https://roadmap.epanetjs.com",
           external: true,
-        },
-        {
-          label: "Help Center",
+          labelKey: "nav.resources.roadmap.label",
+        }),
+        translatableItem({
           href: "https://help.epanetjs.com",
           external: true,
-        },
-        {
-          label: "Toolkit",
+          labelKey: "nav.resources.helpCenter.label",
+        }),
+        translatableItem({
           href: "https://toolkit.epanetjs.com",
           external: true,
-        },
+          labelKey: "nav.resources.toolkit.label",
+        }),
       ],
     },
   ],
@@ -222,25 +248,24 @@ const resourcesData: NavSection = {
 // ── Product comparisons ──────────────────────────────────────────────────
 // Consumed by the /compare hub, the vs-page cross-links, and the footer.
 export const comparePages: NavItem[] = [
-  {
-    label: "epanet-js vs InfoWater",
+  translatableItem({
     href: "/compare/epanet-js-vs-infowater",
-    description: "How epanet-js compares with Autodesk InfoWater Pro.",
     icon: Scale,
-  },
-  {
-    label: "epanet-js vs WaterCAD/WaterGEMS",
+    labelKey: "nav.compare.infowater.label",
+    descriptionKey: "nav.compare.infowater.description",
+  }),
+  translatableItem({
     href: "/compare/epanet-js-vs-watercad-watergems",
-    description:
-      "How epanet-js compares with Bentley OpenFlows WaterCAD and WaterGEMS.",
     icon: Scale,
-  },
-  {
-    label: "epanet-js vs InfoWorks WS Pro",
+    labelKey: "nav.compare.watercadWatergems.label",
+    descriptionKey: "nav.compare.watercadWatergems.description",
+  }),
+  translatableItem({
     href: "/compare/epanet-js-vs-infoworks-ws-pro",
-    description: "How epanet-js compares with Autodesk InfoWorks WS Pro.",
     icon: Scale,
-  },
+    labelKey: "nav.compare.infoworksWsPro.label",
+    descriptionKey: "nav.compare.infoworksWsPro.description",
+  }),
 ];
 
 // ── Staged-launch filtering ──────────────────────────────────────────────

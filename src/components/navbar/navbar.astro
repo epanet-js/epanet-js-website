@@ -10,6 +10,7 @@ import { Globe } from "lucide-react";
 import { useTranslations, localePath } from "@i18n/utils";
 import type { Locale } from "@i18n/utils";
 import { solutions, whoItsFor, resources } from "@config/navigation";
+import type { NavItem, NavColumn } from "@config/navigation";
 
 interface Props {
   lang?: Locale;
@@ -19,6 +20,24 @@ const { lang = "en" } = Astro.props;
 const t = useTranslations(lang);
 
 const prefix = lang === "es" ? "/es" : "";
+
+// Every mega-menu item/column carries a labelKey/descriptionKey/headingKey
+// (see navigation.ts) resolved here for the current request's locale.
+const translateItem = (item: NavItem): NavItem => ({
+  ...item,
+  label: item.labelKey ? t(item.labelKey) : item.label,
+  description: item.descriptionKey
+    ? t(item.descriptionKey)
+    : item.description,
+});
+
+const translateColumns = (columns: NavColumn[]): NavColumn[] =>
+  columns.map((column) => ({
+    ...column,
+    heading: column.headingKey ? t(column.headingKey) : column.heading,
+    items: column.items.map(translateItem),
+    secondaryItems: column.secondaryItems?.map(translateItem),
+  }));
 
 // Mega-menu sections whose items are all feature-flagged off (see
 // src/config/feature-flags.ts) are dropped from the navbar entirely.
@@ -30,7 +49,7 @@ const menuitems = [
   {
     type: "mega",
     title: t("nav.solutions"),
-    columns: solutions.columns,
+    columns: translateColumns(solutions.columns),
     hubHref: solutions.hubHref,
     width: "lg",
     layout: "rows",
@@ -38,7 +57,7 @@ const menuitems = [
   {
     type: "mega",
     title: t("nav.whoItsFor"),
-    columns: whoItsFor.columns,
+    columns: translateColumns(whoItsFor.columns),
     hubHref: whoItsFor.hubHref,
     width: "sm",
   },
@@ -49,7 +68,7 @@ const menuitems = [
   {
     type: "mega",
     title: t("nav.resources"),
-    columns: resources.columns,
+    columns: translateColumns(resources.columns),
     width: "sm",
   },
 ].filter(

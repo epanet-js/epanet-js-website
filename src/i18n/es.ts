@@ -1,4 +1,8 @@
-export const ui = {
+import type { ui as en } from "./en";
+
+// Partial: any key missing here falls back to the English string (see
+// useTranslations in ./utils) instead of requiring a translation up front.
+export const ui: Partial<Record<keyof typeof en, string>> = {
   // ── Layout / Meta ──
   "meta.defaultDescription":
     "epanet-js: EPANET en tu navegador — comienza a modelar redes de agua ahora, sin descargas.",
@@ -14,6 +18,76 @@ export const ui = {
   "nav.resources": "Recursos",
   "nav.pricing": "Precios",
   "nav.blog": "Blog",
+  "nav.resources.security.label": "Seguridad",
+  "nav.resources.security.description":
+    "Cómo mantenemos tus datos privados y bajo tu control",
+  "nav.resources.blog.label": "Blog",
+  "nav.resources.blog.description":
+    "Novedades de producto y modelado de agua",
+  "nav.resources.caseStudies.label": "Casos de estudio",
+  "nav.resources.caseStudies.description": "Cómo utilizan epanet-js los profesionales",
+  "nav.resources.compare.label": "Comparar",
+  "nav.resources.compare.description": "epanet-js frente a las herramientas tradicionales",
+  "nav.resources.roadmap.label": "Hoja de ruta",
+  "nav.resources.helpCenter.label": "Centro de ayuda",
+  "nav.resources.toolkit.label": "Herramientas",
+
+  "nav.solutions.heading.build": "Crea tu modelo",
+  "nav.solutions.heading.use": "Usa tu modelo",
+  "nav.solutions.modelBuild.label": "Construcción de modelo",
+  "nav.solutions.modelBuild.description":
+    "Crea modelos operativos a partir de tus datos GIS y de activos",
+  "nav.solutions.fieldPlanning.label": "Campañas en la red",
+  "nav.solutions.fieldPlanning.description":
+    "Diseña las inspecciones sobre el terreno que hagan tu modelo fiable",
+  "nav.solutions.demandAnalysis.label": "Análisis de la demanda",
+  "nav.solutions.demandAnalysis.description":
+    "Crea una imagen precisa de la demanda en toda tu red",
+  "nav.solutions.calibration.label": "Calibración",
+  "nav.solutions.calibration.description":
+    "Ajuste guiado para que tu modelo coincida con las mediciones reales",
+  "nav.solutions.modelImport.label": "Importación de modelos",
+  "nav.solutions.modelImport.description":
+    "Trae un modelo existente de otra plataforma",
+  "nav.solutions.planning.label": "Planificación",
+  "nav.solutions.planning.description":
+    "Planifica tu red y tus inversiones con años de antelación",
+  "nav.solutions.operationalModeling.label": "Modelado operativo",
+  "nav.solutions.operationalModeling.description":
+    "Mira cómo responde tu red antes de realizar cualquier cambio",
+  "nav.solutions.waterQuality.label": "Calidad del agua",
+  "nav.solutions.waterQuality.description":
+    "Rastrea la edad del agua, el origen y el cloro en toda la red",
+  "nav.solutions.fireFlow.label": "Caudal de incendio",
+  "nav.solutions.fireFlow.description":
+    "Encuentra el caudal disponible y la capacidad en toda tu red",
+  "nav.solutions.valveCriticality.label": "Criticidad de válvulas",
+  "nav.solutions.valveCriticality.description":
+    "Encuentra las válvulas que aíslan cada parte de la red",
+
+  "nav.whoItsFor.utilities.label": "Empresas de agua",
+  "nav.whoItsFor.utilities.description":
+    "Toma el control de tu red y de tu modelo",
+  "nav.whoItsFor.consultants.label": "Consultoras",
+  "nav.whoItsFor.consultants.description":
+    "Crea modelos más rápido y ofrece mejores resultados a cada cliente",
+  "nav.whoItsFor.education.label": "Educación",
+  "nav.whoItsFor.education.description":
+    "Aprende con las herramientas reales que se utilizan en el sector",
+  "nav.whoItsFor.humanitarianNgos.label": "Ayuda humanitaria y ONGs",
+  "nav.whoItsFor.humanitarianNgos.description":
+    "Herramientas clave para proyectos de agua humanitarios",
+
+  "nav.compare.infowater.label": "epanet-js vs InfoWater",
+  "nav.compare.infowater.description":
+    "Comparativa de epanet-js con Autodesk InfoWater Pro",
+  "nav.compare.watercadWatergems.label":
+    "epanet-js vs WaterCAD/WaterGEMS",
+  "nav.compare.watercadWatergems.description":
+    "Comparativa de epanet-js con Bentley OpenFlows WaterCAD y WaterGEMS",
+  "nav.compare.infoworksWsPro.label": "epanet-js vs InfoWorks WS Pro",
+  "nav.compare.infoworksWsPro.description":
+    "Comparativa de epanet-js con Autodesk InfoWorks WS Pro",
   "nav.language.es": "Cambiar a español",
   "nav.language.en": "Switch to English",
   "nav.launch": "Abrir epanet-js",
@@ -68,7 +142,7 @@ export const ui = {
   "features.built.item2": " Pulsa Mayús+Intro y obtén resultados. Así de simple.",
   "features.built.item3Bold": "Visualización de datos inmediata.",
   "features.built.item3":
-    " Revisa presiones, flujos y velocidades de un vistazo gracias a la codificación por colores.",
+    " Revisa presiones, caudales y velocidades de un vistazo gracias a la codificación por colores.",
   "features.built.item4Bold": "Experimenta sin miedo.",
   "features.built.item4": " ¡Por fin existe el \"Deshacer/Rehacer\"! Olvídate de empezar de cero por un error.",
   "features.built.item5Bold": "Mapas satelitales integrados.",
