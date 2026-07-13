@@ -721,7 +721,7 @@ const MainPricingCard: React.FC<MainPricingCardProps> = ({
         </h3>
         <span className="text-gray-600 text-sm mb-3">{titleDescription}</span>
         {userPrice !== undefined ? (
-          <div className="flex items-baseline gap-4">
+          <div className="flex flex-wrap items-baseline gap-4">
             <div>
               <div className="mb-1">
                 <strong className="text-4xl font-bold">${price}</strong>
