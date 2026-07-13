@@ -263,6 +263,15 @@ export const ui = {
   "pricingFaq.q7": "How do I get support if I have questions?",
   "pricingFaq.a7":
     "We offer different support options depending on your plan. Free users can access our community forums and documentation, while paid users receive priority email support. Educational users have access to specialized resources for classroom use.",
+  
+  "pricingFaq.q8": "Can you complete our organization's security questionnaire?",
+  "pricingFaq.a8": `We complete security questionnaires for our Enterprise customers.
+    <p class="mt-3">Free, Pro, and Teams plans are self-service, and we expect your team to run its own internal security review. To make that as easy as possible, we maintain a generic security questionnaire with answers to the questions utilities and engineering firms have put to us before, so you can fill out your own internal forms quickly. If a question isn't covered, <a href="mailto:support@epanetjs.com" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">email us</a> or <a href="https://cal.com/epanet-js/" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">book a call</a>.</p>
+    <p class="mt-3">For a full overview of how we handle security and data privacy, see our <a href="/security" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">security page</a>.</p>`,
+  "pricingFaq.q9": "If epanet-js runs in a web browser, how is my data not uploaded to the internet?",
+  "pricingFaq.a9": `epanet-js is built local-first. The browser acts as a secure runtime, much like a desktop operating system: when you load the app over HTTPS, the entire application, including the EPANET simulation engine compiled to WebAssembly, downloads to your browser cache and runs on your machine's own CPU and memory inside the browser sandbox, at near-native desktop performance.
+    <p class="mt-3">Project files are read from and written to your hard drive or network drive through the browser's local file access APIs, and simulation results are saved locally. Neither your infrastructure data nor your customer data leaves your computer. It also saves bandwidth, since heavy model files are never streamed, uploaded, or downloaded. Once the page has loaded, you can disconnect from the internet entirely and keep working.</p>
+    <p class="mt-3">For a full overview of how we handle security and data privacy, see our <a href="/security" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">security page</a>.</p>`,
 
   // ── CTA Just Open ──
   "ctaOpen.heading": "Just open your browser and model.",
