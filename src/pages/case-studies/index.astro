@@ -17,6 +17,7 @@ const lang = "en";
 interface Study {
   icon: typeof Building2;
   audience: string;
+  location: string;
   title: string;
   summary: string;
   href?: string;
@@ -28,6 +29,7 @@ const studies: Study[] = [
   {
     icon: Building2,
     audience: "Utility",
+    location: "United States of America",
     title: "How Warren County Utility District brought hydraulic modeling in-house",
     summary:
       "A Tennessee utility serving 34,000 people built a model of its 900 miles of pipe from GIS data and now answers fire flow, leak, and extension questions the same day.",
@@ -99,9 +101,9 @@ const studies: Study[] = [
                   )
                 }
                 <div class="p-6 space-y-3">
-                  <div class="flex items-center gap-2">
-                    <Badge color="purple">{study.audience}</Badge>
-                  </div>
+                  <p class="text-sm font-medium text-muted-foreground">
+                    {study.audience} &ndash; {study.location}
+                  </p>
                   <h2 class="text-lg font-semibold text-gray-900 group-hover:text-purple-700 transition-colors">
                     {study.title}
                   </h2>

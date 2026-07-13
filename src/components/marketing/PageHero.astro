@@ -9,6 +9,8 @@ interface Cta {
 interface Props {
   title: string;
   subtitle?: string;
+  audience?: string;
+  location?: string;
   primaryCta?: Cta | null;
   secondaryCta?: Cta | null;
   align?: "left" | "center";
@@ -17,8 +19,12 @@ interface Props {
 const {
   title,
   subtitle,
+  audience,
+  location,
   align = "left",
 } = Astro.props;
+
+const meta = audience && location ? `${audience} – ${location}` : undefined;
 
 const defaultPrimary: Cta = {
   label: "Launch epanet-js",
@@ -63,6 +69,13 @@ const isCentered = align === "center" || !hasMedia;
             subtitle && (
               <p class="text-muted-foreground md:text-xl max-w-[600px] mx-auto">
                 {subtitle}
+              </p>
+            )
+          }
+          {
+            meta && (
+              <p class="text-sm font-medium text-muted-foreground">
+                {meta}
               </p>
             )
           }
