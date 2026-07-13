@@ -3,354 +3,178 @@ import { Check, CircleMinus, InfoIcon, Minus } from "lucide-react";
 import { clsx } from "clsx";
 import { Button } from "@components/ui/landing/button";
 import { useTranslations } from "@i18n/utils";
-import type { Locale } from "@i18n/utils";
+import type { Locale, TranslationKey } from "@i18n/utils";
 
 // ── Pricing comparison table ─────────────────────────────────────────────────
+// Row/section labels are i18n keys (see en.ts/es.ts "pricingTable.*"), resolved
+// via t() at render time so the table can be localized.
 
 type CellValue = "yes" | "no" | "coming-soon";
 
 interface ComparisonRow {
-  feature: string;
+  key: TranslationKey;
   indent?: boolean;
   values: [CellValue, CellValue, CellValue]; // [free, pro, teams]
 }
 
 interface ComparisonSection {
-  title: string;
+  titleKey: TranslationKey;
   rows: ComparisonRow[];
 }
 
 const comparisonSections: ComparisonSection[] = [
   {
-    title: "Simulation",
+    titleKey: "pricingTable.simulation.title",
     rows: [
-      { feature: "EPANET Toolkit 2.3.5 engine", values: ["yes", "yes", "yes"] },
-      {
-        feature: "Steady-state and Extended Period Simulation (EPS)",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Pressure-Driven Demands (PDD)",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Simple and rule-based controls",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Water quality analysis (age, trace, chemical)",
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "Energy consumption analysis", values: ["yes", "yes", "yes"] },
-      {
-        feature: "Headloss formula (H-W, D-W, C-M)",
-        values: ["yes", "yes", "yes"],
-      },
+      { key: "pricingTable.simulation.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulation.feature2", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulation.feature3", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulation.feature4", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulation.feature5", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulation.feature6", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulation.feature7", values: ["yes", "yes", "yes"] },
     ],
   },
   {
-    title: "Network editing",
+    titleKey: "pricingTable.networkEditing.title",
     rows: [
-      {
-        feature: "Easy asset drawing in the map",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Snap-to-node and pipe splitting",
-        indent: true,
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Node merging and replacement",
-        indent: true,
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Redraw and reverse links",
-        indent: true,
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Customize pipe drawing defaults",
-        indent: true,
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Active topology – deactivate / reactivate assets",
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "Batch attribute editing", values: ["yes", "yes", "yes"] },
-      { feature: "Asset search", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature2", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature3", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature4", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature5", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature6", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature7", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature8", values: ["yes", "yes", "yes"] },
     ],
   },
   {
-    title: "Customer points",
+    titleKey: "pricingTable.customerPoints.title",
     rows: [
-      {
-        feature: "Add, edit, move, remove customer points",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Import from Shapefile or GeoJSON",
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "Demand allocation", values: ["yes", "yes", "yes"] },
-      {
-        feature: "Rules-based allocation",
-        indent: true,
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Allocate per zone",
-        indent: true,
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "Customer points data table", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.customerPoints.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.customerPoints.feature2", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.customerPoints.feature3", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.customerPoints.feature4", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.customerPoints.feature5", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.customerPoints.feature6", values: ["yes", "yes", "yes"] },
     ],
   },
   {
-    title: "Element properties",
+    titleKey: "pricingTable.elementProperties.title",
     rows: [
-      {
-        feature:
-          "Define pumps on the asset panel or from the library (1-point, 3-point, multi-point curves)",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature:
-          "Define tank capacity on the asset panel (diameter or volume curve)",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Pump controls (level or time-based) on the asset panel",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Pipe material and installation year",
-        values: ["no", "yes", "yes"],
-      },
-      { feature: "Custom attributes", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.elementProperties.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.elementProperties.feature2", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.elementProperties.feature3", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.elementProperties.feature4", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.elementProperties.feature5", values: ["no", "yes", "yes"] },
     ],
   },
   {
-    title: "Data libraries",
+    titleKey: "pricingTable.dataLibraries.title",
     rows: [
-      { feature: "Curve library manager", values: ["yes", "yes", "yes"] },
-      {
-        feature: "Patterns library (time-series patterns)",
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "Pipe definition library", values: ["no", "yes", "yes"] },
-      {
-        feature: "Assign roughness by material and age",
-        indent: true,
-        values: ["no", "yes", "yes"],
-      },
-      {
-        feature: "Saved selection sets",
-        values: ["no", "coming-soon", "coming-soon"],
-      },
+      { key: "pricingTable.dataLibraries.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataLibraries.feature2", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataLibraries.feature3", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.dataLibraries.feature4", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.dataLibraries.feature5", values: ["no", "coming-soon", "coming-soon"] },
     ],
   },
   {
-    title: "Data exchange",
+    titleKey: "pricingTable.dataExchange.title",
     rows: [
-      { feature: "INP import and export", values: ["yes", "yes", "yes"] },
-      {
-        feature: "epanet-js project format (.ejsdb)",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Custom coordinate systems and projections",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Simple X-Y grid (non-georeferenced models)",
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "Elevation data", values: ["yes", "yes", "yes"] },
-      {
-        feature: "Mapbox Terrain DTM",
-        indent: true,
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "GeoTIFF", indent: true, values: ["no", "yes", "yes"] },
-      {
-        feature: "Export asset data (Shapefile, CSV, XLSX, GeoJSON)",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Export simulation results (CSV, XLSX)",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Third-party model import and export",
-        values: ["no", "coming-soon", "coming-soon"],
-      },
+      { key: "pricingTable.dataExchange.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataExchange.feature2", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataExchange.feature3", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataExchange.feature4", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataExchange.feature5", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataExchange.feature6", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataExchange.feature7", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.dataExchange.feature8", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataExchange.feature9", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataExchange.feature10", values: ["no", "coming-soon", "coming-soon"] },
     ],
   },
   {
-    title: "Results & visualization",
+    titleKey: "pricingTable.resultsVisualization.title",
     rows: [
-      { feature: "Map visualization", values: ["yes", "yes", "yes"] },
-      {
-        feature: "Basemap selection (satellite, streets, outdoors)",
-        indent: true,
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Custom tile server (XYZ, Mapbox, TileJSON)",
-        indent: true,
-        values: ["no", "yes", "yes"],
-      },
-      {
-        feature: "Custom vector file layers (GeoJSON, Shapefile)",
-        indent: true,
-        values: ["no", "yes", "yes"],
-      },
-      {
-        feature: "Local background layers",
-        indent: true,
-        values: ["no", "coming-soon", "coming-soon"],
-      },
-      {
-        feature: "Upstream and downstream trace",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature:
-          "Map symbology (pressure, flow, demand, head, roughness, diameter, elevation)",
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "Flow direction arrows", values: ["yes", "yes", "yes"] },
-      {
-        feature: "Node size and visibility settings",
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "Graphing time-series data", values: ["yes", "yes", "yes"] },
-      {
-        feature: "Quick graph in the asset panel",
-        indent: true,
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Custom graphs with multiple elements",
-        indent: true,
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "Asset data tables", values: ["yes", "yes", "yes"] },
-      {
-        feature: "Hydraulic Grade Line (HGL) profile",
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Zone polygons – import and visualize",
-        values: ["no", "yes", "yes"],
-      },
+      { key: "pricingTable.resultsVisualization.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature2", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature3", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature4", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature5", indent: true, values: ["no", "coming-soon", "coming-soon"] },
+      { key: "pricingTable.resultsVisualization.feature6", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature7", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature8", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature9", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature10", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature11", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature12", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature13", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature14", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature15", values: ["no", "yes", "yes"] },
     ],
   },
   {
-    title: "Network review & analysis",
+    titleKey: "pricingTable.networkReviewAnalysis.title",
     rows: [
-      {
-        feature: "Boundary and selection trace",
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "Network review", values: ["yes", "yes", "yes"] },
-      { feature: "Orphan assets", indent: true, values: ["yes", "yes", "yes"] },
-      { feature: "Asset proximity", indent: true, values: ["yes", "yes", "yes"] },
-      { feature: "Crossing pipes", indent: true, values: ["yes", "yes", "yes"] },
-      {
-        feature: "Connectivity trace",
-        indent: true,
-        values: ["yes", "yes", "yes"],
-      },
-      {
-        feature: "Missing or invalid attribute checks",
-        values: ["no", "yes", "yes"],
-      },
-      { feature: "Pipe roughness", indent: true, values: ["no", "yes", "yes"] },
-      { feature: "Tank levels", indent: true, values: ["no", "yes", "yes"] },
-      { feature: "Pump curves", indent: true, values: ["no", "yes", "yes"] },
-      {
-        feature: "Unallocated customer points",
-        indent: true,
-        values: ["no", "yes", "yes"],
-      },
-      {
-        feature: "Valve criticality analysis",
-        values: ["no", "coming-soon", "coming-soon"],
-      },
+      { key: "pricingTable.networkReviewAnalysis.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkReviewAnalysis.feature2", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkReviewAnalysis.feature3", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkReviewAnalysis.feature4", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkReviewAnalysis.feature5", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkReviewAnalysis.feature6", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkReviewAnalysis.feature7", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.networkReviewAnalysis.feature8", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.networkReviewAnalysis.feature9", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.networkReviewAnalysis.feature10", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.networkReviewAnalysis.feature11", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.networkReviewAnalysis.feature12", values: ["no", "coming-soon", "coming-soon"] },
     ],
   },
   {
-    title: "Scenario management",
+    titleKey: "pricingTable.scenarioManagement.title",
     rows: [
-      { feature: "Create and switch scenarios", values: ["no", "yes", "yes"] },
-      {
-        feature:
-          "Compare scenario differences (changed attributes highlighted)",
-        values: ["no", "yes", "yes"],
-      },
-      {
-        feature: "Compare simulation results between scenarios",
-        values: ["no", "yes", "yes"],
-      },
-      {
-        feature: "Scenarios, versioning, model history",
-        values: ["no", "coming-soon", "coming-soon"],
-      },
-      {
-        feature: "Save scenarios in model / cloud",
-        values: ["no", "coming-soon", "coming-soon"],
-      },
+      { key: "pricingTable.scenarioManagement.feature1", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.scenarioManagement.feature2", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.scenarioManagement.feature3", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.scenarioManagement.feature4", values: ["no", "coming-soon", "coming-soon"] },
+      { key: "pricingTable.scenarioManagement.feature5", values: ["no", "coming-soon", "coming-soon"] },
     ],
   },
   {
-    title: "Model building",
+    titleKey: "pricingTable.modelBuilding.title",
     rows: [
-      { feature: "GIS model import (legacy)", values: ["yes", "no", "no"] },
-      { feature: "GIS model import (improved)", values: ["no", "yes", "yes"] },
-      {
-        feature: "Source projection preserved",
-        indent: true,
-        values: ["no", "yes", "yes"],
-      },
-      {
-        feature: "Attribute search in field mapping",
-        indent: true,
-        values: ["no", "yes", "yes"],
-      },
-      {
-        feature: "Model build in your language",
-        indent: true,
-        values: ["no", "yes", "yes"],
-      },
+      { key: "pricingTable.modelBuilding.feature1", values: ["yes", "no", "no"] },
+      { key: "pricingTable.modelBuilding.feature2", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.modelBuilding.feature3", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.modelBuilding.feature4", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.modelBuilding.feature5", indent: true, values: ["no", "yes", "yes"] },
     ],
   },
   {
-    title: "Team collaboration",
+    titleKey: "pricingTable.teamCollaboration.title",
     rows: [
-      {
-        feature: "Support for multiple languages",
-        values: ["yes", "yes", "yes"],
-      },
-      { feature: "Multiple team members", values: ["no", "no", "yes"] },
-      {
-        feature: "Guest user access and privacy settings",
-        values: ["no", "no", "coming-soon"],
-      },
-      { feature: "Organization management", values: ["no", "no", "yes"] },
+      { key: "pricingTable.teamCollaboration.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.teamCollaboration.feature2", values: ["no", "no", "yes"] },
+      { key: "pricingTable.teamCollaboration.feature3", values: ["no", "no", "coming-soon"] },
+      { key: "pricingTable.teamCollaboration.feature4", values: ["no", "no", "yes"] },
     ],
   },
 ];
 
-function TableCell({ value }: { value: CellValue }) {
+
+function TableCell({
+  value,
+  t,
+}: {
+  value: CellValue;
+  t: (key: TranslationKey) => string;
+}) {
   if (value === "yes") {
     return (
       <Check
         className="mx-auto h-5 w-5 text-indigo-500"
-        aria-label="Included"
+        aria-label={t("pricingTable.includedAriaLabel")}
       />
     );
   }
@@ -358,13 +182,13 @@ function TableCell({ value }: { value: CellValue }) {
     return (
       <Minus
         className="mx-auto h-4 w-4 text-gray-300"
-        aria-label="Not included"
+        aria-label={t("pricingTable.notIncludedAriaLabel")}
       />
     );
   }
   return (
     <span className="inline-flex items-center rounded-full bg-gray-200 px-2 py-0.5 text-[0.65rem] font-medium text-gray-600 whitespace-nowrap">
-      Coming soon
+      {t("pricingTable.comingSoonBadge")}
     </span>
   );
 }
@@ -383,38 +207,43 @@ interface PlanHeader {
   buttonClassName?: string;
 }
 
-function getPlanHeaders(billingCycle: "monthly" | "annually"): PlanHeader[] {
+function getPlanHeaders(
+  billingCycle: "monthly" | "annually",
+  t: (key: TranslationKey) => string,
+): PlanHeader[] {
   const isMonthly = billingCycle === "monthly";
-  const suffix = isMonthly ? "/mo" : "/yr";
+  const suffix = isMonthly
+    ? `/${t("pricing.suffix.monthShort")}`
+    : `/${t("pricing.suffix.yearShort")}`;
   return [
     {
-      name: "Free",
+      name: t("pricing.free.name"),
       price: "$0",
       priceSuffix: suffix,
       priceNote: " ",
-      buttonText: "Get Free",
+      buttonText: t("pricingTable.freeButtonText"),
       buttonUrl: "https://app.epanetjs.com",
     },
     {
-      name: "Pro",
+      name: t("pricing.pro.name"),
       price: isMonthly ? "$95" : "$950",
       priceSuffix: suffix,
-      priceNote: "Individual named license",
-      buttonText: "Get Pro",
+      priceNote: t("pricing.pro.description"),
+      buttonText: t("pricing.pro.button"),
       buttonUrl: `https://app.epanetjs.com/?dialog=upgrade&plan=pro&paymentType=${isMonthly ? "monthly" : "yearly"}&startCheckout=true`,
       buttonVariant: "default",
       buttonClassName:
         "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-transparent",
     },
     {
-      name: "Teams",
+      name: t("pricing.teams.name"),
       price: isMonthly ? "$440" : "$4,400",
       priceSuffix: suffix,
-      priceNote: "(base cost)",
+      priceNote: t("pricing.teams.baseCost"),
       userPrice: isMonthly ? "+ $60" : "+ $600",
-      userPriceSuffix: "/user",
-      userPriceNote: "(per user)",
-      buttonText: "Get Teams",
+      userPriceSuffix: suffix,
+      userPriceNote: t("pricing.teams.perUser"),
+      buttonText: t("pricing.teams.button"),
       buttonUrl: "https://tally.so/r/wkqjyo",
     },
   ];
@@ -423,11 +252,13 @@ function getPlanHeaders(billingCycle: "monthly" | "annually"): PlanHeader[] {
 function ComparisonHeader({
   billingCycle,
   position,
+  t,
 }: {
   billingCycle: "monthly" | "annually";
   position: "top" | "bottom";
+  t: (key: TranslationKey) => string;
 }) {
-  const plans = getPlanHeaders(billingCycle);
+  const plans = getPlanHeaders(billingCycle, t);
   return (
     <tr
       className={clsx(
@@ -438,7 +269,7 @@ function ComparisonHeader({
       )}
     >
       <th className="w-[46%] py-5 px-5 text-left align-bottom">
-        <span className="sr-only">Feature</span>
+        <span className="sr-only">{t("pricingTable.featureSrLabel")}</span>
       </th>
       {plans.map((plan) => (
         <th
@@ -517,10 +348,13 @@ function ComparisonHeader({
 function PricingComparisonTable({
   billingCycle,
   collapsibleTable = false,
+  lang,
 }: {
   billingCycle: "monthly" | "annually";
   collapsibleTable?: boolean;
+  lang: Locale;
 }) {
+  const t = useTranslations(lang);
   const [expanded, setExpanded] = useState(!collapsibleTable);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -537,9 +371,11 @@ function PricingComparisonTable({
       ref={containerRef}
       className="mt-20 max-w-5xl mx-auto px-4 md:px-6 scroll-mt-24"
     >
-      <h3 className="text-2xl font-bold text-center mb-2">Compare plans</h3>
+      <h3 className="text-2xl font-bold text-center mb-2">
+        {t("pricingTable.heading")}
+      </h3>
       <p className="text-center text-muted-foreground mb-10">
-        Everything that's included in each plan.
+        {t("pricingTable.subheading")}
       </p>
       <div
         className={clsx(
@@ -549,24 +385,24 @@ function PricingComparisonTable({
       >
         <table className="w-full text-sm border-collapse">
           <thead>
-            <ComparisonHeader billingCycle={billingCycle} position="top" />
+            <ComparisonHeader billingCycle={billingCycle} position="top" t={t} />
           </thead>
           <tbody>
             {comparisonSections.flatMap((section) => [
               <tr
-                key={`section-${section.title}`}
+                key={`section-${section.titleKey}`}
                 className="bg-gray-100 border-t border-b border-gray-200"
               >
                 <td
                   colSpan={4}
                   className="py-2.5 px-5 text-[0.7rem] font-semibold uppercase tracking-wide text-gray-600"
                 >
-                  {section.title}
+                  {t(section.titleKey)}
                 </td>
               </tr>,
               ...section.rows.map((row, i) => (
                 <tr
-                  key={`${section.title}-${i}`}
+                  key={`${section.titleKey}-${i}`}
                   className="border-b border-gray-100 last:border-0 hover:bg-gray-50/60 transition-colors"
                 >
                   <td
@@ -575,16 +411,16 @@ function PricingComparisonTable({
                       row.indent && "pl-10 text-gray-500",
                     )}
                   >
-                    {row.feature}
+                    {t(row.key)}
                   </td>
                   <td className="py-3 px-4 text-center">
-                    <TableCell value={row.values[0]} />
+                    <TableCell value={row.values[0]} t={t} />
                   </td>
                   <td className="py-3 px-4 text-center">
-                    <TableCell value={row.values[1]} />
+                    <TableCell value={row.values[1]} t={t} />
                   </td>
                   <td className="py-3 px-4 text-center">
-                    <TableCell value={row.values[2]} />
+                    <TableCell value={row.values[2]} t={t} />
                   </td>
                 </tr>
               )),
@@ -592,14 +428,18 @@ function PricingComparisonTable({
           </tbody>
           {expanded && (
             <tfoot>
-              <ComparisonHeader billingCycle={billingCycle} position="bottom" />
+              <ComparisonHeader
+                billingCycle={billingCycle}
+                position="bottom"
+                t={t}
+              />
             </tfoot>
           )}
         </table>
         {!expanded && (
           <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white via-white/90 to-transparent flex items-end justify-center pb-6">
             <Button variant="outline" onClick={() => setExpanded(true)}>
-              Show full comparison
+              {t("pricingTable.showFullComparison")}
             </Button>
           </div>
         )}
@@ -611,7 +451,7 @@ function PricingComparisonTable({
             onClick={collapse}
             className="text-sm text-gray-500 underline hover:text-gray-700"
           >
-            Show less
+            {t("pricingTable.showLess")}
           </button>
         </div>
       )}
@@ -1208,6 +1048,7 @@ export default function Pricing({
       <PricingComparisonTable
         billingCycle={billingCycle}
         collapsibleTable={collapsibleTable}
+        lang={lang}
       />
 
       {/* --- Special Access Section --- */}
