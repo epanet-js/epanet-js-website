@@ -266,6 +266,16 @@ export const ui = {
   "pricingFaq.a7":
     "El soporte se adapta a tu plan. La versión gratuita incluye acceso a la documentación y a los foros de la comunidad. Los usuarios de pago cuentan con soporte prioritario por email. Y los usuarios del plan educativo tienen acceso a recursos didácticos especiales para sus clases.",
 
+  "pricingFaq.q8": "¿Puedes completar el cuestionario de seguridad de nuestra organización?",
+  "pricingFaq.a8": `Completamos cuestionarios de seguridad para nuestros clientes del plan Enterprise.
+    <p class="mt-3">
+    Los planes Free, Pro y Teams son de autoservicio, por lo que esperamos que tu propio equipo realice su revisión de seguridad interna. Para facilitaros el proceso al máximo, disponemos de un cuestionario de seguridad genérico con respuestas a las preguntas que otras empresas de servicios públicos e ingeniería nos han planteado anteriormente, de modo que podáis rellenar vuestros propios formularios internos rápidamente. Si hay alguna pregunta que no esté cubierta, envíanos un <a href="mailto:support@epanetjs.com" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">correo electrónico</a> o <a href="https://cal.com/epanet-js/" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">reserva una llamada</a>.</p>
+    <p class="mt-3">Para obtener una visión completa de cómo gestionamos la seguridad y la privacidad de los datos, consulta nuestra <a href="/security" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">página de seguridad</a>.</p>`,
+  "pricingFaq.q9": "Si epanet-js se ejecuta en un navegador web, ¿cómo es que mis datos no se suben a internet?",
+  "pricingFaq.a9": `epanet-js está diseñado con un enfoque local-first (prioridad local). El navegador actúa como un entorno de ejecución seguro, de manera muy parecida a un sistema operativo de escritorio: cuando cargas la aplicación a través de HTTPS, toda la aplicación, incluido el motor de simulación EPANET compilado en WebAssembly, se descarga en la caché de tu navegador y se ejecuta en la propia CPU y memoria de tu máquina dentro del entorno aislado (sandbox) del navegador, con un rendimiento casi idéntico al nativo de escritorio.
+    <p class="mt-3">Los archivos del proyecto se leen y escriben en tu disco duro o unidad de red a través de las API de acceso a archivos locales del navegador, y los resultados de la simulación se guardan de forma local. Ni los datos de tu infraestructura ni los de tus clientes salen de tu ordenador. Esto también ahorra ancho de banda, ya que los archivos de modelos pesados nunca se transmiten, suben o descargan. Una vez que la página ha cargado, puedes desconectarte de internet por completo y seguir trabajando.</p>
+    <p class="mt-3">Para obtener una visión completa de cómo gestionamos la seguridad y la privacidad de los datos, consulta nuestra <a href="/security" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">página de seguridad</a>.</p>`,
+
   // ── CTA Just Open ──
   "ctaOpen.heading": "Abre tu navegador y empieza a modelar",
   "ctaOpen.subheading": "Sin instalación. Sin registro. Sin depender de la nube.",
