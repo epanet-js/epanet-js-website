@@ -242,6 +242,10 @@ export const ui = {
   // ── Pricing page FAQ (faq.astro) ──
   "pricingFaq.heading": "Frequently asked questions",
   "pricingFaq.subheading": "Find answers to common questions about epanet-js",
+  "pricingFaq.q0": "Can you complete our vendor onboarding forms or help us create a PO?",
+  "pricingFaq.a0": `We work directly with Enterprise customers to complete vendor onboarding paperwork and support custom Purchase Order (PO) workflows.
+    <br><br>Our Pro plan is designed to be completely self-service. By eliminating the administrative overhead associated with traditional, sales-driven procurement, we are able to pass those savings directly to you through lower subscription pricing. For Teams plans, we can assist with vendor forms and PO requirements depending on a minimum commitment of seats or contract years.
+    <br><br>If you want to check your plan's eligibility or need standard company billing details to help fill out your internal forms quickly, <a href="mailto:sales@epanetjs.com" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">email us</a> or <a href="https://cal.com/epanet-js/" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">book a call</a>.`,
   "pricingFaq.q1": "What is epanet-js?",
   "pricingFaq.a1":
     "epanet-js is a modern, web-based water network modeling tool based on the EPANET engine. It allows you to build, simulate, and analyze water distribution networks directly in your browser without installing any software.",

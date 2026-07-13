@@ -244,6 +244,10 @@ export const ui = {
   "pricingFaq.heading": "Preguntas frecuentes",
   "pricingFaq.subheading":
     "Encuentra respuestas a preguntas comunes sobre epanet-js",
+  "pricingFaq.q0": "¿Puedes completar nuestros formularios de alta de proveedor o ayudarnos a crear una orden de compra (PO)?",
+  "pricingFaq.a0": `Trabajamos directamente con clientes del plan Enterprise para completar el papeleo de alta de proveedores y dar soporte a flujos de trabajo personalizados de órdenes de compra (PO).
+    <br><br>Nuestro plan Pro está diseñado para ser completamente de autoservicio. Al eliminar la carga administrativa asociada a las compras tradicionales gestionadas por un equipo de ventas, podemos trasladarte ese ahorro directamente a ti a través de precios de suscripción más bajos. Para los planes Teams, podemos ayudarte con los formularios de proveedores y los requisitos de PO en función de un compromiso mínimo de licencias o años de contrato.
+    <br><br>Si quieres comprobar la elegibilidad de tu plan o necesitas los datos de facturación estándar de nuestra empresa para rellenar tus formularios internos rápidamente, envíanos un <a href="mailto:sales@epanetjs.com" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">correo electrónico</a> o <a href="https://cal.com/epanet-js/" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">reserva una llamada</a>.`,
   "pricingFaq.q1": "¿Qué es epanet-js?",
   "pricingFaq.a1":
     "epanet-js es una herramienta moderna de modelado hidráulico impulsada por el motor EPANET. Diseña, simula y analiza redes de distribución directamente en tu navegador, sin necesidad de instalar nada.",
