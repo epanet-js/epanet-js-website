@@ -697,4 +697,71 @@ export const ui = {
     "Talk to us about security questionnaires, customer-managed storage, or an on-premises deployment. We're glad to help.",
   "security.ctaQuestions.primaryCta": "Book a call",
   "security.ctaQuestions.secondaryCta": "Email us",
+
+  // ── Demo diagrams (src/components/demos/) ──
+  "diagrams.localFirstFlow.ariaLabel":
+    "Diagram: the epanet-js app loads from the cloud, your .inp file stays on your device, and the simulation keeps running when the connection drops.",
+  "diagrams.localFirstFlow.caption1": "The application loads",
+  "diagrams.localFirstFlow.caption2": "The device goes offline",
+  "diagrams.localFirstFlow.caption3": "You load your local file",
+  "diagrams.localFirstFlow.caption4": "The simulation runs locally",
+  "diagrams.localFirstFlow.runningSimulation": "Running simulation...",
+  "diagrams.localFirstFlow.simulationSuccessful": "Simulation successful",
+
+  "diagrams.fileTransfer.ariaLabel":
+    "Diagram: a model file moves between two computers by email, network drive, or USB, with no cloud involved.",
+  "diagrams.fileTransfer.officeDesktop": "Office desktop",
+  "diagrams.fileTransfer.siteLaptop": "Site laptop",
+  "diagrams.fileTransfer.email": "Email",
+  "diagrams.fileTransfer.network": "Network",
+  "diagrams.fileTransfer.usb": "USB",
+  "diagrams.fileTransfer.footer": "Share your model like any other file",
+
+  "diagrams.cloudOptional.ariaLabel":
+    "Diagram: one model syncing through a cloud, managed or self-hosted, down to three devices and back.",
+  "diagrams.cloudOptional.office": "Office",
+  "diagrams.cloudOptional.site": "Site",
+  "diagrams.cloudOptional.captionLine1": "Our cloud,",
+  "diagrams.cloudOptional.captionLine2": "or yours.",
+
+  "diagrams.teamAccess.ariaLabel":
+    "Team access panel: a member list with per-person roles, an invite going out, and one member's role changing from editor to viewer.",
+  "diagrams.teamAccess.heading": "Team access",
+  "diagrams.teamAccess.role.editor": "Editor",
+  "diagrams.teamAccess.role.viewer": "Viewer",
+  "diagrams.teamAccess.inviteSent": "Invite sent",
+  "diagrams.teamAccess.footer": "4 seats · roles per member",
+
+  "diagrams.dataRegions.ariaLabel":
+    "Diagram: three data regions, Europe, the United States, and Asia Pacific, each running the epanet-js app beside its own model storage and delivering models to that region's users without leaving the region.",
+  "diagrams.dataRegions.europe": "Europe",
+  "diagrams.dataRegions.unitedStates": "United States",
+  "diagrams.dataRegions.asiaPacific": "Asia Pacific",
+  "diagrams.dataRegions.europeanUsers": "European users",
+  "diagrams.dataRegions.americanUsers": "American users",
+  "diagrams.dataRegions.asiaPacificUsers": "Asia Pacific users",
+  "diagrams.dataRegions.models": "Models",
+  "diagrams.dataRegions.footer": "Models are stored and served in the region you choose",
+
+  "diagrams.encryptedTransit.ariaLabel":
+    "Diagram: traffic between your machine and the epanet-js service is encrypted in transit over HTTPS and TLS.",
+  "diagrams.encryptedTransit.yourMachine": "Your machine",
+  "diagrams.encryptedTransit.footer": "All traffic encrypted in transit",
+
+  "diagrams.cloudYourStorage.ariaLabel":
+    "Diagram: we run the epanet-js application, and model data is read from and written to storage your organization manages, such as your own S3 bucket.",
+  "diagrams.cloudYourStorage.appName": "epanet-js app",
+  "diagrams.cloudYourStorage.weHostIt": "We host and update it",
+  "diagrams.cloudYourStorage.yourStorage": "Your storage",
+  "diagrams.cloudYourStorage.s3Bucket": "S3 bucket you manage",
+  "diagrams.cloudYourStorage.readsAndWrites": "Model reads and writes",
+  "diagrams.cloudYourStorage.footer": "Your region · Your retention · Your access",
+
+  "diagrams.onPremDeployment.ariaLabel":
+    "Diagram: an on-premises deployment with your users, the epanet-js application, and the model data all inside your own network.",
+  "diagrams.onPremDeployment.yourUsers": "Your users",
+  "diagrams.onPremDeployment.appName": "epanet-js app",
+  "diagrams.onPremDeployment.modelData": "Model data",
+  "diagrams.onPremDeployment.yourNetwork": "Your network",
+  "diagrams.onPremDeployment.footer": "Runs entirely on your own infrastructure",
 } as const;

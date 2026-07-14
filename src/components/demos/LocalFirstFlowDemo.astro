@@ -5,6 +5,15 @@
 import { Cloud, FileText, WifiOff } from "lucide-react";
 import Basemap from "./Basemap.astro";
 import { pipes, junctions, markerPoints } from "./network-geometry";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "en" } = Astro.props;
+const t = useTranslations(lang);
 
 // Timing is baked directly into @keyframes below (no animation-delay), so
 // every element resets on the same cycle boundary. Every "wait Ns" below is
@@ -200,7 +209,7 @@ ${captionWindows
 <div
   class="relative mx-auto aspect-[3/2] w-full max-w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
-  aria-label="Diagram: the epanet-js app loads from the cloud, your .inp file stays on your device, and the simulation keeps running when the connection drops.">
+  aria-label={t("diagrams.localFirstFlow.ariaLabel")}>
   <svg
     viewBox="0 0 480 320"
     preserveAspectRatio="xMidYMid meet"
@@ -302,14 +311,14 @@ ${captionWindows
                  runs, then hands off to the success chip -->
             <span
               class="lff-chip-progress absolute top-1/2 left-1/2 flex flex-col items-center gap-1.5 whitespace-nowrap rounded-full border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-600 shadow-sm">
-              Running simulation...
+              {t("diagrams.localFirstFlow.runningSimulation")}
               <span class="h-1 w-24 rounded-full bg-gray-100 overflow-hidden">
                 <span class="lff-progress-bar block h-full rounded-full bg-violet-500"></span>
               </span>
             </span>
             <span
               class="lff-chip-success absolute top-1/2 left-1/2 whitespace-nowrap rounded-full bg-green-100 px-3 py-2 text-xs font-medium text-green-700 shadow-sm">
-              Simulation successful
+              {t("diagrams.localFirstFlow.simulationSuccessful")}
             </span>
           </div>
         </div>
@@ -320,10 +329,10 @@ ${captionWindows
 
   <p class="flex justify-center pb-6 text-sm font-medium text-gray-700">
     <span class="relative inline-block h-4 w-56 text-center">
-      <span class="lff-caption-1 absolute inset-0 whitespace-nowrap">The application loads</span>
-      <span class="lff-caption-2 absolute inset-0 whitespace-nowrap">The device goes offline</span>
-      <span class="lff-caption-3 absolute inset-0 whitespace-nowrap">You load your local file</span>
-      <span class="lff-caption-4 absolute inset-0 whitespace-nowrap">The simulation runs locally</span>
+      <span class="lff-caption-1 absolute inset-0 whitespace-nowrap">{t("diagrams.localFirstFlow.caption1")}</span>
+      <span class="lff-caption-2 absolute inset-0 whitespace-nowrap">{t("diagrams.localFirstFlow.caption2")}</span>
+      <span class="lff-caption-3 absolute inset-0 whitespace-nowrap">{t("diagrams.localFirstFlow.caption3")}</span>
+      <span class="lff-caption-4 absolute inset-0 whitespace-nowrap">{t("diagrams.localFirstFlow.caption4")}</span>
     </span>
   </p>
       </div>

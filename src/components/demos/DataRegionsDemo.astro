@@ -5,18 +5,39 @@
 // nothing crosses from one region to another.
 import { AppWindow, CheckCircle2, Database, FileText } from "lucide-react";
 import NetworkMap from "./NetworkMap.astro";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "en" } = Astro.props;
+const t = useTranslations(lang);
 
 const regions = [
-  { name: "Europe", code: "eu-west", users: "European users" },
-  { name: "United States", code: "us-east", users: "American users" },
-  { name: "Asia Pacific", code: "ap-southeast", users: "Asia Pacific users" },
+  {
+    name: t("diagrams.dataRegions.europe"),
+    code: "eu-west",
+    users: t("diagrams.dataRegions.europeanUsers"),
+  },
+  {
+    name: t("diagrams.dataRegions.unitedStates"),
+    code: "us-east",
+    users: t("diagrams.dataRegions.americanUsers"),
+  },
+  {
+    name: t("diagrams.dataRegions.asiaPacific"),
+    code: "ap-southeast",
+    users: t("diagrams.dataRegions.asiaPacificUsers"),
+  },
 ];
 ---
 
 <div
   class="relative mx-auto aspect-[3/2] w-full max-w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
-  aria-label="Diagram: three data regions, Europe, the United States, and Asia Pacific, each running the epanet-js app beside its own model storage and delivering models to that region's users without leaving the region.">
+  aria-label={t("diagrams.dataRegions.ariaLabel")}>
   <svg
     viewBox="0 0 480 320"
     preserveAspectRatio="xMidYMid meet"
@@ -49,7 +70,7 @@ const regions = [
                     <Database size={13} />
                   </span>
                   <p class="text-[10px] font-medium text-gray-500 whitespace-nowrap">
-                    Models
+                    {t("diagrams.dataRegions.models")}
                   </p>
                 </div>
               </div>
@@ -106,7 +127,7 @@ const regions = [
   </div>
 
     <p class="drg-footer pb-6 text-center text-sm font-medium text-gray-700">
-      Models are stored and served in the region you choose
+      {t("diagrams.dataRegions.footer")}
     </p>
       </div>
     </foreignObject>

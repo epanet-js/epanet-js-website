@@ -3,18 +3,27 @@
 // application, the model data, and the people using it all sit inside the
 // customer's own network boundary.
 import { Database, Laptop, Server } from "lucide-react";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "en" } = Astro.props;
+const t = useTranslations(lang);
 
 const nodes = [
-  { icon: Laptop, label: "Your users" },
-  { icon: Server, label: "epanet-js app" },
-  { icon: Database, label: "Model data" },
+  { icon: Laptop, label: t("diagrams.onPremDeployment.yourUsers") },
+  { icon: Server, label: t("diagrams.onPremDeployment.appName") },
+  { icon: Database, label: t("diagrams.onPremDeployment.modelData") },
 ];
 ---
 
 <div
   class="relative mx-auto aspect-[3/2] w-full max-w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
-  aria-label="Diagram: an on-premises deployment with your users, the epanet-js application, and the model data all inside your own network.">
+  aria-label={t("diagrams.onPremDeployment.ariaLabel")}>
   <svg
     viewBox="0 0 480 320"
     preserveAspectRatio="xMidYMid meet"
@@ -27,7 +36,7 @@ const nodes = [
     class="relative flex h-full w-full flex-1 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 px-6 pb-9 pt-12">
     <span
       class="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-medium text-gray-500 shadow-sm">
-      Your network
+      {t("diagrams.onPremDeployment.yourNetwork")}
     </span>
 
     <div class="flex items-center justify-center gap-1">
@@ -65,7 +74,7 @@ const nodes = [
   </div>
 
   <p class="pb-6 text-center text-sm font-medium text-gray-700">
-    Runs entirely on your own infrastructure
+    {t("diagrams.onPremDeployment.footer")}
   </p>
       </div>
     </foreignObject>

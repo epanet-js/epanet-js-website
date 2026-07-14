@@ -2,21 +2,30 @@
 // Team access demo: a workspace member list with per-person roles, an
 // invite going out, and a role change applying.
 import { UserPlus } from "lucide-react";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
 
 interface Props {
   class?: string;
+  lang?: Locale;
 }
 
-const { class: className } = Astro.props;
+const { class: className, lang = "en" } = Astro.props;
+const t = useTranslations(lang);
 
 const members = [
-  { initials: "EB", name: "Elena B.", role: "Editor" },
-  { initials: "MK", name: "Marcus K.", role: "Editor", changes: true },
-  { initials: "PN", name: "Priya N.", role: "Viewer" },
+  { initials: "EB", name: "Elena B.", roleId: "editor" as const },
+  { initials: "MK", name: "Marcus K.", roleId: "editor" as const, changes: true },
+  { initials: "PN", name: "Priya N.", roleId: "viewer" as const },
 ];
 
-const roleChip = (role: string) =>
-  role === "Editor"
+const roleLabel = (roleId: "editor" | "viewer") =>
+  roleId === "editor"
+    ? t("diagrams.teamAccess.role.editor")
+    : t("diagrams.teamAccess.role.viewer");
+
+const roleChip = (roleId: "editor" | "viewer") =>
+  roleId === "editor"
     ? "border-violet-100 bg-violet-50 text-violet-700"
     : "border-gray-200 bg-gray-100 text-gray-500";
 ---
@@ -27,7 +36,7 @@ const roleChip = (role: string) =>
     className,
   ]}
   role="img"
-  aria-label="Team access panel: a member list with per-person roles, an invite going out, and one member's role changing from editor to viewer.">
+  aria-label={t("diagrams.teamAccess.ariaLabel")}>
   <div class="absolute inset-0 overflow-hidden rounded-lg border border-gray-100 bg-white">
   <svg
     viewBox="0 0 480 320"
@@ -38,7 +47,7 @@ const roleChip = (role: string) =>
       <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col justify-between">
   <div
     class="flex items-baseline justify-between px-4 py-3.5 border-b border-gray-100">
-    <p class="text-base font-semibold text-gray-700">Team access</p>
+    <p class="text-base font-semibold text-gray-700">{t("diagrams.teamAccess.heading")}</p>
     <p class="text-sm text-gray-400">Acme Water</p>
   </div>
   <div class="py-1 text-sm">
@@ -54,25 +63,25 @@ const roleChip = (role: string) =>
               <span
                 class:list={[
                   "tac-role-old block w-16 rounded-full border px-2.5 py-1 text-center text-xs font-medium",
-                  roleChip("Editor"),
+                  roleChip("editor"),
                 ]}>
-                Editor
+                {roleLabel("editor")}
               </span>
               <span
                 class:list={[
                   "tac-role-new absolute inset-0 flex items-center justify-center rounded-full border px-2.5 py-1 text-xs font-medium",
-                  roleChip("Viewer"),
+                  roleChip("viewer"),
                 ]}>
-                Viewer
+                {roleLabel("viewer")}
               </span>
             </span>
           ) : (
             <span
               class:list={[
                 "ml-auto w-16 rounded-full border px-2.5 py-1 text-center text-xs font-medium",
-                roleChip(member.role),
+                roleChip(member.roleId),
               ]}>
-              {member.role}
+              {roleLabel(member.roleId)}
             </span>
           )}
         </div>
@@ -87,13 +96,13 @@ const roleChip = (role: string) =>
       <span class="text-gray-500">sara@acme.com</span>
       <span
         class="ml-auto rounded-full bg-violet-500 px-2.5 py-1 text-xs font-medium text-white">
-        Invite sent
+        {t("diagrams.teamAccess.inviteSent")}
       </span>
     </div>
   </div>
   <p
     class="tac-footer px-4 py-2.5 border-t border-gray-100 text-xs text-gray-400">
-    4 seats · roles per member
+    {t("diagrams.teamAccess.footer")}
   </p>
       </div>
     </foreignObject>

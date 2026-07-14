@@ -10,6 +10,15 @@ import {
   WifiOff,
 } from "lucide-react";
 import NetworkMap from "./NetworkMap.astro";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "en" } = Astro.props;
+const t = useTranslations(lang);
 
 // Intro fades in four 1s stages, in order: the offline icon, the sending
 // device (whole component), the receiving device (whole component), then
@@ -122,7 +131,7 @@ const generatedCss = `
 <div
   class="relative mx-auto aspect-[3/2] w-full max-w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
-  aria-label="Diagram: a model file moves between two computers by email, network drive, or USB, with no cloud involved.">
+  aria-label={t("diagrams.fileTransfer.ariaLabel")}>
   <svg
     viewBox="0 0 480 320"
     preserveAspectRatio="xMidYMid meet"
@@ -151,7 +160,7 @@ const generatedCss = `
       <p
         class="flex items-center justify-center gap-1.5 mt-2 text-xs font-medium text-gray-700">
         <Monitor size={14} className="text-gray-400" />
-        Office desktop
+        {t("diagrams.fileTransfer.officeDesktop")}
       </p>
     </div>
 
@@ -181,9 +190,9 @@ const generatedCss = `
       <!-- each transfer method on its own row -->
       <div
         class="ftr-pill -mt-11 flex flex-col items-center gap-0.5 rounded-lg border border-gray-200 bg-gray-50 px-2 py-1 text-[10px] font-medium text-gray-500"
-        <span>Email</span>
-        <span>Network</span>
-        <span>USB</span>
+        <span>{t("diagrams.fileTransfer.email")}</span>
+        <span>{t("diagrams.fileTransfer.network")}</span>
+        <span>{t("diagrams.fileTransfer.usb")}</span>
       </div>
     </div>
 
@@ -204,14 +213,14 @@ const generatedCss = `
       <p
         class="flex items-center justify-center gap-1.5 mt-2 text-xs font-medium text-gray-700">
         <Laptop size={14} className="text-gray-400" />
-        Site laptop
+        {t("diagrams.fileTransfer.siteLaptop")}
       </p>
     </div>
   </div>
   </div>
 
   <p class="pb-6 text-center text-sm font-medium text-gray-700">
-    Share your model like any other file
+    {t("diagrams.fileTransfer.footer")}
   </p>
       </div>
     </foreignObject>

@@ -4,18 +4,27 @@
 // requirement.
 import { Cloud, FileText, Laptop, Monitor } from "lucide-react";
 import NetworkMap from "./NetworkMap.astro";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "en" } = Astro.props;
+const t = useTranslations(lang);
 
 const devices = [
-  { icon: Monitor, label: "Office" },
-  { icon: Monitor, label: "Office" },
-  { icon: Laptop, label: "Site" },
+  { icon: Monitor, label: t("diagrams.cloudOptional.office") },
+  { icon: Monitor, label: t("diagrams.cloudOptional.office") },
+  { icon: Laptop, label: t("diagrams.cloudOptional.site") },
 ];
 ---
 
 <div
   class="relative mx-auto aspect-[3/2] w-full max-w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
-  aria-label="Diagram: one model syncing through a cloud, managed or self-hosted, down to three devices and back.">
+  aria-label={t("diagrams.cloudOptional.ariaLabel")}>
   <svg
     viewBox="0 0 480 320"
     preserveAspectRatio="xMidYMid meet"
@@ -34,9 +43,9 @@ const devices = [
         </span>
       </span>
       <p class="cop-caption absolute left-full top-1/2 ml-3 -translate-y-1/2 whitespace-nowrap text-sm leading-tight text-gray-500">
-        Our cloud,
+        {t("diagrams.cloudOptional.captionLine1")}
         <br />
-        or yours.
+        {t("diagrams.cloudOptional.captionLine2")}
       </p>
     </div>
 

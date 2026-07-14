@@ -3,12 +3,21 @@
 // epanet-js service shuttles through a TLS lock in both directions. Grounded
 // in the security page's "encrypted in transit" claim.
 import { Cloud, Laptop, Lock } from "lucide-react";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "en" } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <div
   class="relative mx-auto aspect-[3/2] w-full max-w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
-  aria-label="Diagram: traffic between your machine and the epanet-js service is encrypted in transit over HTTPS and TLS.">
+  aria-label={t("diagrams.encryptedTransit.ariaLabel")}>
   <svg
     viewBox="0 0 480 320"
     preserveAspectRatio="xMidYMid meet"
@@ -25,7 +34,7 @@ import { Cloud, Laptop, Lock } from "lucide-react";
         <Laptop size={23} />
       </span>
       <p class="text-xs font-medium text-gray-600 whitespace-nowrap">
-        Your machine
+        {t("diagrams.encryptedTransit.yourMachine")}
       </p>
     </div>
 
@@ -76,7 +85,7 @@ import { Cloud, Laptop, Lock } from "lucide-react";
   </div>
   </div>
   <p class="enc-footer pb-6 text-center text-sm font-medium text-gray-700">
-    All traffic encrypted in transit
+    {t("diagrams.encryptedTransit.footer")}
   </p>
       </div>
     </foreignObject>

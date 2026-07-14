@@ -3,12 +3,21 @@
 // read from and written to a storage layer the customer manages, such as
 // their own S3 bucket.
 import { Cloud, Database } from "lucide-react";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "en" } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <div
   class="relative mx-auto aspect-[3/2] w-full max-w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
-  aria-label="Diagram: we run the epanet-js application, and model data is read from and written to storage your organization manages, such as your own S3 bucket.">
+  aria-label={t("diagrams.cloudYourStorage.ariaLabel")}>
   <svg
     viewBox="0 0 480 320"
     preserveAspectRatio="xMidYMid meet"
@@ -26,10 +35,10 @@ import { Cloud, Database } from "lucide-react";
         <Cloud size={23} />
       </span>
       <p class="text-xs font-medium text-gray-700 whitespace-nowrap">
-        epanet-js app
+        {t("diagrams.cloudYourStorage.appName")}
       </p>
       <p class="-mt-1 text-xs text-gray-400 whitespace-nowrap">
-        We host and update it
+        {t("diagrams.cloudYourStorage.weHostIt")}
       </p>
     </div>
 
@@ -65,7 +74,7 @@ import { Cloud, Database } from "lucide-react";
       </svg>
       <span
         class="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-500">
-        Model reads and writes
+        {t("diagrams.cloudYourStorage.readsAndWrites")}
       </span>
     </div>
 
@@ -77,17 +86,17 @@ import { Cloud, Database } from "lucide-react";
         <Database size={23} />
       </span>
       <p class="text-xs font-medium text-gray-700 whitespace-nowrap">
-        Your storage
+        {t("diagrams.cloudYourStorage.yourStorage")}
       </p>
       <p class="-mt-1 text-xs text-gray-400 whitespace-nowrap">
-        S3 bucket you manage
+        {t("diagrams.cloudYourStorage.s3Bucket")}
       </p>
     </div>
   </div>
   </div>
 
   <p class="pb-6 text-center text-sm font-medium text-gray-700">
-    Your region · Your retention · Your access
+    {t("diagrams.cloudYourStorage.footer")}
   </p>
       </div>
     </foreignObject>

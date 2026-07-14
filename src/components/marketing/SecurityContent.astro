@@ -143,7 +143,7 @@ const faqs = [
     title={t("security.localFiles.projectFiles.title")}>
     <p>{t("security.localFiles.projectFiles.body1")}</p>
     <p>{t("security.localFiles.projectFiles.body2")}</p>
-    <LocalFirstFlowDemo slot="media" />
+    <LocalFirstFlowDemo slot="media" lang={lang} />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -152,7 +152,7 @@ const faqs = [
     reverse>
     <p>{t("security.localFiles.shareModels.body1")}</p>
     <p>{t("security.localFiles.shareModels.body2")}</p>
-    <FileTransferDemo slot="media" />
+    <FileTransferDemo slot="media" lang={lang} />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -197,7 +197,7 @@ const faqs = [
     title={t("security.cloudSharing.syncedTruth.title")}>
     <p>{t("security.cloudSharing.syncedTruth.body1")}</p>
     <p>{t("security.cloudSharing.syncedTruth.body2")}</p>
-    <CloudOptionalDemo slot="media" />
+    <CloudOptionalDemo slot="media" lang={lang} />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -206,7 +206,7 @@ const faqs = [
     reverse>
     <p>{t("security.cloudSharing.dataRegion.body1")}</p>
     <p>{t("security.cloudSharing.dataRegion.body2")}</p>
-    <DataRegionsDemo slot="media" />
+    <DataRegionsDemo slot="media" lang={lang} />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -214,7 +214,7 @@ const faqs = [
     title={t("security.cloudSharing.workspaceRoles.title")}>
     <p>{t("security.cloudSharing.workspaceRoles.body1")}</p>
     <p>{t("security.cloudSharing.workspaceRoles.body2")}</p>
-    <TeamAccessDemo slot="media" />
+    <TeamAccessDemo slot="media" lang={lang} />
   </ContentMediaRow>
 
   <ContentMediaRow
@@ -223,7 +223,7 @@ const faqs = [
     reverse>
     <p>{t("security.cloudSharing.encryption.body1")}</p>
     <p>{t("security.cloudSharing.encryption.body2")}</p>
-    <EncryptedTransitDemo slot="media" />
+    <EncryptedTransitDemo slot="media" lang={lang} />
   </ContentMediaRow>
 </section>
 
@@ -252,7 +252,7 @@ const faqs = [
     reverse>
     <p>{t("security.yourStorage.hostApp.body1")}</p>
     <p>{t("security.yourStorage.hostApp.body2")}</p>
-    <CloudYourStorageDiagram slot="media" />
+    <CloudYourStorageDiagram slot="media" lang={lang} />
   </ContentMediaRow>
 </section>
 
@@ -280,7 +280,7 @@ const faqs = [
     title={t("security.onPremises.firewall.title")}>
     <p>{t("security.onPremises.firewall.body1")}</p>
     <p>{t("security.onPremises.firewall.body2")}</p>
-    <OnPremDeploymentDiagram slot="media" />
+    <OnPremDeploymentDiagram slot="media" lang={lang} />
   </ContentMediaRow>
 </section>
 
