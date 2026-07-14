@@ -656,7 +656,7 @@ export const ui: Partial<Record<keyof typeof en, string>> = {
 
   "diagrams.teamAccess.ariaLabel":
     "Panel de control de acceso del equipo: lista de miembros con roles individuales, una invitación pendiente y el rol de un miembro cambiando de editor a lector.",
-  "diagrams.teamAccess.heading": "Accesos del equipo",
+  "diagrams.teamAccess.heading": "Miembros del equipo",
   "diagrams.teamAccess.role.editor": "Puede editar",
   "diagrams.teamAccess.role.viewer": "Puede ver",
   "diagrams.teamAccess.inviteSent": "Invitación enviada",
