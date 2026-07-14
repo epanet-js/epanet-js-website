@@ -534,4 +534,167 @@ export const ui = {
 
   // ── Pricing page title ──
   "page.pricing.title": "Pricing",
+
+  // ── Security page ──
+  "page.security.title": "Security",
+  "page.security.description":
+    "Where your model data lives is up to you: on your machine by default, shared through our cloud, in storage you manage, or deployed on-premises.",
+
+  "security.hero.title": "Security and privacy by design",
+  "security.hero.subtitle":
+    "Your data, your rules. We give you absolute control over how your customer information and infrastructure data are kept secure.",
+  "security.hero.primaryCta": "Contact us",
+  "security.hero.secondaryCta": "Read our privacy policy",
+
+  "security.badge.teams": "Teams",
+  "security.badge.enterprise": "Enterprise",
+
+  "security.setups.heading": "Find your setup",
+  "security.setups.subheading":
+    "From keeping files completely on your local machine to running everything inside your own corporate network, select the option that fits your team's security and compliance policies.",
+  "security.setups.localFiles.title": "Run on your machine",
+  "security.setups.localFiles.description":
+    "No cloud at all. Files on your file system, shared the way you already share them.",
+  "security.setups.cloudSharing.title": "Share models through the cloud",
+  "security.setups.cloudSharing.description":
+    "One synced copy of the model, workspace roles, encrypted in transit.",
+  "security.setups.yourStorage.title": "Bring your own storage",
+  "security.setups.yourStorage.description":
+    "We host the app; model data stays in cloud storage you manage.",
+  "security.setups.onPremises.title": "Run it on-premises",
+  "security.setups.onPremises.description":
+    "The whole deployment inside your own network.",
+
+  "security.localFiles.heading": "Run on your machine",
+  "security.localFiles.subheading":
+    "By default, your hydraulic modeling projects are created, run, and saved entirely on your machine. Nothing is ever uploaded to our servers.",
+
+  "security.localFiles.projectFiles.title":
+    "Project files stay on your local drive",
+  "security.localFiles.projectFiles.body1":
+    "An epanet-js model is simply a file on your hard drive or network drive, just like the project files used in other traditional modeling software packages like InfoWorks, WaterGEMS and InfoWater.",
+  "security.localFiles.projectFiles.body2":
+    "While the app loads over HTTPS, your model stays put and simulations run entirely in your browser. Neither your network nor customer data ever touches our servers—once loaded, you can even disconnect from the internet and work completely offline.",
+
+  "security.localFiles.shareModels.title":
+    "Share models the way you already do",
+  "security.localFiles.shareModels.body1":
+    "Email a model to a colleague, put it on a shared drive, or copy it to a USB stick. Whoever receives the file opens it and picks up where you left off.",
+  "security.localFiles.shareModels.body2":
+    "No new data pathways means your current company security policies apply automatically.",
+
+  "security.localFiles.openSource.title": "Open source you can inspect",
+  "security.localFiles.openSource.body1":
+    "You don't have to take our word for any of this. The epanet-js source code is public from day one under the Functional Source License and becomes fully open source (MIT) after two years.",
+  "security.localFiles.openSource.body2":
+    'Anyone can review how the application handles your data. <a href="https://github.com/epanet-js/epanet-js" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline" target="_blank" rel="noopener noreferrer">Explore the repository</a> to audit the code yourself.',
+  "security.localFiles.openSource.mediaAlt":
+    "The public epanet-js source repository on GitHub.",
+
+  "security.ctaNoCloud.heading": "No cloud needed? You’re set.",
+  "security.ctaNoCloud.subheading":
+    "Cloud features are entirely opt-in on a per-project basis. If you choose never to enable them, your infrastructure and customer data remain 100% isolated on your machine. If you are looking for shared cloud workspaces or a dedicated enterprise deployment, keep reading to see how they work.",
+
+  "security.cloudSharing.heading": "Share models through the cloud",
+  "security.cloudSharing.subheading":
+    "When a team wants one model available across devices and people, cloud projects keep every copy in sync. Turning on the cloud for one project changes nothing for the rest, which remain entirely local.",
+
+  "security.cloudSharing.syncedTruth.title": "One synced source of truth",
+  "security.cloudSharing.syncedTruth.body1":
+    "A cloud project has a single source of truth. Every device works against the same copy, so nobody hunts through email threads for the current version of the model.",
+  "security.cloudSharing.syncedTruth.body2":
+    "By default, the sync point is our secure, managed cloud, allowing you to choose the data region that meets your local compliance requirements. For enterprise teams, you also have the option to host and control your own data entirely.",
+
+  "security.cloudSharing.dataRegion.title": "Select your data region",
+  "security.cloudSharing.dataRegion.body1":
+    "You decide which geographic region handles your data. When a user uploads or syncs a model, that data remains entirely within their selected region.",
+  "security.cloudSharing.dataRegion.body2":
+    "This guarantees your team strictly complies with local data residency and privacy mandates.",
+
+  "security.cloudSharing.workspaceRoles.title":
+    "Workspace roles control who can open it",
+  "security.cloudSharing.workspaceRoles.body1":
+    "Models stored in the cloud belong to your workspace, and access to them is explicit. Every member has a role: editors can change a model, viewers can only read it.",
+  "security.cloudSharing.workspaceRoles.body2":
+    "Invite a colleague by email, change their role, or remove them from the workspace, and their access changes with it. Nobody outside your workspace can see your network.",
+
+  "security.cloudSharing.encryption.title":
+    "Encrypted in transit and at rest",
+  "security.cloudSharing.encryption.body1":
+    "Data security is enforced at every stage. Everything moving between your machine and epanet-js travels over HTTPS and is encrypted with TLS.",
+  "security.cloudSharing.encryption.body2":
+    "For cloud projects, any model data stored on our servers is fully encrypted at rest using industry-standard encryption (AES-256). This covers both the application itself and any project data you choose to sync.",
+
+  "security.yourStorage.heading": "Bring your own storage",
+  "security.yourStorage.body1":
+    "Retain absolute ownership of your data without the overhead of hosting software. Under this enterprise option, we host and manage the application, but your project files are written directly to your organization's own cloud object storage—such as Amazon S3, Azure Blob Storage, or any S3-compatible service.",
+  "security.yourStorage.body2":
+    'To configure your own storage layer, email us at <a href="mailto:sales@epanetjs.com" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">sales@epanetjs.com</a> or <a href="https://cal.com/epanet-js/" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">book a call</a>.',
+
+  "security.yourStorage.hostApp.title": "We host the app, you hold the data",
+  "security.yourStorage.hostApp.body1":
+    "You get a fully managed web application that is kept up to date by us, without your team needing to spin up or maintain servers. All model reads and writes route directly to storage environments you control.",
+  "security.yourStorage.hostApp.body2":
+    "Because the data layer lives inside your own corporate cloud account, data retention, geographic residency regions, and access policies are set entirely by you. We operate the application interface; we never hold your data.",
+
+  "security.onPremises.heading": "Run it on-premises",
+  "security.onPremises.body1":
+    "For total data sovereignty and air-gapped environments, the entire epanet-js stack—both the application and the data layer—can be deployed directly inside your corporate infrastructure. This option is built for organizations that require complete network isolation.",
+  "security.onPremises.body2":
+    'To discuss an on-premises deployment for your team, email us at <a href="mailto:sales@epanetjs.com" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">sales@epanetjs.com</a> or <a href="https://cal.com/epanet-js/" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">book a call</a>.',
+
+  "security.onPremises.firewall.title": "Total control behind your firewall",
+  "security.onPremises.firewall.body1":
+    "The platform runs entirely on your own servers, behind your security perimeter, and strictly under your own IT governance.",
+  "security.onPremises.firewall.body2":
+    "An on-premises deployment guarantees that all application traffic, hydraulic models, and private customer data remain fully self-contained within your network boundary, with zero external data dependencies or required internet access.",
+
+  "security.faq.heading": "Frequently asked questions",
+  "security.faq.q0": "Can you complete our organization's security questionnaire?",
+  "security.faq.a0":
+    'We complete security questionnaires for our Enterprise customers.<p class="mt-3">Free, Pro, and Teams plans are self-service, and we expect your team to run its own internal security review. To make that as easy as possible, we maintain a generic security questionnaire with answers to the questions utilities and engineering firms have put to us before, so you can fill out your own internal forms quickly. If a question isn\'t covered, <a href="mailto:support@epanetjs.com" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">email us</a> or <a href="https://cal.com/epanet-js/" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">book a call</a>.</p>',
+  "security.faq.q1":
+    "If epanet-js runs in a web browser, how is my data not uploaded to the internet?",
+  "security.faq.a1":
+    'epanet-js is built local-first. The browser acts as a secure runtime, much like a desktop operating system: when you load the app over HTTPS, the entire application, including the EPANET simulation engine compiled to WebAssembly, downloads to your browser cache and runs on your machine\'s own CPU and memory inside the browser sandbox, at near-native desktop performance.<p class="mt-3">Project files are read from and written to your hard drive or network drive through the browser\'s local file access APIs, and simulation results are saved locally. Neither your infrastructure data nor your customer data leaves your computer. It also saves bandwidth, since heavy model files are never streamed, uploaded, or downloaded. Once the page has loaded, you can disconnect from the internet entirely and keep working.</p>',
+  "security.faq.q2":
+    "When I open a model, does the web browser get access to my entire hard drive?",
+  "security.faq.a2":
+    "No. epanet-js uses the browser's File System Access API. When you open a project, the browser shows the native system file picker, and the app is granted read and write access only to the specific file or folder you choose. It cannot see the rest of your hard drive, your operating system, or your network shares.",
+  "security.faq.q3":
+    "Do you use my hydraulic models or customer data to train AI models?",
+  "security.faq.a3":
+    "No. We never use your project files, network layouts, or customer data to train machine learning or AI models. For local projects we couldn't even if we wanted to: the data never reaches us. For cloud and enterprise projects, your data belongs to your organization and is treated as confidential.",
+  "security.faq.q4": "Which data regions are available for cloud-synced projects?",
+  "security.faq.a4":
+    "We support data regions across the US, Europe, and Asia-Pacific. When you set up a cloud workspace, you choose the region that fits your regulatory requirements, such as GDPR or regional critical-infrastructure mandates. Your data stays pinned to that region and is never replicated or routed across geographic boundaries.",
+  "security.faq.q5":
+    "Does epanet-js support multi-factor authentication (MFA / 2FA)?",
+  "security.faq.a5":
+    "Yes. We use Clerk for identity management, which supports multi-factor authentication with authenticator apps (Google Authenticator, Microsoft Authenticator, 1Password) and SMS verification codes. Workspace administrators on the Teams plan can also enforce MFA across the whole team, so every member has it in place before accessing shared cloud projects.",
+  "security.faq.q6":
+    "Do you support single sign-on (SSO) for managing team access?",
+  "security.faq.a6":
+    "Yes, on our Enterprise configurations (bring your own storage and on-premises). We support identity federation over SAML 2.0 and OIDC, so your IT department can connect epanet-js to your corporate identity provider, such as Microsoft Entra ID, Okta, Ping Identity, or Google Workspace, and manage user provisioning, workspace roles, and access control through your existing workflows.",
+  "security.faq.q7":
+    'What cloud object storage providers do you support for the "Bring your own storage" plan?',
+  "security.faq.a7":
+    "The storage layer is provider-agnostic. We support any standard cloud object storage or S3-compatible service, including Amazon S3, Azure Blob Storage, Google Cloud Storage, and self-hosted options such as MinIO. Your IT team keeps full control of the encryption keys and access policies on the storage buckets.",
+  "security.faq.q8":
+    "How do we receive software and security updates if we deploy on-premises?",
+  "security.faq.a8":
+    "We work with your IT infrastructure team to set up an update path that fits your network governance. That can range from automated container registry updates to manual, air-gapped package transfers if your network has no external internet connectivity.",
+
+  "security.ctaFoundIssue.heading": "Found a security issue?",
+  "security.ctaFoundIssue.subheading":
+    "We take security reports seriously. If you believe you've found a vulnerability, email us and we'll work with you to investigate and resolve it.",
+  "security.ctaFoundIssue.primaryCta": "Email us",
+  "security.ctaFoundIssue.footer":
+    'For questions about how we handle your data, see our <a href="/privacy-policy" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">Privacy Policy</a> and <a href="/cookies-policy" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">Cookies Policy</a>.',
+
+  "security.ctaQuestions.heading": "Questions about security or compliance?",
+  "security.ctaQuestions.subheading":
+    "Talk to us about security questionnaires, customer-managed storage, or an on-premises deployment. We're glad to help.",
+  "security.ctaQuestions.primaryCta": "Book a call",
+  "security.ctaQuestions.secondaryCta": "Email us",
 } as const;

@@ -1,0 +1,315 @@
+---
+import PageHero from "@components/marketing/PageHero.astro";
+import ContentMediaRow from "@components/marketing/ContentMediaRow.astro";
+import Media from "@components/marketing/Media.astro";
+import CtaSection from "@components/marketing/CtaSection.astro";
+import FaqList from "@components/marketing/FaqList.astro";
+import Container from "@components/container.astro";
+import Badge from "@components/ui/badge.astro";
+import LocalFirstFlowDemo from "@components/demos/LocalFirstFlowDemo.astro";
+import FileTransferDemo from "@components/demos/FileTransferDemo.astro";
+import CloudOptionalDemo from "@components/demos/CloudOptionalDemo.astro";
+import TeamAccessDemo from "@components/demos/TeamAccessDemo.astro";
+import DataRegionsDemo from "@components/demos/DataRegionsDemo.astro";
+import EncryptedTransitDemo from "@components/demos/EncryptedTransitDemo.astro";
+import CloudYourStorageDiagram from "@components/demos/CloudYourStorageDiagram.astro";
+import OnPremDeploymentDiagram from "@components/demos/OnPremDeploymentDiagram.astro";
+import { Cloud, Database, HardDrive, Server } from "lucide-react";
+import { useTranslations } from "@i18n/utils";
+import type { Locale } from "@i18n/utils";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = "en" } = Astro.props;
+const t = useTranslations(lang);
+
+const setups = [
+  {
+    id: "local-files",
+    icon: HardDrive,
+    title: t("security.setups.localFiles.title"),
+    description: t("security.setups.localFiles.description"),
+    enterprise: null,
+  },
+  {
+    id: "cloud-sharing",
+    icon: Cloud,
+    title: t("security.setups.cloudSharing.title"),
+    description: t("security.setups.cloudSharing.description"),
+    enterprise: t("security.badge.teams"),
+  },
+  {
+    id: "your-storage",
+    icon: Database,
+    title: t("security.setups.yourStorage.title"),
+    description: t("security.setups.yourStorage.description"),
+    enterprise: t("security.badge.enterprise"),
+  },
+  {
+    id: "on-premises",
+    icon: Server,
+    title: t("security.setups.onPremises.title"),
+    description: t("security.setups.onPremises.description"),
+    enterprise: t("security.badge.enterprise"),
+  },
+];
+
+const faqs = [
+  { question: t("security.faq.q0"), answer: t("security.faq.a0") },
+  { question: t("security.faq.q1"), answer: t("security.faq.a1") },
+  { question: t("security.faq.q2"), answer: t("security.faq.a2") },
+  { question: t("security.faq.q3"), answer: t("security.faq.a3") },
+  { question: t("security.faq.q4"), answer: t("security.faq.a4") },
+  { question: t("security.faq.q5"), answer: t("security.faq.a5") },
+  { question: t("security.faq.q6"), answer: t("security.faq.a6") },
+  { question: t("security.faq.q7"), answer: t("security.faq.a7") },
+  { question: t("security.faq.q8"), answer: t("security.faq.a8") },
+];
+---
+
+<PageHero
+  title={t("security.hero.title")}
+  subtitle={t("security.hero.subtitle")}
+  primaryCta={{
+    label: t("security.hero.primaryCta"),
+    href: "mailto:support@epanetjs.com",
+  }}
+  secondaryCta={{
+    label: t("security.hero.secondaryCta"),
+    href: "/privacy-policy",
+  }}
+  align="center"
+/>
+
+<section class="w-full py-10 md:py-12">
+  <Container>
+    <div class="max-w-3xl">
+      <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
+        {t("security.setups.heading")}
+      </h2>
+      <p class="mt-3 text-muted-foreground md:text-lg">
+        {t("security.setups.subheading")}
+      </p>
+    </div>
+    <nav aria-label="Choose your setup" class="mt-8">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          setups.map((setup) => (
+            <a
+              href={`#${setup.id}`}
+              class="group flex flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-all hover:border-purple-300 hover:shadow-md">
+              <div class="flex items-center justify-between gap-2">
+                <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+                  <setup.icon size={18} />
+                </span>
+                {setup.enterprise && (
+                  <Badge
+                    color="purple"
+                    class="whitespace-nowrap !px-2 !py-0.5 !text-[11px]">
+                    {setup.enterprise}
+                  </Badge>
+                )}
+              </div>
+              <p class="mt-3 font-semibold text-gray-900">
+                {setup.title}
+              </p>
+              <p class="mt-1 text-sm text-muted-foreground">
+                {setup.description}
+              </p>
+            </a>
+          ))
+        }
+      </div>
+    </nav>
+  </Container>
+</section>
+
+<section id="local-files" class="scroll-mt-24 pt-12 md:pt-16">
+  <Container>
+    <div class="max-w-3xl">
+      <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
+        {t("security.localFiles.heading")}
+      </h2>
+      <p class="mt-3 text-muted-foreground md:text-lg">
+        {t("security.localFiles.subheading")}
+      </p>
+    </div>
+  </Container>
+
+  <ContentMediaRow
+    headingLevel="h3"
+    title={t("security.localFiles.projectFiles.title")}>
+    <p>{t("security.localFiles.projectFiles.body1")}</p>
+    <p>{t("security.localFiles.projectFiles.body2")}</p>
+    <LocalFirstFlowDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    headingLevel="h3"
+    title={t("security.localFiles.shareModels.title")}
+    reverse>
+    <p>{t("security.localFiles.shareModels.body1")}</p>
+    <p>{t("security.localFiles.shareModels.body2")}</p>
+    <FileTransferDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    headingLevel="h3"
+    title={t("security.localFiles.openSource.title")}>
+    <p>{t("security.localFiles.openSource.body1")}</p>
+    <p set:html={t("security.localFiles.openSource.body2")} />
+    <Media
+      slot="media"
+      src="/assets/landing/github-open-source-square.webp"
+      alt={t("security.localFiles.openSource.mediaAlt")}
+      frame={false}
+      class="md:mx-auto md:w-[480px]"
+    />
+  </ContentMediaRow>
+</section>
+
+<CtaSection
+  heading={t("security.ctaNoCloud.heading")}
+  subheading={t("security.ctaNoCloud.subheading")}
+  primaryCta={null}
+  secondaryCta={null}
+/>
+
+<section id="cloud-sharing" class="scroll-mt-24 pt-12 md:pt-16">
+  <Container>
+    <div class="max-w-3xl">
+      <div class="flex flex-wrap items-center gap-3">
+        <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
+          {t("security.cloudSharing.heading")}
+        </h2>
+        <Badge color="purple">{t("security.badge.teams")}</Badge>
+      </div>
+      <p class="mt-3 text-muted-foreground md:text-lg">
+        {t("security.cloudSharing.subheading")}
+      </p>
+    </div>
+  </Container>
+
+  <ContentMediaRow
+    headingLevel="h3"
+    title={t("security.cloudSharing.syncedTruth.title")}>
+    <p>{t("security.cloudSharing.syncedTruth.body1")}</p>
+    <p>{t("security.cloudSharing.syncedTruth.body2")}</p>
+    <CloudOptionalDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    headingLevel="h3"
+    title={t("security.cloudSharing.dataRegion.title")}
+    reverse>
+    <p>{t("security.cloudSharing.dataRegion.body1")}</p>
+    <p>{t("security.cloudSharing.dataRegion.body2")}</p>
+    <DataRegionsDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    headingLevel="h3"
+    title={t("security.cloudSharing.workspaceRoles.title")}>
+    <p>{t("security.cloudSharing.workspaceRoles.body1")}</p>
+    <p>{t("security.cloudSharing.workspaceRoles.body2")}</p>
+    <TeamAccessDemo slot="media" />
+  </ContentMediaRow>
+
+  <ContentMediaRow
+    headingLevel="h3"
+    title={t("security.cloudSharing.encryption.title")}
+    reverse>
+    <p>{t("security.cloudSharing.encryption.body1")}</p>
+    <p>{t("security.cloudSharing.encryption.body2")}</p>
+    <EncryptedTransitDemo slot="media" />
+  </ContentMediaRow>
+</section>
+
+<section id="your-storage" class="scroll-mt-24 pt-12 md:pt-16">
+  <Container>
+    <div class="max-w-3xl">
+      <div class="flex flex-wrap items-center gap-3">
+        <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
+          {t("security.yourStorage.heading")}
+        </h2>
+        <Badge color="purple">{t("security.badge.enterprise")}</Badge>
+      </div>
+      <p class="mt-3 text-muted-foreground md:text-lg">
+        {t("security.yourStorage.body1")}
+      </p>
+      <p
+        class="mt-3 text-muted-foreground md:text-lg"
+        set:html={t("security.yourStorage.body2")}
+      />
+    </div>
+  </Container>
+
+  <ContentMediaRow
+    headingLevel="h3"
+    title={t("security.yourStorage.hostApp.title")}
+    reverse>
+    <p>{t("security.yourStorage.hostApp.body1")}</p>
+    <p>{t("security.yourStorage.hostApp.body2")}</p>
+    <CloudYourStorageDiagram slot="media" />
+  </ContentMediaRow>
+</section>
+
+<section id="on-premises" class="scroll-mt-24 pt-12 md:pt-16">
+  <Container>
+    <div class="max-w-3xl">
+      <div class="flex flex-wrap items-center gap-3">
+        <h2 class="text-2xl font-bold tracking-tight md:text-3xl">
+          {t("security.onPremises.heading")}
+        </h2>
+        <Badge color="purple">{t("security.badge.enterprise")}</Badge>
+      </div>
+      <p class="mt-3 text-muted-foreground md:text-lg">
+        {t("security.onPremises.body1")}
+      </p>
+      <p
+        class="mt-3 text-muted-foreground md:text-lg"
+        set:html={t("security.onPremises.body2")}
+      />
+    </div>
+  </Container>
+
+  <ContentMediaRow
+    headingLevel="h3"
+    title={t("security.onPremises.firewall.title")}>
+    <p>{t("security.onPremises.firewall.body1")}</p>
+    <p>{t("security.onPremises.firewall.body2")}</p>
+    <OnPremDeploymentDiagram slot="media" />
+  </ContentMediaRow>
+</section>
+
+<FaqList heading={t("security.faq.heading")} items={faqs} />
+
+<CtaSection
+  heading={t("security.ctaFoundIssue.heading")}
+  subheading={t("security.ctaFoundIssue.subheading")}
+  dark={false}
+  primaryCta={{
+    label: t("security.ctaFoundIssue.primaryCta"),
+    href: "mailto:support@epanetjs.com",
+  }}
+  secondaryCta={null}>
+  <p
+    class="mt-6 text-center text-sm text-muted-foreground"
+    set:html={t("security.ctaFoundIssue.footer")}
+  />
+</CtaSection>
+
+<CtaSection
+  heading={t("security.ctaQuestions.heading")}
+  subheading={t("security.ctaQuestions.subheading")}
+  primaryCta={{
+    label: t("security.ctaQuestions.primaryCta"),
+    href: "https://cal.com/epanet-js/",
+  }}
+  secondaryCta={{
+    label: t("security.ctaQuestions.secondaryCta"),
+    href: "mailto:support@epanetjs.com",
+  }}
+/>
