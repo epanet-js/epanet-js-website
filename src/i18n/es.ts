@@ -571,7 +571,7 @@ export const ui: Partial<Record<keyof typeof en, string>> = {
   "security.localFiles.openSource.title": "Código abierto que puedes inspeccionar",
   "security.localFiles.openSource.body1": "No tienes por qué creernos ciegamente. El código fuente de epanet-js es público desde el primer día bajo la Functional Source License y pasa a ser totalmente de código abierto (MIT) después de dos años.",
   "security.localFiles.openSource.body2": "Puedes revisar en detalle cómo maneja la aplicación tus datos. Explora el <a href=\"https://github.com/epanet-js/epanet-js\" class=\"text-indigo-600 hover:text-indigo-800 underline hover:no-underline\" target=\"_blank\" rel=\"noopener noreferrer\">repositorio</a> para auditar el código tú mismo.",
-  "security.localFiles.openSource.mediaAlt": "EN - The public epanet-js source repository on GitHub.",
+  "security.localFiles.openSource.mediaAlt": "El repositorio público de código fuente de epanet-js en GitHub.",
   "security.ctaNoCloud.heading": "¿No necesitas la nube? Todo listo.",
   "security.ctaNoCloud.subheading": "Las funciones en la nube son totalmente opcionales y se activan por cada proyecto de forma individual. Si decides no activarlas nunca, la información de tu infraestructura y los datos de tus clientes permanecerán 100% aislados en tu máquina. Si buscas espacios de trabajo compartidos en la nube o un despliegue empresarial dedicado, sigue leyendo para ver cómo funcionan.",
   "security.cloudSharing.heading": "Comparte modelos a través de la nube",
