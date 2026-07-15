@@ -6,60 +6,88 @@ import { FileCode2 } from "lucide-react";
 ---
 
 <div
-  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  class="relative mx-auto h-80 w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
   aria-label="Diagram: source code public from day one under the Functional Source License, becoming fully open source under the MIT license after two years.">
-  <div class="flex items-center justify-center gap-4 sm:gap-8">
-    <!-- FSL -->
-    <div class="lic-left max-w-[150px] text-center">
-      <p class="text-3xl font-bold tracking-tight text-indigo-950">FSL</p>
-      <p class="mt-0.5 text-[10px] font-medium text-gray-500">
-        Functional Source License
-      </p>
-      <p class="mt-1 text-[10px] text-gray-400">Source public from day one</p>
-    </div>
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div
+        {...{ xmlns: "http://www.w3.org/1999/xhtml" }}
+        class="flex h-full w-full flex-col items-center justify-between">
+        <div class="box-border flex w-full flex-1 flex-col items-center justify-center px-8 pt-8">
+          <div class="flex items-center justify-center gap-2">
+            <!-- FSL -->
+            <div class="lic-left w-40 shrink-0 text-center">
+              <p class="text-3xl font-bold tracking-tight text-indigo-950">
+                FSL
+              </p>
+              <p class="mt-0.5 whitespace-nowrap text-[10px] font-medium text-gray-500">
+                Functional Source License
+              </p>
+              <p class="mt-1 text-[10px] text-gray-400">
+                Source public from day one
+              </p>
+            </div>
 
-    <!-- transition -->
-    <div class="flex flex-col items-center">
-      <!-- code files drifting across as releases age into MIT -->
-      <div class="relative h-7 w-24 sm:w-32" aria-hidden="true">
-        {
-          [0, 1, 2].map((i) => (
-            <span
-              class="lic-file absolute left-0 text-gray-400"
-              style={`top: ${i * 4}px; animation-delay: ${(i * 0.55).toFixed(2)}s`}>
-              <FileCode2 size={13} />
-            </span>
-          ))
-        }
+            <!-- transition -->
+            <div class="flex shrink-0 flex-col items-center">
+              <!-- code files drifting across as releases age into MIT -->
+              <div class="relative h-7 w-20" aria-hidden="true">
+                <span class="lic-file lic-file-0 absolute left-0 top-0 text-gray-400">
+                  <FileCode2 size={14} />
+                </span>
+                <span class="lic-file lic-file-1 absolute left-0 top-1 text-gray-400">
+                  <FileCode2 size={14} />
+                </span>
+                <span class="lic-file lic-file-2 absolute left-0 top-2 text-gray-400">
+                  <FileCode2 size={14} />
+                </span>
+              </div>
+              <svg viewBox="0 0 100 12" class="w-20 translate-x-2" aria-hidden="true">
+                <path
+                  class="lic-arrow"
+                  d="M2 6 H86"
+                  fill="none"
+                  stroke="#8b5cf6"
+                  stroke-width="2.5"
+                  pathLength="100"></path>
+                <path
+                  class="lic-arrow-head"
+                  d="M86 1.5 L96 6 L86 10.5 Z"
+                  fill="#8b5cf6"></path>
+              </svg>
+              <span class="translate-x-2">
+                <span
+                  class="lic-pill mt-1.5 whitespace-nowrap rounded-full bg-violet-500 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+                  Two years
+                </span>
+              </span>
+            </div>
+
+            <!-- MIT -->
+            <div class="lic-right w-40 shrink-0 text-center">
+              <p class="text-3xl font-bold tracking-tight text-indigo-950">
+                MIT
+              </p>
+              <p class="mt-0.5 text-[10px] font-medium text-gray-500">
+                MIT License
+              </p>
+              <p class="mt-1 text-[10px] text-gray-400">
+                Fully open source code
+              </p>
+            </div>
+          </div>
+        </div>
+        <p class="lic-footer pb-6 text-center text-sm font-medium text-gray-700">
+          Each release becomes MIT two years on
+        </p>
       </div>
-      <svg viewBox="0 0 100 12" class="w-24 sm:w-32" aria-hidden="true">
-        <path
-          class="lic-arrow"
-          d="M2 6 H86"
-          fill="none"
-          stroke="#8b5cf6"
-          stroke-width="2.5"
-          pathLength="100"></path>
-        <path class="lic-arrow-head" d="M86 1.5 L96 6 L86 10.5 Z" fill="#8b5cf6"
-        ></path>
-      </svg>
-      <span
-        class="lic-pill mt-1.5 whitespace-nowrap rounded-full bg-violet-600 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white">
-        Two years
-      </span>
-    </div>
-
-    <!-- MIT -->
-    <div class="lic-right max-w-[150px] text-center">
-      <p class="text-3xl font-bold tracking-tight text-indigo-950">MIT</p>
-      <p class="mt-0.5 text-[10px] font-medium text-gray-500">MIT License</p>
-      <p class="mt-1 text-[10px] text-gray-400">Fully open source code</p>
-    </div>
-  </div>
-  <p class="lic-footer mt-4 text-center text-[10px] text-gray-400">
-    Each release becomes MIT two years on.
-  </p>
+    </foreignObject>
+  </svg>
 </div>
 
 <style>
@@ -150,28 +178,83 @@ import { FileCode2 } from "lucide-react";
     }
   }
 
-  /* releases drift from FSL toward MIT */
+  /* releases drift from FSL toward MIT, each file on its own staggered
+     keyframe so the loop doesn't rely on per-instance animation-delay */
   .lic-file {
     opacity: 0;
-    animation: lic-file-drift 8s ease-in-out infinite both;
   }
-  @keyframes lic-file-drift {
+  .lic-file-0 {
+    animation: lic-file-0-drift 8s ease-in-out infinite both;
+  }
+  @keyframes lic-file-0-drift {
     0%,
     48% {
       opacity: 0;
-      transform: translateX(0);
+      transform: translateX(-48px);
     }
     53% {
       opacity: 1;
     }
     63% {
       opacity: 1;
-      transform: translateX(64px);
+      transform: translateX(88px);
     }
     68%,
     100% {
       opacity: 0;
-      transform: translateX(76px);
+      transform: translateX(95px);
+    }
+  }
+  .lic-file-1 {
+    animation: lic-file-1-drift 8s ease-in-out infinite both;
+  }
+  @keyframes lic-file-1-drift {
+    0% {
+      opacity: 0;
+      transform: translateX(95px);
+    }
+    6.875%,
+    54.875% {
+      opacity: 0;
+      transform: translateX(-48px);
+    }
+    59.875% {
+      opacity: 1;
+    }
+    69.875% {
+      opacity: 1;
+      transform: translateX(88px);
+    }
+    74.875%,
+    100% {
+      opacity: 0;
+      transform: translateX(95px);
+    }
+  }
+  .lic-file-2 {
+    animation: lic-file-2-drift 8s ease-in-out infinite both;
+  }
+  @keyframes lic-file-2-drift {
+    0% {
+      opacity: 0;
+      transform: translateX(95px);
+    }
+    13.75%,
+    61.75% {
+      opacity: 0;
+      transform: translateX(-48px);
+    }
+    66.75% {
+      opacity: 1;
+    }
+    76.75% {
+      opacity: 1;
+      transform: translateX(88px);
+    }
+    81.75%,
+    100% {
+      opacity: 0;
+      transform: translateX(95px);
     }
   }
 
@@ -208,10 +291,10 @@ import { FileCode2 } from "lucide-react";
   }
   @keyframes lic-footer-in {
     0%,
-    70% {
+    6% {
       opacity: 0;
     }
-    76% {
+    12% {
       opacity: 1;
     }
     94% {
@@ -227,7 +310,9 @@ import { FileCode2 } from "lucide-react";
     .lic-arrow,
     .lic-arrow-head,
     .lic-pill,
-    .lic-file,
+    .lic-file-0,
+    .lic-file-1,
+    .lic-file-2,
     .lic-right,
     .lic-footer {
       animation: none;
