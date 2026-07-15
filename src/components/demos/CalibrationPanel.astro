@@ -7,6 +7,105 @@ interface Props {
 }
 
 const { class: className } = Astro.props;
+
+const toPct = (seconds: number, cycle: number) =>
+  +((seconds / cycle) * 100).toFixed(3);
+
+// 1: "110" and the separated (pre-calibration) chart lines appear.
+const ENTRANCE_FADE = 0.5;
+// hold the raw, unaccepted state briefly before the change is proposed.
+const HOLD_BEFORE_END = 1.5;
+// 2: "110" slides to its resting position first...
+const SLIDE_DURATION = 0.5;
+const SLIDE_END = HOLD_BEFORE_END + SLIDE_DURATION;
+// how far right of its resting spot "110" starts, roughly lining up with
+// where "95" ends up once revealed.
+const SHIFT_DISTANCE = 40;
+// 3: ...then, once it has arrived, the strike line grows across it.
+const CROSS_DURATION = 0.5;
+const CROSS_END = SLIDE_END + CROSS_DURATION;
+// 4: only after the crossout finishes does the arrow + "95" fade in.
+const REVEAL_DURATION = 1;
+const REVEAL_END = CROSS_END + REVEAL_DURATION;
+// 5: the chart lines converge 1s after the "95" fade-in finishes, not
+// alongside it.
+const CONVERGE_DELAY = 1;
+const CONVERGE_START = REVEAL_END + CONVERGE_DELAY;
+const CONVERGE_DURATION = 1;
+const CONVERGE_END = CONVERGE_START + CONVERGE_DURATION;
+const HOLD_AFTER_END = CONVERGE_END + 3;
+const FADE_OUT_END = HOLD_AFTER_END + 1;
+// once fully faded out (invisible), silently reset "110"'s position, the
+// strike line, and the reveal so the next loop starts clean -- placed
+// mid-buffer rather than exactly at FADE_OUT_END, so it never lines up
+// with the opacity hitting 0 and risks a visible flash of the reset.
+const RESET_AT = FADE_OUT_END + 0.5;
+// the actual snap happens across this tiny window, not exactly AT
+// RESET_AT -- two keyframe rules at the identical percentage don't hold
+// then jump, the later one just wins outright, which was interpolating
+// the "reset" across the whole hold+fade-out span instead of snapping.
+const RESET_SNAP = 0.05;
+const CYCLE = FADE_OUT_END + 1;
+
+const pct = (seconds: number) => toPct(seconds, CYCLE);
+
+const generatedCss = `
+.cal-observed { animation: cal-observed ${CYCLE}s ease-in-out infinite; }
+@keyframes cal-observed {
+  0% { opacity: 0; }
+  ${pct(ENTRANCE_FADE)}% { opacity: 1; }
+  ${pct(HOLD_AFTER_END)}% { opacity: 1; }
+  ${pct(FADE_OUT_END)}%, 100% { opacity: 0; }
+}
+
+.cal-sim-before { animation: cal-line-before ${CYCLE}s ease-in-out infinite; }
+@keyframes cal-line-before {
+  0% { opacity: 0; }
+  ${pct(ENTRANCE_FADE)}% { opacity: 1; }
+  ${pct(CONVERGE_START)}% { opacity: 1; }
+  ${pct(CONVERGE_END)}%, 100% { opacity: 0; }
+}
+
+.cal-sim-after { animation: cal-line-after ${CYCLE}s ease-in-out infinite; }
+@keyframes cal-line-after {
+  0%, ${pct(CONVERGE_START)}% { opacity: 0; }
+  ${pct(CONVERGE_END)}% { opacity: 1; }
+  ${pct(HOLD_AFTER_END)}% { opacity: 1; }
+  ${pct(FADE_OUT_END)}%, 100% { opacity: 0; }
+}
+
+.cal-value { animation: cal-value ${CYCLE}s ease-in-out infinite; }
+@keyframes cal-value {
+  0% { opacity: 0; }
+  ${pct(ENTRANCE_FADE)}% { opacity: 1; }
+  ${pct(HOLD_AFTER_END)}% { opacity: 1; }
+  ${pct(FADE_OUT_END)}%, 100% { opacity: 0; }
+}
+
+.cal-old { animation: cal-old ${CYCLE}s ease-in-out infinite; }
+@keyframes cal-old {
+  0%, ${pct(HOLD_BEFORE_END)}% { transform: translateX(${SHIFT_DISTANCE}px); }
+  ${pct(SLIDE_END)}% { transform: translateX(0); }
+  ${pct(RESET_AT)}% { transform: translateX(0); }
+  ${pct(RESET_AT + RESET_SNAP)}%, 100% { transform: translateX(${SHIFT_DISTANCE}px); }
+}
+
+.cal-strike { animation: cal-strike ${CYCLE}s ease-in-out infinite; }
+@keyframes cal-strike {
+  0%, ${pct(SLIDE_END)}% { transform: translateY(-50%) scaleX(0); }
+  ${pct(CROSS_END)}% { transform: translateY(-50%) scaleX(1); }
+  ${pct(RESET_AT)}% { transform: translateY(-50%) scaleX(1); }
+  ${pct(RESET_AT + RESET_SNAP)}%, 100% { transform: translateY(-50%) scaleX(0); }
+}
+
+.cal-reveal-inner { animation: cal-reveal-inner ${CYCLE}s ease-in-out infinite; }
+@keyframes cal-reveal-inner {
+  0%, ${pct(CROSS_END)}% { opacity: 0; }
+  ${pct(REVEAL_END)}% { opacity: 1; }
+  ${pct(RESET_AT)}% { opacity: 1; }
+  ${pct(RESET_AT + RESET_SNAP)}%, 100% { opacity: 0; }
+}
+`;
 ---
 
 <div class:list={["rounded-lg shadow-md", className]}>
@@ -20,10 +119,17 @@ const { class: className } = Astro.props;
       <p class="text-sm text-gray-500">Zone B · 14 pipes</p>
       <div class="flex items-center justify-between text-sm">
         <span class="text-gray-600">Roughness</span>
-        <span class="tabular-nums">
-          <span class="line-through text-gray-400">110</span>
-          <span aria-hidden="true" class="text-gray-400 mx-1">→</span>
-          <span class="font-semibold text-violet-600">95</span>
+        <span class="cal-value flex items-center tabular-nums">
+          <span class="cal-old relative text-violet-500">
+            110
+            <span
+              class="cal-strike absolute inset-x-0 top-1/2 h-px bg-violet-500"
+              aria-hidden="true"></span>
+          </span>
+          <span class="cal-reveal-inner flex items-center whitespace-nowrap">
+            <span aria-hidden="true" class="text-gray-400 mx-1">→</span>
+            <span class="font-semibold text-violet-600">95</span>
+          </span>
         </span>
       </div>
       <div>
@@ -34,6 +140,7 @@ const { class: className } = Astro.props;
             <line x1="0" y1="51" x2="200" y2="51"></line>
           </g>
           <polyline
+            class="cal-observed"
             points="0,58 25,46 50,61 75,40 100,55 125,37 150,52 175,40 200,49"
             fill="none"
             stroke="#9ca3af"
@@ -78,47 +185,37 @@ const { class: className } = Astro.props;
   </div>
 </div>
 
+<style set:html={generatedCss} />
+
 <style>
-  .cal-sim-before {
-    animation: cal-fade-out 5s ease-in-out infinite;
-  }
-  .cal-sim-after {
-    animation: cal-fade-in 5s ease-in-out infinite;
-  }
-  @keyframes cal-fade-out {
-    0%,
-    20% {
-      opacity: 1;
-    }
-    45%,
-    75% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  @keyframes cal-fade-in {
-    0%,
-    20% {
-      opacity: 0;
-    }
-    45%,
-    75% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
   @media (prefers-reduced-motion: reduce) {
-    .cal-sim {
+    .cal-observed,
+    .cal-sim,
+    .cal-value,
+    .cal-old,
+    .cal-strike,
+    .cal-reveal-inner {
       animation: none;
+    }
+    .cal-observed {
+      opacity: 1;
     }
     .cal-sim-before {
       opacity: 0;
     }
     .cal-sim-after {
+      opacity: 1;
+    }
+    .cal-value {
+      opacity: 1;
+    }
+    .cal-old {
+      transform: translateX(0);
+    }
+    .cal-strike {
+      transform: translateY(-50%) scaleX(1);
+    }
+    .cal-reveal-inner {
       opacity: 1;
     }
   }
