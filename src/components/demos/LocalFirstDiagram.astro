@@ -1,60 +1,186 @@
 ---
-// Security page diagram: your model stays on your device; the cloud is an
-// explicit, optional step.
+// Your model and data stay on your device by default; syncing to the cloud
+// is an explicit, opt-in step.
 import { Cloud, FileText, Laptop } from "lucide-react";
 import NetworkMap from "./NetworkMap.astro";
 ---
 
 <div
-  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  class="relative mx-auto h-80 w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
-  aria-label="Diagram: your model and data stay on your device by default, with an optional, opt-in path to the cloud.">
-  <div class="flex items-center justify-center gap-3 sm:gap-5">
-    <!-- device -->
-    <div class="w-44 sm:w-52 shrink-0">
-      <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
-        <div class="relative aspect-[16/10] bg-gray-100">
-          <NetworkMap class="absolute inset-0" />
-          <span
-            class="absolute bottom-1.5 left-1.5 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[9px] font-medium text-gray-600">
-            <FileText size={9} className="text-gray-400" />
-            my-network.inp
-          </span>
+  aria-label="Diagram: your model and data stay on your device by default. Syncing to the cloud is optional and off by default.">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-between">
+        <div class="box-border flex w-full flex-1 flex-col items-center justify-center px-8 pt-8">
+          <div class="flex w-full items-start justify-center gap-2">
+            <!-- device: the model lives here by default -->
+            <div class="flex shrink-0 flex-col items-center gap-2">
+              <div class="w-48">
+                <div class="rounded-lg border-2 border-gray-300 overflow-hidden">
+                  <div class="relative aspect-[3/2] bg-gray-100">
+                    <NetworkMap class="absolute inset-0" />
+                    <span
+                      class="absolute bottom-1.5 left-1.5 flex items-center gap-1 rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-gray-600 shadow-sm">
+                      <FileText size={14} className="text-violet-500" />
+                      .ejsdb
+                    </span>
+                  </div>
+                </div>
+                <div class="h-1.5 mx-6 rounded-b-lg bg-gray-300"></div>
+              </div>
+              <p class="flex items-center justify-center gap-1.5 text-xs font-medium text-gray-700">
+                <Laptop size={14} className="text-gray-400" />
+                Your device
+              </p>
+            </div>
+
+            <!-- connector: optional, opt-in path to the cloud -->
+            <div class="relative flex h-32 flex-1 min-w-0 flex-col items-center justify-center gap-2">
+              <svg
+                viewBox="0 0 80 12"
+                preserveAspectRatio="none"
+                class="h-3 w-full"
+                aria-hidden="true">
+                <path
+                  d="M10 6 H70"
+                  fill="none"
+                  stroke="#d1d5db"
+                  stroke-width="2"
+                  stroke-dasharray="5 4"></path>
+                <path d="M10 1.5 L2 6 L10 10.5 Z" fill="#d1d5db"></path>
+                <path d="M70 1.5 L78 6 L70 10.5 Z" fill="#d1d5db"></path>
+              </svg>
+              <!-- travels past the connector's own bounds, into the device
+                   and cloud panels either side, so it reads as coming from
+                   the device and landing in the cloud rather than just
+                   crossing the gap between them -->
+              <span
+                class="lfd-dot absolute top-[50px] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-500">
+              </span>
+              <span
+                class="rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[10px] font-medium text-gray-500 whitespace-nowrap">
+                Opt-in
+              </span>
+            </div>
+
+            <!-- cloud: only involved when you choose to sync -->
+            <div
+              class="flex h-32 w-32 shrink-0 flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed border-gray-300 px-4">
+              <span
+                class="lfd-cloud-icon flex h-12 w-12 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+                <Cloud size={23} />
+              </span>
+              <p class="mt-2 -mb-1 text-xs font-medium text-gray-700 whitespace-nowrap">
+                Cloud sync
+              </p>
+              <p class="text-xs text-gray-400 whitespace-nowrap">
+                Off by default
+              </p>
+            </div>
+          </div>
         </div>
+
+        <p class="pb-6 text-center text-sm font-medium text-gray-700">
+          Cloud sync is optional and off by default
+        </p>
       </div>
-      <div class="h-1.5 mx-6 rounded-b-lg bg-gray-300"></div>
-      <p
-        class="flex items-center justify-center gap-1.5 mt-2 text-[11px] font-medium text-gray-700">
-        <Laptop size={12} className="text-gray-400" />
-        Your model, on your device
-      </p>
-    </div>
-
-    <!-- optional path to cloud -->
-    <div class="flex flex-col items-center gap-1.5 min-w-0">
-      <svg viewBox="0 0 80 12" class="w-14 sm:w-20" aria-hidden="true">
-        <path
-          d="M2 6 H70"
-          fill="none"
-          stroke="#d1d5db"
-          stroke-width="2"
-          stroke-dasharray="5 4"></path>
-        <path d="M70 1.5 L78 6 L70 10.5 Z" fill="#d1d5db"></path>
-      </svg>
-      <span
-        class="rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[9px] font-medium text-gray-500 whitespace-nowrap">
-        Optional · opt-in
-      </span>
-    </div>
-
-    <!-- cloud -->
-    <div
-      class="flex flex-col items-center gap-1.5 rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-5 sm:px-6 shrink-0">
-      <Cloud size={24} className="text-gray-400" />
-      <p class="text-[11px] font-medium text-gray-600 whitespace-nowrap">
-        Cloud sync
-      </p>
-      <p class="text-[10px] text-gray-400">Off by default</p>
-    </div>
-  </div>
+    </foreignObject>
+  </svg>
 </div>
+
+<style>
+  /* a sync dot travels between the two arrow tips (x=2 and x=78 in the
+     connector's own 80px-wide coordinate space) at full opacity, fading
+     in over the 40px approaching each tip and fading out over the 40px
+     leaving it — so it's crisp and fully visible for the whole visible
+     arrow crossing, with the fade confined to the device/cloud interior
+     on either side. Pauses invisible at each far end before reversing.
+     Position and opacity are two separate composed animations (rather
+     than one keyframe set) so `left` gets a single unbroken `linear`
+     sweep per leg — adding intermediate position stops made each leg
+     read as three separate eased sub-trips instead of one fluid motion.
+     This element sits in plain HTML (not inside a
+     preserveAspectRatio="none" SVG), so animating a raw px `left` is
+     safe here — the whole foreignObject scales uniformly with the outer
+     canvas. */
+  .lfd-dot {
+    left: -38px;
+    opacity: 0;
+    animation:
+      lfd-dot-move 6s linear infinite,
+      lfd-dot-fade 6s ease-in-out infinite;
+  }
+  @keyframes lfd-dot-move {
+    0% {
+      left: -38px;
+    }
+    33.333% {
+      left: 118px;
+    }
+    50% {
+      left: 118px;
+    }
+    83.333% {
+      left: -38px;
+    }
+    100% {
+      left: -38px;
+    }
+  }
+  @keyframes lfd-dot-fade {
+    0% {
+      opacity: 0;
+    }
+    8.547% {
+      opacity: 1;
+    }
+    24.786% {
+      opacity: 1;
+    }
+    33.333%,
+    50% {
+      opacity: 0;
+    }
+    58.547% {
+      opacity: 1;
+    }
+    74.786% {
+      opacity: 1;
+    }
+    83.333%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .lfd-cloud-icon {
+    animation: lfd-cloud-pulse 6s ease-out infinite;
+  }
+  @keyframes lfd-cloud-pulse {
+    0%,
+    21.8%,
+    27.8%,
+    100% {
+      transform: scale(1);
+    }
+    24.786% {
+      transform: scale(1.12);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lfd-dot {
+      animation: none;
+      opacity: 0;
+    }
+    .lfd-cloud-icon {
+      animation: none;
+      transform: scale(1);
+    }
+  }
+</style>
