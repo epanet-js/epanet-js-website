@@ -83,13 +83,26 @@ const faqs = [
     title="Design the field campaign that makes your model trustworthy"
     subtitle="Plan where to place loggers and what to measure so you constrain the model with the right data, in the right places, the first time. The campaign that makes the calibration that follows fast and defensible.">
     <div slot="media">
-      <div class="relative aspect-[16/10] w-full rounded-xl border border-gray-200 shadow-lg overflow-hidden bg-gray-100">
-        <NetworkMap markers class="absolute inset-0" />
-        <LegendPanel
-          title="Field campaign"
-          entries={[{ color: "#8b5cf6", label: "Proposed monitoring point" }]}
-          class="absolute top-2 left-2"
-        />
+      <div
+        class="relative mx-auto aspect-[3/2] w-full max-w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
+        role="img"
+        aria-label="Diagram: a water network map with a proposed monitoring point placed on it for a field campaign.">
+        <svg
+          viewBox="0 0 480 320"
+          preserveAspectRatio="xMidYMid meet"
+          class="absolute inset-0 h-full w-full"
+          aria-hidden="true">
+          <foreignObject x="0" y="0" width="480" height="320">
+            <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="relative h-full w-full">
+              <NetworkMap markers class="absolute inset-0" />
+              <LegendPanel
+                title="Field campaign"
+                entries={[{ color: "#8b5cf6", label: "Proposed monitoring point" }]}
+                class="absolute bottom-4 left-4"
+              />
+            </div>
+          </foreignObject>
+        </svg>
       </div>
     </div>
   </PageHero>
