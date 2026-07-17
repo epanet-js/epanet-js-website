@@ -14,7 +14,8 @@ const observations = [
 ---
 
 <AppWindow
-  variant="plain"
+  hideHeader
+  hideFooter
   label="Hydrant test planning in epanet-js: a test hydrant with three observation points, each showing its expected pressure drawdown.">
   <!-- hydrant, observation rings, and connecting lines -->
   <svg
@@ -40,14 +41,13 @@ const observations = [
     {
       observations.map((obs, i) => (
         <circle
-          class="ht-obs"
+          class={`ht-obs-${i + 1}`}
           cx={obs.x}
           cy={obs.y}
           r="5.5"
           fill="none"
           stroke="#312e81"
           stroke-width="2"
-          style={`animation-delay: ${(i * 0.96).toFixed(2)}s`}
         />
       ))
     }
@@ -62,14 +62,16 @@ const observations = [
         stroke="#ffffff"
         stroke-width="1.5"></rect>
     </g>
-    <circle
-      class="ht-hydrant-pulse"
-      cx="240"
-      cy="210"
-      r="8"
-      fill="none"
-      stroke="#8b5cf6"
-      stroke-width="1.5"></circle>
+    <g class="ht-hydrant-pulse-gate">
+      <circle
+        class="ht-hydrant-pulse"
+        cx="240"
+        cy="210"
+        r="8"
+        fill="none"
+        stroke="#8b5cf6"
+        stroke-width="1.5"></circle>
+    </g>
   </svg>
 
   <!-- expected drawdown chips at the observation points -->
@@ -77,10 +79,10 @@ const observations = [
     observations.map((obs, i) => (
       <span
         class:list={[
-          "ht-chip absolute whitespace-nowrap rounded border border-gray-200 bg-white px-1 py-px text-[9px] font-medium text-gray-700 shadow-sm",
+          `ht-chip-${i + 1}`,
+          "absolute whitespace-nowrap rounded border border-gray-200 bg-white px-1 py-px text-xs font-medium text-gray-700 shadow-sm",
           obs.chip,
-        ]}
-        style={`animation-delay: ${(i * 0.96).toFixed(2)}s`}>
+        ]}>
         {obs.drawdown}
       </span>
     ))
@@ -91,20 +93,19 @@ const observations = [
     class="ht-panel absolute top-2 right-2 w-[180px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
     <div
       class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-      <p class="text-[11px] font-semibold text-gray-700">Hydrant test plan</p>
-      <p class="text-[10px] text-gray-400">FH-7</p>
+      <p class="text-xs font-semibold text-gray-700">Hydrant test plan</p>
+      <p class="text-xs text-gray-400">FH-7</p>
     </div>
     <div
-      class="flex items-center justify-between px-3 py-1.5 text-[10px] border-b border-gray-50">
+      class="flex items-center justify-between px-3 py-1.5 text-xs border-b border-gray-50">
       <span class="text-gray-500">Test flow</span>
       <span class="font-medium text-gray-700 tabular-nums">30 l/s</span>
     </div>
-    <div class="py-1 text-[10px]">
+    <div class="py-1 text-xs">
       {
         observations.map((obs, i) => (
           <div
-            class="ht-row flex items-center justify-between px-3 py-1"
-            style={`animation-delay: ${(i * 0.96).toFixed(2)}s`}>
+            class={`ht-row-${i + 1} flex items-center justify-between px-3 py-1`}>
             <span class="text-gray-600">{obs.id}</span>
             <span class="font-medium text-gray-700 tabular-nums">
               {obs.drawdown}
@@ -120,26 +121,51 @@ const observations = [
   .ht-hydrant {
     transform-box: fill-box;
     transform-origin: center;
-    animation: ht-hydrant-in 8s ease-out infinite both;
+    animation: ht-hydrant-in 10s ease-out infinite both;
   }
+  /* Whole 10s cycle, all times rounded to clean seconds. Hydrant settles
+     at 1s; the panel waits until 3s (2s after that) to fade in, each
+     row/chip pair 1s after the previous starts; everything (hydrant,
+     its pulse, lines, rings, panel, rows, chips) holds until 8s, fades
+     out together over 8s→9s, then sits blank for a full extra second
+     (9s→10s) before the loop restarts. */
   @keyframes ht-hydrant-in {
     0%,
-    6% {
+    4% {
       opacity: 0;
       transform: scale(0);
     }
-    10% {
+    7% {
       opacity: 1;
       transform: scale(1.2);
     }
-    12% {
+    10% {
       transform: scale(1);
     }
-    92% {
+    80% {
       opacity: 1;
       transform: scale(1);
     }
-    98%,
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  /* the pulse ring's own opacity is already driven by ht-pulse (the
+     ripple fading as it expands each 1.8s beat), so the 8s→9s cutoff is
+     applied via a wrapping .ht-hydrant-pulse-gate element instead of a
+     second animation on the same element — two animations both setting
+     `opacity` on one element don't compose, the later one just wins for
+     the whole time it runs, which would silently kill the ripple fade */
+  .ht-hydrant-pulse-gate {
+    animation: ht-pulse-vis 10s linear infinite both;
+  }
+  @keyframes ht-pulse-vis {
+    0%,
+    80% {
+      opacity: 1;
+    }
+    90%,
     100% {
       opacity: 0;
     }
@@ -164,21 +190,21 @@ const observations = [
   /* dashed lines reach out to the observation points and march slowly */
   .ht-line {
     animation:
-      ht-line-in 8s ease-out infinite both,
+      ht-line-in 10s ease-out infinite both,
       ht-march 1.4s linear infinite;
   }
   @keyframes ht-line-in {
     0%,
-    16% {
+    10% {
       opacity: 0;
     }
-    22% {
+    20% {
       opacity: 1;
     }
-    92% {
+    80% {
       opacity: 1;
     }
-    98%,
+    90%,
     100% {
       opacity: 0;
     }
@@ -192,93 +218,244 @@ const observations = [
     }
   }
 
-  .ht-obs {
+  /* each ring appears in step with its matching chip (same start/settle
+     percentages as ht-chip-1/2/3), then holds and fades out with
+     everything else at 80%/90% */
+  .ht-obs-1,
+  .ht-obs-2,
+  .ht-obs-3 {
     transform-box: fill-box;
     transform-origin: center;
-    animation: ht-obs-in 8s ease-out infinite both;
   }
-  @keyframes ht-obs-in {
+  .ht-obs-1 {
+    animation: ht-obs-1 10s ease-out infinite both;
+  }
+  @keyframes ht-obs-1 {
     0%,
-    30% {
+    40% {
       opacity: 0;
       transform: scale(0.4);
     }
-    34% {
+    45% {
       opacity: 1;
       transform: scale(1.15);
     }
-    36% {
+    50% {
       transform: scale(1);
     }
-    90% {
+    80% {
       opacity: 1;
     }
-    96%,
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .ht-obs-2 {
+    animation: ht-obs-2 10s ease-out infinite both;
+  }
+  @keyframes ht-obs-2 {
+    0%,
+    50% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    55% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    60% {
+      transform: scale(1);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .ht-obs-3 {
+    animation: ht-obs-3 10s ease-out infinite both;
+  }
+  @keyframes ht-obs-3 {
+    0%,
+    60% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    65% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    70% {
+      transform: scale(1);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
     100% {
       opacity: 0;
     }
   }
 
-  .ht-chip {
-    animation: ht-chip-in 8s ease-out infinite both;
+  /* each chip appears in step with its matching row (same start/settle
+     percentages as ht-row-1/2/3), stays visible continuously, and fades
+     out together with everything else at 80%/90% */
+  .ht-chip-1 {
+    animation: ht-chip-1 10s ease-out infinite both;
   }
-  @keyframes ht-chip-in {
+  @keyframes ht-chip-1 {
     0%,
-    32% {
+    40% {
       opacity: 0;
       transform: translateY(3px);
     }
-    37% {
+    50% {
       opacity: 1;
       transform: translateY(0);
     }
-    90% {
+    80% {
       opacity: 1;
     }
-    96%,
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .ht-chip-2 {
+    animation: ht-chip-2 10s ease-out infinite both;
+  }
+  @keyframes ht-chip-2 {
+    0%,
+    50% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .ht-chip-3 {
+    animation: ht-chip-3 10s ease-out infinite both;
+  }
+  @keyframes ht-chip-3 {
+    0%,
+    60% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    70% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
     100% {
       opacity: 0;
     }
   }
 
+  /* the panel waits to fade in until 3s (1s after the hydrant settles at
+     1s, plus another 1s), holds visible until 80%, then fades out
+     together with everything else over 80%→90% */
   .ht-panel {
-    animation: ht-panel-in 8s ease-out infinite both;
+    animation: ht-panel-in 10s ease-out infinite both;
   }
   @keyframes ht-panel-in {
-    0% {
+    0%,
+    30% {
       opacity: 0;
       transform: translateY(4px);
     }
-    6% {
+    40% {
       opacity: 1;
       transform: translateY(0);
     }
-    92% {
+    80% {
       opacity: 1;
     }
-    98%,
+    90%,
     100% {
       opacity: 0;
     }
   }
 
-  .ht-row {
-    animation: ht-row-in 8s ease-out infinite both;
+  /* rows fade in back-to-back, each taking the same 1s span as the
+     panel's own fade-in (§ht-panel-in); row 1 starts right where the
+     panel finishes at 4s, and each subsequent pair's fade-in starts 1s
+     after the previous pair's, matching ht-chip-1/2/3. All three fade
+     out together with everything else at 80%/90%. */
+  .ht-row-1 {
+    animation: ht-row-1 10s ease-out infinite both;
   }
-  @keyframes ht-row-in {
+  @keyframes ht-row-1 {
     0%,
-    32% {
+    40% {
       opacity: 0;
       transform: translateY(4px);
     }
-    37% {
+    50% {
       opacity: 1;
       transform: translateY(0);
     }
-    90% {
+    80% {
       opacity: 1;
     }
-    96%,
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .ht-row-2 {
+    animation: ht-row-2 10s ease-out infinite both;
+  }
+  @keyframes ht-row-2 {
+    0%,
+    50% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .ht-row-3 {
+    animation: ht-row-3 10s ease-out infinite both;
+  }
+  @keyframes ht-row-3 {
+    0%,
+    60% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    70% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
     100% {
       opacity: 0;
     }
@@ -286,17 +463,23 @@ const observations = [
 
   @media (prefers-reduced-motion: reduce) {
     .ht-hydrant,
-    .ht-hydrant-pulse,
+    .ht-hydrant-pulse-gate,
     .ht-line,
-    .ht-obs,
-    .ht-chip,
+    .ht-obs-1,
+    .ht-obs-2,
+    .ht-obs-3,
+    .ht-chip-1,
+    .ht-chip-2,
+    .ht-chip-3,
     .ht-panel,
-    .ht-row {
+    .ht-row-1,
+    .ht-row-2,
+    .ht-row-3 {
       animation: none;
       opacity: 1;
       transform: none;
     }
-    .ht-hydrant-pulse {
+    .ht-hydrant-pulse-gate {
       opacity: 0;
     }
   }
