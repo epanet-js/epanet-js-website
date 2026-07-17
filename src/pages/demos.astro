@@ -2,10 +2,12 @@
 // Internal animation gallery: every animated demo component in
 // src/components/demos/, grouped by product lifecycle, with a short
 // description and where each one could be used. Not linked from navigation,
-// noindex, and excluded from the sitemap (see astro.config.mjs).
+// excluded from the sitemap (see astro.config.mjs), and 404s in production
+// (see the PROD check below) — it's a local dev tool only.
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Badge from "@components/ui/badge.astro";
+import Link from "@components/ui/link.astro";
 
 import AppWindow from "@components/demos/AppWindow.astro";
 import AssetSearchDemo from "@components/demos/AssetSearchDemo.astro";
@@ -69,7 +71,18 @@ import WaterAgeDemo from "@components/demos/WaterAgeDemo.astro";
 import WaterBalanceDemo from "@components/demos/WaterBalanceDemo.astro";
 import ZoneFitDemo from "@components/demos/ZoneFitDemo.astro";
 
-export const prerender = true;
+// SSR (not prerendered) so this can 404 in production — the gallery is a
+// local dev tool only, never meant to be reachable on a live deploy.
+// Astro.rewrite() to the static /404 route isn't usable here (rewriting
+// on-demand -> prerendered routes throws), so the not-found state is
+// rendered inline below instead.
+export const prerender = false;
+
+const hideInProduction = import.meta.env.PROD;
+if (hideInProduction) {
+  Astro.response.status = 404;
+}
+
 const lang = "en";
 
 // How an entry is wrapped in its preview area. `window` and `diagram`
@@ -788,13 +801,35 @@ const usageBadge = (entry: DemoEntry) =>
     : "New";
 ---
 
-<Layout
-  title="Animation gallery"
-  description="Internal reference of the animated demo components used across the site."
-  lang={lang}
-  noindex>
-  <Container class="py-12 md:py-16">
-    <header class="max-w-2xl">
+{
+  hideInProduction ? (
+    <Layout title="404 Not Found">
+      <Container>
+        <div class="min-h-[calc(100vh-20rem)] flex items-center justify-center">
+          <div class="mt-16 text-center">
+            <h1 class="text-6xl lg:text-9xl font-bold lg:tracking-tight bg-gradient-to-b from-indigo-600 to-indigo-300 bg-clip-text text-transparent">
+              404
+            </h1>
+            <p class="text-lg lg:text-2xl font-medium mt-4 text-slate-700">
+              The page you are looking for doesn’t exist.
+            </p>
+            <div class="mt-10">
+              <Link href="/" style="outline">
+                Back to Home
+              </Link>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </Layout>
+  ) : (
+    <Layout
+      title="Animation gallery"
+      description="Internal reference of the animated demo components used across the site."
+      lang={lang}
+      noindex>
+      <Container class="py-12 md:py-16">
+        <header class="max-w-2xl">
       <h1 class="text-3xl font-bold tracking-tight md:text-4xl">
         Animation gallery
       </h1>
@@ -875,5 +910,7 @@ const usageBadge = (entry: DemoEntry) =>
         </section>
       ))
     }
-  </Container>
-</Layout>
+      </Container>
+    </Layout>
+  )
+}
