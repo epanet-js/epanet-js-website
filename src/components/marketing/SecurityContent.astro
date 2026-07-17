@@ -311,5 +311,9 @@ const faqs = [
   secondaryCta={{
     label: t("security.ctaQuestions.secondaryCta"),
     href: "mailto:support@epanetjs.com",
-  }}
-/>
+  }}>
+  <p
+    class="mt-6 text-center text-sm text-gray-300"
+    set:html={t("security.ctaQuestions.footer")}
+  />
+</CtaSection>

@@ -445,7 +445,7 @@ export const ui = {
   
   "pricingFaq.q8": "Can you complete our organization's security questionnaire?",
   "pricingFaq.a8": `We complete security questionnaires for our Enterprise customers.
-    <p class="mt-3">Free, Pro, and Teams plans are self-service, and we expect your team to run its own internal security review. To make that as easy as possible, review our <a href="https://help.epanetjs.com/Generic-Security-Questionnaire-3a0e18c9f0f6804f910fc8a69fa0c9ad?pvs=74" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">generic security questionnaire</a>, with answers to the questions utilities and engineering firms have put to us before, so you can fill out your own internal forms quickly. If a question isn't covered, <a href="mailto:support@epanetjs.com" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">email us</a> or <a href="https://cal.com/epanet-js/" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">book a call</a>.</p>
+    <p class="mt-3">Free, Pro, and Teams plans are self-service, and we expect your team to run its own internal security review. To make that as easy as possible, review our <a href="https://help.epanetjs.com/Generic-Security-Questionnaire-3a0e18c9f0f6804f910fc8a69fa0c9ad?" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">generic security questionnaire</a>, with answers to the questions utilities and engineering firms have put to us before, so you can fill out your own internal forms quickly. If a question isn't covered, <a href="mailto:support@epanetjs.com" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">email us</a> or <a href="https://cal.com/epanet-js/" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">book a call</a>.</p>
     <p class="mt-3">For a full overview of how we handle security and data privacy, see our <a href="/security" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">security page</a>.</p>`,
   "pricingFaq.q9": "If epanet-js runs in a web browser, how is my data not uploaded to the internet?",
   "pricingFaq.a9": `epanet-js is built local-first. The browser acts as a secure runtime, much like a desktop operating system: when you load the app over HTTPS, the entire application, including the EPANET simulation engine compiled to WebAssembly, downloads to your browser cache and runs on your machine's own CPU and memory inside the browser sandbox, at near-native desktop performance.
@@ -545,6 +545,10 @@ export const ui = {
     "Your data, your rules. We give you absolute control over how your customer information and infrastructure data are kept secure.",
   "security.hero.primaryCta": "Contact us",
   "security.hero.secondaryCta": "Read our privacy policy",
+
+  "security.questionnaireCallout.heading": "Reviewing our security?",
+  "security.questionnaireCallout.body":
+    'Start with our <a href="https://help.epanetjs.com/Generic-Security-Questionnaire-3a0e18c9f0f6804f910fc8a69fa0c9ad?" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">generic security questionnaire</a> — it answers the questions utilities and engineering firms ask most often.',
 
   "security.badge.teams": "Teams",
   "security.badge.enterprise": "Enterprise",
@@ -652,7 +656,7 @@ export const ui = {
   "security.faq.heading": "Frequently asked questions",
   "security.faq.q0": "Can you complete our organization's security questionnaire?",
   "security.faq.a0":
-    'We complete security questionnaires for our Enterprise customers.<p class="mt-3">Free, Pro, and Teams plans are self-service, and we expect your team to run its own internal security review. To make that as easy as possible, review our <a href="https://help.epanetjs.com/Generic-Security-Questionnaire-3a0e18c9f0f6804f910fc8a69fa0c9ad?pvs=74" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">generic security questionnaire</a>, with answers to the questions utilities and engineering firms have put to us before, so you can fill out your own internal forms quickly. If a question isn\'t covered, <a href="mailto:support@epanetjs.com" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">email us</a> or <a href="https://cal.com/epanet-js/" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">book a call</a>.</p>',
+    'We complete security questionnaires for our Enterprise customers.<p class="mt-3">Free, Pro, and Teams plans are self-service, and we expect your team to run its own internal security review. To make that as easy as possible, review our <a href="https://help.epanetjs.com/Generic-Security-Questionnaire-3a0e18c9f0f6804f910fc8a69fa0c9ad?" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">generic security questionnaire</a>, with answers to the questions utilities and engineering firms have put to us before, so you can fill out your own internal forms quickly. If a question isn\'t covered, <a href="mailto:support@epanetjs.com" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">email us</a> or <a href="https://cal.com/epanet-js/" class="text-indigo-600 hover:text-indigo-800 underline hover:no-underline">book a call</a>.</p>',
   "security.faq.q1":
     "If epanet-js runs in a web browser, how is my data not uploaded to the internet?",
   "security.faq.a1":
@@ -697,6 +701,8 @@ export const ui = {
     "Talk to us about security questionnaires, customer-managed storage, or an on-premises deployment. We're glad to help.",
   "security.ctaQuestions.primaryCta": "Book a call",
   "security.ctaQuestions.secondaryCta": "Email us",
+  "security.ctaQuestions.footer":
+    'Reviewing on your own first? Check our <a href="https://help.epanetjs.com/Generic-Security-Questionnaire-3a0e18c9f0f6804f910fc8a69fa0c9ad?" target="_blank" rel="noopener noreferrer" class="text-gray-200 underline hover:text-white hover:no-underline">generic security questionnaire</a>.',
 
   // ── Demo diagrams (src/components/demos/) ──
   "diagrams.localFirstFlow.ariaLabel":
