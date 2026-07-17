@@ -4,97 +4,106 @@
 // reinvest in improving the app, which brings more people in.
 import { Code2, CreditCard, Users } from "lucide-react";
 
-// Triangle vertices in the 260x220 viewBox (top, bottom-right, bottom-left).
+// Triangle vertices in the 320x240 box (top, bottom-right, bottom-left).
 const edges = [
-  { cls: "sos-edge-1", x1: 130, y1: 58, x2: 196, y2: 170 },
-  { cls: "sos-edge-2", x1: 196, y1: 170, x2: 64, y2: 170 },
-  { cls: "sos-edge-3", x1: 64, y1: 170, x2: 130, y2: 58 },
+  { cls: "sos-edge-1", x1: 160, y1: 40, x2: 256, y2: 192 },
+  { cls: "sos-edge-2", x1: 256, y1: 192, x2: 64, y2: 192 },
+  { cls: "sos-edge-3", x1: 64, y1: 192, x2: 160, y2: 40 },
 ];
 ---
 
 <div
-  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-5 sm:p-6 select-none"
+  class="relative mx-auto aspect-[3/2] w-full max-w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
-  aria-label="Diagram of the sustainable open source cycle: people use the open source app, some users pay for advanced features, and developers reinvest in improving the app.">
-  <div class="relative mx-auto aspect-[13/11] max-w-[340px]">
-    <svg
-      viewBox="0 0 260 220"
-      class="absolute inset-0 h-full w-full"
-      aria-hidden="true">
-      <g stroke-width="5" stroke-linecap="round" fill="none">
-        {
-          edges.map((edge) => (
-            <line
-              class={edge.cls}
-              x1={edge.x1}
-              y1={edge.y1}
-              x2={edge.x2}
-              y2={edge.y2}
-              stroke="#8b5cf6"
-              pathLength="100"
-            />
-          ))
-        }
-      </g>
-      <!-- circulating dashes once the loop closes -->
-      <g
-        stroke="#ffffff"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        fill="none">
-        {
-          edges.map((edge) => (
-            <line
-              class="sos-march"
-              x1={edge.x1}
-              y1={edge.y1}
-              x2={edge.x2}
-              y2={edge.y2}
-              stroke-dasharray="3 9"
-              pathLength="100"
-            />
-          ))
-        }
-      </g>
-    </svg>
+  aria-label="Diagram: the sustainable open source cycle. People use the open source app, some users pay for advanced features, and developers reinvest in improving the app.">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="box-border flex h-full w-full flex-col items-center justify-center px-8 pb-8 pt-8">
+        <div class="relative h-60 w-80">
+          <svg
+            viewBox="0 0 320 240"
+            class="absolute inset-0 h-full w-full"
+            aria-hidden="true">
+            <g stroke-width="5" stroke-linecap="round" fill="none">
+              {
+                edges.map((edge) => (
+                  <line
+                    class={edge.cls}
+                    x1={edge.x1}
+                    y1={edge.y1}
+                    x2={edge.x2}
+                    y2={edge.y2}
+                    stroke="#8b5cf6"
+                    pathLength="100"
+                  />
+                ))
+              }
+            </g>
+            <!-- circulating dashes once the loop closes -->
+            <g
+              stroke="#ffffff"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              fill="none">
+              {
+                edges.map((edge) => (
+                  <line
+                    class="sos-march"
+                    x1={edge.x1}
+                    y1={edge.y1}
+                    x2={edge.x2}
+                    y2={edge.y2}
+                    stroke-dasharray="3 9"
+                    pathLength="100"
+                  />
+                ))
+              }
+            </g>
+          </svg>
 
-    <!-- cycle nodes -->
-    <div
-      class="sos-node-top absolute left-1/2 top-0 flex w-[130px] -translate-x-1/2 flex-col items-center gap-1 text-center">
-      <span
-        class="sos-icon flex h-8 w-8 items-center justify-center rounded-full bg-purple-50 text-purple-600">
-        <Users size={15} />
-      </span>
-      <p class="text-[9px] leading-tight text-gray-600">
-        People use the open source app
-      </p>
-    </div>
-    <div
-      class="sos-node-br absolute bottom-0 right-0 flex w-[110px] flex-col items-center gap-1 text-center">
-      <span
-        class="sos-icon flex h-8 w-8 items-center justify-center rounded-full bg-purple-50 text-purple-600">
-        <CreditCard size={15} />
-      </span>
-      <p class="text-[9px] leading-tight text-gray-600">
-        Some users pay for advanced features
-      </p>
-    </div>
-    <div
-      class="sos-node-bl absolute bottom-0 left-0 flex w-[110px] flex-col items-center gap-1 text-center">
-      <span
-        class="sos-icon flex h-8 w-8 items-center justify-center rounded-full bg-purple-50 text-purple-600">
-        <Code2 size={15} />
-      </span>
-      <p class="text-[9px] leading-tight text-gray-600">
-        Developers reinvest improving the app
-      </p>
-    </div>
+          <!-- cycle nodes: icon badges are positioned so they sit centered
+               exactly on their triangle vertex -->
+          <span
+            class="sos-icon-top absolute left-40 top-4 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-purple-50 text-purple-600">
+            <Users size={23} />
+          </span>
+          <p
+            class="sos-label-top absolute left-40 top-2 w-36 -translate-x-1/2 -translate-y-full text-center text-[10px] leading-tight text-gray-600">
+            The open source app grows
+          </p>
+          <div
+            class="sos-node-br absolute left-64 top-[168px] flex w-36 -translate-x-1/2 flex-col items-center gap-2 text-center">
+            <span
+              class="flex h-12 w-12 items-center justify-center rounded-full bg-purple-50 text-purple-600">
+              <CreditCard size={23} />
+            </span>
+            <p class="text-[10px] leading-tight text-gray-600">
+              Advanced features are paid
+            </p>
+          </div>
+          <div
+            class="sos-node-bl absolute left-16 top-[168px] flex w-36 -translate-x-1/2 flex-col items-center gap-2 text-center">
+            <span
+              class="flex h-12 w-12 items-center justify-center rounded-full bg-purple-50 text-purple-600">
+              <Code2 size={23} />
+            </span>
+            <p class="text-[10px] leading-tight text-gray-600">
+              That funds new development
+            </p>
+          </div>
 
-    <p
-      class="sos-center absolute left-1/2 top-[58%] w-[110px] -translate-x-1/2 -translate-y-1/2 text-center text-xs font-medium leading-snug text-gray-700">
-      Sustainable open source
-    </p>
-  </div>
+          <p
+            class="sos-center absolute left-1/2 top-[152px] w-36 -translate-x-1/2 -translate-y-1/2 text-center text-sm font-medium leading-snug text-gray-700">
+            Sustainable open source
+          </p>
+        </div>
+      </div>
+    </foreignObject>
+  </svg>
 </div>
 
 <style>
@@ -165,10 +174,10 @@ const edges = [
 
   /* nodes light up as the cycle reaches them; the top node starts it and
      ticks again when the loop closes */
-  .sos-node-top {
-    animation: sos-node-top 8s ease-out infinite both;
+  .sos-icon-top {
+    animation: sos-icon-top 8s ease-out infinite both;
   }
-  @keyframes sos-node-top {
+  @keyframes sos-icon-top {
     0%, 2% { opacity: 0; transform: translate(-50%, 3px); }
     8% { opacity: 1; transform: translate(-50%, 0); }
     52% { transform: translate(-50%, 0) scale(1); }
@@ -177,12 +186,21 @@ const edges = [
     94% { opacity: 1; }
     100% { opacity: 0; }
   }
+  .sos-label-top {
+    animation: sos-label-top 8s ease-out infinite both;
+  }
+  @keyframes sos-label-top {
+    0%, 2% { opacity: 0; transform: translate(-50%, calc(-100% + 3px)); }
+    8% { opacity: 1; transform: translate(-50%, -100%); }
+    94% { opacity: 1; }
+    100% { opacity: 0; }
+  }
   .sos-node-br {
     animation: sos-node-br 8s ease-out infinite both;
   }
   @keyframes sos-node-br {
-    0%, 18% { opacity: 0; transform: translateY(3px); }
-    24% { opacity: 1; transform: translateY(0); }
+    0%, 18% { opacity: 0; transform: translate(-50%, 3px); }
+    24% { opacity: 1; transform: translate(-50%, 0); }
     94% { opacity: 1; }
     100% { opacity: 0; }
   }
@@ -190,8 +208,8 @@ const edges = [
     animation: sos-node-bl 8s ease-out infinite both;
   }
   @keyframes sos-node-bl {
-    0%, 34% { opacity: 0; transform: translateY(3px); }
-    40% { opacity: 1; transform: translateY(0); }
+    0%, 34% { opacity: 0; transform: translate(-50%, 3px); }
+    40% { opacity: 1; transform: translate(-50%, 0); }
     94% { opacity: 1; }
     100% { opacity: 0; }
   }
@@ -220,7 +238,8 @@ const edges = [
     .sos-edge-2,
     .sos-edge-3,
     .sos-march,
-    .sos-node-top,
+    .sos-icon-top,
+    .sos-label-top,
     .sos-node-br,
     .sos-node-bl,
     .sos-center {
@@ -235,12 +254,15 @@ const edges = [
     .sos-march {
       opacity: 0;
     }
-    .sos-node-top {
+    .sos-icon-top {
       transform: translate(-50%, 0);
+    }
+    .sos-label-top {
+      transform: translate(-50%, -100%);
     }
     .sos-node-br,
     .sos-node-bl {
-      transform: none;
+      transform: translate(-50%, 0);
     }
   }
 </style>
