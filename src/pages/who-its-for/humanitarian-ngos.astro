@@ -7,6 +7,7 @@ import Media from "@components/marketing/Media.astro";
 import NetworkMap from "@components/demos/NetworkMap.astro";
 import LegendPanel from "@components/demos/LegendPanel.astro";
 import SustainableOpenSourceDemo from "@components/demos/SustainableOpenSourceDemo.astro";
+import SimulationRunDemo from "@components/demos/SimulationRunDemo.astro";
 import LicenseTimelineDemo from "@components/demos/LicenseTimelineDemo.astro";
 import BenefitGrid from "@components/marketing/BenefitGrid.astro";
 import CardGrid from "@components/marketing/CardGrid.astro";
@@ -157,15 +158,7 @@ const faqs = [
       delivers: pressures where they're needed and enough capacity for fire flow
       and growth. The same workflows the industry uses, available to your team.
     </p>
-    <div
-      slot="media"
-      class="relative aspect-[16/10] w-full rounded-xl border border-gray-200 shadow-lg overflow-hidden bg-gray-100">
-      <NetworkMap variant="pressure" class="absolute inset-0" />
-      <LegendPanel
-        title="Pressure (m)"
-        class="absolute top-2 left-2"
-      />
-    </div>
+    <SimulationRunDemo slot="media" />
   </ContentMediaRow>
 
   <ContentMediaRow title="Open, local-first, and free of lock-in" reverse>
