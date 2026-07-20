@@ -11,98 +11,119 @@ const { class: className } = Astro.props;
 
 // Final dot positions near the 1:1 line, plus the initial offset each dot
 // starts from (applied as a CSS transform that animates back to zero).
+// The plot is drawn wide (viewBox 224x112, axis run 16-208) rather than
+// square, so it fills the panel's available width on its own — the x
+// spacing here is stretched accordingly, y is untouched.
 const dots: { x: number; y: number; dx: number; dy: number }[] = [
-  { x: 24, y: 90, dx: 5, dy: -12 },
-  { x: 33, y: 85, dx: -7, dy: 9 },
-  { x: 41, y: 72, dx: 9, dy: 7 },
-  { x: 50, y: 68, dx: -5, dy: -13 },
-  { x: 60, y: 53, dx: 7, dy: 11 },
-  { x: 68, y: 50, dx: -11, dy: -7 },
-  { x: 78, y: 36, dx: 6, dy: -10 },
-  { x: 86, y: 32, dx: -8, dy: 12 },
-  { x: 95, y: 19, dx: 10, dy: 6 },
-  { x: 102, y: 16, dx: -6, dy: 9 },
+  { x: 33, y: 90, dx: 11, dy: -12 },
+  { x: 52, y: 85, dx: -15, dy: 9 },
+  { x: 69, y: 72, dx: 19, dy: 7 },
+  { x: 88, y: 68, dx: -11, dy: -13 },
+  { x: 109, y: 53, dx: 15, dy: 11 },
+  { x: 126, y: 50, dx: -23, dy: -7 },
+  { x: 147, y: 36, dx: 13, dy: -10 },
+  { x: 164, y: 32, dx: -17, dy: 12 },
+  { x: 183, y: 19, dx: 21, dy: 6 },
+  { x: 197, y: 16, dx: -13, dy: 9 },
 ];
 ---
 
 <div
   class:list={[
-    "bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+    "relative mx-auto aspect-[3/2] w-full max-w-[480px] rounded-lg shadow-md select-none",
     className,
   ]}
   role="img"
   aria-label="Calibration fit panel: an observed-versus-simulated scatter plot pulling toward the 1:1 line as a change applies, with the RMSE improving from 4.8 to 1.2 meters.">
-  <div
-    class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-    <p class="text-[11px] font-semibold text-gray-700">Calibration fit</p>
-    <p class="text-[10px] text-gray-400">10 observations</p>
-  </div>
-  <div class="px-3 py-2.5">
-    <div class="relative">
-      <svg viewBox="0 0 150 112" class="w-full" aria-hidden="true">
-        <!-- axes -->
-        <g stroke="#e5e7eb" stroke-width="1">
-          <line x1="16" y1="8" x2="16" y2="100"></line>
-          <line x1="16" y1="100" x2="108" y2="100"></line>
-        </g>
-        <text
-          x="62"
-          y="110"
-          text-anchor="middle"
-          font-size="6.5"
-          fill="#9ca3af">
-          Observed (m)
-        </text>
-        <text
-          x="6"
-          y="54"
-          text-anchor="middle"
-          font-size="6.5"
-          fill="#9ca3af"
-          transform="rotate(-90 6 54)">
-          Simulated (m)
-        </text>
+  <div class="absolute inset-0 overflow-hidden rounded-lg border border-gray-100 bg-white">
+    <svg
+      viewBox="0 0 480 320"
+      preserveAspectRatio="xMidYMid meet"
+      class="absolute inset-0 h-full w-full"
+      aria-hidden="true">
+      <foreignObject x="0" y="0" width="480" height="320">
+        <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="relative flex h-full w-full flex-col">
+          <div
+            class="flex items-baseline justify-between px-4 py-3.5 border-b border-gray-100">
+            <p class="text-sm font-semibold text-gray-700">Calibration fit</p>
+            <p class="text-sm text-gray-400">10 observations</p>
+          </div>
+          <!-- header is 49px tall (28px padding + 20px text-sm line-height + 1px
+               border); top is fixed at header height + the standard pt-8 (32px)
+               so this box's size is a known 416x206, not dependent on flex/
+               percentage-height resolution inside the foreignObject, which
+               rendered unreliably here. -->
+          <div class="absolute inset-x-8 bottom-8 top-[81px]">
+            <svg
+              viewBox="0 0 224 112"
+              class="h-full w-full"
+              aria-hidden="true">
+              <!-- axes -->
+              <g stroke="#e5e7eb" stroke-width="1">
+                <line x1="16" y1="8" x2="16" y2="100"></line>
+                <line x1="16" y1="100" x2="208" y2="100"></line>
+              </g>
+              <text
+                x="112"
+                y="110"
+                text-anchor="middle"
+                font-size="6.5"
+                fill="#9ca3af">
+                Observed (m)
+              </text>
+              <text
+                x="6"
+                y="54"
+                text-anchor="middle"
+                font-size="6.5"
+                fill="#9ca3af"
+                transform="rotate(-90 6 54)">
+                Simulated (m)
+              </text>
 
-        <!-- 1:1 line -->
-        <line
-          class="csc-line"
-          pathLength="100"
-          x1="16"
-          y1="100"
-          x2="108"
-          y2="8"
-          stroke="#9ca3af"
-          stroke-width="1"
-          stroke-dasharray="3 2"></line>
+              <!-- 1:1 line -->
+              <line
+                class="csc-line"
+                pathLength="100"
+                x1="16"
+                y1="100"
+                x2="208"
+                y2="8"
+                stroke="#e5e7eb"
+                stroke-width="1"
+                stroke-dasharray="3 2"></line>
 
-        <!-- observations snap toward the 1:1 line -->
-        {
-          dots.map((d, i) => (
-            <circle
-              class="csc-dot"
-              cx={d.x}
-              cy={d.y}
-              r="2.4"
-              fill="#8b5cf6"
-              stroke="#ffffff"
-              stroke-width="0.75"
-              style={`--dx: ${d.dx}px; --dy: ${d.dy}px; animation-delay: ${(i * 0.1).toFixed(2)}s`}
-            />
-          ))
-        }
-      </svg>
+              <!-- observations snap toward the 1:1 line -->
+              {
+                dots.map((d, i) => (
+                  <circle
+                    class="csc-dot"
+                    cx={d.x}
+                    cy={d.y}
+                    r="2.4"
+                    fill="#8b5cf6"
+                    stroke="#ffffff"
+                    stroke-width="0.75"
+                    style={`--dx: ${d.dx}px; --dy: ${d.dy}px; animation-delay: ${(i * 0.1).toFixed(2)}s`}
+                  />
+                ))
+              }
+            </svg>
 
-      <span class="absolute left-[16%] top-[6%]">
-        <span
-          class="csc-rmse-old block whitespace-nowrap rounded border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-medium text-amber-700 shadow-sm">
-          RMSE 4.8 m
-        </span>
-        <span
-          class="csc-rmse-new absolute inset-0 flex items-center justify-center whitespace-nowrap rounded border border-green-200 bg-green-50 px-1.5 py-0.5 text-[9px] font-medium text-green-700 shadow-sm">
-          RMSE 1.2 m
-        </span>
-      </span>
-    </div>
+            <span class="absolute left-1/2 top-0 -translate-x-1/2">
+              <span
+                class="csc-rmse-old block whitespace-nowrap rounded border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-sm font-medium text-amber-700 shadow-sm">
+                RMSE 4.8 m
+              </span>
+              <span
+                class="csc-rmse-new absolute inset-0 flex items-center justify-center whitespace-nowrap rounded border border-green-200 bg-green-50 px-1.5 py-0.5 text-sm font-medium text-green-700 shadow-sm">
+                RMSE 1.2 m
+              </span>
+            </span>
+          </div>
+        </div>
+      </foreignObject>
+    </svg>
   </div>
 </div>
 
@@ -111,12 +132,16 @@ const dots: { x: number; y: number; dx: number; dy: number }[] = [
     stroke-dashoffset: 0;
     animation: csc-line-in 7s ease-out infinite both;
   }
+  /* the first dot (no animation-delay) starts snapping from its offset
+     to its final position at 46% of the 7s cycle (3.22s) — the line
+     begins its own fade-in 0.25s before that (2.97s = 42.429%), keeping
+     the same ~0.56s fade duration as before */
   @keyframes csc-line-in {
     0%,
-    4% {
+    42.429% {
       opacity: 0;
     }
-    12% {
+    50.429% {
       opacity: 1;
     }
     92% {
