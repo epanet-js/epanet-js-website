@@ -13,10 +13,25 @@ import {
 interface Props {
   variant?: "plain" | "pressure" | "passfail";
   markers?: boolean;
+  /** Scale the network to fit entirely inside its box instead of the
+   * default fill-and-crop — for a pane whose shape doesn't match the
+   * network's own 400x300 proportions and shouldn't clip it. */
+  contain?: boolean;
+  /** Rotate the basemap 90° (400x300 -> 300x400) and fit it inside its box
+   * instead of the default fill-and-crop — for a pane that's taller than
+   * it is wide, where the un-rotated 400x300 basemap would either crop
+   * heavily or leave the rotated network floating over empty space. */
+  rotateBasemap?: boolean;
   class?: string;
 }
 
-const { variant = "plain", markers = false, class: className } = Astro.props;
+const {
+  variant = "plain",
+  markers = false,
+  contain = false,
+  rotateBasemap = false,
+  class: className,
+} = Astro.props;
 
 const pipeColor = (zone: Zone) =>
   variant === "pressure" ? pressureColor[zone] : "#3730a3";
@@ -25,61 +40,81 @@ const junctionColor = (passes: boolean) =>
   variant === "passfail" ? (passes ? "#22c55e" : "#ef4444") : "#312e81";
 ---
 
-<svg
-  viewBox="0 0 400 300"
-  class:list={["w-full h-full", className]}
-  preserveAspectRatio="xMidYMid slice"
-  aria-hidden="true">
-  <Basemap />
-
-  <!-- pipes -->
-  <g stroke-width="2.5" stroke-linecap="round">
+<div class:list={["w-full h-full", className]} aria-hidden="true">
+  <!-- basemap fills its box (fill-and-crop) by default, unaffected by
+       `contain` — only the network is meant to shrink to fit. rotateBasemap
+       is the one exception: a 90°-rotated basemap gets its own viewBox
+       (dimensions swapped) and switches to fit-without-cropping too, since
+       the point of rotating it is to match a portrait-shaped pane, not to
+       fill-and-crop from a now-mismatched orientation. -->
+  <svg
+    viewBox={rotateBasemap ? "0 0 300 400" : "0 0 400 300"}
+    class="absolute inset-0 w-full h-full"
+    preserveAspectRatio={rotateBasemap ? "xMidYMid meet" : "xMidYMid slice"}>
     {
-      pipes.map(([x1, y1, x2, y2, zone]) => (
-        <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={pipeColor(zone)} />
-      ))
+      rotateBasemap ? (
+        <g transform="rotate(90) translate(0, -300)">
+          <Basemap />
+        </g>
+      ) : (
+        <Basemap />
+      )
     }
-  </g>
+  </svg>
 
-  <!-- junctions -->
-  <g stroke="#ffffff" stroke-width="1">
-    {
-      junctions.map(([x, y, passes]) => (
-        <circle
-          cx={x}
-          cy={y}
-          r="3.5"
-          fill={junctionColor(passes)}
-          class={variant === "passfail" && !passes ? "nm-pulse" : undefined}
-        />
-      ))
-    }
-  </g>
+  <svg
+    viewBox="0 0 400 300"
+    class="absolute inset-0 w-full h-full"
+    preserveAspectRatio={contain ? "xMidYMid meet" : "xMidYMid slice"}>
+    <!-- pipes -->
+    <g stroke-width="2.5" stroke-linecap="round">
+      {
+        pipes.map(([x1, y1, x2, y2, zone]) => (
+          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={pipeColor(zone)} />
+        ))
+      }
+    </g>
 
-  <!-- tank -->
-  <path
-    d="M40 42 L48 56 L32 56 Z"
-    fill="#312e81"
-    stroke="#ffffff"
-    stroke-width="1"></path>
-
-  <!-- monitoring point markers -->
-  {
-    markers && (
-      <g fill="none" stroke="#8b5cf6" stroke-width="2.5">
-        {markerPoints.map(([x, y], i) => (
+    <!-- junctions -->
+    <g stroke="#ffffff" stroke-width="1">
+      {
+        junctions.map(([x, y, passes]) => (
           <circle
             cx={x}
             cy={y}
-            r="8"
-            class="nm-pulse"
-            style={`animation-delay: ${i * 0.4}s`}
+            r="3.5"
+            fill={junctionColor(passes)}
+            class={variant === "passfail" && !passes ? "nm-pulse" : undefined}
           />
-        ))}
-      </g>
-    )
-  }
-</svg>
+        ))
+      }
+    </g>
+
+    <!-- tank -->
+    <path
+      d="M40 42 L48 56 L32 56 Z"
+      fill="#312e81"
+      stroke="#ffffff"
+      stroke-width="1"></path>
+
+    <!-- monitoring point markers -->
+    {
+      markers && (
+        <g fill="none" stroke="#8b5cf6" stroke-width="2.5">
+          {markerPoints.map(([x, y], i) => (
+            <circle
+              cx={x}
+              cy={y}
+              r="8"
+              class="nm-pulse"
+              style={`animation-delay: ${i * 0.4}s`}
+            />
+          ))}
+        </g>
+      )
+    }
+  </svg>
+</div>
 
 <style>
   .nm-pulse {
