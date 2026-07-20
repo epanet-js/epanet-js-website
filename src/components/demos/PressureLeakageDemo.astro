@@ -3,7 +3,7 @@
 // emitter-driven leakage estimate falls with it, and the downstream pipes
 // shift from amber toward green as zone pressure drops.
 import AppWindow from "./AppWindow.astro";
-import { pipes } from "./network-geometry";
+import { pipes, junctions } from "./network-geometry";
 
 // The zone downstream of PRV-12: everything past junction [210, 75].
 const zonePipes = pipes.slice(9);
@@ -17,6 +17,8 @@ const tints = [
 
 <AppWindow
   variant="plain"
+  hideHeader
+  hideFooter
   label="Pressure management in epanet-js: a PRV setting stepping down while the estimated leakage falls and the downstream zone recolors from amber to green.">
   <!-- zone tint overlay: three stacked copies crossfade as pressure drops -->
   <svg
@@ -40,6 +42,16 @@ const tints = [
         )
       }
     </g>
+    <!-- redraw the junction dots on top of the tint lines, since the tint
+         overlay is a separate sibling painted after NetworkMap's own
+         junctions and would otherwise cover them -->
+    <g stroke="#ffffff" stroke-width="1">
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r="3.5" fill="#312e81" />
+        ))
+      }
+    </g>
     <!-- PRV-12 at the zone inlet -->
     <g class="pl-prv">
       <rect
@@ -58,15 +70,15 @@ const tints = [
 
   <!-- pressure management panel -->
   <div
-    class="pl-panel absolute top-2 right-2 w-[200px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    class="pl-panel absolute top-2 right-2 w-[208px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
     <div
-      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-      <p class="text-[11px] font-semibold text-gray-700">
+      class="flex items-baseline justify-between gap-2 px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-xs font-semibold text-gray-700">
         Pressure management
       </p>
-      <p class="text-[10px] text-gray-400">PRV-12</p>
+      <p class="text-xs text-gray-400">PRV-12</p>
     </div>
-    <div class="px-3 py-2 space-y-1.5 text-[10px]">
+    <div class="px-3 py-2 space-y-1.5 text-xs">
       <div class="flex items-center justify-between">
         <span class="text-gray-500">Outlet setting</span>
         <span class="relative font-medium tabular-nums">
@@ -88,16 +100,21 @@ const tints = [
         </span>
       </div>
     </div>
-    <p
-      class="pl-chip flex items-center gap-1 px-3 py-1.5 border-t border-gray-100 text-[10px] font-medium text-green-600">
-      Leakage −21%
-    </p>
+    <div
+      class="flex items-center justify-between px-3 py-1.5 border-t border-gray-100 text-xs">
+      <span class="text-gray-500">Leakage savings</span>
+      <span class="relative inline-block min-w-10 font-medium tabular-nums text-right">
+        <span class="pl-save-1 text-gray-700">0%</span>
+        <span class="pl-save-2 absolute inset-0 bg-white text-right">−11%</span>
+        <span class="pl-save-3 absolute inset-0 bg-white text-right">−21%</span>
+      </span>
+    </div>
   </div>
 </AppWindow>
 
 <style>
   .pl-tint-a {
-    animation: pl-tint-a 8s ease-in-out infinite both;
+    animation: pl-tint-a 16s ease-in-out infinite both;
   }
   @keyframes pl-tint-a {
     0%,
@@ -116,7 +133,7 @@ const tints = [
     }
   }
   .pl-tint-b {
-    animation: pl-tint-b 8s ease-in-out infinite both;
+    animation: pl-tint-b 16s ease-in-out infinite both;
   }
   @keyframes pl-tint-b {
     0%,
@@ -135,7 +152,7 @@ const tints = [
     }
   }
   .pl-tint-c {
-    animation: pl-tint-c 8s ease-in-out infinite both;
+    animation: pl-tint-c 16s ease-in-out infinite both;
   }
   @keyframes pl-tint-c {
     0%,
@@ -155,7 +172,7 @@ const tints = [
   }
 
   .pl-prv {
-    animation: pl-prv-in 8s ease-out infinite both;
+    animation: pl-prv-in 16s ease-out infinite both;
   }
   @keyframes pl-prv-in {
     0%,
@@ -175,7 +192,7 @@ const tints = [
   }
 
   .pl-panel {
-    animation: pl-panel-in 8s ease-out infinite both;
+    animation: pl-panel-in 16s ease-out infinite both;
   }
   @keyframes pl-panel-in {
     0% {
@@ -197,13 +214,13 @@ const tints = [
 
   /* outlet setting steps down; the incoming value flashes violet */
   .pl-set-1 {
-    animation: pl-set-1 8s linear infinite both;
+    animation: pl-set-1 16s linear infinite both;
   }
   .pl-set-2 {
-    animation: pl-set-2 8s linear infinite both;
+    animation: pl-set-2 16s linear infinite both;
   }
   .pl-set-3 {
-    animation: pl-set-3 8s linear infinite both;
+    animation: pl-set-3 16s linear infinite both;
   }
   @keyframes pl-set-1 {
     0%,
@@ -258,13 +275,13 @@ const tints = [
 
   /* leakage estimate follows each step a beat later */
   .pl-leak-1 {
-    animation: pl-leak-1 8s linear infinite both;
+    animation: pl-leak-1 16s linear infinite both;
   }
   .pl-leak-2 {
-    animation: pl-leak-2 8s linear infinite both;
+    animation: pl-leak-2 16s linear infinite both;
   }
   .pl-leak-3 {
-    animation: pl-leak-3 8s linear infinite both;
+    animation: pl-leak-3 16s linear infinite both;
   }
   @keyframes pl-leak-1 {
     0%,
@@ -317,23 +334,70 @@ const tints = [
     }
   }
 
-  .pl-chip {
-    animation: pl-chip-in 8s ease-out infinite both;
+  /* leakage savings tracks the leakage estimate 1:1 — same swap timing as
+     pl-leak-1/2/3 above, since each savings % arrives with its matching
+     leakage reading. No independent fade-in: like the other rows' first
+     values, it's simply present when the panel itself fades in. */
+  .pl-save-1 {
+    animation: pl-save-1 16s linear infinite both;
   }
-  @keyframes pl-chip-in {
+  .pl-save-2 {
+    animation: pl-save-2 16s linear infinite both;
+  }
+  .pl-save-3 {
+    animation: pl-save-3 16s linear infinite both;
+  }
+  @keyframes pl-save-1 {
     0%,
-    70% {
+    32% {
+      opacity: 1;
+    }
+    34%,
+    100% {
       opacity: 0;
     }
-    76% {
+  }
+  @keyframes pl-save-2 {
+    0%,
+    32% {
+      opacity: 0;
+    }
+    34% {
       opacity: 1;
+      color: #8b5cf6;
+    }
+    42% {
+      color: #16a34a;
+    }
+    58% {
+      opacity: 1;
+    }
+    60%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pl-save-3 {
+    0%,
+    58% {
+      opacity: 0;
+      color: #16a34a;
+    }
+    60% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    68% {
+      color: #16a34a;
     }
     92% {
       opacity: 1;
+      color: #16a34a;
     }
     98%,
     100% {
       opacity: 0;
+      color: #16a34a;
     }
   }
 
@@ -349,28 +413,35 @@ const tints = [
     .pl-leak-1,
     .pl-leak-2,
     .pl-leak-3,
-    .pl-chip {
+    .pl-save-1,
+    .pl-save-2,
+    .pl-save-3 {
       animation: none;
     }
     .pl-tint-a,
     .pl-tint-b,
     .pl-tint-c,
     .pl-prv,
-    .pl-panel,
-    .pl-chip {
+    .pl-panel {
       opacity: 1;
       transform: none;
     }
     .pl-set-1,
     .pl-set-2,
     .pl-leak-1,
-    .pl-leak-2 {
+    .pl-leak-2,
+    .pl-save-1,
+    .pl-save-2 {
       opacity: 0;
     }
     .pl-set-3,
     .pl-leak-3 {
       opacity: 1;
       color: #374151;
+    }
+    .pl-save-3 {
+      opacity: 1;
+      color: #16a34a;
     }
   }
 </style>
