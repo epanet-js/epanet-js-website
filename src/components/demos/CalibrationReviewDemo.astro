@@ -15,8 +15,10 @@ const { framed = false } = Astro.props;
   framed ? (
     <AppWindow
       variant="pressure"
+      hideHeader
+      hideFooter
       label="Assisted calibration in epanet-js: a review panel suggesting a roughness change, with observed and simulated pressures converging.">
-      <CalibrationPanel class="absolute top-2 right-2 w-[250px] max-w-[72%]" />
+      <CalibrationPanel class="absolute top-2 right-2 w-[296px] max-w-[72%]" />
     </AppWindow>
   ) : (
     <CalibrationPanel class="w-full max-w-[300px] mx-auto" />
