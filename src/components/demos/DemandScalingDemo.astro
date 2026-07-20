@@ -13,131 +13,170 @@ const { class: className } = Astro.props;
 
 <div
   class:list={[
-    "relative aspect-[16/10] w-full rounded-xl border border-gray-200 shadow-lg bg-gray-100 overflow-hidden",
+    "relative mx-auto aspect-[25/18] w-full max-w-[400px] rounded-lg shadow-md select-none",
     className,
-  ]}>
-  <div class="absolute inset-0 flex items-center justify-center p-4">
-    <div
-      class="w-full max-w-[280px] bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden select-none"
-      role="img"
-      aria-label="Demand balance panel: allocated demand short of metered inflow until a scaling factor closes the gap and the balance check turns green.">
-      <div
-        class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-        <p class="text-[12px] font-semibold text-gray-700">Demand balance</p>
-        <p class="text-[11px] text-gray-400">DMA-3</p>
+  ]}
+  role="img"
+  aria-label="Demand balance panel: allocated demand short of metered inflow until a scaling factor closes the gap and the balance check turns green.">
+  <div class="absolute inset-0 overflow-hidden rounded-lg border border-gray-100 bg-white">
+  <svg
+    viewBox="0 0 400 288"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="400" height="288">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col justify-between">
+  <div
+    class="flex items-baseline justify-between px-4 py-3.5 border-b border-gray-100">
+    <p class="text-base font-semibold text-gray-700">Demand balance</p>
+    <p class="text-sm text-gray-400">DMA-3</p>
+  </div>
+  <div class="py-1 text-sm">
+    <!-- metered inflow -->
+    <div class="px-4 py-2.5">
+      <div class="flex items-baseline justify-between">
+        <span class="text-gray-500">Metered inflow</span>
+        <span class="dsc-val-metered font-medium text-gray-700 tabular-nums">128 l/s</span>
       </div>
-      <div class="px-3 py-2.5">
-        <!-- metered inflow -->
-        <div>
-          <div class="flex items-baseline justify-between text-[12px]">
-            <span class="text-gray-500">Metered inflow</span>
-            <span class="font-medium text-gray-700 tabular-nums">128 l/s</span>
-          </div>
-          <div class="mt-1 h-2 rounded-full bg-gray-100 overflow-hidden">
-            <div class="dsc-bar-in h-full w-full rounded-full bg-indigo-900"></div>
-          </div>
-        </div>
+      <div class="mt-1.5 h-2 rounded-full bg-gray-100 overflow-hidden">
+        <div class="dsc-bar-in h-full w-full rounded-full bg-indigo-900"></div>
+      </div>
+    </div>
 
-        <!-- allocated demand with the shortfall gap -->
-        <div class="mt-4">
-          <div class="flex items-baseline justify-between text-[12px]">
-            <span class="text-gray-500">Allocated demand</span>
-            <span class="flex items-baseline gap-1.5">
-              <span class="dsc-gap-label text-[11px] font-medium text-amber-600">
-                −25 l/s
-              </span>
-              <span class="relative font-medium text-gray-700 tabular-nums">
-                <span class="dsc-val-old">103 l/s</span>
-                <span class="dsc-val-new absolute inset-0 text-right bg-white">
-                  128 l/s
-                </span>
-              </span>
-            </span>
-          </div>
-          <div class="relative mt-1 h-2 rounded-full bg-gray-100">
-            <div
-              class="dsc-bar-alloc absolute inset-y-0 left-0 w-full rounded-full bg-violet-500">
-            </div>
-            <div
-              class="dsc-gap absolute inset-y-0 left-[80%] right-0 rounded-r-full"
-              style="background: repeating-linear-gradient(135deg, #fcd34d 0 2px, transparent 2px 5px);">
-            </div>
-          </div>
-        </div>
-
-        <!-- scaling factor -->
-        <div class="mt-4 flex items-center justify-between text-[12px]">
-          <span class="text-gray-500">Scaling factor</span>
-          <span class="relative">
-            <span
-              class="dsc-factor-old inline-block rounded border border-gray-200 bg-gray-50 px-1.5 py-0.5 font-medium text-gray-600 tabular-nums">
-              × 1.00
-            </span>
-            <span
-              class="dsc-factor-new absolute inset-0 flex items-center justify-center rounded border border-violet-200 bg-violet-50 px-1.5 py-0.5 font-medium text-violet-700 tabular-nums">
-              × 1.24
+    <!-- allocated demand with the shortfall gap -->
+    <div class="mt-2 px-4 py-2.5">
+      <div class="flex items-baseline justify-between">
+        <span class="text-gray-500">Allocated demand</span>
+        <span class="flex items-baseline gap-1.5">
+          <span class="dsc-gap-label text-sm font-medium text-amber-600">
+            −25 l/s
+          </span>
+          <span class="relative font-medium text-gray-700 tabular-nums">
+            <span class="dsc-val-old">103 l/s</span>
+            <span class="dsc-val-new absolute inset-0 text-right bg-white">
+              128 l/s
             </span>
           </span>
-        </div>
-
-        <!-- balance status -->
+        </span>
+      </div>
+      <div class="relative mt-1.5 h-2 rounded-full bg-gray-100">
         <div
-          class="mt-2.5 flex items-center justify-between border-t border-gray-100 pt-2">
-          <span class="text-[12px] text-gray-500">Balance check</span>
-          <span class="relative">
-            <span
-              class="dsc-status-off block whitespace-nowrap rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-700">
-              Unbalanced
-            </span>
-            <span
-              class="dsc-status-on absolute inset-0 flex items-center justify-center gap-1 whitespace-nowrap rounded-full bg-green-100 px-2 py-0.5 text-[11px] font-medium text-green-700">
-              <CheckCircle2 size={14} />
-              Balanced
-            </span>
-          </span>
+          class="dsc-bar-alloc absolute inset-y-0 left-0 w-full rounded-full bg-violet-500">
+        </div>
+        <div
+          class="dsc-gap absolute inset-y-0 left-[80%] right-0 rounded-r-full"
+          style="background: repeating-linear-gradient(135deg, #fcd34d 0 2px, transparent 2px 5px);">
         </div>
       </div>
     </div>
+
+    <!-- scaling factor -->
+    <div class="mt-2 flex items-center justify-between px-4 py-2.5">
+      <span class="text-gray-500">Scaling factor</span>
+      <span class="relative">
+        <span
+          class="dsc-factor-old inline-block rounded-full border border-gray-200 bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-500 tabular-nums">
+          × 1.00
+        </span>
+        <span
+          class="dsc-factor-new absolute inset-0 flex items-center justify-center rounded-full border border-violet-100 bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700 tabular-nums">
+          × 1.24
+        </span>
+      </span>
+    </div>
+  </div>
+
+  <!-- balance status, as a metadata footer row (§ TeamAccessDemo's
+       tac-footer) rather than a bottom caption sentence -->
+  <div
+    class="flex items-center justify-between border-t border-gray-100 px-4 py-2.5">
+    <span class="text-sm text-gray-500">Balance check</span>
+    <span class="relative">
+      <span
+        class="dsc-status-off block whitespace-nowrap rounded-full border border-amber-200 bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700">
+        Unbalanced
+      </span>
+      <span
+        class="dsc-status-on absolute inset-0 flex items-center justify-center gap-1 whitespace-nowrap rounded-full border border-green-200 bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
+        <CheckCircle2 size={12} />
+        Balanced
+      </span>
+    </span>
+  </div>
+      </div>
+    </foreignObject>
+  </svg>
   </div>
 </div>
 
 <style>
   /*
-    Sequence (seconds, of the 8.5s cycle — everything shifted 1s later than
-    the previous cut, and the multiplier's flash now plays twice as fast):
-    1.35-2.05  metered inflow bar draws in
-    1.84-2.54  allocated bar draws to 80% (the shortfall), then holds
-    2.68-3.10  "-25 l/s" gap label + gap stripe appear, hold
-    3.80-4.00  old factor (x1.00) fades out
-    4.00-4.35  the x1.24 box fades in and flashes as one motion — it pops
-               in at its scale/brightness peak (4.2s) rather than
+    Sequence (seconds, of the 13.9s cycle — the "holds balanced" phase
+    is another 2s shorter (3.4s, was 5.4s); its start (9.70s) and the
+    fade-out's own duration (0.8s) are unchanged, so the fade-out now
+    finishes at 13.90s instead of 15.90s. Blank tail stays at 0 — loop
+    restarts the instant fade-out completes):
+    0.00-0.40  "128 l/s" (metered inflow value) fades in
+    0.60-1.00  "103 l/s" (initial allocated value) fades in, spaced 0.6s
+               after the metered value
+    1.20-1.60  the "× 1.00" scaling-factor chip fades in, spaced 0.6s
+               after "103 l/s"
+    1.80-2.20  the "Unbalanced" chip fades in, spaced 0.6s after that —
+               closing the initial-state intro sequence
+    2.20-3.60  metered inflow bar draws in — starts right as the intro
+               sequence above ends, not overlapping it
+    3.18-4.58  allocated bar draws to 80% (the shortfall), then holds
+    4.58-5.42  "-25 l/s" gap label + gap stripe appear, right as the
+               allocated bar reaches its 80% step-point, then hold
+    5.60-6.00  old factor (x1.00) fades out
+    6.00-6.70  the x1.24 box fades in and flashes as one motion — it pops
+               in at its scale/brightness peak (6.4s) rather than
                appearing plainly and flashing separately, then settles
-    4.60-4.90  +0.25s after the flash, the gap label fades out
-    4.85-5.35  +0.5s after the flash, allocated bar grows to 100%
-    5.15-5.35  "103 l/s" fades out, right as "128 l/s" is ready
-    5.35-5.55  "128 l/s" fades in — 1s after the multiplier's flash ended
-    6.35-6.65  "Balanced" appears — 1s after the allocated bar reaches 100%
-    6.65-7.85  holds balanced
-    7.85-8.25  everything fades out together
+    7.20-7.80  +0.5s after the flash, the gap label fades out
+    7.70-8.70  +1s after the flash, allocated bar grows to 100%
+    8.30-8.70  "103 l/s" fades out, right as "128 l/s" is ready
+    8.70-9.10  "128 l/s" fades in — 2s after the multiplier's flash ended
+    9.60-9.70  "Unbalanced" swaps to "Balanced" — 0.5s after "128 l/s"
+               above finishes fading in, a 0.1s crossfade
+    9.70-13.10  holds balanced (3.4s)
+    13.10-13.90  everything fades out together, right up to the loop point
   */
+  /* the metered-inflow value was static before; it now fades in right at
+     the start (with the bar) and fades out with everything else */
+  .dsc-val-metered {
+    animation: dsc-val-metered-in 13.9s linear infinite both;
+  }
+  @keyframes dsc-val-metered-in {
+    0% {
+      opacity: 0;
+    }
+    2.878% {
+      opacity: 1;
+    }
+    94.245% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
   .dsc-bar-in {
     transform-origin: left;
-    animation: dsc-bar-in 8.5s ease-in-out infinite both;
+    animation: dsc-bar-in 13.9s ease-in-out infinite both;
   }
   @keyframes dsc-bar-in {
     0%,
-    15.882% {
+    15.827% {
       transform: scaleX(0);
       opacity: 1;
     }
-    24.118% {
+    25.899% {
       transform: scaleX(1);
     }
-    92.353% {
+    94.245% {
       transform: scaleX(1);
       opacity: 1;
     }
-    97.059%,
     100% {
       transform: scaleX(1);
       opacity: 0;
@@ -147,28 +186,27 @@ const { class: className } = Astro.props;
   /* allocated bar draws to 80%, then grows to full once the factor applies */
   .dsc-bar-alloc {
     transform-origin: left;
-    animation: dsc-bar-alloc 8.5s ease-in-out infinite both;
+    animation: dsc-bar-alloc 13.9s ease-in-out infinite both;
   }
   @keyframes dsc-bar-alloc {
     0%,
-    21.647% {
+    22.878% {
       transform: scaleX(0);
       opacity: 1;
     }
-    29.882% {
+    32.950% {
       transform: scaleX(0.8);
     }
-    57.059% {
+    55.396% {
       transform: scaleX(0.8);
     }
-    62.941% {
+    62.590% {
       transform: scaleX(1);
     }
-    92.353% {
+    94.245% {
       transform: scaleX(1);
       opacity: 1;
     }
-    97.059%,
     100% {
       transform: scaleX(1);
       opacity: 0;
@@ -177,18 +215,18 @@ const { class: className } = Astro.props;
 
   .dsc-gap,
   .dsc-gap-label {
-    animation: dsc-gap-in 8.5s ease-in-out infinite both;
+    animation: dsc-gap-in 13.9s ease-in-out infinite both;
   }
   @keyframes dsc-gap-in {
     0%,
-    31.529% {
+    32.950% {
       opacity: 0;
     }
-    36.471%,
-    54.118% {
+    38.993%,
+    51.799% {
       opacity: 1;
     }
-    57.647%,
+    56.115%,
     100% {
       opacity: 0;
     }
@@ -197,20 +235,19 @@ const { class: className } = Astro.props;
   /* "128 l/s" appears 1s after the multiplier's flash ends, not alongside
      the multiplier swap itself */
   .dsc-val-new {
-    animation: dsc-val-swap-in 8.5s linear infinite both;
+    animation: dsc-val-swap-in 13.9s linear infinite both;
   }
   @keyframes dsc-val-swap-in {
     0%,
-    62.941% {
+    62.590% {
       opacity: 0;
     }
-    65.294% {
+    65.468% {
       opacity: 1;
     }
-    92.353% {
+    94.245% {
       opacity: 1;
     }
-    97.059%,
     100% {
       opacity: 0;
     }
@@ -219,28 +256,27 @@ const { class: className } = Astro.props;
      lands — twice as fast as the previous cut (0.15s total) */
   .dsc-factor-new {
     transform-origin: center;
-    animation: dsc-factor-flash-in 8.5s linear infinite both;
+    animation: dsc-factor-flash-in 13.9s linear infinite both;
   }
   @keyframes dsc-factor-flash-in {
     0%,
-    47.059% {
+    43.165% {
       opacity: 0;
       transform: scale(1);
       filter: brightness(1);
     }
-    49.412% {
+    46.043% {
       opacity: 1;
       transform: scale(1.15);
       filter: brightness(1.6);
     }
-    51.176% {
+    48.201% {
       transform: scale(1);
       filter: brightness(1);
     }
-    92.353% {
+    94.245% {
       opacity: 1;
     }
-    97.059%,
     100% {
       opacity: 0;
     }
@@ -248,75 +284,81 @@ const { class: className } = Astro.props;
   /* "103 l/s" now holds until "128 l/s" is ready to replace it, instead of
      fading out early and leaving a blank gap */
   .dsc-val-old {
-    animation: dsc-val-old-out 8.5s linear infinite both;
+    animation: dsc-val-old-out 13.9s linear infinite both;
   }
   @keyframes dsc-val-old-out {
-    0% {
+    0%,
+    4.317% {
       opacity: 0;
     }
-    18.353%,
-    60.588% {
+    7.194%,
+    59.712% {
       opacity: 1;
     }
-    62.941%,
+    62.590%,
     100% {
       opacity: 0;
     }
   }
   .dsc-factor-old {
-    animation: dsc-factor-old-out 8.5s linear infinite both;
+    animation: dsc-factor-old-out 13.9s linear infinite both;
   }
   @keyframes dsc-factor-old-out {
-    0% {
+    0%,
+    8.633% {
       opacity: 0;
     }
-    18.353%,
-    44.706% {
+    11.511%,
+    40.288% {
       opacity: 1;
     }
-    47.059%,
+    43.165%,
     100% {
       opacity: 0;
     }
   }
 
+  /* the unbalanced→balanced swap is a quick 0.1s crossfade, timed to
+     start 0.5s after the allocated value finishes changing to "128 l/s"
+     (dsc-val-swap-in above) rather than at a fixed point */
   .dsc-status-on {
-    animation: dsc-status-on 8.5s linear infinite both;
+    animation: dsc-status-on 13.9s linear infinite both;
   }
   @keyframes dsc-status-on {
     0%,
-    74.706% {
+    69.065% {
       opacity: 0;
     }
-    78.235% {
+    69.784% {
       opacity: 1;
     }
-    92.353% {
+    94.245% {
       opacity: 1;
     }
-    97.059%,
     100% {
       opacity: 0;
     }
   }
   .dsc-status-off {
-    animation: dsc-status-off 8.5s linear infinite both;
+    animation: dsc-status-off 13.9s linear infinite both;
   }
   @keyframes dsc-status-off {
-    0% {
+    0%,
+    12.950% {
       opacity: 0;
     }
-    18.353%,
-    74.706% {
+    15.827%,
+    69.065% {
       opacity: 1;
     }
-    78.235%,
+    69.784%,
     100% {
       opacity: 0;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .dsc-val-metered,
     .dsc-bar-in,
     .dsc-bar-alloc,
     .dsc-gap,
@@ -341,6 +383,7 @@ const { class: className } = Astro.props;
     .dsc-status-off {
       opacity: 0;
     }
+    .dsc-val-metered,
     .dsc-val-new,
     .dsc-factor-new,
     .dsc-status-on {
