@@ -64,8 +64,8 @@ const rowCss = [...rows.map((_, i) => rowStart(i)), buttonStart]
 @keyframes inp-row-in-${i} {
   0%, ${toPct(start)}% { opacity: 0; transform: translateY(4px); }
   ${toPct(start + ENTRANCE)}% { opacity: 1; transform: translateY(0); }
-  ${toPct(HOLD_END)}% { opacity: 1; }
-  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+  ${toPct(HOLD_END)}% { opacity: 1; transform: translateY(0); }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; transform: translateY(0); }
 }
 .inp-check-${i} { animation-name: inp-check-pop-${i}; }
 @keyframes inp-check-pop-${i} {
