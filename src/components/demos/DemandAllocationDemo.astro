@@ -11,58 +11,72 @@ const zones = [
 ---
 
 <div
-  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-4 sm:p-5 select-none"
+  class="relative mx-auto aspect-[3/2] w-full max-w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
   role="img"
-  aria-label="Concept diagram: metered inflow being allocated across three demand zones, each with a daily consumption profile, reconciling in a balance check.">
-  <div
-    class="flex items-center gap-2 mx-auto w-fit bg-white rounded-lg border border-gray-100 shadow-md px-3 py-2">
-    <span
-      class="flex items-center justify-center w-7 h-7 rounded-lg bg-purple-50 text-purple-600">
-      <Gauge size={14} />
-    </span>
-    <div>
-      <p class="text-[11px] font-semibold text-gray-700">Metered inflow</p>
-      <p class="text-[10px] text-gray-500 tabular-nums">86.4 m³/h</p>
-    </div>
-  </div>
+  aria-label="Diagram: metered inflow allocated across three demand zones, each with a daily consumption profile, reconciling in a balance check.">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-between">
+        <div class="box-border flex w-full flex-1 flex-col items-center justify-center gap-2 px-8 pt-8">
+          <div
+            class="box-border flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-2 py-3 shadow-sm">
+            <span
+              class="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
+              <Gauge size={23} />
+            </span>
+            <div>
+              <p class="text-xs font-semibold text-gray-700">Metered inflow</p>
+              <p class="text-xs text-gray-500 tabular-nums">86.4 m³/h</p>
+            </div>
+          </div>
 
-  <svg viewBox="0 0 300 40" class="w-full h-10" aria-hidden="true">
-    <g
-      class="da-arrow"
-      fill="none"
-      stroke="#c4b5fd"
-      stroke-width="1.5"
-      stroke-dasharray="4 3">
-      <path d="M150 0 C 150 20, 60 18, 52 40"></path>
-      <path d="M150 0 L 150 40"></path>
-      <path d="M150 0 C 150 20, 240 18, 248 40"></path>
-    </g>
-  </svg>
+          <div class="w-full max-w-[300px]">
+            <svg viewBox="0 0 300 40" class="h-10 w-full" aria-hidden="true">
+              <g
+                class="da-arrow"
+                fill="none"
+                stroke="#c4b5fd"
+                stroke-width="1.5"
+                stroke-dasharray="4 3">
+                <path d="M150 0 C 150 20, 60 18, 52 40"></path>
+                <path d="M150 0 L 150 40"></path>
+                <path d="M150 0 C 150 20, 240 18, 248 40"></path>
+              </g>
+            </svg>
 
-  <div class="grid grid-cols-3 gap-2 sm:gap-3">
-    {
-      zones.map((zone, zi) => (
-        <div class="bg-white rounded-lg border border-gray-100 shadow-md px-2.5 py-2">
-          <p class="text-[11px] font-semibold text-gray-700">{zone.name}</p>
-          <p class="text-[10px] text-gray-500 tabular-nums">{zone.flow} m³/h</p>
-          <div class="flex items-end gap-0.5 h-8 mt-1.5">
-            {zone.bars.map((height, bi) => (
-              <span
-                class="da-bar flex-1 rounded-sm bg-violet-400"
-                style={`height: ${height}%; animation-delay: ${zi * 0.2 + bi * 0.1}s`}
-              />
-            ))}
+            <div class="grid grid-cols-3 gap-3">
+              {
+                zones.map((zone, zi) => (
+                  <div class="box-border rounded-lg border border-gray-200 bg-white px-2 py-3 shadow-sm">
+                    <p class="text-xs font-semibold text-gray-700">{zone.name}</p>
+                    <p class="text-xs text-gray-500 tabular-nums">{zone.flow} m³/h</p>
+                    <div class="mt-1.5 flex h-8 items-end gap-0.5">
+                      {zone.bars.map((height, bi) => (
+                        <span
+                          class="da-bar flex-1 rounded-sm bg-violet-400"
+                          style={`height: ${height}%; animation-delay: ${zi * 0.2 + bi * 0.1}s`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
           </div>
         </div>
-      ))
-    }
-  </div>
 
-  <p
-    class="flex items-center justify-center gap-1.5 mt-4 text-[11px] text-gray-500">
-    <CheckCircle2 size={12} className="text-green-500" />
-    Balance check: 99.2% allocated · 0.8% unaccounted
-  </p>
+        <p
+          class="flex items-center justify-center gap-1.5 pb-6 text-sm font-medium text-gray-700">
+          <CheckCircle2 size={14} className="text-green-500" />
+          Balance check: 99.2% allocated · 0.8% unaccounted
+        </p>
+      </div>
+    </foreignObject>
+  </svg>
 </div>
 
 <style>
