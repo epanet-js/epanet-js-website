@@ -6,23 +6,31 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
 ---
 
 <div
-  class="w-full rounded-xl border border-gray-200 shadow-lg bg-white p-4 sm:p-5 select-none"
+  class="relative mx-auto aspect-[3/2] w-full max-w-[480px] rounded-lg shadow-md select-none"
   role="img"
   aria-label="A scenario tree with Year 5, Year 10, and Year 20 stages branching from the main model. Moving the pump station B project from the Year 5 stage to the Year 10 stage clears the Year 10 peak deficit check.">
-  <div class="mx-auto max-w-[280px]">
+  <div class="absolute inset-0 overflow-hidden rounded-lg border border-gray-100 bg-white">
+    <svg
+      viewBox="0 0 480 320"
+      preserveAspectRatio="xMidYMid meet"
+      class="absolute inset-0 h-full w-full"
+      aria-hidden="true">
+      <foreignObject x="0" y="0" width="480" height="320">
+        <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col items-center justify-center px-8 py-6">
+  <div class="mx-auto w-full max-w-[280px]">
     <div class="relative">
       <!-- connector column: trunk plus an elbow into each stage row -->
       <svg
         class="absolute left-0 top-0 overflow-visible"
         width="16"
-        height="174"
-        viewBox="0 0 16 174"
+        height="224"
+        viewBox="0 0 16 224"
         fill="none"
         aria-hidden="true">
         <path
           class="sn-draw"
           pathLength="100"
-          d="M16 12 H12 Q8 12 8 16 V158"
+          d="M16 14 H12 Q8 14 8 18 V206"
           stroke="#d1d5db"
           stroke-width="1.5"
           stroke-linecap="round"></path>
@@ -30,7 +38,7 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
           class="sn-draw"
           pathLength="100"
           style="animation-delay: 0.4s"
-          d="M8 36 Q8 40 12 40 H16"
+          d="M8 42 Q8 46 12 46 H16"
           stroke="#d1d5db"
           stroke-width="1.5"
           stroke-linecap="round"></path>
@@ -38,7 +46,7 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
           class="sn-elbow-y10"
           pathLength="100"
           style="animation-delay: 0.6s, 0s"
-          d="M8 108 Q8 112 12 112 H16"
+          d="M8 138 Q8 142 12 142 H16"
           stroke="#d1d5db"
           stroke-width="1.5"
           stroke-linecap="round"></path>
@@ -46,7 +54,7 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
           class="sn-draw"
           pathLength="100"
           style="animation-delay: 0.8s"
-          d="M8 154 Q8 158 12 158 H16"
+          d="M8 202 Q8 206 12 206 H16"
           stroke="#d1d5db"
           stroke-width="1.5"
           stroke-linecap="round"></path>
@@ -54,64 +62,64 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
 
       <div class="pl-4">
         <div
-          class="sn-row flex items-center gap-1.5 h-6 px-2 rounded-md border border-gray-100 bg-white shadow-sm text-[11px] text-gray-500"
+          class="sn-row flex items-center gap-1.5 h-7 px-2.5 rounded-md border border-gray-200 bg-white text-xs text-gray-500"
           style="animation-delay: 0.1s">
-          <GitBranch size={11} className="text-gray-400" />
+          <GitBranch size={14} className="text-gray-400" />
           Main
         </div>
 
         <div
-          class="sn-row mt-1 flex items-center gap-1.5 h-6 px-2 rounded-md border border-gray-100 bg-white shadow-sm text-[11px] font-medium text-gray-700"
+          class="sn-row mt-1 flex items-center gap-1.5 h-7 px-2.5 rounded-md border border-gray-200 bg-white text-xs font-medium text-gray-700"
           style="animation-delay: 0.4s">
-          <GitBranch size={11} className="text-gray-400" />
+          <GitBranch size={14} className="text-gray-400" />
           Year 5
         </div>
         <div
-          class="sn-chip-a ml-6 mt-1 w-fit h-[18px] flex items-center px-1.5 rounded border border-violet-200 border-l-2 border-l-violet-500 bg-violet-50 text-[9px] text-violet-700">
+          class="sn-chip-a ml-6 mt-1 w-fit h-7 flex items-center px-2.5 rounded-md border border-violet-200 bg-violet-50 text-xs text-violet-700">
           Trunk main upgrade
         </div>
         <!-- moving project, copy under Year 5: pops in, fades out, slot collapses -->
         <div class="sn-chip-out ml-6 overflow-hidden">
           <div
-            class="mt-1 w-fit h-[18px] flex items-center px-1.5 rounded border border-violet-200 border-l-2 border-l-violet-500 bg-violet-50 text-[9px] text-violet-700">
+            class="mt-1 w-fit h-7 flex items-center px-2.5 rounded-md border border-violet-200 bg-violet-50 text-xs text-violet-700">
             Pump station B
           </div>
         </div>
 
         <div
-          class="sn-row mt-1 flex items-center gap-1.5 h-6 px-2 rounded-md border border-gray-100 bg-white shadow-sm text-[11px] font-medium text-gray-700"
+          class="sn-row mt-1 flex items-center gap-1.5 h-7 px-2.5 rounded-md border border-gray-200 bg-white text-xs font-medium text-gray-700"
           style="animation-delay: 0.7s">
-          <GitBranch size={11} className="text-gray-400" />
+          <GitBranch size={14} className="text-gray-400" />
           Year 10
         </div>
         <div
-          class="sn-chip-b ml-6 mt-1 w-fit h-[18px] flex items-center px-1.5 rounded border border-violet-200 border-l-2 border-l-violet-500 bg-violet-50 text-[9px] text-violet-700">
+          class="sn-chip-b ml-6 mt-1 w-fit h-7 flex items-center px-2.5 rounded-md border border-violet-200 bg-violet-50 text-xs text-violet-700">
           NE zone reinforcement
         </div>
         <!-- moving project, copy under Year 10: slot expands, fades in -->
         <div class="sn-chip-in ml-6 overflow-hidden">
           <div
-            class="mt-1 w-fit h-[18px] flex items-center px-1.5 rounded border border-violet-200 border-l-2 border-l-violet-500 bg-violet-50 text-[9px] text-violet-700">
+            class="mt-1 w-fit h-7 flex items-center px-2.5 rounded-md border border-violet-200 bg-violet-50 text-xs text-violet-700">
             Pump station B
           </div>
         </div>
 
         <div
-          class="sn-row mt-1 flex items-center gap-1.5 h-6 px-2 rounded-md border border-gray-100 bg-white shadow-sm text-[11px] font-medium text-gray-700"
+          class="sn-row mt-1 flex items-center gap-1.5 h-7 px-2.5 rounded-md border border-gray-200 bg-white text-xs font-medium text-gray-700"
           style="animation-delay: 1s">
-          <GitBranch size={11} className="text-gray-400" />
+          <GitBranch size={14} className="text-gray-400" />
           Year 20
         </div>
       </div>
 
       <!-- dashed move arc from the Year 5 chip to the Year 10 chip slot -->
       <div
-        class="sn-arc absolute left-[112px] top-[78px] w-[72px] h-[68px] pointer-events-none">
-        <svg class="w-full h-full" viewBox="0 0 72 68" fill="none" aria-hidden="true">
+        class="sn-arc absolute left-32 top-24 w-[72px] h-[88px] pointer-events-none">
+        <svg class="w-full h-full" viewBox="0 0 72 88" fill="none" aria-hidden="true">
           <path
             class="sn-arc-dash"
             pathLength="100"
-            d="M8 9 C 48 14, 48 54, 8 59"
+            d="M8 9 C 48 14, 48 74, 8 79"
             stroke="#8b5cf6"
             stroke-width="1.5"
             stroke-dasharray="3 2"
@@ -123,42 +131,48 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
     <!-- result strip: amber deficit crossfades to green once the move lands -->
     <div class="grid mt-3">
       <div
-        class="sn-strip-amber col-start-1 row-start-1 flex items-center gap-1.5 text-[10px] rounded-md border border-amber-200 bg-amber-50 text-amber-700 px-2.5 py-1.5">
-        <TriangleAlert size={11} className="shrink-0" />
+        class="sn-strip-amber col-start-1 row-start-1 flex h-7 items-center gap-1.5 text-xs rounded-md border border-amber-200 bg-amber-50 text-amber-700 px-2.5">
+        <TriangleAlert size={14} className="shrink-0" />
         <span>Year 10 peak deficit</span>
         <span class="ml-auto font-medium tabular-nums">2.1 l/s</span>
       </div>
       <div
-        class="sn-strip-green col-start-1 row-start-1 flex items-center gap-1.5 text-[10px] rounded-md border border-green-200 bg-green-50 text-green-700 px-2.5 py-1.5">
-        <CheckCircle2 size={11} className="shrink-0" />
+        class="sn-strip-green col-start-1 row-start-1 flex h-7 items-center gap-1.5 text-xs rounded-md border border-green-200 bg-green-50 text-green-700 px-2.5">
+        <CheckCircle2 size={14} className="shrink-0" />
         <span>Year 10 peak deficit</span>
         <span class="ml-auto font-medium tabular-nums">0.0 l/s</span>
       </div>
     </div>
+      </div>
+    </foreignObject>
+  </svg>
   </div>
 </div>
 
 <style>
-  /* 8s cycle. Build 0-20%, chips 20-38%, move 45-66%, result 70-80%,
-     fade-reset 92-100%. Collapsed/expanded chip slots swap symmetrically
-     (same window, same easing) so total tree height stays constant. */
+  /* 9s cycle: the original 8s sequence rescaled by 8/9 so every event keeps
+     its absolute-second pacing, freeing the trailing ~1s (87.11%-100%) as a
+     fully-faded hold before the loop restarts. Build 0-18%, chips 18-34%,
+     move 40-59%, result 62-71%, fade-reset 82-87%, hold 87-100%.
+     Collapsed/expanded chip slots swap symmetrically (same window, same
+     easing) so total tree height stays constant. */
 
   .sn-row {
-    animation: sn-row-in 8s ease-in-out infinite both;
+    animation: sn-row-in 9s ease-in-out infinite both;
   }
   @keyframes sn-row-in {
     0% {
       opacity: 0;
       transform: translateY(4px);
     }
-    6% {
+    5.33% {
       opacity: 1;
       transform: translateY(0);
     }
-    92% {
+    81.78% {
       opacity: 1;
     }
-    96%,
+    85.33%,
     100% {
       opacity: 0;
       transform: translateY(0);
@@ -171,27 +185,28 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
     stroke-dashoffset: 100;
   }
   .sn-draw {
-    animation: sn-draw-in 8s ease-in-out infinite both;
+    animation: sn-draw-in 9s ease-in-out infinite both;
   }
   /* Year 10 elbow also glides with the row as the chip slots swap; it
-     resets to the base position at 5.5-7%, while nothing nearby is visible. */
+     resets to the base position at 4.89-6.22%, while nothing nearby is
+     visible. */
   .sn-elbow-y10 {
     animation:
-      sn-draw-in 8s ease-in-out infinite both,
-      sn-shift 8s ease-in-out infinite both;
+      sn-draw-in 9s ease-in-out infinite both,
+      sn-shift 9s ease-in-out infinite both;
   }
   @keyframes sn-draw-in {
     0% {
       stroke-dashoffset: 100;
       opacity: 1;
     }
-    10% {
+    8.89% {
       stroke-dashoffset: 0;
     }
-    92% {
+    81.78% {
       opacity: 1;
     }
-    96%,
+    85.33%,
     100% {
       stroke-dashoffset: 0;
       opacity: 0;
@@ -199,16 +214,16 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
   }
   @keyframes sn-shift {
     0%,
-    5.5% {
-      transform: translateY(-22px);
+    4.89% {
+      transform: translateY(-32px);
     }
-    7%,
-    54% {
+    6.22%,
+    48% {
       transform: translateY(0);
     }
-    62%,
+    55.11%,
     100% {
-      transform: translateY(-22px);
+      transform: translateY(-32px);
     }
   }
 
@@ -218,50 +233,50 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
     transform-origin: 0 50%;
   }
   .sn-chip-a {
-    animation: sn-chip-pop-a 8s ease-in-out infinite both;
+    animation: sn-chip-pop-a 9s ease-in-out infinite both;
   }
   @keyframes sn-chip-pop-a {
     0%,
-    21% {
+    18.67% {
       opacity: 0;
       transform: scale(0.9);
     }
-    25% {
+    22.22% {
       opacity: 1;
       transform: scale(1.04);
     }
-    27% {
+    24% {
       transform: scale(1);
     }
-    92% {
+    81.78% {
       opacity: 1;
     }
-    96%,
+    85.33%,
     100% {
       opacity: 0;
       transform: scale(1);
     }
   }
   .sn-chip-b {
-    animation: sn-chip-pop-b 8s ease-in-out infinite both;
+    animation: sn-chip-pop-b 9s ease-in-out infinite both;
   }
   @keyframes sn-chip-pop-b {
     0%,
-    30% {
+    26.67% {
       opacity: 0;
       transform: scale(0.9);
     }
-    34% {
+    30.22% {
       opacity: 1;
       transform: scale(1.04);
     }
-    36% {
+    32% {
       transform: scale(1);
     }
-    92% {
+    81.78% {
       opacity: 1;
     }
-    96%,
+    85.33%,
     100% {
       opacity: 0;
       transform: scale(1);
@@ -269,7 +284,7 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
   }
 
   .sn-chip-out {
-    animation: sn-out 8s ease-in-out infinite both;
+    animation: sn-out 9s ease-in-out infinite both;
   }
   @keyframes sn-out {
     0% {
@@ -277,34 +292,34 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
       transform: scale(0.9);
       max-height: 0px;
     }
-    5.5% {
+    4.89% {
       max-height: 0px;
     }
-    7% {
-      max-height: 22px;
+    6.22% {
+      max-height: 32px;
     }
-    25% {
+    22.22% {
       opacity: 0;
       transform: scale(0.9);
     }
-    29% {
+    25.78% {
       opacity: 1;
       transform: scale(1.04);
     }
-    31% {
+    27.56% {
       transform: scale(1);
     }
-    52% {
+    46.22% {
       opacity: 1;
     }
-    54% {
-      max-height: 22px;
+    48% {
+      max-height: 32px;
     }
-    60% {
+    53.33% {
       opacity: 0;
       transform: scale(1);
     }
-    62% {
+    55.11% {
       max-height: 0px;
     }
     100% {
@@ -315,55 +330,55 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
   }
 
   .sn-chip-in {
-    animation: sn-in 8s ease-in-out infinite both;
+    animation: sn-in 9s ease-in-out infinite both;
   }
   @keyframes sn-in {
     0% {
       opacity: 0;
-      max-height: 22px;
+      max-height: 32px;
     }
-    5.5% {
-      max-height: 22px;
+    4.89% {
+      max-height: 32px;
     }
-    7% {
+    6.22% {
       max-height: 0px;
     }
-    54% {
+    48% {
       max-height: 0px;
     }
-    56% {
+    49.78% {
       opacity: 0;
     }
-    62% {
-      max-height: 22px;
+    55.11% {
+      max-height: 32px;
     }
-    65% {
+    57.78% {
       opacity: 1;
     }
-    92% {
+    81.78% {
       opacity: 1;
     }
-    96%,
+    85.33%,
     100% {
       opacity: 0;
-      max-height: 22px;
+      max-height: 32px;
     }
   }
 
   .sn-arc {
-    animation: sn-arc-reveal 8s ease-in-out infinite both;
+    animation: sn-arc-reveal 9s ease-in-out infinite both;
   }
   @keyframes sn-arc-reveal {
     0%,
-    45% {
+    40% {
       clip-path: inset(0 0 100% 0);
       opacity: 1;
     }
-    58% {
+    51.56% {
       clip-path: inset(0 0 0% 0);
       opacity: 1;
     }
-    66%,
+    58.67%,
     100% {
       clip-path: inset(0 0 0% 0);
       opacity: 0;
@@ -379,35 +394,35 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
   }
 
   .sn-strip-amber {
-    animation: sn-amber 8s ease-in-out infinite both;
+    animation: sn-amber 9s ease-in-out infinite both;
   }
   @keyframes sn-amber {
     0%,
-    36% {
+    32% {
       opacity: 0;
     }
-    42%,
-    70% {
+    37.33%,
+    62.22% {
       opacity: 1;
     }
-    78%,
+    69.33%,
     100% {
       opacity: 0;
     }
   }
   .sn-strip-green {
-    animation: sn-green 8s ease-in-out infinite both;
+    animation: sn-green 9s ease-in-out infinite both;
   }
   @keyframes sn-green {
     0%,
-    72% {
+    64% {
       opacity: 0;
     }
-    80%,
-    92% {
+    71.11%,
+    81.78% {
       opacity: 1;
     }
-    98%,
+    87.11%,
     100% {
       opacity: 0;
     }
@@ -437,7 +452,7 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
       opacity: 1;
     }
     .sn-elbow-y10 {
-      transform: translateY(-22px);
+      transform: translateY(-32px);
     }
     .sn-chip-a,
     .sn-chip-b {
@@ -450,7 +465,7 @@ import { CheckCircle2, GitBranch, TriangleAlert } from "lucide-react";
     }
     .sn-chip-in {
       opacity: 1;
-      max-height: 22px;
+      max-height: 32px;
     }
     .sn-arc {
       opacity: 0;
