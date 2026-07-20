@@ -3,14 +3,19 @@
 // fit figure per zone, and the worst-fitting zone pulses for attention.
 import { CheckCircle2, TriangleAlert } from "lucide-react";
 import AppWindow from "./AppWindow.astro";
-import { pipes } from "./network-geometry";
+import { pipes, junctions } from "./network-geometry";
 
 // Pipe indexes grouped into calibration zones (local to this demo).
+// Each zone's label/row entrance is a dedicated keyframe (no
+// animation-delay) so every element's 90/96/100% hold-and-fade-out lands
+// on the same real-time clock — see the style block for why.
 const zones = [
   {
     name: "Zone A",
     color: "#3b82f6",
     cls: "zf-zone-a",
+    labelCls: "zf-label-a",
+    rowCls: "zf-row-a",
     fit: "0.9 m",
     pipes: [0, 1, 2, 3, 4, 5, 6],
     label: { left: "22%", top: "24%" },
@@ -19,6 +24,8 @@ const zones = [
     name: "Zone B",
     color: "#22c55e",
     cls: "zf-zone-b",
+    labelCls: "zf-label-b",
+    rowCls: "zf-row-b",
     fit: "1.4 m",
     pipes: [7, 8, 9, 10, 11, 12, 13],
     label: { left: "40%", top: "76%" },
@@ -27,15 +34,18 @@ const zones = [
     name: "Zone C",
     color: "#f59e0b",
     cls: "zf-zone-c",
+    labelCls: "zf-label-c",
     fit: "3.8 m",
     pipes: [14, 15, 16, 17, 18, 19],
-    label: { left: "76%", top: "36%" },
+    label: { left: "73%", top: "82%" },
   },
 ];
 ---
 
 <AppWindow
   variant="plain"
+  hideHeader
+  hideFooter
   label="Zone fit in epanet-js: the network split into three colored calibration zones with a fit figure per zone, the worst-fitting zone pulsing.">
   <!-- zone coloring overlay -->
   <svg
@@ -64,14 +74,27 @@ const zones = [
         )
       }
     </g>
+    <!-- redraw the junction dots on top of the zone-colored lines, since
+         this overlay is a separate sibling painted after NetworkMap's own
+         junctions and would otherwise cover them -->
+    <g stroke="#ffffff" stroke-width="1">
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r="3.5" fill="#312e81" />
+        ))
+      }
+    </g>
   </svg>
 
   <!-- zone labels -->
   {
-    zones.map((zone, i) => (
+    zones.map((zone) => (
       <span
-        class="zf-label absolute -translate-x-1/2 rounded border border-gray-200 bg-white px-1.5 py-px text-[9px] font-medium text-gray-600 shadow-sm"
-        style={`left: ${zone.label.left}; top: ${zone.label.top}; animation-delay: ${(i * 0.96).toFixed(2)}s`}>
+        class:list={[
+          "absolute -translate-x-1/2 rounded border border-gray-200 bg-white px-1.5 py-px text-xs font-medium text-gray-600 shadow-sm",
+          zone.labelCls,
+        ]}
+        style={`left: ${zone.label.left}; top: ${zone.label.top}`}>
         {zone.name}
       </span>
     ))
@@ -79,21 +102,20 @@ const zones = [
 
   <!-- fit-by-zone panel -->
   <div
-    class="zf-panel absolute top-2 right-2 w-[170px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    class="zf-panel absolute top-2 right-2 w-[168px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
     <div
       class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-      <p class="text-[11px] font-semibold text-gray-700">Fit by zone</p>
-      <p class="text-[10px] text-gray-400">Mean error</p>
+      <p class="text-xs font-semibold text-gray-700">Fit by zone</p>
+      <p class="text-xs text-gray-400">Mean error</p>
     </div>
-    <div class="py-1 text-[10px]">
+    <div class="py-1 text-xs">
       {
         zones.map((zone, i) => (
           <div
             class:list={[
-              "zf-row flex items-center justify-between px-3 py-1",
-              i === 2 && "zf-row-warn",
-            ]}
-            style={`animation-delay: ${(i * 0.64).toFixed(2)}s${i === 2 ? ", 0s" : ""}`}>
+              "flex items-center justify-between px-3 py-1",
+              i === 2 ? "zf-row-warn" : zone.rowCls,
+            ]}>
             <span class="flex items-center gap-1.5 text-gray-600">
               <span
                 class="inline-block h-2 w-2 rounded-sm"
@@ -204,16 +226,64 @@ const zones = [
     }
   }
 
-  .zf-label {
-    animation: zf-label-in 8s ease-out infinite both;
+  /* each label lands ~0.2s after its own zone finishes drawing (zone A's
+     slowest pipe finishes at 1.92s, B at 2.88s, C at 3.76s — see the
+     per-pipe stagger in zf-draw-a/b/c above), instead of arriving before
+     the zone is done. No animation-delay: the offset is baked into each
+     keyframe's own percentages so all three share the same 90/96/100%
+     hold-and-fade-out clock and reset in sync at the end of the loop. */
+  .zf-label-a {
+    animation: zf-label-a-in 8s ease-out infinite both;
   }
-  @keyframes zf-label-in {
+  @keyframes zf-label-a-in {
     0%,
-    14% {
+    20.5% {
       opacity: 0;
       transform: translate(-50%, 3px);
     }
-    20% {
+    26.5% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .zf-label-b {
+    animation: zf-label-b-in 8s ease-out infinite both;
+  }
+  @keyframes zf-label-b-in {
+    0%,
+    32.5% {
+      opacity: 0;
+      transform: translate(-50%, 3px);
+    }
+    38.5% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .zf-label-c {
+    animation: zf-label-c-in 8s ease-out infinite both;
+  }
+  @keyframes zf-label-c-in {
+    0%,
+    43.5% {
+      opacity: 0;
+      transform: translate(-50%, 3px);
+    }
+    49.5% {
       opacity: 1;
       transform: translate(-50%, 0);
     }
@@ -247,16 +317,61 @@ const zones = [
     }
   }
 
-  .zf-row {
-    animation: zf-row-in 8s ease-out infinite both;
+  /* each row now fades in at the exact same percentages as its zone's
+     on-map label (zf-label-a/b/c above), so "Zone A" popping up on the
+     map and its row appearing in the panel read as one simultaneous
+     event, not two staggered ones. Still baked into each keyframe's own
+     percentages (no animation-delay) so all three share the same
+     90/96/100% hold-and-fade-out clock and reset in sync. */
+  .zf-row-a {
+    animation: zf-row-a-in 8s ease-out infinite both;
   }
-  @keyframes zf-row-in {
+  @keyframes zf-row-a-in {
     0%,
-    44% {
+    20.5% {
       opacity: 0;
       transform: translateY(4px);
     }
-    49% {
+    26.5% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .zf-row-b {
+    animation: zf-row-b-in 8s ease-out infinite both;
+  }
+  @keyframes zf-row-b-in {
+    0%,
+    32.5% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    38.5% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes zf-row-c-in {
+    0%,
+    43.5% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    49.5% {
       opacity: 1;
       transform: translateY(0);
     }
@@ -269,10 +384,11 @@ const zones = [
     }
   }
 
-  /* the worst zone's row tints amber while its pipes throb */
+  /* the worst zone's row tints amber while its pipes throb; zf-row-tint
+     was already undelayed, so it stays in sync with zf-draw-c unchanged */
   .zf-row-warn {
     animation:
-      zf-row-in 8s ease-out infinite both,
+      zf-row-c-in 8s ease-out infinite both,
       zf-row-tint 8s ease-in-out infinite both;
   }
   @keyframes zf-row-tint {
@@ -299,9 +415,12 @@ const zones = [
     .zf-zone-a,
     .zf-zone-b,
     .zf-zone-c,
-    .zf-label,
+    .zf-label-a,
+    .zf-label-b,
+    .zf-label-c,
     .zf-panel,
-    .zf-row,
+    .zf-row-a,
+    .zf-row-b,
     .zf-row-warn {
       animation: none;
     }
@@ -311,12 +430,15 @@ const zones = [
       stroke-dashoffset: 0;
       opacity: 1;
     }
-    .zf-label {
+    .zf-label-a,
+    .zf-label-b,
+    .zf-label-c {
       opacity: 1;
       transform: translate(-50%, 0);
     }
     .zf-panel,
-    .zf-row,
+    .zf-row-a,
+    .zf-row-b,
     .zf-row-warn {
       opacity: 1;
       transform: none;
