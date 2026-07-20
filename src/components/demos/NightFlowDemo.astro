@@ -11,88 +11,101 @@ const { class: className } = Astro.props;
 
 <div
   class:list={[
-    "bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden select-none",
+    "relative mx-auto aspect-[3/2] w-full max-w-[480px] rounded-lg shadow-md select-none",
     className,
   ]}
   role="img"
   aria-label="Night flow analysis panel: a 24-hour DMA inflow trace with the minimum night flow window highlighted and the leakage share of the night flow shaded.">
-  <div
-    class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-    <p class="text-[11px] font-semibold text-gray-700">DMA-3 inflow</p>
-    <p class="text-[10px] text-gray-400">24 h</p>
-  </div>
-  <div class="px-3 py-2.5">
-    <div class="relative">
-      <svg viewBox="0 0 200 96" class="w-full" aria-hidden="true">
-        <!-- minimum night flow window around the 03:00 trough -->
-        <rect
-          class="nf-window"
-          x="20"
-          y="6"
-          width="16"
-          height="74"
-          fill="#ede9fe"></rect>
+  <div class="absolute inset-0 overflow-hidden rounded-lg border border-gray-100 bg-white">
+    <svg
+      viewBox="0 0 480 320"
+      preserveAspectRatio="xMidYMid meet"
+      class="absolute inset-0 h-full w-full"
+      aria-hidden="true">
+      <foreignObject x="0" y="0" width="480" height="320">
+        <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col justify-between">
+          <div
+            class="flex items-baseline justify-between px-4 py-3.5 border-b border-gray-100">
+            <p class="text-sm font-semibold text-gray-700">DMA-3 inflow</p>
+            <p class="text-sm text-gray-400">24 h</p>
+          </div>
+          <div class="flex flex-1 flex-col items-center justify-center p-2">
+            <div class="relative w-full">
+              <svg viewBox="0 0 200 76" class="w-full" aria-hidden="true">
+                <!-- minimum night flow window around the 03:00 trough -->
+                <rect
+                  class="nf-window"
+                  x="20"
+                  y="5"
+                  width="16"
+                  height="58"
+                  fill="#ede9fe"></rect>
 
-        <!-- leakage band: between legitimate night use and the MNF level -->
-        <g class="nf-band">
-          <rect
-            x="4"
-            y="60"
-            width="192"
-            height="9"
-            fill="#f59e0b"
-            opacity="0.16"></rect>
-          <line
-            x1="4"
-            y1="60"
-            x2="196"
-            y2="60"
-            stroke="#9ca3af"
-            stroke-width="0.75"
-            stroke-dasharray="3 2"></line>
-          <line
-            x1="4"
-            y1="69"
-            x2="196"
-            y2="69"
-            stroke="#9ca3af"
-            stroke-width="0.75"
-            stroke-dasharray="3 2"></line>
-          <text x="196" y="76" text-anchor="end" font-size="6" fill="#9ca3af">
-            Night use
-          </text>
-        </g>
+                <!-- leakage band: between legitimate night use and the MNF level -->
+                <g class="nf-band">
+                  <rect
+                    x="4"
+                    y="48"
+                    width="192"
+                    height="10"
+                    fill="#f59e0b"
+                    opacity="0.16"></rect>
+                  <line
+                    x1="4"
+                    y1="48"
+                    x2="196"
+                    y2="48"
+                    stroke="#fbbf24"
+                    stroke-width="0.75"
+                    stroke-dasharray="3 2"></line>
+                  <line
+                    x1="4"
+                    y1="58"
+                    x2="196"
+                    y2="58"
+                    stroke="#fbbf24"
+                    stroke-width="0.75"
+                    stroke-dasharray="3 2"></line>
+                  <text x="196" y="44" text-anchor="end" font-size="6" fill="#9ca3af">
+                    Night use
+                  </text>
+                </g>
 
-        <!-- inflow trace -->
-        <polyline
-          class="nf-trace"
-          pathLength="100"
-          points="4,40 12,48 20,57 28,60 36,57 44,46 52,32 60,20 68,24 84,30 100,34 116,30 132,26 148,20 156,16 164,18 180,30 196,38"
-          fill="none"
-          stroke="#8b5cf6"
-          stroke-width="1.5"
-          stroke-linejoin="round"></polyline>
+                <!-- inflow trace -->
+                <polyline
+                  class="nf-trace"
+                  pathLength="100"
+                  points="4,32 12,38 20,45 28,48 36,45 44,36 52,25 60,16 68,19 84,24 100,27 116,24 132,21 148,16 156,13 164,14 180,24 196,30"
+                  fill="none"
+                  stroke="#8b5cf6"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"></polyline>
 
-        <!-- hour labels -->
-        <g font-size="6.5" fill="#9ca3af">
-          <text x="4" y="92">00:00</text>
-          <text x="100" y="92" text-anchor="middle">12:00</text>
-          <text x="196" y="92" text-anchor="end">24:00</text>
-        </g>
-      </svg>
+                <!-- hour labels: fade in sequentially, 0.3s apart -->
+                <g font-size="6.5" fill="#9ca3af">
+                  <text class="nf-hour-1" x="4" y="73">00:00</text>
+                  <text class="nf-hour-2" x="100" y="73" text-anchor="middle">12:00</text>
+                  <text class="nf-hour-3" x="196" y="73" text-anchor="end">24:00</text>
+                </g>
+              </svg>
 
-      <span
-        class="nf-chip-mnf absolute left-[16%] top-[42%] whitespace-nowrap rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[9px] font-medium text-gray-700 shadow-sm">
-        MNF 4.2 l/s
-      </span>
-      <span
-        class="nf-chip-leak absolute left-[38%] top-[66%] whitespace-nowrap rounded border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[9px] font-medium text-amber-700 shadow-sm">
-        Est. leakage 38% of MNF
-      </span>
-    </div>
-    <p class="mt-1.5 text-[9px] text-gray-400">
-      Minimum night flow window · 02:00 – 04:00
-    </p>
+              <span
+                class="nf-chip-mnf absolute left-[16%] top-[42%] whitespace-nowrap rounded border border-gray-200 bg-white px-1.5 py-0.5 text-sm font-medium text-gray-700 shadow-sm">
+                MNF 4.2 l/s
+              </span>
+              <span
+                class="nf-chip-leak absolute left-[33%] top-[64.5%] whitespace-nowrap bg-transparent text-sm font-medium text-amber-700 shadow-sm">
+                Est. leakage 38% of MNF
+              </span>
+            </div>
+          </div>
+          <p
+            class="border-t border-gray-100 px-4 py-3.5 text-sm text-gray-400">
+            Minimum night flow window · 02:00 – 04:00
+          </p>
+        </div>
+      </foreignObject>
+    </svg>
   </div>
 </div>
 
@@ -100,22 +113,22 @@ const { class: className } = Astro.props;
   .nf-trace {
     stroke-dasharray: 100;
     stroke-dashoffset: 100;
-    animation: nf-draw 7s linear infinite both;
+    animation: nf-draw 11s linear infinite both;
   }
   @keyframes nf-draw {
     0%,
-    2% {
+    1.273% {
       stroke-dashoffset: 100;
       opacity: 1;
     }
-    38% {
+    24.182% {
       stroke-dashoffset: 0;
     }
-    92% {
+    85.818% {
       stroke-dashoffset: 0;
       opacity: 1;
     }
-    98%,
+    89.636%,
     100% {
       stroke-dashoffset: 0;
       opacity: 0;
@@ -123,84 +136,143 @@ const { class: className } = Astro.props;
   }
 
   .nf-window {
-    animation: nf-window-in 7s ease-in-out infinite both;
+    animation: nf-window-in 11s ease-in-out infinite both;
   }
   @keyframes nf-window-in {
     0%,
-    42% {
+    26.727% {
       opacity: 0;
     }
-    50% {
+    31.818% {
       opacity: 1;
     }
-    92% {
+    85.818% {
       opacity: 1;
     }
-    98%,
+    89.636%,
     100% {
       opacity: 0;
     }
   }
 
   .nf-band {
-    animation: nf-band-in 7s ease-in-out infinite both;
+    animation: nf-band-in 11s ease-in-out infinite both;
   }
   @keyframes nf-band-in {
     0%,
-    52% {
+    33.091% {
       opacity: 0;
     }
-    62% {
+    39.455% {
       opacity: 1;
     }
-    92% {
+    85.818% {
       opacity: 1;
     }
-    98%,
+    89.636%,
     100% {
       opacity: 0;
     }
   }
 
   .nf-chip-mnf {
-    animation: nf-chip-mnf-in 7s ease-out infinite both;
+    animation: nf-chip-mnf-in 11s ease-out infinite both;
   }
   @keyframes nf-chip-mnf-in {
     0%,
-    64% {
+    40.727% {
       opacity: 0;
       transform: translateY(3px);
     }
-    70% {
+    44.545% {
       opacity: 1;
       transform: translateY(0);
     }
-    92% {
+    85.818% {
       opacity: 1;
     }
-    98%,
+    89.636%,
     100% {
       opacity: 0;
     }
   }
 
   .nf-chip-leak {
-    animation: nf-chip-leak-in 7s ease-out infinite both;
+    animation: nf-chip-leak-in 11s ease-out infinite both;
   }
   @keyframes nf-chip-leak-in {
     0%,
-    72% {
+    45.818% {
       opacity: 0;
       transform: translateY(3px);
     }
-    78% {
+    49.636% {
       opacity: 1;
       transform: translateY(0);
     }
-    92% {
+    85.818% {
       opacity: 1;
     }
-    98%,
+    89.636%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* hour axis labels fade in one at a time, 0.3s apart, then fade out
+     together with everything else */
+  .nf-hour-1 {
+    animation: nf-hour-1 11s linear infinite both;
+  }
+  @keyframes nf-hour-1 {
+    0% {
+      opacity: 0;
+    }
+    2.727% {
+      opacity: 1;
+    }
+    85.818% {
+      opacity: 1;
+    }
+    89.636%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .nf-hour-2 {
+    animation: nf-hour-2 11s linear infinite both;
+  }
+  @keyframes nf-hour-2 {
+    0%,
+    2.727% {
+      opacity: 0;
+    }
+    5.455% {
+      opacity: 1;
+    }
+    85.818% {
+      opacity: 1;
+    }
+    89.636%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .nf-hour-3 {
+    animation: nf-hour-3 11s linear infinite both;
+  }
+  @keyframes nf-hour-3 {
+    0%,
+    5.455% {
+      opacity: 0;
+    }
+    8.182% {
+      opacity: 1;
+    }
+    85.818% {
+      opacity: 1;
+    }
+    89.636%,
     100% {
       opacity: 0;
     }
@@ -211,7 +283,10 @@ const { class: className } = Astro.props;
     .nf-window,
     .nf-band,
     .nf-chip-mnf,
-    .nf-chip-leak {
+    .nf-chip-leak,
+    .nf-hour-1,
+    .nf-hour-2,
+    .nf-hour-3 {
       animation: none;
     }
     .nf-trace {
@@ -219,7 +294,10 @@ const { class: className } = Astro.props;
       opacity: 1;
     }
     .nf-window,
-    .nf-band {
+    .nf-band,
+    .nf-hour-1,
+    .nf-hour-2,
+    .nf-hour-3 {
       opacity: 1;
     }
     .nf-chip-mnf,
