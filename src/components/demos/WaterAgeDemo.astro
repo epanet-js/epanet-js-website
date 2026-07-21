@@ -5,7 +5,7 @@
 import { Clock } from "lucide-react";
 import AppWindow from "./AppWindow.astro";
 import LegendPanel from "./LegendPanel.astro";
-import { pipes } from "./network-geometry";
+import { pipes, junctions } from "./network-geometry";
 
 // Pipe indexes into the shared geometry, grouped into age bands by travel
 // time from the tank. `swap` reorders endpoints so the dashoffset draw
@@ -74,6 +74,8 @@ const legendEntries = [
 
 <AppWindow
   variant="plain"
+  hideHeader
+  hideFooter
   label="Water age in epanet-js: the network coloring by water age as it spreads from the source, with a legend in hours.">
   <!-- age coloring overlay: same viewBox as NetworkMap so strokes align -->
   <svg
@@ -106,6 +108,17 @@ const legendEntries = [
         )
       }
     </g>
+
+    <!-- redraw the junction dots on top of the age-colored lines, since
+         this overlay is a separate sibling painted after NetworkMap's own
+         junctions and would otherwise cover them -->
+    <g stroke="#ffffff" stroke-width="1">
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r="3.5" fill="#312e81" />
+        ))
+      }
+    </g>
   </svg>
 
   <!-- age legend (top-left, like the app's result legend) -->
@@ -115,14 +128,14 @@ const legendEntries = [
 
   <!-- water quality panel (top-right) -->
   <div
-    class="wa-panel absolute top-2 right-2 w-[160px] max-w-[60%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    class="wa-panel absolute top-2 right-2 w-fit max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
     <div
       class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-      <p class="text-[11px] font-semibold text-gray-700">Water quality</p>
-      <p class="text-[10px] text-gray-400">Age</p>
+      <p class="whitespace-nowrap text-xs font-semibold text-gray-700">Water quality</p>
+      <p class="whitespace-nowrap text-xs text-gray-400">Age</p>
     </div>
-    <p class="flex items-center gap-1.5 px-3 py-2 text-[10px] text-gray-500">
-      <Clock size={11} className="text-gray-400 shrink-0" />
+    <p class="flex items-center gap-1 whitespace-nowrap px-3 py-2 text-xs text-gray-500">
+      <Clock size={12} className="text-gray-400 shrink-0" />
       Extended period · 72 h
     </p>
   </div>
