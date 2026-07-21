@@ -3,7 +3,8 @@
 // runs of mains highlight in order, water marches along each one, and the
 // sequence panel checks each run off as it hits its cleaning velocity.
 import AppWindow from "./AppWindow.astro";
-import { pipes } from "./network-geometry";
+import Basemap from "./Basemap.astro";
+import { pipes, junctions } from "./network-geometry";
 
 // Flushing runs as ordered pipe lists; `swap` orients the draw so the flow
 // reads outward along the run.
@@ -13,32 +14,24 @@ const runs: {
   name: string;
   velocity: string;
   badge: { left: string; top: string };
-  drawCls: string;
-  marchCls: string;
   pipes: RunPipe[];
 }[] = [
   {
     name: "Run 1",
     velocity: "1.6 m/s",
-    badge: { left: "37.5%", top: "20%" },
-    drawCls: "flp-draw-1",
-    marchCls: "flp-march-1",
+    badge: { left: "37.5%", top: "26.7%" }, // +20px (6.67% of the 300-tall map)
     pipes: [{ index: 3 }, { index: 9 }],
   },
   {
     name: "Run 2",
     velocity: "1.4 m/s",
-    badge: { left: "42.5%", top: "66.7%" },
-    drawCls: "flp-draw-2",
-    marchCls: "flp-march-2",
+    badge: { left: "42.5%", top: "73.3%" }, // +20px
     pipes: [{ index: 11 }, { index: 12 }],
   },
   {
     name: "Run 3",
     velocity: "1.7 m/s",
-    badge: { left: "75%", top: "73.3%" },
-    drawCls: "flp-draw-3",
-    marchCls: "flp-march-3",
+    badge: { left: "75%", top: "80%" }, // +20px
     pipes: [{ index: 17 }, { index: 19 }],
   },
 ];
@@ -47,24 +40,168 @@ const segment = ({ index, swap }: RunPipe) => {
   const [x1, y1, x2, y2] = pipes[index];
   return swap ? { x1: x2, y1: y2, x2: x1, y2: y1 } : { x1, y1, x2, y2 };
 };
+
+// Timing (seconds), converted to keyframe percentages at build time so the
+// reasoning about *why* stays readable in the source. Runs are spaced
+// exactly 1s apart (start to start). Within a run, the two pipes draw with
+// a small stagger so the flow reads as travelling along the run, but both
+// turn green at the exact same instant -- runSuccess() below, the same
+// moment used for the sequence panel's checkmark -- once the run has had
+// time to reach its cleaning velocity. Everything holds once the last run
+// succeeds, then fades out together.
+const toPct = (seconds: number, cycle: number) =>
+  +((seconds / cycle) * 100).toFixed(3);
+
+const RUN_SPACING = 2; // gap between each run's start
+const PIPE_DRAW = 0.5; // time for one pipe segment to draw in
+const PIPE_STAGGER = 0.25; // offset between a run's two pipes starting to draw
+const SUCCESS_DELAY = 0.4; // pause after both pipes finish drawing, before success
+const GREEN_TRANSITION = 0.25; // violet -> green crossfade duration
+const BADGE_POP = 0.15;
+const PANEL_FADE_IN = 0.3;
+const HOLD_AFTER_LAST = 2; // hold once the last run succeeds, before fading out
+const FADE_DURATION = 0.5;
+const LOOP_BUFFER = 0.3; // quiet pause after fade-out, before the loop restarts
+
+const runStart = (i: number) => i * RUN_SPACING;
+const pipeDrawStart = (i: number, j: number) => runStart(i) + j * PIPE_STAGGER;
+const pipeDrawEnd = (i: number, j: number) => pipeDrawStart(i, j) + PIPE_DRAW;
+const runSuccess = (i: number) => pipeDrawEnd(i, 1) + SUCCESS_DELAY;
+const runGreenDone = (i: number) => runSuccess(i) + GREEN_TRANSITION;
+
+const FADE_START = runGreenDone(runs.length - 1) + HOLD_AFTER_LAST;
+const FADE_END = FADE_START + FADE_DURATION;
+const CYCLE = FADE_END + LOOP_BUFFER;
+
+const pct = (seconds: number) => toPct(seconds, CYCLE);
+
+const drawKeyframes = (cls: string, i: number, j: number) => {
+  const end = pipeDrawEnd(i, j);
+  const success = runSuccess(i);
+  const greenDone = runGreenDone(i);
+  return `
+.${cls} {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: ${cls} ${CYCLE}s linear infinite both;
+}
+@keyframes ${cls} {
+  0%, ${pct(pipeDrawStart(i, j))}% { stroke-dashoffset: 100; opacity: 0.85; stroke: #8b5cf6; }
+  ${pct(end)}% { stroke-dashoffset: 0; stroke: #8b5cf6; }
+  ${pct(success)}% { stroke: #8b5cf6; }
+  ${pct(greenDone)}% { stroke: #22c55e; }
+  ${pct(FADE_START)}% { stroke-dashoffset: 0; opacity: 0.85; stroke: #22c55e; }
+  ${pct(FADE_END)}%, 100% { stroke-dashoffset: 0; opacity: 0; stroke: #22c55e; }
+}`;
+};
+
+const marchKeyframes = (cls: string, i: number, j: number) => {
+  const end = pipeDrawEnd(i, j);
+  const success = runSuccess(i);
+  return `
+.${cls} {
+  opacity: 0;
+  animation: ${cls}-vis ${CYCLE}s linear infinite both, flp-march 1.1s linear infinite;
+}
+@keyframes ${cls}-vis {
+  0%, ${pct(end)}% { opacity: 0; }
+  ${pct(end + 0.1)}%, ${pct(success - 0.1)}% { opacity: 0.9; }
+  ${pct(success)}%, 100% { opacity: 0; }
+}`;
+};
+
+const badgeKeyframes = (cls: string, i: number) => {
+  const pop = runStart(i) + BADGE_POP;
+  return `
+.${cls} {
+  opacity: 0;
+  animation: ${cls} ${CYCLE}s ease-out infinite both;
+}
+@keyframes ${cls} {
+  0%, ${pct(runStart(i))}% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  ${pct(pop)}% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+  ${pct(pop + 0.05)}% { transform: translate(-50%, -50%) scale(1); }
+  ${pct(FADE_START)}% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  ${pct(FADE_END)}%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}`;
+};
+
+const statKeyframes = (cls: string, i: number) => {
+  const success = runSuccess(i);
+  return `
+.${cls} {
+  animation: ${cls} ${CYCLE}s linear infinite both;
+}
+@keyframes ${cls} {
+  0%, ${pct(success - 0.1)}% { opacity: 0; }
+  ${pct(success)}% { opacity: 1; }
+  ${pct(FADE_START)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}`;
+};
+
+const panelCss = `
+.flp-panel {
+  animation: flp-panel-in ${CYCLE}s ease-out infinite both;
+}
+@keyframes flp-panel-in {
+  0% { opacity: 0; transform: translateY(4px); }
+  ${pct(PANEL_FADE_IN)}% { opacity: 1; transform: translateY(0); }
+  ${pct(FADE_START)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}`;
+
+const generatedCss =
+  runs
+    .flatMap((_, i) => [
+      drawKeyframes(`flp-draw-${i + 1}-1`, i, 0),
+      drawKeyframes(`flp-draw-${i + 1}-2`, i, 1),
+      marchKeyframes(`flp-march-${i + 1}-1`, i, 0),
+      marchKeyframes(`flp-march-${i + 1}-2`, i, 1),
+      badgeKeyframes(`flp-badge-${i + 1}`, i),
+      statKeyframes(`flp-stat-${i + 1}`, i),
+    ])
+    .join("\n") + panelCss;
 ---
 
 <AppWindow
-  variant="plain"
+  bare
+  hideHeader
+  hideFooter
   label="Unidirectional flushing in epanet-js: three flushing runs highlighting in order, each checked off in the sequence panel as it hits its cleaning velocity.">
   <svg
     viewBox="0 0 400 300"
     preserveAspectRatio="xMidYMid slice"
     class="absolute inset-0 w-full h-full"
     aria-hidden="true">
+    <!-- basemap stays put -- the network itself, plus this file's own
+         highlight/march overlay, shifts 20px down together inside the
+         translate group below. The run-order badges are plain HTML spans
+         outside this svg (their own top percentages are adjusted to
+         match); the flp-panel popover is untouched. -->
+    <Basemap />
+
+    <g transform="translate(0, 20)">
+    <!-- the network, normally drawn by NetworkMap -- rendered by hand
+         here (AppWindow's bare prop skips NetworkMap) so it can shift
+         down with the rest of this file's content instead of staying
+         fixed with the basemap. -->
+    <g stroke-width="2.5" stroke-linecap="round">
+      {
+        pipes.map(([x1, y1, x2, y2]) => (
+          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#3730a3" />
+        ))
+      }
+    </g>
+
     <g stroke-linecap="round" fill="none">
       {
-        runs.map((run) =>
-          run.pipes.map((p, i) => {
+        runs.map((run, i) =>
+          run.pipes.map((p, j) => {
             const { x1, y1, x2, y2 } = segment(p);
             return (
               <line
-                class={run.drawCls}
+                class={`flp-draw-${i + 1}-${j + 1}`}
                 x1={x1}
                 y1={y1}
                 x2={x2}
@@ -72,19 +209,18 @@ const segment = ({ index, swap }: RunPipe) => {
                 stroke="#8b5cf6"
                 stroke-width="4"
                 pathLength="100"
-                style={`animation-delay: ${(i * 0.64).toFixed(2)}s`}
               />
             );
           }),
         )
       }
       {
-        runs.map((run) =>
-          run.pipes.map((p) => {
+        runs.map((run, i) =>
+          run.pipes.map((p, j) => {
             const { x1, y1, x2, y2 } = segment(p);
             return (
               <line
-                class={run.marchCls}
+                class={`flp-march-${i + 1}-${j + 1}`}
                 x1={x1}
                 y1={y1}
                 x2={x2}
@@ -99,13 +235,33 @@ const segment = ({ index, swap }: RunPipe) => {
         )
       }
     </g>
+
+    <!-- redraw the junction dots on top of the flushing-run highlight
+         lines, since this overlay is a separate sibling painted after
+         NetworkMap's own junctions and would otherwise cover them (the
+         thick stroke-width-4 highlight sits right on top of several) -->
+    <g stroke="#ffffff" stroke-width="1">
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r="3.5" fill="#312e81" />
+        ))
+      }
+    </g>
+
+    <!-- tank, matching NetworkMap's own fixed triangle glyph -->
+    <path
+      d="M40 42 L48 56 L32 56 Z"
+      fill="#312e81"
+      stroke="#ffffff"
+      stroke-width="1"></path>
+    </g>
   </svg>
 
   <!-- run order badges -->
   {
     runs.map((run, i) => (
       <span
-        class={`flp-badge-${i + 1} absolute flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-violet-600 text-[9px] font-semibold text-white shadow-sm ring-2 ring-white`}
+        class={`flp-badge-${i + 1} absolute flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-violet-600 text-xs font-semibold text-white shadow-sm ring-2 ring-white`}
         style={`left: ${run.badge.left}; top: ${run.badge.top};`}>
         {i + 1}
       </span>
@@ -114,13 +270,13 @@ const segment = ({ index, swap }: RunPipe) => {
 
   <!-- flushing sequence panel -->
   <div
-    class="flp-panel absolute top-2 right-2 w-[180px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    class="flp-panel absolute top-2 right-2 w-[176px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
     <div
       class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-      <p class="text-[11px] font-semibold text-gray-700">Flushing sequence</p>
-      <p class="text-[10px] text-gray-400">UDF</p>
+      <p class="text-xs font-semibold text-gray-700">Flushing sequence</p>
+      <p class="text-xs text-gray-400">UDF</p>
     </div>
-    <div class="py-1 text-[10px]">
+    <div class="py-1 text-xs">
       {
         runs.map((run, i) => (
           <div class="flex items-center justify-between px-3 py-1">
@@ -139,64 +295,12 @@ const segment = ({ index, swap }: RunPipe) => {
   </div>
 </AppWindow>
 
-<style>
-  /* runs draw in order; the second pipe of each run follows via delay */
-  .flp-draw-1,
-  .flp-draw-2,
-  .flp-draw-3 {
-    stroke-dasharray: 100;
-    stroke-dashoffset: 100;
-    opacity: 0.85;
-  }
-  .flp-draw-1 {
-    animation: flp-draw-1 8s linear infinite both;
-  }
-  .flp-draw-2 {
-    animation: flp-draw-2 8s linear infinite both;
-  }
-  .flp-draw-3 {
-    animation: flp-draw-3 8s linear infinite both;
-  }
-  @keyframes flp-draw-1 {
-    0%, 12% { stroke-dashoffset: 100; opacity: 0.85; }
-    20% { stroke-dashoffset: 0; }
-    90% { stroke-dashoffset: 0; opacity: 0.85; }
-    96%, 100% { stroke-dashoffset: 0; opacity: 0; }
-  }
-  @keyframes flp-draw-2 {
-    0%, 37% { stroke-dashoffset: 100; opacity: 0.85; }
-    45% { stroke-dashoffset: 0; }
-    90% { stroke-dashoffset: 0; opacity: 0.85; }
-    96%, 100% { stroke-dashoffset: 0; opacity: 0; }
-  }
-  @keyframes flp-draw-3 {
-    0%, 62% { stroke-dashoffset: 100; opacity: 0.85; }
-    70% { stroke-dashoffset: 0; }
-    90% { stroke-dashoffset: 0; opacity: 0.85; }
-    96%, 100% { stroke-dashoffset: 0; opacity: 0; }
-  }
+<style set:html={generatedCss} />
 
-  /* white dashes march along each run while it flushes */
-  .flp-march-1,
-  .flp-march-2,
-  .flp-march-3 {
-    opacity: 0;
-  }
-  .flp-march-1 {
-    animation:
-      flp-march-vis-1 8s linear infinite both,
-      flp-march 1.1s linear infinite;
-  }
-  .flp-march-2 {
-    animation:
-      flp-march-vis-2 8s linear infinite both,
-      flp-march 1.1s linear infinite;
-  }
-  .flp-march-3 {
-    animation:
-      flp-march-vis-3 8s linear infinite both,
-      flp-march 1.1s linear infinite;
-  }
+<style>
+  /* the marching dashes' own dash-offset animation is a fixed, independent
+     1.1s loop regardless of the cycle length -- only its visibility
+     (flp-march-N-vis, generated above) is tied to the cycle. */
   @keyframes flp-march {
     0% {
       stroke-dashoffset: 14;
@@ -205,113 +309,20 @@ const segment = ({ index, swap }: RunPipe) => {
       stroke-dashoffset: 0;
     }
   }
-  @keyframes flp-march-vis-1 {
-    0%, 14% { opacity: 0; }
-    20%, 88% { opacity: 0.9; }
-    94%, 100% { opacity: 0; }
-  }
-  @keyframes flp-march-vis-2 {
-    0%, 39% { opacity: 0; }
-    45%, 88% { opacity: 0.9; }
-    94%, 100% { opacity: 0; }
-  }
-  @keyframes flp-march-vis-3 {
-    0%, 64% { opacity: 0; }
-    70%, 88% { opacity: 0.9; }
-    94%, 100% { opacity: 0; }
-  }
-
-  /* numbered badges pop at the start of each run */
-  .flp-badge-1,
-  .flp-badge-2,
-  .flp-badge-3 {
-    opacity: 0;
-  }
-  .flp-badge-1 {
-    animation: flp-badge-1 8s ease-out infinite both;
-  }
-  .flp-badge-2 {
-    animation: flp-badge-2 8s ease-out infinite both;
-  }
-  .flp-badge-3 {
-    animation: flp-badge-3 8s ease-out infinite both;
-  }
-  @keyframes flp-badge-1 {
-    0%, 10% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-    13% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
-    15% { transform: translate(-50%, -50%) scale(1); }
-    90% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    96%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-  }
-  @keyframes flp-badge-2 {
-    0%, 35% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-    38% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
-    40% { transform: translate(-50%, -50%) scale(1); }
-    90% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    96%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-  }
-  @keyframes flp-badge-3 {
-    0%, 60% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-    63% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
-    65% { transform: translate(-50%, -50%) scale(1); }
-    90% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    96%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-  }
-
-  .flp-panel {
-    animation: flp-panel-in 8s ease-out infinite both;
-  }
-  @keyframes flp-panel-in {
-    0% {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    6% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    92% {
-      opacity: 1;
-    }
-    98%,
-    100% {
-      opacity: 0;
-    }
-  }
-
-  /* each run checks off as it completes */
-  .flp-stat-1 {
-    animation: flp-stat-1 8s linear infinite both;
-  }
-  .flp-stat-2 {
-    animation: flp-stat-2 8s linear infinite both;
-  }
-  .flp-stat-3 {
-    animation: flp-stat-3 8s linear infinite both;
-  }
-  @keyframes flp-stat-1 {
-    0%, 28% { opacity: 0; }
-    31% { opacity: 1; }
-    100% { opacity: 1; }
-  }
-  @keyframes flp-stat-2 {
-    0%, 53% { opacity: 0; }
-    56% { opacity: 1; }
-    100% { opacity: 1; }
-  }
-  @keyframes flp-stat-3 {
-    0%, 78% { opacity: 0; }
-    81% { opacity: 1; }
-    100% { opacity: 1; }
-  }
 
   @media (prefers-reduced-motion: reduce) {
-    .flp-draw-1,
-    .flp-draw-2,
-    .flp-draw-3,
-    .flp-march-1,
-    .flp-march-2,
-    .flp-march-3,
+    .flp-draw-1-1,
+    .flp-draw-1-2,
+    .flp-draw-2-1,
+    .flp-draw-2-2,
+    .flp-draw-3-1,
+    .flp-draw-3-2,
+    .flp-march-1-1,
+    .flp-march-1-2,
+    .flp-march-2-1,
+    .flp-march-2-2,
+    .flp-march-3-1,
+    .flp-march-3-2,
     .flp-badge-1,
     .flp-badge-2,
     .flp-badge-3,
@@ -321,15 +332,22 @@ const segment = ({ index, swap }: RunPipe) => {
     .flp-stat-3 {
       animation: none;
     }
-    .flp-draw-1,
-    .flp-draw-2,
-    .flp-draw-3 {
+    .flp-draw-1-1,
+    .flp-draw-1-2,
+    .flp-draw-2-1,
+    .flp-draw-2-2,
+    .flp-draw-3-1,
+    .flp-draw-3-2 {
       stroke-dashoffset: 0;
       opacity: 0.85;
+      stroke: #22c55e;
     }
-    .flp-march-1,
-    .flp-march-2,
-    .flp-march-3 {
+    .flp-march-1-1,
+    .flp-march-1-2,
+    .flp-march-2-1,
+    .flp-march-2-2,
+    .flp-march-3-1,
+    .flp-march-3-2 {
       opacity: 0;
     }
     .flp-badge-1,
