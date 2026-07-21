@@ -1,17 +1,36 @@
 ---
 // Extended period simulation playback demo: a time browser scrubs through
-// 24 hours of results while the extremity pipes shift amber to red at the
-// evening peak and recover overnight.
+// 24 hours of results while the extremity pipes shift from amber to red
+// one at a time as the day goes on, holding red once each one turns.
 import { Play } from "lucide-react";
 import AppWindow from "./AppWindow.astro";
 import { pipes, junctions } from "./network-geometry";
 
-// The pipes that worsen at the evening peak: the critical extremities plus
-// the two outermost low-pressure pipes feeding them.
-const peakPipes = pipes.filter(
-  ([x1, , x2, , zone]) =>
-    zone === "critical" || (zone === "low" && Math.min(x1, x2) >= 300),
-);
+// The pipes that worsen at the evening peak, grouped by which corner of
+// the network they sit in. Each group turns red on its own schedule: the
+// lower-right corner at 12:00, the top-right corner at 18:00, the
+// middle-bottom pair at 24:00 (see the ep-peak-amber/red-N keyframes
+// below). Indices are into `pipes` above.
+const peakGroupIndices: Record<number, number[]> = {
+  1: [17, 18, 19], // lower-right corner: (300,220)-(310,160)-(360,150)-(350,230)
+  2: [9, 14, 15], // top-right corner: (210,75)-(270,65)-(330,80)-(310,160)
+  3: [12, 16], // middle-bottom: (230,150)-(240,210)-(300,220)
+};
+
+const groupByCoords = new Map<string, number>();
+Object.entries(peakGroupIndices).forEach(([group, indices]) => {
+  indices.forEach((i) => {
+    const [x1, y1, x2, y2] = pipes[i];
+    groupByCoords.set(`${x1},${y1},${x2},${y2}`, Number(group));
+  });
+});
+
+const peakPipes = Object.values(peakGroupIndices)
+  .flat()
+  .map((i) => pipes[i]);
+
+const peakGroup = ([x1, y1, x2, y2]: [number, number, number, number]) =>
+  groupByCoords.get(`${x1},${y1},${x2},${y2}`)!;
 
 // Junction dots sit above pipes in NetworkMap, so redraw the affected ones
 // over the overlay strokes to preserve the stacking order of the base map.
@@ -27,6 +46,8 @@ const times = ["06:00", "12:00", "18:00", "00:00"];
 
 <AppWindow
   variant="pressure"
+  hideHeader
+  hideFooter
   label="Extended period simulation in epanet-js: playing through 24 hours of results as pressures shift across the day.">
   <!-- evening-peak color shift over the base pressure map -->
   <svg
@@ -36,28 +57,29 @@ const times = ["06:00", "12:00", "18:00", "00:00"];
     aria-hidden="true">
     <g stroke-width="2.5" stroke-linecap="round" fill="none">
       {
-        peakPipes.map(([x1, y1, x2, y2], i) => (
-          <Fragment>
-            <line
-              class="ep-peak-amber"
-              x1={x1}
-              y1={y1}
-              x2={x2}
-              y2={y2}
-              stroke="#f59e0b"
-              style={`animation-delay: ${i * 0.06}s`}
-            />
-            <line
-              class="ep-peak-red"
-              x1={x1}
-              y1={y1}
-              x2={x2}
-              y2={y2}
-              stroke="#ef4444"
-              style={`animation-delay: ${i * 0.06}s`}
-            />
-          </Fragment>
-        ))
+        peakPipes.map(([x1, y1, x2, y2]) => {
+          const group = peakGroup([x1, y1, x2, y2]);
+          return (
+            <Fragment>
+              <line
+                class={`ep-peak-amber-${group}`}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#f59e0b"
+              />
+              <line
+                class={`ep-peak-red-${group}`}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#ef4444"
+              />
+            </Fragment>
+          );
+        })
       }
     </g>
     <g stroke="#ffffff" stroke-width="1">
@@ -71,7 +93,7 @@ const times = ["06:00", "12:00", "18:00", "00:00"];
 
   <!-- time browser (bottom-center, like the app) -->
   <div
-    class="absolute bottom-2 left-1/2 -translate-x-1/2 w-[240px] max-w-[80%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    class="absolute bottom-2 left-1/2 -translate-x-1/2 w-[240px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
     <div class="flex items-center gap-2 px-2.5 py-2">
       <span
         class="ep-play flex items-center justify-center w-5 h-5 rounded bg-violet-600 text-white shrink-0">
@@ -93,13 +115,14 @@ const times = ["06:00", "12:00", "18:00", "00:00"];
         </span>
       </span>
       <span
-        class="relative block w-[34px] shrink-0 text-[10px] tabular-nums text-gray-600 text-right">
+        class="relative block w-8 shrink-0 text-[10px] tabular-nums text-gray-600 text-right">
         <span class="invisible">00:00</span>
         {
           times.map((t, i) => (
             <span
               class:list={[
-                "ep-time absolute inset-0 text-right",
+                i === times.length - 1 ? "ep-time-last" : "ep-time",
+                "absolute inset-0 text-right",
                 t === "12:00" && "ep-time-noon",
               ]}
               style={`animation-delay: ${i * 2}s`}>
@@ -113,16 +136,19 @@ const times = ["06:00", "12:00", "18:00", "00:00"];
 </AppWindow>
 
 <style>
-  /* playhead travels the full track linearly across the day */
+  /* playhead travels the full track linearly across the day. 10s cycle:
+     the original 8s sequence rescaled by 8/10 so every event keeps its
+     absolute-second pacing, freeing the trailing 2s (80%-100%) as a held
+     pause once the day is done, before the loop restarts. */
   .ep-thumb {
-    animation: ep-thumb 8s linear infinite both;
+    animation: ep-thumb 10s linear infinite both;
   }
   @keyframes ep-thumb {
     0%,
-    4% {
+    3.2% {
       transform: translateX(0);
     }
-    88%,
+    70.4%,
     100% {
       transform: translateX(100%);
     }
@@ -131,17 +157,41 @@ const times = ["06:00", "12:00", "18:00", "00:00"];
   /* clock readout crossfades in quarters of the day */
   .ep-time {
     opacity: 0;
-    animation: ep-time 8s linear infinite both;
+    animation: ep-time 10s linear infinite both;
   }
   @keyframes ep-time {
     0% {
       opacity: 0;
     }
-    3%,
-    25% {
+    2.4%,
+    20% {
       opacity: 1;
     }
-    29%,
+    23.2%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* "00:00" is the last label of the day: instead of fading out on the
+     same 23.2%-of-its-own-cycle schedule as the others, it holds until
+     the page-level loop point. With a 6s delay on a 10s cycle, that
+     point is always 40% into this element's own timeline (every 10s,
+     not just the first), so this stays correct on every repeat, not
+     just the first. */
+  .ep-time-last {
+    opacity: 0;
+    animation: ep-time-last 10s linear infinite both;
+  }
+  @keyframes ep-time-last {
+    0% {
+      opacity: 0;
+    }
+    2.4%,
+    40% {
+      opacity: 1;
+    }
+    40.1%,
     100% {
       opacity: 0;
     }
@@ -161,53 +211,124 @@ const times = ["06:00", "12:00", "18:00", "00:00"];
     }
   }
 
-  /* extremities worsen at the evening peak, then recover overnight */
-  .ep-peak-amber {
-    animation: ep-peak-amber 8s ease-in-out infinite both;
+  /* each peak pipe turns red on its own 0.3s (3% of the 10s cycle)
+     schedule: the lower-right pipe at 12:00 (20%), the horizontal pipe
+     above it at 18:00 (40%), everything else at 24:00 (60%) — then holds
+     red through the trailing pause instead of recovering overnight. */
+  .ep-peak-amber-1,
+  .ep-peak-amber-2,
+  .ep-peak-amber-3 {
+    animation-duration: 10s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
-  .ep-peak-red {
+  .ep-peak-red-1,
+  .ep-peak-red-2,
+  .ep-peak-red-3 {
     opacity: 0;
-    animation: ep-peak-red 8s ease-in-out infinite both;
+    animation-duration: 10s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
   }
-  @keyframes ep-peak-amber {
+  .ep-peak-amber-1 {
+    animation-name: ep-peak-amber-1;
+  }
+  .ep-peak-red-1 {
+    animation-name: ep-peak-red-1;
+  }
+  @keyframes ep-peak-amber-1 {
     0%,
-    45% {
+    20% {
       opacity: 1;
     }
-    75% {
+    23%,
+    100% {
       opacity: 0;
     }
-    88%,
+  }
+  @keyframes ep-peak-red-1 {
+    0%,
+    20% {
+      opacity: 0;
+    }
+    23%,
     100% {
       opacity: 1;
     }
   }
-  @keyframes ep-peak-red {
+  .ep-peak-amber-2 {
+    animation-name: ep-peak-amber-2;
+  }
+  .ep-peak-red-2 {
+    animation-name: ep-peak-red-2;
+  }
+  @keyframes ep-peak-amber-2 {
     0%,
-    45% {
-      opacity: 0;
+    40% {
+      opacity: 1;
     }
-    75% {
-      opacity: 0.9;
-    }
-    88%,
+    43%,
     100% {
       opacity: 0;
+    }
+  }
+  @keyframes ep-peak-red-2 {
+    0%,
+    40% {
+      opacity: 0;
+    }
+    43%,
+    100% {
+      opacity: 1;
+    }
+  }
+  .ep-peak-amber-3 {
+    animation-name: ep-peak-amber-3;
+  }
+  .ep-peak-red-3 {
+    animation-name: ep-peak-red-3;
+  }
+  @keyframes ep-peak-amber-3 {
+    0%,
+    60% {
+      opacity: 1;
+    }
+    63%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ep-peak-red-3 {
+    0%,
+    60% {
+      opacity: 0;
+    }
+    63%,
+    100% {
+      opacity: 1;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .ep-thumb,
     .ep-time,
+    .ep-time-last,
     .ep-play,
-    .ep-peak-amber,
-    .ep-peak-red {
+    .ep-peak-amber-1,
+    .ep-peak-amber-2,
+    .ep-peak-amber-3,
+    .ep-peak-red-1,
+    .ep-peak-red-2,
+    .ep-peak-red-3 {
       animation: none;
     }
     .ep-thumb {
       transform: translateX(60%);
     }
-    .ep-time {
+    .ep-time,
+    .ep-time-last {
       opacity: 0;
     }
     .ep-time-noon {
@@ -216,10 +337,14 @@ const times = ["06:00", "12:00", "18:00", "00:00"];
     .ep-play {
       transform: none;
     }
-    .ep-peak-amber {
+    .ep-peak-amber-1,
+    .ep-peak-amber-2,
+    .ep-peak-amber-3 {
       opacity: 1;
     }
-    .ep-peak-red {
+    .ep-peak-red-1,
+    .ep-peak-red-2,
+    .ep-peak-red-3 {
       opacity: 0;
     }
   }
