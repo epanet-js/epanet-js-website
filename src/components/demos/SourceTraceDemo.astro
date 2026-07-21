@@ -4,7 +4,7 @@
 // over the day. A map chip shows the local share from each source.
 import AppWindow from "./AppWindow.astro";
 import LegendPanel from "./LegendPanel.astro";
-import { pipes, tankPoint } from "./network-geometry";
+import { pipes, junctions, tankPoint } from "./network-geometry";
 
 type Segment = { x1: number; y1: number; x2: number; y2: number };
 
@@ -65,6 +65,8 @@ const legendEntries = [
 
 <AppWindow
   variant="plain"
+  hideHeader
+  hideFooter
   label="Source tracing in epanet-js: water from two treatment works blending mid-network, with the share shown per pipe.">
   <!-- trace overlay: same viewBox as NetworkMap so strokes align exactly -->
   <svg
@@ -134,24 +136,47 @@ const legendEntries = [
       }
     </g>
 
-    <!-- WTP B source marker -->
+    <!-- redraw the junction dots on top of the trace/blend overlay lines,
+         since this overlay is a separate sibling painted after NetworkMap's
+         own junctions and would otherwise cover them -->
+    <g stroke="#ffffff" stroke-width="1">
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r="3.5" fill="#312e81" />
+        ))
+      }
+    </g>
+
+    <!-- WTP B source marker: drawn last so it stays on top of every
+         junction dot above (it sits right on top of one), and always
+         visible -- no fade in/out like the rest of the UI. -->
     <path
-      class="st-ui"
       d="M360 142 L368 156 L352 156 Z"
       fill="#7c3aed"
       stroke="#fff"
+      stroke-width="1"></path>
+
+    <!-- WTP A / tank marker: NetworkMap draws this first (it's the base
+         map's own tank glyph), and traceA's first pipe starts right at
+         it, so it gets covered as soon as that line draws in. Redrawn
+         here, last, matching NetworkMap's exact tank styling, so it stays
+         above every line/highlight -- also always visible, no fade. -->
+    <path
+      d="M40 42 L48 56 L32 56 Z"
+      fill="#312e81"
+      stroke="#ffffff"
       stroke-width="1"></path>
   </svg>
 
   <!-- source labels -->
   <div
-    class="st-ui absolute -translate-x-1/2 -translate-y-full -mt-1.5 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[9px] font-medium text-gray-600 whitespace-nowrap"
+    class="st-ui absolute -translate-x-1/2 mt-1.5 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-md px-1.5 py-0.5 text-xs font-medium text-gray-600 whitespace-nowrap"
     style={sourceAChip}>
     <span class="st-dot w-1.5 h-1.5 rounded-full bg-blue-500"></span>
     WTP A
   </div>
   <div
-    class="st-ui absolute -translate-x-1/2 mt-1.5 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-sm px-1.5 py-0.5 text-[9px] font-medium text-gray-600 whitespace-nowrap"
+    class="st-ui absolute -translate-x-1/2 mt-2 flex items-center gap-1 bg-white rounded border border-gray-100 shadow-md px-1.5 py-0.5 text-xs font-medium text-gray-600 whitespace-nowrap"
     style={sourceBChip}>
     <span class="st-dot w-1.5 h-1.5 rounded-full bg-violet-500"></span>
     WTP B
@@ -160,7 +185,7 @@ const legendEntries = [
   <!-- share readout in the blend zone -->
   <div class="absolute -translate-x-1/2 -translate-y-1/2" style={blendChip}>
     <div
-      class="st-card grid bg-white rounded-lg border border-gray-100 shadow-md px-2 py-1 text-[9px] font-medium text-gray-600 tabular-nums whitespace-nowrap">
+      class="st-card grid bg-white rounded-lg border border-gray-100 shadow-md px-2 py-1 text-sm font-medium text-gray-600 tabular-nums whitespace-nowrap">
       <span class="st-val-a col-start-1 row-start-1">62% from WTP A</span>
       <span class="st-val-b col-start-1 row-start-1">48% from WTP A</span>
     </div>
