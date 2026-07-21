@@ -2,7 +2,6 @@
 // Pressure/flow capacity curve demo: the right-click node check that plots
 // available flow against pressure, marks where the curve meets the 15 m
 // minimum, and reads off the flow. `framed` overlays it on the app map.
-import { Activity } from "lucide-react";
 import AppWindow from "./AppWindow.astro";
 
 interface Props {
@@ -21,17 +20,16 @@ const label =
 
 {
   framed ? (
-    <AppWindow variant="plain" label={label} class={className}>
-      <div class="absolute top-2 right-2 w-[250px] max-w-[72%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <AppWindow variant="plain" hideHeader hideFooter label={label} class={className}>
+      <div class="absolute top-2 right-2 w-[248px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
         <div class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-          <p class="flex items-center gap-1.5 text-[11px] font-semibold text-gray-700">
-            <Activity size={12} className="text-gray-400" />
+          <p class="text-xs font-semibold text-gray-700">
             Pressure / flow
           </p>
-          <p class="text-[10px] text-gray-400">J288</p>
+          <p class="text-xs text-gray-400">J288</p>
         </div>
         <div class="px-3 pt-2 pb-2.5">
-          <p class="text-[9px] text-gray-400">Pressure (m)</p>
+          <p class="text-xs text-gray-400">Pressure (m)</p>
           <div class="relative mt-1">
             <svg viewBox="0 0 200 90" class="w-full" aria-hidden="true">
               <g stroke="#f3f4f6" stroke-width="1">
@@ -49,7 +47,7 @@ const label =
                   stroke-width="1"
                   stroke-dasharray="3 2"
                 />
-                <text x="8" y="52.5" font-size="7" fill="#9ca3af">
+                <text x="8" y="52.5" font-size="10" fill="#9ca3af">
                   15 m
                 </text>
               </g>
@@ -83,89 +81,98 @@ const label =
               </g>
             </svg>
             <span
-              class="pq-chip absolute whitespace-nowrap rounded bg-white border border-gray-100 shadow-md px-1.5 py-0.5 text-[9px] tabular-nums text-gray-700"
+              class="pq-chip absolute whitespace-nowrap rounded bg-white border border-gray-100 shadow-md px-1.5 py-0.5 text-xs tabular-nums text-gray-700"
               style="left: 64%; bottom: 44%;">
               41.2 l/s at 15 m
             </span>
           </div>
-          <p class="text-[9px] text-gray-400 text-right">Flow (l/s)</p>
+          <p class="text-xs text-gray-400 text-right">Flow (l/s)</p>
         </div>
       </div>
     </AppWindow>
   ) : (
     <div
       class:list={[
-        "w-full max-w-[300px] mx-auto bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden select-none",
+        "relative mx-auto aspect-[25/18] w-full max-w-[400px] rounded-xl shadow-lg select-none",
         className,
       ]}
       role="img"
       aria-label={label}>
-      <div class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-        <p class="flex items-center gap-1.5 text-[11px] font-semibold text-gray-700">
-          <Activity size={12} className="text-gray-400" />
-          Pressure / flow
-        </p>
-        <p class="text-[10px] text-gray-400">J288</p>
-      </div>
-      <div class="px-3 pt-2 pb-2.5">
-        <p class="text-[9px] text-gray-400">Pressure (m)</p>
-        <div class="relative mt-1">
-          <svg viewBox="0 0 200 90" class="w-full" aria-hidden="true">
-            <g stroke="#f3f4f6" stroke-width="1">
-              {gridYs.map((y) => (
-                <line x1="0" y1={y} x2="200" y2={y} />
-              ))}
-            </g>
-            <g class="pq-threshold">
-              <line
-                x1="8"
-                y1="56"
-                x2="192"
-                y2="56"
-                stroke="#9ca3af"
-                stroke-width="1"
-                stroke-dasharray="3 2"
-              />
-              <text x="8" y="52.5" font-size="7" fill="#9ca3af">
-                15 m
-              </text>
-            </g>
-            <path
-              class="pq-curve"
-              d={curveD}
-              pathLength="100"
-              fill="none"
-              stroke="#8b5cf6"
-              stroke-width="1.5"
-              stroke-linecap="round"
-            />
-            <line
-              class="pq-hairline"
-              x1="124"
-              y1="56"
-              x2="124"
-              y2="86"
-              stroke="#9ca3af"
-              stroke-width="1"
-              stroke-dasharray="2 2"
-            />
-            <g class="pq-dot" transform="translate(124 56)">
-              <circle
-                class="pq-dot-pulse"
-                r="3"
-                fill="#8b5cf6"
-                stroke="#fff"
-                stroke-width="1"
-              />
-            </g>
-          </svg>
-          <span
-            class="pq-chip absolute whitespace-nowrap rounded bg-white border border-gray-100 shadow-md px-1.5 py-0.5 text-[9px] tabular-nums text-gray-700"
-            style="left: 64%; bottom: 44%;">
-            41.2 l/s at 15 m
-          </span>
-        </div>
-        <p class="text-[9px] text-gray-400 text-right">Flow (l/s)</p>
+      <div class="absolute inset-0 overflow-hidden rounded-xl border border-gray-200 bg-white">
+        <svg
+          viewBox="0 0 400 288"
+          preserveAspectRatio="xMidYMid meet"
+          class="absolute inset-0 h-full w-full"
+          aria-hidden="true">
+          <foreignObject x="0" y="0" width="400" height="288">
+            <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="flex h-full w-full flex-col">
+              <div class="flex items-baseline justify-between px-4 py-3.5 border-b border-gray-100">
+                <p class="text-base font-semibold text-gray-700">Pressure / flow</p>
+                <p class="text-sm text-gray-400">J288</p>
+              </div>
+              <div class="flex flex-1 flex-col justify-center px-4 py-3">
+                <p class="text-sm text-gray-400">Pressure (m)</p>
+                <div class="relative mt-0.5">
+                  <svg viewBox="0 0 200 90" class="w-full" aria-hidden="true">
+                    <g stroke="#f3f4f6" stroke-width="1">
+                      {gridYs.map((y) => (
+                        <line x1="0" y1={y} x2="200" y2={y} />
+                      ))}
+                    </g>
+                    <g class="pq-threshold">
+                      <line
+                        x1="8"
+                        y1="56"
+                        x2="192"
+                        y2="56"
+                        stroke="#9ca3af"
+                        stroke-width="1"
+                        stroke-dasharray="3 2"
+                      />
+                      <text x="8" y="52.5" font-size="6.5" fill="#9ca3af">
+                        15 m
+                      </text>
+                    </g>
+                    <path
+                      class="pq-curve"
+                      d={curveD}
+                      pathLength="100"
+                      fill="none"
+                      stroke="#8b5cf6"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    />
+                    <line
+                      class="pq-hairline"
+                      x1="124"
+                      y1="56"
+                      x2="124"
+                      y2="86"
+                      stroke="#9ca3af"
+                      stroke-width="1"
+                      stroke-dasharray="2 2"
+                    />
+                    <g class="pq-dot" transform="translate(124 56)">
+                      <circle
+                        class="pq-dot-pulse"
+                        r="3"
+                        fill="#8b5cf6"
+                        stroke="#fff"
+                        stroke-width="1"
+                      />
+                    </g>
+                  </svg>
+                  <span
+                    class="pq-chip absolute whitespace-nowrap rounded bg-white border border-gray-100 shadow-md px-1.5 py-0.5 text-xs tabular-nums text-gray-700"
+                    style="left: 64%; bottom: 44%;">
+                    41.2 l/s at 15 m
+                  </span>
+                </div>
+                <p class="text-sm text-gray-400 text-right">Flow (l/s)</p>
+              </div>
+            </div>
+          </foreignObject>
+        </svg>
       </div>
     </div>
   )
