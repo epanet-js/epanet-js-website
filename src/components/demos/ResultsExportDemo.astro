@@ -39,7 +39,7 @@ const files = [
             <p class="text-sm text-gray-400">All timesteps</p>
           </div>
           <div class="py-1">
-            <div class="flex items-center gap-1.5 px-4 py-2.5">
+            <div class="flex items-center gap-2 px-4 py-2.5">
               {
                 formats.map((format, i) => (
                   <span class="relative">
@@ -56,12 +56,12 @@ const files = [
             </div>
             {
               files.map((file, i) => (
-                <div class={`rex-row-${i + 1} flex items-center gap-3 px-4 py-2.5`}>
+                <div class={`rex-row-${i + 1} flex items-center gap-2 px-4 py-2.5`}>
                   <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-50 text-purple-600">
                     <FileText size={14} />
                   </span>
                   <span class="text-sm font-medium text-gray-700">{file.name}</span>
-                  <span class="text-sm text-gray-400">{file.size}</span>
+                  <span class="text-sm text-gray-400 tabular-nums">{file.size}</span>
                   <span class="relative ml-auto h-8 w-20 shrink-0">
                     <span class="absolute inset-0 flex items-center justify-end text-sm text-nowrap text-gray-400">
                       Writing…
