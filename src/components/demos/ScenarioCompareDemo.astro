@@ -33,7 +33,7 @@ import AppWindow from "./AppWindow.astro";
     class="absolute top-2 right-2 w-[208px] max-w-[70%] overflow-hidden bg-white rounded-lg border border-gray-100 shadow-md px-3 pt-2.5 pb-2">
     <div class="flex items-baseline justify-between">
       <p class="text-xs font-semibold text-gray-700">Quick graph</p>
-      <p class="text-[10px] text-gray-400">Pressure (m)</p>
+      <p class="text-xs text-gray-400">Pressure (m)</p>
     </div>
     <svg viewBox="0 0 200 70" class="w-full mt-1.5" aria-hidden="true">
       <g stroke="#f3f4f6" stroke-width="1">
@@ -56,7 +56,7 @@ import AppWindow from "./AppWindow.astro";
         stroke="#8b5cf6"
         stroke-width="1.5"></polyline>
     </svg>
-    <div class="flex gap-3 text-[10px] text-gray-400 mt-1">
+    <div class="flex gap-3 text-xs text-gray-400 mt-1">
       <span class="flex items-center gap-1">
         <span class="w-2.5 h-0.5 bg-gray-400"></span> Main
       </span>
@@ -73,14 +73,36 @@ import AppWindow from "./AppWindow.astro";
     stroke-dashoffset: 100;
     animation: sc-draw 6s linear infinite both;
   }
+  /* the scenario line still starts growing 0.7s after the main line (baked
+     into its own keyframe below, rather than via animation-delay), but
+     both now fade out together at the main line's own schedule (90%-96%)
+     instead of the scenario line's fade lagging by that same 0.7s. */
   .sc-line-scenario {
-    animation-delay: 0.7s;
+    animation-name: sc-draw-scenario;
   }
   @keyframes sc-draw {
     0% {
       stroke-dashoffset: 100;
     }
     45% {
+      stroke-dashoffset: 0;
+    }
+    90% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    96%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes sc-draw-scenario {
+    0%,
+    11.667% {
+      stroke-dashoffset: 100;
+    }
+    56.667% {
       stroke-dashoffset: 0;
     }
     90% {
