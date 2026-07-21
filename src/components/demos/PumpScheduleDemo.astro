@@ -12,76 +12,83 @@ const { class: className } = Astro.props;
 
 <div
   class:list={[
-    "bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden select-none",
+    "h-80 flex flex-col bg-white rounded-xl border border-gray-200 shadow-lg overflow-hidden select-none",
     className,
   ]}
   role="img"
   aria-label="Pump schedule panel: pump runs on a 24-hour strip with tariff bands, one run shifting out of the peak band and the peak-tariff energy dropping to zero.">
   <div
     class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-    <p class="text-[11px] font-semibold text-gray-700">
+    <p class="text-xs font-semibold text-gray-700">
       Pump schedule · PMP-1
     </p>
-    <p class="text-[10px] text-gray-400">24 h</p>
+    <p class="text-xs text-gray-400">24 h</p>
   </div>
-  <div class="px-3 py-2.5">
+
+  <!-- content: stretches to fill the space the taller card frees up
+       between the (unchanged) header and footer. The strip grows with
+       it (flex-1) instead of staying a fixed 44px bar; the band/run
+       rectangles inside stretch to match (inset-y-0) while their labels
+       (top-0.5) and the hour-tick row below stay put, same as before. -->
+  <div class="flex-1 flex flex-col px-3 py-2.5">
     <!-- 24-hour strip with tariff bands -->
     <div
-      class="relative h-11 overflow-hidden rounded-md border border-gray-100 bg-gray-50">
+      class="relative flex-1 overflow-hidden rounded-md border border-gray-100 bg-gray-50">
       <div
         class="psc-band absolute inset-y-0 left-0 w-1/4 bg-green-50">
         <span
-          class="absolute left-1 top-0.5 text-[8px] font-medium text-green-600">
+          class="absolute left-2 top-1.5 text-xs font-medium text-green-600">
           Off-peak
         </span>
       </div>
       <div
         class="psc-band absolute inset-y-0 left-[66.66%] w-[16.67%] bg-rose-50">
         <span
-          class="absolute left-1 top-0.5 text-[8px] font-medium text-rose-500">
+          class="absolute left-2 top-1.5 text-xs font-medium text-rose-500">
           Peak
         </span>
       </div>
 
       <!-- run blocks -->
       <div
-        class="psc-run-1 absolute left-1/4 top-1/2 h-3.5 w-[16.67%] rounded-sm bg-violet-500/90">
+        class="psc-run-1 absolute top-7 bottom-5 left-1/4 w-[16.67%] rounded-sm bg-violet-500/90">
       </div>
       <div
-        class="psc-run-2 absolute left-[62.5%] top-1/2 h-3.5 w-[16.67%] rounded-sm bg-violet-500/90">
+        class="psc-run-2 absolute top-7 bottom-5 left-[62.5%] w-[16.67%] rounded-sm bg-violet-500/90">
       </div>
       <div
-        class="psc-run-3 absolute left-[4.17%] top-1/2 h-3.5 w-[12.5%] rounded-sm bg-violet-500/90">
+        class="psc-run-3 absolute top-7 bottom-5 left-[4.17%] w-[12.5%] rounded-sm bg-violet-500/90">
       </div>
     </div>
 
     <!-- hour ticks -->
-    <div class="relative mt-0.5 h-3 text-[8px] text-gray-400">
+    <div class="relative mt-0.5 h-3 text-xs text-gray-400">
       <span class="absolute left-0">0</span>
       <span class="absolute left-1/4 -translate-x-1/2">6</span>
       <span class="absolute left-1/2 -translate-x-1/2">12</span>
       <span class="absolute left-3/4 -translate-x-1/2">18</span>
       <span class="absolute right-0">24</span>
     </div>
+  </div>
 
-    <!-- energy readout -->
-    <div
-      class="mt-1.5 flex items-center justify-between border-t border-gray-100 pt-2">
-      <span class="text-[10px] text-gray-500">Peak-tariff energy</span>
-      <span class="flex items-center gap-1.5">
+  <!-- energy readout (footer), pulled out to its own row so it stays a
+       fixed size while the content above stretches -->
+  <div
+    class="flex items-center justify-between border-t border-gray-100 px-3 pt-2 pb-2.5">
+    <span class="text-xs text-gray-500">Peak-tariff energy</span>
+    <span class="flex items-center gap-1.5">
+      <span
+        class="psc-chip whitespace-nowrap rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">
+        Cost −23%
+      </span>
+      <span class="relative text-xs font-medium tabular-nums">
+        <span class="psc-val-old text-gray-700">186 kWh</span>
         <span
-          class="psc-chip whitespace-nowrap rounded-full bg-green-100 px-1.5 py-px text-[9px] font-medium text-green-700">
-          Cost −23%
-        </span>
-        <span class="relative text-[10px] font-medium tabular-nums">
-          <span class="psc-val-old text-gray-700">186 kWh</span>
-          <span
-            class="psc-val-new absolute inset-0 bg-white text-right text-green-600">
-            0 kWh
-          </span>
+          class="psc-val-new absolute inset-0 bg-white text-right text-green-600">
+          143 kWh
         </span>
       </span>
-    </div>
+    </span>
   </div>
 </div>
 
@@ -113,20 +120,20 @@ const { class: className } = Astro.props;
     0%,
     16% {
       opacity: 0;
-      transform: translate(0, -50%) scaleX(0.6);
+      transform: scaleX(0.6);
     }
     22% {
       opacity: 1;
-      transform: translate(0, -50%) scaleX(1);
+      transform: scaleX(1);
     }
     92% {
       opacity: 1;
-      transform: translate(0, -50%) scaleX(1);
+      transform: scaleX(1);
     }
     98%,
     100% {
       opacity: 0;
-      transform: translate(0, -50%) scaleX(1);
+      transform: scaleX(1);
     }
   }
 
@@ -139,32 +146,32 @@ const { class: className } = Astro.props;
     0%,
     22% {
       opacity: 0;
-      transform: translate(0, -50%);
+      transform: translateX(0);
       box-shadow: none;
     }
     28% {
       opacity: 1;
-      transform: translate(0, -50%);
+      transform: translateX(0);
     }
     32%,
     40% {
       box-shadow: 0 0 0 1.5px #f43f5e;
     }
     44% {
-      transform: translate(0, -50%);
+      transform: translateX(0);
     }
     56% {
-      transform: translate(-100%, -50%);
+      transform: translateX(-100%);
       box-shadow: none;
     }
     92% {
       opacity: 1;
-      transform: translate(-100%, -50%);
+      transform: translateX(-100%);
     }
     98%,
     100% {
       opacity: 0;
-      transform: translate(-100%, -50%);
+      transform: translateX(-100%);
     }
   }
 
@@ -176,20 +183,20 @@ const { class: className } = Astro.props;
     0%,
     50% {
       opacity: 0;
-      transform: translate(-60%, -50%);
+      transform: translateX(-60%);
     }
     60% {
       opacity: 1;
-      transform: translate(0, -50%);
+      transform: translateX(0);
     }
     92% {
       opacity: 1;
-      transform: translate(0, -50%);
+      transform: translateX(0);
     }
     98%,
     100% {
       opacity: 0;
-      transform: translate(0, -50%);
+      transform: translateX(0);
     }
   }
 
@@ -267,11 +274,11 @@ const { class: className } = Astro.props;
     .psc-run-1,
     .psc-run-3 {
       opacity: 1;
-      transform: translate(0, -50%);
+      transform: translateX(0);
     }
     .psc-run-2 {
       opacity: 1;
-      transform: translate(-100%, -50%);
+      transform: translateX(-100%);
     }
     .psc-val-old {
       opacity: 0;
