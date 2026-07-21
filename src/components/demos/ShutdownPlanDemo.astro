@@ -5,7 +5,8 @@
 // around the work.
 import { CheckCircle2 } from "lucide-react";
 import AppWindow from "./AppWindow.astro";
-import { pipes } from "./network-geometry";
+import Basemap from "./Basemap.astro";
+import { pipes, junctions } from "./network-geometry";
 
 // The main under repair: pipes 11 and 12, isolated at their outer ends.
 const isolated = [pipes[11], pipes[12]];
@@ -18,14 +19,38 @@ const valves = [
 ---
 
 <AppWindow
-  variant="plain"
+  bare
+  hideHeader
+  hideFooter
   label="Shutdown planning in epanet-js: two valves close, the isolated main grays out with its length and customers affected counted, and a detour supply path draws around it.">
   <svg
     viewBox="0 0 400 300"
     preserveAspectRatio="xMidYMid slice"
     class="absolute inset-0 w-full h-full"
     aria-hidden="true">
-    <!-- isolated segment grays out -->
+    <!-- basemap stays put -- everything else (the network itself, plus
+         this file's own isolated/detour/valve overlay) shifts 16px down
+         together, inside the translate group below. The shp-panel
+         dropdown is a plain HTML div outside this svg entirely, also
+         unaffected. -->
+    <Basemap />
+
+    <g transform="translate(0, 16)">
+    <!-- the network, normally drawn by NetworkMap -- rendered by hand
+         here (AppWindow's bare prop skips NetworkMap) so it can shift
+         down with the rest of this file's content instead of staying
+         fixed with the basemap. -->
+    <g stroke-width="2.5" stroke-linecap="round">
+      {
+        pipes.map(([x1, y1, x2, y2]) => (
+          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#3730a3" />
+        ))
+      }
+    </g>
+
+    <!-- isolated segment grays out (its junction dot is redrawn last,
+         below, so it stays on top of every asset instead of just the
+         detour/valve elements that happen to come after it here) -->
     <g class="shp-isolated">
       {
         isolated.map(([x1, y1, x2, y2]) => (
@@ -34,15 +59,13 @@ const valves = [
             y1={y1}
             x2={x2}
             y2={y2}
-            stroke="#d1d5db"
+            stroke="#fca5a5"
             stroke-width="3"
             stroke-linecap="round"
             stroke-dasharray="6 4"
           />
         ))
       }
-      <circle cx="240" cy="210" r="3.5" fill="#9ca3af" stroke="#ffffff" stroke-width="1"
-      ></circle>
     </g>
 
     <!-- detour supply path around the isolation -->
@@ -51,27 +74,13 @@ const valves = [
       pathLength="100"
       points="170,200 160,140 230,150"
       fill="none"
-      stroke="#8b5cf6"
+      stroke="#22c55e"
       stroke-width="3"
       stroke-linecap="round"
       stroke-linejoin="round"
       opacity="0.9"></polyline>
 
     <!-- valves pop in, then close -->
-    {
-      valves.map(({ x, y }, i) => (
-        <circle
-          class="shp-ring"
-          cx={x}
-          cy={y}
-          r="7"
-          fill="none"
-          stroke="#ef4444"
-          stroke-width="1.5"
-          style={`animation-delay: ${(i * 0.48).toFixed(2)}s`}
-        />
-      ))
-    }
     {
       valves.map(({ x, y }, i) => (
         <rect
@@ -86,26 +95,73 @@ const valves = [
         />
       ))
     }
+
+    <!-- all junction dots drawn last, on top of every pipe/detour/valve
+         asset above -- matching NetworkMap's own convention of junction
+         dots sitting above pipes. Since the whole network is now drawn by
+         hand in this file (see above), this covers every junction, not
+         just the handful along the isolated segment/detour that used to
+         need a manual patch. -->
+    <g stroke="#ffffff" stroke-width="1">
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r="3.5" fill="#312e81" />
+        ))
+      }
+    </g>
+
+    <!-- tank, matching NetworkMap's own fixed triangle glyph -->
+    <path
+      d="M40 42 L48 56 L32 56 Z"
+      fill="#312e81"
+      stroke="#ffffff"
+      stroke-width="1"></path>
+
+    <!-- the isolated segment's own junction overrides the plain navy dot
+         above with its muted "shut off" look -->
+    <circle
+      class="shp-isolated"
+      cx="240"
+      cy="210"
+      r="3.5"
+      fill="#9ca3af"
+      stroke="#ffffff"
+      stroke-width="1"></circle>
+
+    <!-- valve rings, drawn last so they flare on top of the valves too -->
+    {
+      valves.map(({ x, y }, i) => (
+        <circle
+          class="shp-ring"
+          cx={x}
+          cy={y}
+          r="7"
+          fill="none"
+          stroke="#ef4444"
+          stroke-width="1.5"
+          style={`animation-delay: ${(i * 0.48).toFixed(2)}s`}
+        />
+      ))
+    }
+    </g>
   </svg>
 
   <!-- shutdown plan panel -->
   <div
-    class="shp-panel absolute top-2 right-2 w-[190px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    class="shp-panel absolute top-2 right-2 w-[192px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
     <div
       class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-      <p class="text-[11px] font-semibold text-gray-700">Shutdown plan</p>
-      <p class="text-[10px] text-gray-400">Main repair</p>
+      <p class="text-xs font-semibold text-gray-700">Shutdown plan</p>
+      <p class="text-xs text-gray-400">Main repair</p>
     </div>
-    <div class="py-1 text-[10px]">
+    <div class="py-1 text-xs">
       {
         [
           { label: "Valves to close", value: "2" },
           { label: "Isolated length", value: "412 m" },
           { label: "Customers affected", value: "28" },
         ].map((row, i) => (
-          <div
-            class="shp-row flex items-center justify-between px-3 py-1"
-            style={`animation-delay: ${(i * 0.7).toFixed(2)}s`}>
+          <div class={`shp-row-${i + 1} flex items-center justify-between px-3 py-1`}>
             <span class="text-gray-500">{row.label}</span>
             <span class="font-medium text-gray-700 tabular-nums">
               {row.value}
@@ -115,7 +171,7 @@ const valves = [
       }
     </div>
     <p
-      class="shp-footer flex items-center gap-1 px-3 py-1.5 border-t border-gray-100 text-[10px] text-green-600">
+      class="shp-footer flex items-center gap-1 px-3 py-1.5 border-t border-gray-100 text-xs text-green-600">
       <CheckCircle2 size={11} />
       Detour available
     </p>
@@ -129,47 +185,47 @@ const valves = [
     transform-origin: center;
   }
   .shp-valve-1 {
-    animation: shp-valve-1 8s ease-out infinite both;
+    animation: shp-valve-1 10s ease-out infinite both;
   }
   .shp-valve-2 {
-    animation: shp-valve-2 8s ease-out infinite both;
+    animation: shp-valve-2 10s ease-out infinite both;
   }
   @keyframes shp-valve-1 {
-    0%, 8% { opacity: 0; transform: scale(0); fill: #ffffff; }
-    12% { opacity: 1; transform: scale(1.2); fill: #ffffff; }
-    14% { transform: scale(1); }
-    20% { fill: #ffffff; }
-    24% { fill: #ef4444; }
-    92% { opacity: 1; fill: #ef4444; }
-    98%, 100% { opacity: 0; fill: #ef4444; }
+    0%, 6.4% { opacity: 0; transform: scale(0); fill: #ffffff; }
+    9.6% { opacity: 1; transform: scale(1.2); fill: #ffffff; }
+    11.2% { transform: scale(1); }
+    16% { fill: #ffffff; }
+    19.2% { fill: #ef4444; }
+    93.6% { opacity: 1; fill: #ef4444; }
+    98.4%, 100% { opacity: 0; fill: #ef4444; }
   }
   @keyframes shp-valve-2 {
-    0%, 14% { opacity: 0; transform: scale(0); fill: #ffffff; }
-    18% { opacity: 1; transform: scale(1.2); fill: #ffffff; }
-    20% { transform: scale(1); }
-    26% { fill: #ffffff; }
-    30% { fill: #ef4444; }
-    92% { opacity: 1; fill: #ef4444; }
-    98%, 100% { opacity: 0; fill: #ef4444; }
+    0%, 11.2% { opacity: 0; transform: scale(0); fill: #ffffff; }
+    14.4% { opacity: 1; transform: scale(1.2); fill: #ffffff; }
+    16% { transform: scale(1); }
+    20.8% { fill: #ffffff; }
+    24% { fill: #ef4444; }
+    93.6% { opacity: 1; fill: #ef4444; }
+    98.4%, 100% { opacity: 0; fill: #ef4444; }
   }
 
   /* a ring flares as each valve shuts */
   .shp-ring {
     transform-box: fill-box;
     transform-origin: center;
-    animation: shp-ring-flare 8s ease-out infinite both;
+    animation: shp-ring-flare 10s ease-out infinite both;
   }
   @keyframes shp-ring-flare {
     0%,
-    20% {
+    16% {
       opacity: 0;
       transform: scale(0.6);
     }
-    24% {
+    19.2% {
       opacity: 0.8;
       transform: scale(1);
     }
-    32% {
+    25.6% {
       opacity: 0;
       transform: scale(2);
     }
@@ -179,20 +235,20 @@ const valves = [
   }
 
   .shp-isolated {
-    animation: shp-isolated-in 8s ease-in-out infinite both;
+    animation: shp-isolated-in 10s ease-in-out infinite both;
   }
   @keyframes shp-isolated-in {
     0%,
-    32% {
+    25.6% {
       opacity: 0;
     }
-    42% {
+    33.6% {
       opacity: 1;
     }
-    92% {
+    93.6% {
       opacity: 1;
     }
-    98%,
+    98.4%,
     100% {
       opacity: 0;
     }
@@ -201,22 +257,22 @@ const valves = [
   .shp-detour {
     stroke-dasharray: 100;
     stroke-dashoffset: 100;
-    animation: shp-detour-draw 8s linear infinite both;
+    animation: shp-detour-draw 10s linear infinite both;
   }
   @keyframes shp-detour-draw {
     0%,
-    56% {
+    44.8% {
       stroke-dashoffset: 100;
       opacity: 0.9;
     }
-    74% {
+    59.2% {
       stroke-dashoffset: 0;
     }
-    92% {
+    93.6% {
       stroke-dashoffset: 0;
       opacity: 0.9;
     }
-    98%,
+    98.4%,
     100% {
       stroke-dashoffset: 0;
       opacity: 0;
@@ -224,63 +280,114 @@ const valves = [
   }
 
   .shp-panel {
-    animation: shp-panel-in 8s ease-out infinite both;
+    animation: shp-panel-in 10s ease-out infinite both;
   }
   @keyframes shp-panel-in {
     0% {
       opacity: 0;
       transform: translateY(4px);
     }
-    6% {
+    4.8% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    93.6% {
+      opacity: 1;
+    }
+    98.4%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* rows used to wait until 32% (2.56s) to start appearing, staggered
+     further via animation-delay -- with the panel itself open since 6%
+     (0.48s), that left a 2s+ stretch where the popover showed only its
+     header. They now enter right after the panel opens instead, each with
+     its own keyframe (baked-in stagger, no animation-delay) so all three
+     share the exact same fade-out window as everything else -- the old
+     per-row delay also pushed each row's fade-out later than the panel's
+     own, so later rows were still fading out after the panel had already
+     closed. */
+  .shp-row-1 {
+    animation: shp-row-1 10s ease-out infinite both;
+  }
+  @keyframes shp-row-1 {
+    0%,
+    8% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    12.8% {
       opacity: 1;
       transform: translateY(0);
     }
     92% {
       opacity: 1;
     }
-    98%,
+    96.8%,
     100% {
       opacity: 0;
     }
   }
-
-  .shp-row {
-    animation: shp-row-in 8s ease-out infinite both;
+  .shp-row-2 {
+    animation: shp-row-2 10s ease-out infinite both;
   }
-  @keyframes shp-row-in {
+  @keyframes shp-row-2 {
     0%,
-    32% {
+    12.8% {
       opacity: 0;
       transform: translateY(4px);
     }
-    37% {
+    17.6% {
       opacity: 1;
       transform: translateY(0);
     }
-    90% {
+    92% {
       opacity: 1;
     }
-    96%,
+    96.8%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .shp-row-3 {
+    animation: shp-row-3 10s ease-out infinite both;
+  }
+  @keyframes shp-row-3 {
+    0%,
+    17.6% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    22.4% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    96.8%,
     100% {
       opacity: 0;
     }
   }
 
   .shp-footer {
-    animation: shp-footer-in 8s ease-out infinite both;
+    animation: shp-footer-in 10s ease-out infinite both;
   }
   @keyframes shp-footer-in {
     0%,
-    78% {
+    62.4% {
       opacity: 0;
     }
-    84% {
+    67.2% {
       opacity: 1;
     }
-    92% {
+    93.6% {
       opacity: 1;
     }
-    98%,
+    98.4%,
     100% {
       opacity: 0;
     }
@@ -293,7 +400,9 @@ const valves = [
     .shp-isolated,
     .shp-detour,
     .shp-panel,
-    .shp-row,
+    .shp-row-1,
+    .shp-row-2,
+    .shp-row-3,
     .shp-footer {
       animation: none;
     }
@@ -308,7 +417,9 @@ const valves = [
     }
     .shp-isolated,
     .shp-panel,
-    .shp-row,
+    .shp-row-1,
+    .shp-row-2,
+    .shp-row-3,
     .shp-footer {
       opacity: 1;
       transform: none;
