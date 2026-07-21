@@ -5,22 +5,24 @@
 import AppWindow from "./AppWindow.astro";
 import { pipes } from "./network-geometry";
 
-// Pipes beyond the closed valve, ordered outward; the delay staggers the
-// gray-out so it spreads away from the valve.
+// Pipes beyond the closed valve, ordered outward; each one's gray-out
+// stagger is baked into its own numbered keyframe (vc-pipe-out-N) below,
+// so it spreads away from the valve without an animation-delay shifting
+// its fade-out out of sync with the rest of the diagram.
 const findPipe = (x1: number, y1: number, x2: number, y2: number) =>
   pipes.find(([a, b, c, d]) => a === x1 && b === y1 && c === x2 && d === y2)!;
 
 const outOfServicePipes = [
-  { pipe: findPipe(270, 65, 330, 80), delay: 0 },
-  { pipe: findPipe(310, 160, 330, 80), delay: 0.15 },
-  { pipe: findPipe(310, 160, 360, 150), delay: 0.3 },
+  { pipe: findPipe(270, 65, 330, 80) },
+  { pipe: findPipe(310, 160, 330, 80) },
+  { pipe: findPipe(310, 160, 360, 150) },
 ];
 
 // Junctions that lose supply, in the same outward order.
-const outOfServiceNodes: { x: number; y: number; delay: number }[] = [
-  { x: 330, y: 80, delay: 0.15 },
-  { x: 310, y: 160, delay: 0.3 },
-  { x: 360, y: 150, delay: 0.45 },
+const outOfServiceNodes: { x: number; y: number }[] = [
+  { x: 330, y: 80 },
+  { x: 310, y: 160 },
+  { x: 360, y: 150 },
 ];
 
 const rows = [
@@ -32,6 +34,8 @@ const rows = [
 
 <AppWindow
   variant="plain"
+  hideHeader
+  hideFooter
   label="Valve criticality concept in epanet-js: closing one valve isolates part of the network and reports the customers affected.">
   <!-- map overlay: closed valve, out-of-service segment, isolation rings -->
   <svg
@@ -42,30 +46,23 @@ const rows = [
     <!-- pipes dropping out of service -->
     <g stroke="#d1d5db" stroke-width="2.5" stroke-linecap="round">
       {
-        outOfServicePipes.map(({ pipe: [x1, y1, x2, y2], delay }) => (
-          <line
-            class="vc-pipe-out"
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            style={`animation-delay: ${delay}s`}
-          />
+        outOfServicePipes.map(({ pipe: [x1, y1, x2, y2] }, i) => (
+          <line class={`vc-pipe-out-${i + 1}`} x1={x1} y1={y1} x2={x2} y2={y2} />
         ))
       }
     </g>
 
+    <!-- the still-in-service junction at the near end of the pipe run
+         (270,65) -- NetworkMap draws this first, so the gray out-of-
+         service line above would otherwise cover it. Matches NetworkMap's
+         own junction styling exactly. -->
+    <circle cx="270" cy="65" r="3.5" fill="#312e81" stroke="#ffffff" stroke-width="1" />
+
     <!-- junctions losing supply -->
     <g fill="#9ca3af" stroke="#ffffff" stroke-width="1">
       {
-        outOfServiceNodes.map(({ x, y, delay }) => (
-          <circle
-            class="vc-pipe-out"
-            cx={x}
-            cy={y}
-            r="3.5"
-            style={`animation-delay: ${delay}s`}
-          />
+        outOfServiceNodes.map(({ x, y }, i) => (
+          <circle class={`vc-node-out-${i + 1}`} cx={x} cy={y} r="3.5" />
         ))
       }
     </g>
@@ -74,13 +71,7 @@ const rows = [
     <g fill="none" stroke="#ef4444" stroke-width="1.5">
       {
         outOfServiceNodes.map(({ x, y }, i) => (
-          <circle
-            class="vc-ring"
-            cx={x}
-            cy={y}
-            r="6"
-            style={`animation-delay: ${i * 0.15}s`}
-          />
+          <circle class={`vc-ring-${i + 1}`} cx={x} cy={y} r="6" />
         ))
       }
     </g>
@@ -114,18 +105,16 @@ const rows = [
 
   <!-- results panel -->
   <div
-    class="absolute top-2 right-2 w-[200px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    class="absolute bottom-2 left-2 w-[200px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
     <div
       class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
-      <p class="text-[11px] font-semibold text-gray-700">Valve criticality</p>
-      <p class="text-[10px] text-gray-400">V-114</p>
+      <p class="text-xs font-semibold text-gray-700">Valve criticality</p>
+      <p class="text-xs text-gray-400">V-114</p>
     </div>
-    <div class="py-1 text-[10px]">
+    <div class="py-1 text-xs">
       {
         rows.map((row, i) => (
-          <div
-            class="vc-row flex items-center justify-between px-3 py-1"
-            style={`animation-delay: ${i * 0.6}s`}>
+          <div class={`vc-row-${i + 1} flex items-center justify-between px-3 py-1`}>
             <span class="text-gray-500">{row.label}</span>
             <span class="font-medium text-gray-700 tabular-nums">
               {row.value}
@@ -136,7 +125,7 @@ const rows = [
     </div>
     <div class="px-3 py-2 border-t border-gray-100">
       <span
-        class="vc-pill inline-block rounded-full bg-red-100 text-red-600 text-[10px] font-medium px-2 py-0.5">
+        class="vc-pill inline-block rounded-full bg-red-100 text-red-600 text-xs font-medium px-2.5 py-1">
         Critical
       </span>
     </div>
@@ -144,35 +133,84 @@ const rows = [
 </AppWindow>
 
 <style>
-  .vc-pipe-out {
-    animation: vc-pipe-out 7s infinite both;
+  /* each pipe/node/ring/row used to share one keyframe with its own
+     animation-delay -- that shifts the whole curve, including the
+     92%/100% fade-out, so the most-delayed instances were still visible
+     after the un-delayed valve had already reset. Each now has its own
+     keyframe with the stagger baked into its entrance timing only; the
+     shared fade-out point stays unshifted for every instance, matching
+     the valve.
+     9s cycle: the original 7s sequence rescaled by 7/9 so every event
+     keeps its absolute-second pacing, with the shared hold-before-fade
+     marker (92% of the old 7s) pushed back an extra 2s (to 93.778% of
+     the new 9s) so everything holds at full state for 2s longer before
+     the fade-out, which keeps its original ~0.56s duration. */
+  .vc-pipe-out-1 {
+    animation: vc-pipe-out-1 9s infinite both;
   }
-  @keyframes vc-pipe-out {
-    0%,
-    12% {
-      opacity: 0;
-    }
-    20% {
-      opacity: 1;
-    }
-    92% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
+  .vc-pipe-out-2 {
+    animation: vc-pipe-out-2 9s infinite both;
+  }
+  .vc-pipe-out-3 {
+    animation: vc-pipe-out-3 9s infinite both;
+  }
+  @keyframes vc-pipe-out-1 {
+    0%, 9.333% { opacity: 0; }
+    15.556% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vc-pipe-out-2 {
+    0%, 11% { opacity: 0; }
+    17.222% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vc-pipe-out-3 {
+    0%, 12.667% { opacity: 0; }
+    18.889% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .vc-node-out-1 {
+    animation: vc-node-out-1 9s infinite both;
+  }
+  .vc-node-out-2 {
+    animation: vc-node-out-2 9s infinite both;
+  }
+  .vc-node-out-3 {
+    animation: vc-node-out-3 9s infinite both;
+  }
+  @keyframes vc-node-out-1 {
+    0%, 11% { opacity: 0; }
+    17.222% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vc-node-out-2 {
+    0%, 12.667% { opacity: 0; }
+    18.889% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vc-node-out-3 {
+    0%, 14.334% { opacity: 0; }
+    20.556% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
   }
 
   .vc-valve-gray {
-    animation: vc-valve-gray 7s infinite both;
+    animation: vc-valve-gray 9s infinite both;
   }
   @keyframes vc-valve-gray {
     0%,
-    4% {
+    3.111% {
       opacity: 1;
     }
-    12%,
-    92% {
+    9.333%,
+    93.778% {
       opacity: 0;
     }
     100% {
@@ -183,26 +221,26 @@ const rows = [
   .vc-valve-red {
     transform-box: fill-box;
     transform-origin: center;
-    animation: vc-valve-red 7s infinite both;
+    animation: vc-valve-red 9s infinite both;
   }
   @keyframes vc-valve-red {
     0%,
-    4% {
+    3.111% {
       opacity: 0;
       transform: scale(1);
     }
-    8% {
+    6.222% {
       opacity: 0.7;
       transform: scale(1.45);
     }
-    12% {
+    9.333% {
       opacity: 1;
       transform: scale(1.15);
     }
-    16% {
+    12.444% {
       transform: scale(1);
     }
-    92% {
+    93.778% {
       opacity: 1;
       transform: scale(1);
     }
@@ -212,88 +250,104 @@ const rows = [
     }
   }
 
-  .vc-ring {
+  .vc-ring-1,
+  .vc-ring-2,
+  .vc-ring-3 {
     transform-box: fill-box;
     transform-origin: center;
-    animation: vc-ring 7s infinite both;
   }
-  @keyframes vc-ring {
-    0%,
-    28% {
-      opacity: 0;
-      transform: scale(0.4);
-    }
-    33% {
-      opacity: 1;
-      transform: scale(1.25);
-    }
-    38% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.18);
-    }
-    62% {
-      transform: scale(1);
-    }
-    74% {
-      transform: scale(1.18);
-    }
-    86% {
-      transform: scale(1);
-    }
-    92% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(1);
-    }
+  .vc-ring-1 {
+    animation: vc-ring-1 9s infinite both;
+  }
+  .vc-ring-2 {
+    animation: vc-ring-2 9s infinite both;
+  }
+  .vc-ring-3 {
+    animation: vc-ring-3 9s infinite both;
+  }
+  @keyframes vc-ring-1 {
+    0%, 21.778% { opacity: 0; transform: scale(0.4); }
+    25.667% { opacity: 1; transform: scale(1.25); }
+    29.556% { transform: scale(1); }
+    38.889% { transform: scale(1.18); }
+    48.222% { transform: scale(1); }
+    57.556% { transform: scale(1.18); }
+    66.889% { transform: scale(1); }
+    93.778% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
+  }
+  @keyframes vc-ring-2 {
+    0%, 23.445% { opacity: 0; transform: scale(0.4); }
+    27.333% { opacity: 1; transform: scale(1.25); }
+    31.222% { transform: scale(1); }
+    40.556% { transform: scale(1.18); }
+    49.889% { transform: scale(1); }
+    59.222% { transform: scale(1.18); }
+    68.556% { transform: scale(1); }
+    93.778% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
+  }
+  @keyframes vc-ring-3 {
+    0%, 25.111% { opacity: 0; transform: scale(0.4); }
+    29% { opacity: 1; transform: scale(1.25); }
+    32.889% { transform: scale(1); }
+    42.222% { transform: scale(1.18); }
+    51.556% { transform: scale(1); }
+    60.889% { transform: scale(1.18); }
+    70.222% { transform: scale(1); }
+    93.778% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
   }
 
-  .vc-row {
-    animation: vc-row-in 7s infinite both;
+  .vc-row-1 {
+    animation: vc-row-1 9s infinite both;
   }
-  @keyframes vc-row-in {
-    0%,
-    35% {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    42% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    92% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
+  .vc-row-2 {
+    animation: vc-row-2 9s infinite both;
+  }
+  .vc-row-3 {
+    animation: vc-row-3 9s infinite both;
+  }
+  @keyframes vc-row-1 {
+    0%, 27.222% { opacity: 0; transform: translateY(4px); }
+    32.667% { opacity: 1; transform: translateY(0); }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vc-row-2 {
+    0%, 33.889% { opacity: 0; transform: translateY(4px); }
+    39.333% { opacity: 1; transform: translateY(0); }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vc-row-3 {
+    0%, 40.556% { opacity: 0; transform: translateY(4px); }
+    46% { opacity: 1; transform: translateY(0); }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
   }
 
   .vc-pill {
-    animation: vc-pill 7s infinite both;
+    animation: vc-pill 9s infinite both;
   }
   @keyframes vc-pill {
     0%,
-    60% {
+    46.667% {
       opacity: 0;
     }
-    66% {
+    51.333% {
       opacity: 1;
     }
-    74% {
+    57.556% {
       opacity: 0.55;
     }
-    82% {
+    63.778% {
       opacity: 1;
     }
-    88% {
+    68.444% {
       opacity: 0.6;
     }
-    92% {
+    93.778% {
       opacity: 1;
     }
     100% {
@@ -302,15 +356,29 @@ const rows = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .vc-pipe-out,
+    .vc-pipe-out-1,
+    .vc-pipe-out-2,
+    .vc-pipe-out-3,
+    .vc-node-out-1,
+    .vc-node-out-2,
+    .vc-node-out-3,
     .vc-valve-gray,
     .vc-valve-red,
-    .vc-ring,
-    .vc-row,
+    .vc-ring-1,
+    .vc-ring-2,
+    .vc-ring-3,
+    .vc-row-1,
+    .vc-row-2,
+    .vc-row-3,
     .vc-pill {
       animation: none;
     }
-    .vc-pipe-out {
+    .vc-pipe-out-1,
+    .vc-pipe-out-2,
+    .vc-pipe-out-3,
+    .vc-node-out-1,
+    .vc-node-out-2,
+    .vc-node-out-3 {
       opacity: 1;
     }
     .vc-valve-gray {
@@ -320,11 +388,15 @@ const rows = [
       opacity: 1;
       transform: scale(1);
     }
-    .vc-ring {
+    .vc-ring-1,
+    .vc-ring-2,
+    .vc-ring-3 {
       opacity: 1;
       transform: scale(1);
     }
-    .vc-row {
+    .vc-row-1,
+    .vc-row-2,
+    .vc-row-3 {
       opacity: 1;
       transform: translateY(0);
     }
