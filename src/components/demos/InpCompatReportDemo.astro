@@ -178,7 +178,7 @@ const label =
         <div class="overflow-hidden">
           <div>
             {rows.map((row, i) => (
-              <div class={`inp-row inp-row-${i} border-t border-gray-50 first:border-t-0 px-3 py-1.5`}>
+              <div class={`inp-row inp-row-${i} px-3 py-1.5`}>
                 <div
                   class:list={[
                     "flex items-center justify-between text-[12px]",
@@ -203,7 +203,7 @@ const label =
               </div>
             ))}
           </div>
-          <div class={`inp-row inp-row-${rows.length} flex px-3 pt-1.5 pb-2.5 border-t border-gray-50`}>
+          <div class={`inp-row inp-row-${rows.length} flex px-3 pt-1.5 pb-2.5 border-t border-gray-100`}>
             <span class="inp-open rounded bg-violet-600 text-white text-[12px] font-medium px-2.5 py-1">
               Review model
             </span>
