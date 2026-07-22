@@ -11,11 +11,21 @@ import type { Locale, TranslationKey } from "@i18n/utils";
 
 type CellValue = "yes" | "no" | "coming-soon";
 
-interface ComparisonRow {
+interface ComparisonFeatureRow {
   key: TranslationKey;
   indent?: boolean;
   values: [CellValue, CellValue, CellValue]; // [free, pro, teams]
 }
+
+// A sub-group label within a section (e.g. "Allocation" under "Demand
+// management"): rendered as its own row with no check marks, followed by
+// its member rows indented.
+interface ComparisonSubheadingRow {
+  key: TranslationKey;
+  heading: true;
+}
+
+type ComparisonRow = ComparisonFeatureRow | ComparisonSubheadingRow;
 
 interface ComparisonSection {
   titleKey: TranslationKey;
@@ -24,39 +34,42 @@ interface ComparisonSection {
 
 const comparisonSections: ComparisonSection[] = [
   {
-    titleKey: "pricingTable.simulation.title",
+    titleKey: "pricingTable.platform.title",
     rows: [
-      { key: "pricingTable.simulation.feature1", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.simulation.feature2", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.simulation.feature3", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.simulation.feature4", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.simulation.feature5", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.simulation.feature6", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.simulation.feature7", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.platform.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.platform.feature2", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.platform.feature3", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.platform.feature4", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.platform.feature5", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.platform.feature6", values: ["yes", "yes", "yes"] },
+    ],
+  },
+  {
+    titleKey: "pricingTable.simulationEngine.title",
+    rows: [
+      { key: "pricingTable.simulationEngine.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulationEngine.feature2", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulationEngine.feature3", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulationEngine.feature4", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulationEngine.feature5", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulationEngine.feature6", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulationEngine.feature7", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulationEngine.feature8", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.simulationEngine.feature9", values: ["no", "coming-soon", "coming-soon"] },
     ],
   },
   {
     titleKey: "pricingTable.networkEditing.title",
     rows: [
       { key: "pricingTable.networkEditing.feature1", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.networkEditing.feature2", indent: true, values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.networkEditing.feature3", indent: true, values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.networkEditing.feature4", indent: true, values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.networkEditing.feature5", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature2", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature3", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature4", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature5", values: ["yes", "yes", "yes"] },
       { key: "pricingTable.networkEditing.feature6", values: ["yes", "yes", "yes"] },
       { key: "pricingTable.networkEditing.feature7", values: ["yes", "yes", "yes"] },
       { key: "pricingTable.networkEditing.feature8", values: ["yes", "yes", "yes"] },
-    ],
-  },
-  {
-    titleKey: "pricingTable.customerPoints.title",
-    rows: [
-      { key: "pricingTable.customerPoints.feature1", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.customerPoints.feature2", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.customerPoints.feature3", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.customerPoints.feature4", indent: true, values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.customerPoints.feature5", indent: true, values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.customerPoints.feature6", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.networkEditing.feature9", values: ["yes", "yes", "yes"] },
     ],
   },
   {
@@ -65,8 +78,21 @@ const comparisonSections: ComparisonSection[] = [
       { key: "pricingTable.elementProperties.feature1", values: ["yes", "yes", "yes"] },
       { key: "pricingTable.elementProperties.feature2", values: ["yes", "yes", "yes"] },
       { key: "pricingTable.elementProperties.feature3", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.elementProperties.feature4", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.elementProperties.feature4", values: ["yes", "yes", "yes"] },
       { key: "pricingTable.elementProperties.feature5", values: ["no", "yes", "yes"] },
+    ],
+  },
+  {
+    titleKey: "pricingTable.demandManagement.title",
+    rows: [
+      { key: "pricingTable.demandManagement.customerPointsTitle", heading: true },
+      { key: "pricingTable.demandManagement.feature1", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.demandManagement.feature2", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.demandManagement.feature3", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.demandManagement.allocationTitle", heading: true },
+      { key: "pricingTable.demandManagement.feature4", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.demandManagement.feature5", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.demandManagement.feature6", indent: true, values: ["yes", "yes", "yes"] },
     ],
   },
   {
@@ -74,8 +100,8 @@ const comparisonSections: ComparisonSection[] = [
     rows: [
       { key: "pricingTable.dataLibraries.feature1", values: ["yes", "yes", "yes"] },
       { key: "pricingTable.dataLibraries.feature2", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.dataLibraries.feature3", values: ["no", "yes", "yes"] },
-      { key: "pricingTable.dataLibraries.feature4", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.dataLibraries.feature3", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataLibraries.feature4", values: ["yes", "yes", "yes"] },
       { key: "pricingTable.dataLibraries.feature5", values: ["no", "coming-soon", "coming-soon"] },
     ],
   },
@@ -86,49 +112,61 @@ const comparisonSections: ComparisonSection[] = [
       { key: "pricingTable.dataExchange.feature2", values: ["yes", "yes", "yes"] },
       { key: "pricingTable.dataExchange.feature3", values: ["yes", "yes", "yes"] },
       { key: "pricingTable.dataExchange.feature4", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.dataExchange.feature5", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.dataExchange.feature5", values: ["no", "coming-soon", "coming-soon"] },
+      { key: "pricingTable.dataExchange.elevationDataTitle", heading: true },
       { key: "pricingTable.dataExchange.feature6", indent: true, values: ["yes", "yes", "yes"] },
       { key: "pricingTable.dataExchange.feature7", indent: true, values: ["no", "yes", "yes"] },
-      { key: "pricingTable.dataExchange.feature8", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.dataExchange.feature9", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.dataExchange.feature10", values: ["no", "coming-soon", "coming-soon"] },
+    ],
+  },
+  {
+    titleKey: "pricingTable.modelBuilding.title",
+    rows: [
+      { key: "pricingTable.modelBuilding.feature1", values: ["yes", "no", "no"] },
+      { key: "pricingTable.modelBuilding.feature2", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.modelBuilding.feature3", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.modelBuilding.feature4", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.modelBuilding.feature5", values: ["no", "yes", "yes"] },
     ],
   },
   {
     titleKey: "pricingTable.resultsVisualization.title",
     rows: [
-      { key: "pricingTable.resultsVisualization.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.mapLayersTitle", heading: true },
+      { key: "pricingTable.resultsVisualization.feature1", indent: true, values: ["yes", "yes", "yes"] },
       { key: "pricingTable.resultsVisualization.feature2", indent: true, values: ["yes", "yes", "yes"] },
       { key: "pricingTable.resultsVisualization.feature3", indent: true, values: ["no", "yes", "yes"] },
       { key: "pricingTable.resultsVisualization.feature4", indent: true, values: ["no", "yes", "yes"] },
       { key: "pricingTable.resultsVisualization.feature5", indent: true, values: ["no", "coming-soon", "coming-soon"] },
-      { key: "pricingTable.resultsVisualization.feature6", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.resultsVisualization.feature7", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.resultsVisualization.feature8", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.resultsVisualization.feature9", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.resultsVisualization.feature10", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.symbologyTitle", heading: true },
+      { key: "pricingTable.resultsVisualization.feature6", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature7", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature8", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.chartsTablesTitle", heading: true },
+      { key: "pricingTable.resultsVisualization.feature9", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature10", indent: true, values: ["yes", "yes", "yes"] },
       { key: "pricingTable.resultsVisualization.feature11", indent: true, values: ["yes", "yes", "yes"] },
       { key: "pricingTable.resultsVisualization.feature12", indent: true, values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.resultsVisualization.feature13", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.resultsVisualization.feature14", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.resultsVisualization.feature15", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.resultsVisualization.feature13", indent: true, values: ["yes", "yes", "yes"] },
     ],
   },
   {
-    titleKey: "pricingTable.networkReviewAnalysis.title",
+    titleKey: "pricingTable.advAnalysisOperations.title",
     rows: [
-      { key: "pricingTable.networkReviewAnalysis.feature1", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.networkReviewAnalysis.feature2", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.networkReviewAnalysis.feature3", indent: true, values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.networkReviewAnalysis.feature4", indent: true, values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.networkReviewAnalysis.feature5", indent: true, values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.networkReviewAnalysis.feature6", indent: true, values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.networkReviewAnalysis.feature7", values: ["no", "yes", "yes"] },
-      { key: "pricingTable.networkReviewAnalysis.feature8", indent: true, values: ["no", "yes", "yes"] },
-      { key: "pricingTable.networkReviewAnalysis.feature9", indent: true, values: ["no", "yes", "yes"] },
-      { key: "pricingTable.networkReviewAnalysis.feature10", indent: true, values: ["no", "yes", "yes"] },
-      { key: "pricingTable.networkReviewAnalysis.feature11", indent: true, values: ["no", "yes", "yes"] },
-      { key: "pricingTable.networkReviewAnalysis.feature12", values: ["no", "coming-soon", "coming-soon"] },
+      { key: "pricingTable.advAnalysisOperations.networkReviewTitle", heading: true },
+      { key: "pricingTable.advAnalysisOperations.feature1", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.advAnalysisOperations.feature2", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.advAnalysisOperations.feature3", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.advAnalysisOperations.feature4", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.advAnalysisOperations.feature5", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.advAnalysisOperations.feature6", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.advAnalysisOperations.feature7", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.advAnalysisOperations.feature8", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.advAnalysisOperations.feature9", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.advAnalysisOperations.tracingTitle", heading: true },
+      { key: "pricingTable.advAnalysisOperations.feature10", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.advAnalysisOperations.feature11", indent: true, values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.advAnalysisOperations.criticalityTitle", heading: true },
+      { key: "pricingTable.advAnalysisOperations.feature12", indent: true, values: ["no", "coming-soon", "coming-soon"] },
     ],
   },
   {
@@ -142,22 +180,33 @@ const comparisonSections: ComparisonSection[] = [
     ],
   },
   {
-    titleKey: "pricingTable.modelBuilding.title",
+    titleKey: "pricingTable.reportingExports.title",
     rows: [
-      { key: "pricingTable.modelBuilding.feature1", values: ["yes", "no", "no"] },
-      { key: "pricingTable.modelBuilding.feature2", values: ["no", "yes", "yes"] },
-      { key: "pricingTable.modelBuilding.feature3", indent: true, values: ["no", "yes", "yes"] },
-      { key: "pricingTable.modelBuilding.feature4", indent: true, values: ["no", "yes", "yes"] },
-      { key: "pricingTable.modelBuilding.feature5", indent: true, values: ["no", "yes", "yes"] },
+      { key: "pricingTable.reportingExports.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.reportingExports.feature2", values: ["yes", "yes", "yes"] },
     ],
   },
   {
-    titleKey: "pricingTable.teamCollaboration.title",
+    titleKey: "pricingTable.cloudCollaboration.title",
     rows: [
-      { key: "pricingTable.teamCollaboration.feature1", values: ["yes", "yes", "yes"] },
-      { key: "pricingTable.teamCollaboration.feature2", values: ["no", "no", "yes"] },
-      { key: "pricingTable.teamCollaboration.feature3", values: ["no", "no", "coming-soon"] },
-      { key: "pricingTable.teamCollaboration.feature4", values: ["no", "no", "yes"] },
+      { key: "pricingTable.cloudCollaboration.feature1", values: ["no", "no", "yes"] },
+      { key: "pricingTable.cloudCollaboration.feature2", values: ["no", "no", "yes"] },
+      { key: "pricingTable.cloudCollaboration.feature3", values: ["no", "no", "coming-soon"] },
+      { key: "pricingTable.cloudCollaboration.feature4", values: ["no", "coming-soon", "coming-soon"] },
+      { key: "pricingTable.cloudCollaboration.feature5", values: ["no", "no", "coming-soon"] },
+      { key: "pricingTable.cloudCollaboration.feature6", values: ["no", "coming-soon", "coming-soon"] },
+      { key: "pricingTable.cloudCollaboration.feature7", values: ["no", "no", "coming-soon"] },
+    ],
+  },
+  {
+    titleKey: "pricingTable.supportLicensing.title",
+    rows: [
+      { key: "pricingTable.supportLicensing.feature1", values: ["yes", "yes", "yes"] },
+      { key: "pricingTable.supportLicensing.feature2", values: ["no", "yes", "yes"] },
+      { key: "pricingTable.supportLicensing.feature3", values: ["no", "no", "yes"] },
+      { key: "pricingTable.supportLicensing.feature4", values: ["no", "no", "yes"] },
+      { key: "pricingTable.supportLicensing.feature5", values: ["no", "no", "yes"] },
+      { key: "pricingTable.supportLicensing.feature6", values: ["no", "yes", "yes"] },
     ],
   },
 ];
@@ -400,30 +449,44 @@ function PricingComparisonTable({
                   {t(section.titleKey)}
                 </td>
               </tr>,
-              ...section.rows.map((row, i) => (
-                <tr
-                  key={`${section.titleKey}-${i}`}
-                  className="border-b border-gray-100 last:border-0 hover:bg-gray-50/60 transition-colors"
-                >
-                  <td
-                    className={clsx(
-                      "py-3 px-5 text-gray-700 leading-snug",
-                      row.indent && "pl-10 text-gray-500",
-                    )}
+              ...section.rows.map((row, i) =>
+                "heading" in row ? (
+                  <tr
+                    key={`${section.titleKey}-${i}`}
+                    className="border-b border-gray-100 last:border-0 hover:bg-gray-50/60 transition-colors"
                   >
-                    {t(row.key)}
-                  </td>
-                  <td className="py-3 px-4 text-center">
-                    <TableCell value={row.values[0]} t={t} />
-                  </td>
-                  <td className="py-3 px-4 text-center">
-                    <TableCell value={row.values[1]} t={t} />
-                  </td>
-                  <td className="py-3 px-4 text-center">
-                    <TableCell value={row.values[2]} t={t} />
-                  </td>
-                </tr>
-              )),
+                    <td className="py-3 px-5 text-gray-700 leading-snug">
+                      {t(row.key)}
+                    </td>
+                    <td className="py-3 px-4 text-center" />
+                    <td className="py-3 px-4 text-center" />
+                    <td className="py-3 px-4 text-center" />
+                  </tr>
+                ) : (
+                  <tr
+                    key={`${section.titleKey}-${i}`}
+                    className="border-b border-gray-100 last:border-0 hover:bg-gray-50/60 transition-colors"
+                  >
+                    <td
+                      className={clsx(
+                        "py-3 px-5 text-gray-700 leading-snug",
+                        row.indent && "pl-10 text-gray-500",
+                      )}
+                    >
+                      {t(row.key)}
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <TableCell value={row.values[0]} t={t} />
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <TableCell value={row.values[1]} t={t} />
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <TableCell value={row.values[2]} t={t} />
+                    </td>
+                  </tr>
+                ),
+              ),
             ])}
           </tbody>
           {expanded && (
