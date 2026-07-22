@@ -1,0 +1,297 @@
+---
+// Alternate version of CustomerPointsDemo, hanging customer points off the
+// alt network's pipes instead of NetworkMap's. Same timing/panel content;
+// only the 12 points' pipe/t/offset values are re-picked for the alt
+// topology's 16 pipes (west/center-south/east clusters, same spatial
+// grouping idea as the original), and offsets/dot size/connector width are
+// scaled by 1.6x (network-style-alt's SCALE) to match NetworkMapAlt's own
+// weight.
+import { TriangleAlert } from "lucide-react";
+import NetworkMapAlt from "./NetworkMapAlt.astro";
+import { pipes } from "./network-geometry-alt";
+
+// Each customer point hangs off a pipe from the alt network geometry:
+// `pipe` indexes into `pipes`, `t` is the position along the segment, and
+// `offset` is the perpendicular distance in map units (sign picks the
+// side). Grouped into three spatial clusters that pop in west to east.
+const clusters: { pipe: number; t: number; offset: number }[][] = [
+  // west (near the reservoir)
+  [
+    { pipe: 0, t: 0.6, offset: -16 },
+    { pipe: 1, t: 0.4, offset: 17.6 },
+    { pipe: 3, t: 0.5, offset: 15.2 },
+    { pipe: 6, t: 0.35, offset: 17.6 },
+  ],
+  // center and south
+  [
+    { pipe: 4, t: 0.6, offset: 16 },
+    { pipe: 7, t: 0.5, offset: -16 },
+    { pipe: 14, t: 0.45, offset: 17.6 },
+    { pipe: 15, t: 0.4, offset: 19.2 },
+  ],
+  // east
+  [
+    { pipe: 13, t: 0.25, offset: 17.6 },
+    { pipe: 13, t: 0.55, offset: 17.6 },
+    { pipe: 12, t: 0.5, offset: 16 },
+    { pipe: 11, t: 0.6, offset: 17.6 },
+  ],
+];
+
+const round = (n: number) => Math.round(n * 10) / 10;
+const clusterStart = [0.15, 0.9, 1.65];
+
+const points = clusters.flatMap((cluster, ci) =>
+  cluster.map(({ pipe, t, offset }, i) => {
+    const [x1, y1, x2, y2] = pipes[pipe];
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const len = Math.hypot(dx, dy);
+    const cx = x1 + dx * t;
+    const cy = y1 + dy * t;
+    return {
+      cx: round(cx),
+      cy: round(cy),
+      px: round(cx + (-dy / len) * offset),
+      py: round(cy + (dx / len) * offset),
+      delay: clusterStart[ci] + i * 0.08,
+    };
+  }),
+);
+
+const summary = [
+  { label: "Imported", value: "1,284", warn: false },
+  { label: "Allocated", value: "1,281", warn: false },
+  { label: "Unallocated", value: "3", warn: true },
+];
+
+// Timing: named second-based constants, generated into % keyframe stops --
+// identical to CustomerPointsDemo.astro, since none of it depends on which
+// geometry set is behind the map.
+const OLD_CYCLE = 7;
+const DOT_APPEAR = 0.02 * OLD_CYCLE;
+const DOT_OVERSHOOT = 0.035 * OLD_CYCLE;
+const DOT_SETTLE = 0.05 * OLD_CYCLE;
+const CONNECTOR_DRAWN = 0.11 * OLD_CYCLE;
+const FADE_DURATION = 0.06 * OLD_CYCLE;
+
+const ROWS_START = 3.5;
+const ROW_STAGGER = 0.55;
+const ROW_FADE_IN = 0.07 * OLD_CYCLE;
+const rowStart = (i: number) => ROWS_START + i * ROW_STAGGER;
+
+const BOX_EXPAND_DURATION = 0.5;
+const BOX_TRIGGER = ROWS_START - BOX_EXPAND_DURATION;
+const BOX_EXPAND_END = ROWS_START;
+
+const HOLD_DURATION = 2;
+const HOLD_END = rowStart(summary.length - 1) + ROW_FADE_IN + HOLD_DURATION;
+const FADE_END = HOLD_END + FADE_DURATION;
+
+const COLLAPSE_WAIT = 0.3;
+const COLLAPSE_DURATION = 0.5;
+const BOX_COLLAPSE_START = FADE_END + COLLAPSE_WAIT;
+const BOX_COLLAPSE_END = BOX_COLLAPSE_START + COLLAPSE_DURATION;
+
+const END_HOLD = 1;
+const CYCLE = BOX_COLLAPSE_END + END_HOLD;
+const pct = (seconds: number) => +((seconds / CYCLE) * 100).toFixed(3);
+
+const rowsCss = summary
+  .map((_, i) => {
+    const start = rowStart(i);
+    const visible = start + ROW_FADE_IN;
+    return `
+.cpa-row-${i} { animation: cpa-row-in-${i} ${CYCLE}s infinite both; }
+@keyframes cpa-row-in-${i} {
+  0%, ${pct(start)}% { opacity: 0; transform: translateY(4px); }
+  ${pct(visible)}%, ${pct(HOLD_END)}% { opacity: 1; transform: translateY(0); }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}`;
+  })
+  .join("\n");
+const rowClasses = summary.map((_, i) => `.cpa-row-${i}`).join(",\n  ");
+
+const dotsCss = points
+  .map((pt, i) => {
+    const d = pt.delay;
+    return `
+.cpa-dot-${i} { animation: cpa-dot-${i} ${CYCLE}s infinite both; }
+@keyframes cpa-dot-${i} {
+  0%, ${pct(d)}% { opacity: 0; transform: scale(0); }
+  ${pct(d + DOT_APPEAR)}% { opacity: 1; }
+  ${pct(d + DOT_OVERSHOOT)}% { transform: scale(1.3); }
+  ${pct(d + DOT_SETTLE)}%, ${pct(BOX_COLLAPSE_START)}% { opacity: 1; transform: scale(1); }
+  ${pct(BOX_COLLAPSE_END)}%, 100% { opacity: 0; transform: scale(1); }
+}`;
+  })
+  .join("\n");
+const dotClasses = points.map((_, i) => `.cpa-dot-${i}`).join(",\n  ");
+
+const connectorsCss = points
+  .map((pt, i) => {
+    const d = pt.delay + 1.15;
+    return `
+.cpa-connector-${i} { animation: cpa-connector-${i} ${CYCLE}s linear infinite both; }
+@keyframes cpa-connector-${i} {
+  0%, ${pct(d)}% { stroke-dashoffset: 100; opacity: 1; }
+  ${pct(d + CONNECTOR_DRAWN)}%, ${pct(BOX_COLLAPSE_START)}% { stroke-dashoffset: 0; opacity: 1; }
+  ${pct(BOX_COLLAPSE_END)}%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}`;
+  })
+  .join("\n");
+const connectorClasses = points.map((_, i) => `.cpa-connector-${i}`).join(",\n  ");
+
+const generatedCss = `
+.cpa-collapse {
+  display: grid;
+  grid-template-rows: minmax(0, 0fr);
+  animation: cpa-collapse ${CYCLE}s linear infinite both;
+}
+@keyframes cpa-collapse {
+  0%, ${pct(BOX_TRIGGER)}% { grid-template-rows: minmax(0, 0fr); }
+  ${pct(BOX_EXPAND_END)}% { grid-template-rows: minmax(0, 1fr); }
+  ${pct(BOX_COLLAPSE_START)}% { grid-template-rows: minmax(0, 1fr); }
+  ${pct(BOX_COLLAPSE_END)}%, 100% { grid-template-rows: minmax(0, 0fr); }
+}
+
+${rowsCss}
+
+.cpa-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+${dotsCss}
+
+.cpa-connector {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+${connectorsCss}
+
+.cpa-breathe {
+  animation: cpa-breathe 2.2s ease-in-out infinite;
+}
+@keyframes cpa-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cpa-collapse,
+  ${rowClasses},
+  ${dotClasses},
+  ${connectorClasses},
+  .cpa-breathe {
+    animation: none;
+  }
+  .cpa-collapse {
+    grid-template-rows: minmax(0, 1fr);
+  }
+  ${rowClasses} {
+    opacity: 1;
+    transform: none;
+  }
+  ${dotClasses} {
+    opacity: 1;
+    transform: scale(1);
+  }
+  ${connectorClasses} {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  .cpa-breathe {
+    opacity: 1;
+  }
+}
+`;
+---
+
+<div
+  class="relative mx-auto h-80 w-[480px] overflow-hidden rounded-xl border border-gray-200 shadow-lg bg-white select-none"
+  role="img"
+  aria-label="Diagram: imported customer points connecting to their nearest pipes, with an allocation summary panel flagging the unallocated ones.">
+  <svg
+    viewBox="0 0 480 320"
+    preserveAspectRatio="xMidYMid meet"
+    class="absolute inset-0 h-full w-full"
+    aria-hidden="true">
+    <foreignObject x="0" y="0" width="480" height="320">
+      <div {...{ xmlns: "http://www.w3.org/1999/xhtml" }} class="relative h-full w-full">
+        <NetworkMapAlt class="absolute inset-0" />
+
+        <svg
+          viewBox="0 0 640 400"
+          preserveAspectRatio="xMidYMid slice"
+          class="absolute inset-0 w-full h-full"
+          aria-hidden="true">
+          <!-- connectors to the nearest pipe -->
+          <g stroke="#a78bfa" stroke-width="1.2">
+            {
+              points.map((pt, i) => (
+                <line
+                  class={`cpa-connector cpa-connector-${i}`}
+                  x1={pt.px}
+                  y1={pt.py}
+                  x2={pt.cx}
+                  y2={pt.cy}
+                  pathLength="100"
+                />
+              ))
+            }
+          </g>
+          <!-- customer points -->
+          <g fill="#c4b5fd" stroke="#8b5cf6" stroke-width="0.8">
+            {
+              points.map((pt, i) => (
+                <circle
+                  class={`cpa-dot cpa-dot-${i}`}
+                  cx={pt.px}
+                  cy={pt.py}
+                  r="3.2"
+                />
+              ))
+            }
+          </g>
+        </svg>
+
+        <!-- allocation summary (top-right, like the asset panel) -->
+        <div class="absolute top-4 right-4 w-60 bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+          <div class="flex items-baseline justify-between gap-2 px-3 pt-2.5 pb-2 border-b border-gray-100">
+            <p class="text-xs font-semibold text-gray-700 whitespace-nowrap">Customer points</p>
+            <p class="min-w-0 truncate text-xs text-gray-400">customers.geojson</p>
+          </div>
+          <div class="cpa-collapse">
+            <div class="overflow-hidden">
+              <div class="px-3 py-1 text-xs">
+                {
+                  summary.map((row, i) => (
+                    <div
+                      class:list={[
+                        `cpa-row-${i} flex items-center justify-between py-1`,
+                        i > 0 && "border-t border-gray-100",
+                      ]}>
+                      <span class="text-gray-500">{row.label}</span>
+                      {row.warn ? (
+                        <span class="cpa-breathe flex items-center gap-1 font-medium text-amber-600 tabular-nums">
+                          <TriangleAlert size={11} className="text-amber-500" />
+                          {row.value}
+                        </span>
+                      ) : (
+                        <span class="font-medium text-gray-700 tabular-nums">
+                          {row.value}
+                        </span>
+                      )}
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </foreignObject>
+  </svg>
+</div>
+
+<style set:html={generatedCss} />
