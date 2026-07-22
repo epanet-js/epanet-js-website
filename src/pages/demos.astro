@@ -27,6 +27,7 @@ import DemandCategoriesDemo from "@components/demos/DemandCategoriesDemo.astro";
 import DemandScalingDemo from "@components/demos/DemandScalingDemo.astro";
 import DeploymentOptionsDiagram from "@components/demos/DeploymentOptionsDiagram.astro";
 import ElevationDemo from "@components/demos/ElevationDemo.astro";
+import ElevationDemoAlt from "@components/demos/ElevationDemoAlt.astro";
 import EncryptedTransitDemo from "@components/demos/EncryptedTransitDemo.astro";
 import EpsPlaybackDemo from "@components/demos/EpsPlaybackDemo.astro";
 import FieldDataImportDemo from "@components/demos/FieldDataImportDemo.astro";
@@ -34,6 +35,7 @@ import FileTransferDemo from "@components/demos/FileTransferDemo.astro";
 import FireFlowDemo from "@components/demos/FireFlowDemo.astro";
 import FlushingPlanDemo from "@components/demos/FlushingPlanDemo.astro";
 import GisImportDemo from "@components/demos/GisImportDemo.astro";
+import GisImportDemoAlt from "@components/demos/GisImportDemoAlt.astro";
 import HydrantTestPlanDemo from "@components/demos/HydrantTestPlanDemo.astro";
 import InpCompatReportDemo from "@components/demos/InpCompatReportDemo.astro";
 import LegendPanel from "@components/demos/LegendPanel.astro";
@@ -44,12 +46,14 @@ import LoggerPlacementDemo from "@components/demos/LoggerPlacementDemo.astro";
 import NetworkDrawDemo from "@components/demos/NetworkDrawDemo.astro";
 import NetworkMap from "@components/demos/NetworkMap.astro";
 import NetworkReviewDemo from "@components/demos/NetworkReviewDemo.astro";
+import NetworkReviewDemoAlt from "@components/demos/NetworkReviewDemoAlt.astro";
 import NightFlowDemo from "@components/demos/NightFlowDemo.astro";
 import ObservedOverlayDemo from "@components/demos/ObservedOverlayDemo.astro";
 import OnPremDeploymentDiagram from "@components/demos/OnPremDeploymentDiagram.astro";
 import PatternEditorDemo from "@components/demos/PatternEditorDemo.astro";
 import PressureFlowCurveDemo from "@components/demos/PressureFlowCurveDemo.astro";
 import PressureLeakageDemo from "@components/demos/PressureLeakageDemo.astro";
+import PressureLeakageDemoAlt from "@components/demos/PressureLeakageDemoAlt.astro";
 import ProfilePlotDemo from "@components/demos/ProfilePlotDemo.astro";
 import ProjectionFinderDemo from "@components/demos/ProjectionFinderDemo.astro";
 import PumpCurveDemo from "@components/demos/PumpCurveDemo.astro";
@@ -102,6 +106,11 @@ interface DemoEntry {
   component: any;
   props?: Record<string, unknown>;
   previewClass?: string;
+  /** Alternate rendering using the hand-traced network (BasemapAlt /
+   * network-geometry-alt / NetworkMapAlt) instead of the original demo
+   * network, shown when the "Alt network style" toggle is on. */
+  altComponent?: any;
+  altProps?: Record<string, unknown>;
 }
 
 interface DemoSection {
@@ -130,6 +139,7 @@ const sections: DemoSection[] = [
           "/solutions/model-build (GIS import row) and /solutions/model-import.",
         frame: "window",
         component: GisImportDemo,
+        altComponent: GisImportDemoAlt,
       },
       {
         name: "NetworkDrawDemo",
@@ -155,6 +165,8 @@ const sections: DemoSection[] = [
         frame: "window",
         component: InpCompatReportDemo,
         props: { framed: true },
+        altComponent: InpCompatReportDemo,
+        altProps: { framed: true, alt: true },
       },
       {
         name: "ProjectionFinderDemo",
@@ -171,6 +183,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/model-build (ground levels row).",
         frame: "window",
         component: ElevationDemo,
+        altComponent: ElevationDemoAlt,
       },
       {
         name: "NetworkReviewDemo",
@@ -179,6 +192,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/model-import and model quality content.",
         frame: "diagram",
         component: NetworkReviewDemo,
+        altComponent: NetworkReviewDemoAlt,
       },
       {
         name: "CustomerPointsDemo",
@@ -229,6 +243,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/demand-analysis and /solutions/operational-modeling.",
         frame: "window",
         component: PressureLeakageDemo,
+        altComponent: PressureLeakageDemoAlt,
       },
       {
         name: "DemandCategoriesDemo",
@@ -838,18 +853,30 @@ const usageBadge = (entry: DemoEntry) =>
       lang={lang}
       noindex>
       <Container class="py-12 md:py-16">
-        <header class="max-w-2xl">
-      <h1 class="text-3xl font-bold tracking-tight md:text-4xl">
-        Animation gallery
-      </h1>
-      <p class="mt-3 text-gray-600 md:text-lg">
-        Every animated demo component in <code
-          class="text-sm bg-gray-100 rounded px-1.5 py-0.5">
-          src/components/demos/
-        </code>, with a short description and where each one could be used.
-        Internal reference: not linked from navigation and excluded from search
-        engines.
-      </p>
+        <header class="max-w-2xl flex items-start justify-between gap-6 flex-wrap">
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight md:text-4xl">
+          Animation gallery
+        </h1>
+        <p class="mt-3 text-gray-600 md:text-lg">
+          Every animated demo component in <code
+            class="text-sm bg-gray-100 rounded px-1.5 py-0.5">
+            src/components/demos/
+          </code>, with a short description and where each one could be used.
+          Internal reference: not linked from navigation and excluded from search
+          engines.
+        </p>
+      </div>
+
+      <label
+        for="alt-network-toggle"
+        class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer select-none shrink-0">
+        <input id="alt-network-toggle" type="checkbox" class="peer sr-only" />
+        <span
+          class="relative inline-flex h-5 w-9 shrink-0 rounded-full bg-gray-200 transition-colors peer-checked:bg-violet-500 after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:shadow-sm after:transition-transform peer-checked:after:translate-x-4">
+        </span>
+        Alt network style
+      </label>
     </header>
 
     <nav class="mt-6 flex flex-wrap gap-x-4 gap-y-1 text-sm">
@@ -878,7 +905,18 @@ const usageBadge = (entry: DemoEntry) =>
                 <article class="flex flex-col rounded-xl border border-gray-200 shadow-sm bg-white overflow-hidden [content-visibility:auto] [contain-intrinsic-size:auto_480px]">
                   <div class="flex items-center justify-center bg-gray-50 border-b border-gray-100 p-4 sm:p-6">
                     <div class={entry.previewClass ?? frameClass[entry.frame]}>
-                      <entry.component {...(entry.props ?? {})} />
+                      {entry.altComponent ? (
+                        <>
+                          <div class="demo-original">
+                            <entry.component {...(entry.props ?? {})} />
+                          </div>
+                          <div class="demo-alt">
+                            <entry.altComponent {...(entry.altProps ?? entry.props ?? {})} />
+                          </div>
+                        </>
+                      ) : (
+                        <entry.component {...(entry.props ?? {})} />
+                      )}
                     </div>
                   </div>
                   <div class="p-5">
@@ -897,6 +935,13 @@ const usageBadge = (entry: DemoEntry) =>
                             color="orange"
                             class="!px-2 !py-0.5 !text-[11px] whitespace-nowrap">
                             Concept
+                          </Badge>
+                        )}
+                        {entry.altComponent && (
+                          <Badge
+                            color="purple"
+                            class="!px-2 !py-0.5 !text-[11px] whitespace-nowrap">
+                            Has alt style
                           </Badge>
                         )}
                       </div>
@@ -923,3 +968,21 @@ const usageBadge = (entry: DemoEntry) =>
     </Layout>
   )
 }
+
+<style is:global>
+  /* "Alt network style" toggle in the header: entries with an altComponent
+     render both versions (.demo-original / .demo-alt), and this rule swaps
+     which one is visible. body:has() is used (rather than a plain sibling
+     selector) because the checkbox lives in the page header while the demo
+     cards it controls are scattered throughout the sections below --
+     nowhere close to being its sibling. */
+  .demo-alt {
+    display: none;
+  }
+  body:has(#alt-network-toggle:checked) .demo-original {
+    display: none;
+  }
+  body:has(#alt-network-toggle:checked) .demo-alt {
+    display: block;
+  }
+</style>

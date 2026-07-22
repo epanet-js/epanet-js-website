@@ -1,0 +1,482 @@
+---
+// Alternate version of PressureLeakageDemo, tinting the zone downstream of
+// a PRV on the alt network instead of NetworkMap's. The original picks its
+// "downstream of the valve" zone with a fixed array slice (pipes.slice(9))
+// because network-geometry.ts's pipe list happens to be hand-ordered
+// upstream-to-downstream; network-geometry-alt.ts's list isn't ordered that
+// way, so the zone here is a coordinate filter instead: every pipe with an
+// endpoint at or past the valve's column. Pipe/junction redraw sizing comes
+// from network-style-alt so the tint lines and redrawn junction dots match
+// NetworkMapAlt's own weight exactly.
+import AppWindow from "./AppWindow.astro";
+import { pipes, junctions } from "./network-geometry-alt";
+import {
+  PIPE_STROKE_WIDTH,
+  JUNCTION_COLOR,
+  JUNCTION_RADIUS,
+  OUTLINE_COLOR,
+  OUTLINE_STROKE_WIDTH,
+  SCALE,
+} from "./network-style-alt";
+
+// PRV-12 sits on the second top-row junction; everything reachable without
+// going back through the reservoir's first junction is "downstream".
+const PRV_JUNCTION: [number, number] = [270, 86];
+const zonePipes = pipes.filter(
+  ([x1, , x2]) => x1 >= PRV_JUNCTION[0] || x2 >= PRV_JUNCTION[0],
+);
+
+const tints = [
+  { color: "#f59e0b", cls: "pla-tint-a" },
+  { color: "#84cc16", cls: "pla-tint-b" },
+  { color: "#22c55e", cls: "pla-tint-c" },
+];
+
+// PRV glyph (rect + crossed lines), sized to match NetworkMapAlt's own scale
+// (SCALE = 1.6x NetworkMap) rather than NetworkMap's fixed 12px/3px/etc.
+const RECT_SIZE = Math.round(12 * SCALE); // 19.2 -> 19
+const RECT_RADIUS = Math.round(2 * SCALE); // 3.2 -> 3
+const RECT_STROKE_WIDTH = 1.5 * SCALE; // = 2.4
+const X_MARGIN = 3 * SCALE; // = 4.8
+const X_STROKE_WIDTH = 1.2 * SCALE; // = 1.92
+
+const prvRectX = PRV_JUNCTION[0] - RECT_SIZE / 2;
+const prvRectY = PRV_JUNCTION[1] - RECT_SIZE / 2;
+const xPath = (() => {
+  const left = prvRectX + X_MARGIN;
+  const right = prvRectX + RECT_SIZE - X_MARGIN;
+  const top = prvRectY + X_MARGIN;
+  const bottom = prvRectY + RECT_SIZE - X_MARGIN;
+  return `M${left.toFixed(1)} ${top.toFixed(1)} L${right.toFixed(1)} ${bottom.toFixed(1)} M${right.toFixed(1)} ${top.toFixed(1)} L${left.toFixed(1)} ${bottom.toFixed(1)}`;
+})();
+---
+
+<AppWindow
+  altNetwork
+  hideHeader
+  hideFooter
+  label="Pressure management in epanet-js: a PRV setting stepping down while the estimated leakage falls and the downstream zone recolors from amber to green.">
+  <!-- zone tint overlay: three stacked copies crossfade as pressure drops -->
+  <svg
+    viewBox="0 0 640 400"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <g stroke-width={PIPE_STROKE_WIDTH} stroke-linecap="round" fill="none">
+      {
+        tints.map((tint) =>
+          zonePipes.map(([x1, y1, x2, y2]) => (
+            <line
+              class={tint.cls}
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              stroke={tint.color}
+            />
+          )),
+        )
+      }
+    </g>
+    <!-- redraw the junction dots on top of the tint lines, since the tint
+         overlay is a separate sibling painted after NetworkMapAlt's own
+         junctions and would otherwise cover them -->
+    <g stroke={OUTLINE_COLOR} stroke-width={OUTLINE_STROKE_WIDTH}>
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r={JUNCTION_RADIUS} fill={JUNCTION_COLOR} />
+        ))
+      }
+    </g>
+    <!-- PRV-12 at the zone inlet -->
+    <g class="pla-prv">
+      <rect
+        x={prvRectX}
+        y={prvRectY}
+        width={RECT_SIZE}
+        height={RECT_SIZE}
+        rx={RECT_RADIUS}
+        fill="#ffffff"
+        stroke="#8b5cf6"
+        stroke-width={RECT_STROKE_WIDTH}></rect>
+      <path d={xPath} stroke="#8b5cf6" stroke-width={X_STROKE_WIDTH}></path>
+    </g>
+  </svg>
+
+  <!-- pressure management panel -->
+  <div
+    class="pla-panel absolute top-2 right-2 w-[208px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between gap-2 px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-xs font-semibold text-gray-700">
+        Pressure management
+      </p>
+      <p class="text-xs text-gray-400">PRV-12</p>
+    </div>
+    <div class="px-3 py-2 space-y-1.5 text-xs">
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500">Outlet setting</span>
+        <span class="relative font-medium tabular-nums">
+          <span class="pla-set-1 text-gray-700">52 m</span>
+          <span class="pla-set-2 absolute inset-0 bg-white text-right">48 m</span>
+          <span class="pla-set-3 absolute inset-0 bg-white text-right">44 m</span>
+        </span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500">Est. leakage</span>
+        <span class="relative font-medium tabular-nums">
+          <span class="pla-leak-1 text-gray-700">6.1 l/s</span>
+          <span class="pla-leak-2 absolute inset-0 bg-white text-right">
+            5.4 l/s
+          </span>
+          <span class="pla-leak-3 absolute inset-0 bg-white text-right">
+            4.8 l/s
+          </span>
+        </span>
+      </div>
+    </div>
+    <div
+      class="flex items-center justify-between px-3 py-1.5 border-t border-gray-100 text-xs">
+      <span class="text-gray-500">Leakage savings</span>
+      <span class="relative inline-block min-w-10 font-medium tabular-nums text-right">
+        <span class="pla-save-1 text-gray-700">0%</span>
+        <span class="pla-save-2 absolute inset-0 bg-white text-right">−11%</span>
+        <span class="pla-save-3 absolute inset-0 bg-white text-right">−21%</span>
+      </span>
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  .pla-tint-a {
+    animation: pla-tint-a 16s ease-in-out infinite both;
+  }
+  @keyframes pla-tint-a {
+    0%,
+    6% {
+      opacity: 0;
+    }
+    14% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .pla-tint-b {
+    animation: pla-tint-b 16s ease-in-out infinite both;
+  }
+  @keyframes pla-tint-b {
+    0%,
+    28% {
+      opacity: 0;
+    }
+    36% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .pla-tint-c {
+    animation: pla-tint-c 16s ease-in-out infinite both;
+  }
+  @keyframes pla-tint-c {
+    0%,
+    54% {
+      opacity: 0;
+    }
+    62% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .pla-prv {
+    animation: pla-prv-in 16s ease-out infinite both;
+  }
+  @keyframes pla-prv-in {
+    0%,
+    3% {
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .pla-panel {
+    animation: pla-panel-in 16s ease-out infinite both;
+  }
+  @keyframes pla-panel-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    6% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* outlet setting steps down; the incoming value flashes violet */
+  .pla-set-1 {
+    animation: pla-set-1 16s linear infinite both;
+  }
+  .pla-set-2 {
+    animation: pla-set-2 16s linear infinite both;
+  }
+  .pla-set-3 {
+    animation: pla-set-3 16s linear infinite both;
+  }
+  @keyframes pla-set-1 {
+    0%,
+    24% {
+      opacity: 1;
+    }
+    26%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pla-set-2 {
+    0%,
+    24% {
+      opacity: 0;
+    }
+    26% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    34% {
+      color: #374151;
+    }
+    50% {
+      opacity: 1;
+    }
+    52%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pla-set-3 {
+    0%,
+    50% {
+      opacity: 0;
+    }
+    52% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    60% {
+      color: #374151;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* leakage estimate follows each step a beat later */
+  .pla-leak-1 {
+    animation: pla-leak-1 16s linear infinite both;
+  }
+  .pla-leak-2 {
+    animation: pla-leak-2 16s linear infinite both;
+  }
+  .pla-leak-3 {
+    animation: pla-leak-3 16s linear infinite both;
+  }
+  @keyframes pla-leak-1 {
+    0%,
+    32% {
+      opacity: 1;
+    }
+    34%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pla-leak-2 {
+    0%,
+    32% {
+      opacity: 0;
+    }
+    34% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    42% {
+      color: #374151;
+    }
+    58% {
+      opacity: 1;
+    }
+    60%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pla-leak-3 {
+    0%,
+    58% {
+      opacity: 0;
+    }
+    60% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    68% {
+      color: #374151;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* leakage savings tracks the leakage estimate 1:1 -- same swap timing as
+     pla-leak-1/2/3 above, since each savings % arrives with its matching
+     leakage reading. No independent fade-in: like the other rows' first
+     values, it's simply present when the panel itself fades in. */
+  .pla-save-1 {
+    animation: pla-save-1 16s linear infinite both;
+  }
+  .pla-save-2 {
+    animation: pla-save-2 16s linear infinite both;
+  }
+  .pla-save-3 {
+    animation: pla-save-3 16s linear infinite both;
+  }
+  @keyframes pla-save-1 {
+    0%,
+    32% {
+      opacity: 1;
+    }
+    34%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pla-save-2 {
+    0%,
+    32% {
+      opacity: 0;
+    }
+    34% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    42% {
+      color: #16a34a;
+    }
+    58% {
+      opacity: 1;
+    }
+    60%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes pla-save-3 {
+    0%,
+    58% {
+      opacity: 0;
+      color: #16a34a;
+    }
+    60% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    68% {
+      color: #16a34a;
+    }
+    92% {
+      opacity: 1;
+      color: #16a34a;
+    }
+    98%,
+    100% {
+      opacity: 0;
+      color: #16a34a;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pla-tint-a,
+    .pla-tint-b,
+    .pla-tint-c,
+    .pla-prv,
+    .pla-panel,
+    .pla-set-1,
+    .pla-set-2,
+    .pla-set-3,
+    .pla-leak-1,
+    .pla-leak-2,
+    .pla-leak-3,
+    .pla-save-1,
+    .pla-save-2,
+    .pla-save-3 {
+      animation: none;
+    }
+    .pla-tint-a,
+    .pla-tint-b,
+    .pla-tint-c,
+    .pla-prv,
+    .pla-panel {
+      opacity: 1;
+      transform: none;
+    }
+    .pla-set-1,
+    .pla-set-2,
+    .pla-leak-1,
+    .pla-leak-2,
+    .pla-save-1,
+    .pla-save-2 {
+      opacity: 0;
+    }
+    .pla-set-3,
+    .pla-leak-3 {
+      opacity: 1;
+      color: #374151;
+    }
+    .pla-save-3 {
+      opacity: 1;
+      color: #16a34a;
+    }
+  }
+</style>

@@ -11,12 +11,17 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import NetworkMap from "./NetworkMap.astro";
+import NetworkMapAlt from "./NetworkMapAlt.astro";
 
 interface Props {
   variant?: "plain" | "pressure" | "passfail";
   markers?: boolean;
   /** Skip the built-in NetworkMap so the slot supplies the whole map stack. */
   bare?: boolean;
+  /** Render NetworkMapAlt instead of NetworkMap. Plain-only -- ignores
+   * variant/markers, since the alt network has no pressure/passfail/marker
+   * styling of its own. */
+  altNetwork?: boolean;
   label?: string;
   class?: string;
   hideFooter?: boolean;
@@ -33,6 +38,7 @@ const {
   variant = "plain",
   markers = false,
   bare = false,
+  altNetwork = false,
   label,
   class: className,
   hideFooter = false,
@@ -84,13 +90,16 @@ const tools = [Circle, Triangle, RectangleHorizontal];
   <!-- map canvas + floating panels -->
   <div class="relative aspect-[16/10] bg-gray-100 overflow-hidden">
     {
-      !bare && (
-        <NetworkMap
-          variant={variant}
-          markers={markers}
-          class="absolute inset-0"
-        />
-      )
+      !bare &&
+        (altNetwork ? (
+          <NetworkMapAlt class="absolute inset-0" />
+        ) : (
+          <NetworkMap
+            variant={variant}
+            markers={markers}
+            class="absolute inset-0"
+          />
+        ))
     }
     <slot />
   </div>

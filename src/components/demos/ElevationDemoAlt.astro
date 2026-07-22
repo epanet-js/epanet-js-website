@@ -1,0 +1,237 @@
+---
+// Alternate version of ElevationDemo, rendered over the alt network
+// (AppWindow's altNetwork) instead of NetworkMap. Same sweep/panel timing
+// logic as the original -- only the tag anchor points and their
+// viewBox-to-percent conversion differ, since the alt network's 640x400
+// canvas exactly matches AppWindow's 16:10 map area (no center-crop to
+// compensate for, unlike the original's 400x300-in-16:10 embed).
+import { CheckCircle2 } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+
+const sources = [
+  { name: "survey-2024.tif", resolution: "0.5 m" },
+  { name: "lidar-city.tif", resolution: "1 m" },
+  { name: "Global terrain", resolution: "30 m" },
+];
+
+// Elevation tags sit just above junctions from network-geometry-alt.ts.
+// AppWindow's map area is exactly 16:10 and so is the alt network's 640x400
+// viewBox, so it renders with no crop -- left/top are a straight percentage
+// of the viewBox, no crop-compensation offset needed. Points stay in the
+// left/bottom two-thirds of the canvas so none sit under the sources panel
+// (top-right, 210px wide).
+const tags = [
+  { x: 170, y: 86, label: "104.2 m" },
+  { x: 270, y: 196, label: "101.8 m" },
+  { x: 370, y: 306, label: "97.5 m" },
+  { x: 470, y: 196, label: "96.1 m" },
+  { x: 470, y: 306, label: "88.9 m" },
+  { x: 570, y: 196, label: "87.6 m" },
+];
+const leftPct = (x: number) => ((x / 640) * 100).toFixed(1);
+const topPct = (y: number) => ((y / 400) * 100).toFixed(1);
+
+// Timing is baked directly into per-index @keyframes below (no
+// animation-delay) -- see ElevationDemo.astro for the full reasoning.
+const CYCLE = 9.5;
+const toPct = (seconds: number) => +((seconds / CYCLE) * 100).toFixed(3);
+
+const SWEEP_APPEAR = 0.6;
+const SWEEP_FADE_START = 2.4;
+const SWEEP_ARRIVE = 3;
+
+const BOX_TRIGGER = SWEEP_ARRIVE + 0.5;
+const BOX_EXPAND_DURATION = 0.5;
+const BOX_EXPAND_END = BOX_TRIGGER + BOX_EXPAND_DURATION;
+
+const ROW_GAP = 0.45;
+const ENTRANCE = 0.42;
+const HOLD_END = 8;
+const FADE_END = 8.4;
+const COLLAPSE_WAIT = 0.3;
+const COLLAPSE_DURATION = 0.5;
+const BOX_COLLAPSE_START = FADE_END + COLLAPSE_WAIT;
+const BOX_COLLAPSE_END = BOX_COLLAPSE_START + COLLAPSE_DURATION;
+
+const rowStart = (i: number) => BOX_EXPAND_END + i * ROW_GAP;
+const footerStart = rowStart(sources.length);
+const COUNT_SWAP = HOLD_END - 0.5;
+
+// Tags trail the sweep across its own travel window (fade-in to arrival),
+// proportional to each tag's x position -- 640 here instead of the
+// original's 400, matching this file's wider viewBox.
+const tagStart = (x: number) => SWEEP_APPEAR + (x / 640) * (SWEEP_ARRIVE - SWEEP_APPEAR);
+
+const rowCss = [...sources.map((_, i) => rowStart(i)), footerStart]
+  .map(
+    (start, i) => `
+.ela-row-${i} { animation-name: ela-row-in-${i}; }
+@keyframes ela-row-in-${i} {
+  0%, ${toPct(start)}% { opacity: 0; }
+  ${toPct(start + ENTRANCE)}% { opacity: 1; }
+  ${toPct(HOLD_END)}% { opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}`,
+  )
+  .join("\n");
+
+const tagCss = tags
+  .map((tag, i) => {
+    const start = tagStart(tag.x);
+    return `
+.ela-tag-${i} { animation-name: ela-tag-in-${i}; }
+@keyframes ela-tag-in-${i} {
+  0%, ${toPct(start)}% { opacity: 0; transform: translateY(3px); }
+  ${toPct(start + ENTRANCE)}% { opacity: 1; transform: translateY(0); }
+  ${toPct(HOLD_END)}% { opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}`;
+  })
+  .join("\n");
+
+const sweepCss = `
+@keyframes ela-sweep {
+  0% { transform: translateX(-120%); opacity: 0; }
+  ${toPct(SWEEP_APPEAR)}% { opacity: 1; }
+  ${toPct(SWEEP_FADE_START)}% { opacity: 1; }
+  ${toPct(SWEEP_ARRIVE)}%, 100% { transform: translateX(600%); opacity: 0; }
+}`;
+
+const collapseCss = `
+@keyframes ela-collapse {
+  0%, ${toPct(BOX_TRIGGER)}% { grid-template-rows: minmax(0, 0fr); }
+  ${toPct(BOX_EXPAND_END)}% { grid-template-rows: minmax(0, 1fr); }
+  ${toPct(BOX_COLLAPSE_START)}% { grid-template-rows: minmax(0, 1fr); }
+  ${toPct(BOX_COLLAPSE_END)}%, 100% { grid-template-rows: minmax(0, 0fr); }
+}`;
+
+const countCss = `
+@keyframes ela-count-out {
+  0%, ${toPct(COUNT_SWAP)}% { opacity: 1; }
+  ${toPct(COUNT_SWAP + 0.2)}%, 100% { opacity: 0; }
+}
+@keyframes ela-count-in {
+  0%, ${toPct(COUNT_SWAP)}% { opacity: 0; }
+  ${toPct(COUNT_SWAP + 0.2)}%, 100% { opacity: 1; }
+}`;
+
+const generatedCss = `${sweepCss}\n${collapseCss}\n${countCss}\n${rowCss}\n${tagCss}`;
+---
+
+<AppWindow
+  altNetwork
+  hideHeader
+  hideFooter
+  label="Automatic elevation assignment in epanet-js: nodes picking up ground levels from prioritized elevation sources.">
+  <!-- sampling sweep across the map -->
+  <div
+    class="ela-sweep absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-violet-400/15 to-transparent pointer-events-none">
+  </div>
+
+  <!-- per-node elevation tags -->
+  {
+    tags.map((tag, i) => (
+      <div
+        class="absolute -translate-x-1/2 -translate-y-full -mt-1.5 pointer-events-none"
+        style={`left: ${leftPct(tag.x)}%; top: ${topPct(tag.y)}%`}>
+        <div class={`ela-tag ela-tag-${i} bg-white/90 rounded px-1 py-px text-[10px] tabular-nums text-gray-600 shadow-sm border border-gray-200 whitespace-nowrap`}>
+          {tag.label}
+        </div>
+      </div>
+    ))
+  }
+
+  <!-- elevation sources panel -->
+  <div class="absolute top-2 right-2 w-[210px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-xs font-semibold text-gray-700">Elevation sources</p>
+      <p class="text-xs text-gray-400">Priority order</p>
+    </div>
+    <div class="ela-collapse">
+      <div class="overflow-hidden">
+        <div class="px-3 py-3 space-y-4">
+          {
+            sources.map((source, i) => (
+              <div class={`ela-row ela-row-${i} flex items-center gap-2`}>
+                <span class="shrink-0 w-4 h-4 rounded bg-gray-100 text-[10px] text-gray-500 flex items-center justify-center">
+                  {i + 1}
+                </span>
+                <span class="text-xs text-gray-700">{source.name}</span>
+                <span class="ml-auto text-xs text-gray-400 tabular-nums">
+                  {source.resolution}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+        <div class={`ela-row ela-row-${sources.length} flex items-center gap-1 px-3 py-2 border-t border-gray-100 text-xs text-gray-600`}>
+          <CheckCircle2 size={14} className="text-green-500 shrink-0" />
+          <span class="relative tabular-nums">
+            <span class="ela-count-before">1,272</span>
+            <span class="ela-count-after absolute inset-0">1,284</span>
+          </span>
+          <span>nodes elevated</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</AppWindow>
+
+<style define:vars={{ cycle: `${CYCLE}s` }}>
+  .ela-row {
+    opacity: 0;
+    animation-duration: var(--cycle);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .ela-tag {
+    opacity: 0;
+    transform: translateY(3px);
+    animation-duration: var(--cycle);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .ela-sweep {
+    animation: ela-sweep var(--cycle) linear infinite both;
+  }
+  .ela-collapse {
+    display: grid;
+    grid-template-rows: minmax(0, 0fr);
+    animation: ela-collapse var(--cycle) linear infinite both;
+  }
+  .ela-count-before {
+    animation: ela-count-out var(--cycle) infinite both;
+  }
+  .ela-count-after {
+    animation: ela-count-in var(--cycle) infinite both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ela-row,
+    .ela-tag,
+    .ela-sweep,
+    .ela-collapse,
+    .ela-count-before,
+    .ela-count-after {
+      animation: none;
+    }
+    .ela-row,
+    .ela-tag {
+      opacity: 1;
+      transform: none;
+    }
+    .ela-sweep {
+      opacity: 0;
+    }
+    .ela-collapse {
+      grid-template-rows: minmax(0, 1fr);
+    }
+    .ela-count-before {
+      opacity: 0;
+    }
+    .ela-count-after {
+      opacity: 1;
+    }
+  }
+</style>
+
+<style set:html={generatedCss} />

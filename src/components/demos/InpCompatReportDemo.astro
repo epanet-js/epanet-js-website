@@ -7,10 +7,12 @@ import AppWindow from "./AppWindow.astro";
 
 interface Props {
   framed?: boolean;
+  /** Render the framed variant's map as NetworkMapAlt instead of NetworkMap. */
+  alt?: boolean;
   class?: string;
 }
 
-const { framed = false, class: className } = Astro.props;
+const { framed = false, alt = false, class: className } = Astro.props;
 
 const rows = [
   { label: "Junctions", value: "1,284", warn: false },
@@ -104,7 +106,13 @@ const label =
 
 {
   framed ? (
-    <AppWindow variant="plain" hideHeader hideFooter label={label} class={className}>
+    <AppWindow
+      variant="plain"
+      hideHeader
+      hideFooter
+      altNetwork={alt}
+      label={label}
+      class={className}>
       <div class="absolute top-2 right-2 w-[250px] max-w-[72%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
         <div class="px-3 pt-2.5 pb-2 border-b border-gray-100">
           <div class="flex items-center justify-between">
