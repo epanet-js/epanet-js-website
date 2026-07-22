@@ -1,0 +1,75 @@
+---
+// Alternate illustrative water network, traced from a hand-made reference
+// (diagram-network.svg): navy pipes and junctions over BasemapAlt's streets.
+// Plain-only (no pressure/pass-fail variants) since the reference has a
+// single color throughout.
+import BasemapAlt from "./BasemapAlt.astro";
+import { pipes, junctions, reservoirPoint } from "./network-geometry-alt";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+// Colors match NetworkMap.astro / network-geometry.ts (site-wide convention,
+// docs/animated-diagram-best-practices.md §7). Sizes are NetworkMap's own
+// values multiplied by SCALE, the ratio between this file's 640-wide
+// viewBox and NetworkMap's 400-wide one, so strokes/radii read at the same
+// effective on-screen weight despite the wider coordinate space.
+const SCALE = 640 / 400; // 1.6
+
+const PIPE_COLOR = "#3730a3"; // indigo-800
+const PIPE_STROKE_WIDTH = 2.5 * SCALE; // = 4, matches NetworkMap exactly
+
+const JUNCTION_COLOR = "#312e81"; // indigo-900
+// 4 x SCALE = 6.4; floored to 6, which is also the value visually
+// confirmed against NetworkMap side by side.
+const JUNCTION_RADIUS = Math.floor(4 * SCALE);
+const OUTLINE_COLOR = "#ffffff";
+const OUTLINE_STROKE_WIDTH = 1 * SCALE; // = 1.6, matches NetworkMap exactly
+
+const RESERVOIR_COLOR = JUNCTION_COLOR;
+const RESERVOIR_APEX_OFFSET = Math.round(8 * SCALE); // 12.8 -> 13
+const RESERVOIR_BASE_OFFSET = Math.round(6 * SCALE); // 9.6 -> 10
+const RESERVOIR_HALF_WIDTH = Math.round(8 * SCALE); // 12.8 -> 13
+---
+
+<div class:list={["w-full h-full", className]} aria-hidden="true">
+  <svg
+    viewBox="0 0 640 400"
+    class="absolute inset-0 w-full h-full"
+    preserveAspectRatio="xMidYMid slice">
+    <BasemapAlt />
+  </svg>
+
+  <svg
+    viewBox="0 0 640 400"
+    class="absolute inset-0 w-full h-full"
+    preserveAspectRatio="xMidYMid slice">
+    <!-- pipes -->
+    <g stroke={PIPE_COLOR} stroke-width={PIPE_STROKE_WIDTH} stroke-linecap="round">
+      {
+        pipes.map(([x1, y1, x2, y2]) => (
+          <line x1={x1} y1={y1} x2={x2} y2={y2} />
+        ))
+      }
+    </g>
+
+    <!-- junctions -->
+    <g stroke={OUTLINE_COLOR} stroke-width={OUTLINE_STROKE_WIDTH}>
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r={JUNCTION_RADIUS} fill={JUNCTION_COLOR} />
+        ))
+      }
+    </g>
+
+    <!-- reservoir -->
+    <path
+      d={`M${reservoirPoint[0]} ${reservoirPoint[1] - RESERVOIR_APEX_OFFSET} L${reservoirPoint[0] + RESERVOIR_HALF_WIDTH} ${reservoirPoint[1] + RESERVOIR_BASE_OFFSET} L${reservoirPoint[0] - RESERVOIR_HALF_WIDTH} ${reservoirPoint[1] + RESERVOIR_BASE_OFFSET} Z`}
+      fill={RESERVOIR_COLOR}
+      stroke={OUTLINE_COLOR}
+      stroke-width={OUTLINE_STROKE_WIDTH}></path>
+  </svg>
+</div>

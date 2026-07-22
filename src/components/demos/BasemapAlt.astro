@@ -1,0 +1,37 @@
+---
+// Alternate light illustrative basemap: gray ground and white streets,
+// traced from a hand-made reference (diagram-network.svg). No building
+// footprints in this reference, unlike Basemap.astro. Render inside an SVG
+// with viewBox="0 0 640 400" -- taller than the 640x360 reference so the
+// canvas is exactly 16:10 (matching AppWindow's map area) and nothing gets
+// cropped by preserveAspectRatio="slice"; the extra 40 units are empty
+// ground below the streets, not a rescale of the traced content.
+
+// Ground matches Basemap.astro's gray-100; street color/width are the
+// reference SVG's own values (8.33 rounded to 8), not scaled against
+// Basemap.astro -- there's no shared coordinate space to scale against
+// since this basemap is traced from a different source at a different size.
+const GROUND_COLOR = "#f3f4f6"; // gray-100
+const STREET_COLOR = "#ffffff";
+const STREET_STROKE_WIDTH = 8;
+---
+
+<rect width="640" height="400" fill={GROUND_COLOR}></rect>
+<g
+  stroke={STREET_COLOR}
+  stroke-width={STREET_STROKE_WIDTH}
+  fill="none"
+  stroke-linecap="round"
+  stroke-linejoin="round">
+  <path d="M258 -1 L258 216 L158 216 L158 326 L270 326"></path>
+  <path d="M-13 216 L158 216 L158 400"></path>
+  <path d="M158 78 L158 216 L258 216 L258 326 L672 326"></path>
+  <path d="M88 72 L170 78 L485 78 L485 326 L484 400"></path>
+  <path d="M258 216 L320 216"></path>
+  <path d="M416 195 L651 195"></path>
+  <path d="M368 156 L368 -1"></path>
+  <path d="M485 78 L485 -1"></path>
+  <path d="M485 78 L681 78"></path>
+  <path d="M368 402 L368 253"></path>
+  <circle cx="368" cy="204" r="48"></circle>
+</g>

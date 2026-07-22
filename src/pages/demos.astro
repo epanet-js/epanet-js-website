@@ -54,6 +54,7 @@ import ProfilePlotDemo from "@components/demos/ProfilePlotDemo.astro";
 import ProjectionFinderDemo from "@components/demos/ProjectionFinderDemo.astro";
 import PumpCurveDemo from "@components/demos/PumpCurveDemo.astro";
 import PumpScheduleDemo from "@components/demos/PumpScheduleDemo.astro";
+import RealisticNetworkDemo from "@components/demos/RealisticNetworkDemo.astro";
 import ResultsExportDemo from "@components/demos/ResultsExportDemo.astro";
 import ScenarioCompareDemo from "@components/demos/ScenarioCompareDemo.astro";
 import ScenarioTreeDemo from "@components/demos/ScenarioTreeDemo.astro";
@@ -137,6 +138,14 @@ const sections: DemoSection[] = [
         useOn: "/solutions/model-build and education content.",
         frame: "window",
         component: NetworkDrawDemo,
+      },
+      {
+        name: "RealisticNetworkDemo",
+        description:
+          "A denser, more realistic-looking illustrative network -- a grid of parallel looped mains fed from a reservoir -- traced from a hand-made reference SVG, with a matching basemap whose streets trace the same routes as the pipes. Not yet used anywhere; a candidate for replacing the current demo network.",
+        useOn: "Not used on any page yet.",
+        frame: "window",
+        component: RealisticNetworkDemo,
       },
       {
         name: "InpCompatReportDemo",

@@ -1,0 +1,15 @@
+---
+// Rebuilt from a hand-made reference SVG (diagram-network.svg) rather than
+// the earlier region-by-region sketch. Renders BasemapAlt + NetworkMapAlt
+// as-is; no monitored-valve marker or tank/loop-cluster embellishment yet.
+import AppWindow from "./AppWindow.astro";
+import NetworkMapAlt from "./NetworkMapAlt.astro";
+---
+
+<AppWindow
+  bare
+  hideHeader
+  hideFooter
+  label="Illustrative network traced from a hand-made reference: a grid of parallel looped mains fed from a reservoir, over a matching basemap.">
+  <NetworkMapAlt class="absolute inset-0" />
+</AppWindow>
