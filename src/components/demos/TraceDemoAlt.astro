@@ -1,0 +1,487 @@
+---
+// Alternate version of TraceDemo, tracing paths through the alt network
+// instead of NetworkMap's. Selected junction (270,196) -- the same one used
+// as "J288" in AssetSearchDemoAlt/DemandCategoriesDemoAlt -- traces upstream
+// to the reservoir in 3 hops, then a boundary trace fans out in 3 directions
+// and extends one branch through 3 more hops to a closed valve placed
+// mid-pipe.
+import AppWindow from "./AppWindow.astro";
+import { pipes, junctions, reservoirPoint } from "./network-geometry-alt";
+import {
+  JUNCTION_COLOR,
+  JUNCTION_RADIUS,
+  OUTLINE_COLOR,
+  OUTLINE_STROKE_WIDTH,
+  PIPE_STROKE_WIDTH,
+  RESERVOIR_COLOR,
+  RESERVOIR_APEX_OFFSET,
+  RESERVOIR_BASE_OFFSET,
+  RESERVOIR_HALF_WIDTH,
+  SCALE,
+} from "./network-style-alt";
+
+type Segment = [number, number, number, number];
+
+const seg = (index: number, swap = false): Segment => {
+  const [x1, y1, x2, y2] = pipes[index];
+  return swap ? [x2, y2, x1, y1] : [x1, y1, x2, y2];
+};
+
+// Upstream path: selected junction (270,196) back to the reservoir at (64,86).
+const upstream: Segment[] = [
+  seg(4), // (270,196) -> (270,86)
+  seg(1, true), // (270,86) -> (170,86)
+  seg(0, true), // (170,86) -> (64,86)
+];
+
+// The boundary wave stops at a closed valve halfway along pipe 5
+// (470,86)-(470,196).
+const [vx1, vy1, vx2, vy2] = pipes[5];
+const valveApproach: Segment = [370, 86, (vx1 + vx2) / 2, (vy1 + vy2) / 2];
+const valvePoint: [number, number] = [(vx1 + vx2) / 2, (vy1 + vy2) / 2];
+
+// Boundary trace: fans out from the junction, one hop per draw wave, then
+// extends the top branch outward through hops 2-4.
+const boundary: { line: Segment; hop: number }[] = [
+  { line: seg(2, true), hop: 1 }, // (270,196) -> (170,196)
+  { line: seg(4), hop: 1 }, // (270,196) -> (270,86)
+  { line: seg(7, true), hop: 1 }, // (270,196) -> (270,306)
+  { line: seg(9), hop: 2 }, // (270,86) -> (370,86)
+  { line: seg(10), hop: 3 }, // (370,86) -> (470,86)
+  { line: valveApproach, hop: 4 }, // (370,86) -> closed valve at (470,141)
+];
+
+// Closed valve glyph: two triangles pointing at each other, scaled the same
+// way as NetworkMapAlt's own sizing (SCALE = 1.6x NetworkMap).
+const V_HALF_WIDTH = 6 * SCALE; // = 9.6
+const V_HALF_HEIGHT = 4 * SCALE; // = 6.4
+const [vpx, vpy] = valvePoint;
+const valveLeftPath = `M${(vpx - V_HALF_WIDTH).toFixed(1)} ${(vpy - V_HALF_HEIGHT).toFixed(1)} L${vpx} ${vpy} L${(vpx - V_HALF_WIDTH).toFixed(1)} ${(vpy + V_HALF_HEIGHT).toFixed(1)} Z`;
+const valveRightPath = `M${(vpx + V_HALF_WIDTH).toFixed(1)} ${(vpy - V_HALF_HEIGHT).toFixed(1)} L${vpx} ${vpy} L${(vpx + V_HALF_WIDTH).toFixed(1)} ${(vpy + V_HALF_HEIGHT).toFixed(1)} Z`;
+const V_STROKE_WIDTH = 0.75 * SCALE; // = 1.2
+
+const RING_RADIUS = Math.round(7 * SCALE); // 11.2 -> 11
+const RING_STROKE_WIDTH = 2 * SCALE; // = 3.2
+---
+
+<AppWindow
+  variant="plain"
+  altNetwork
+  hideHeader
+  hideFooter
+  label="Tracing in epanet-js: an upstream trace from a junction back to the source, then a boundary trace stopping at a closed valve.">
+  <!-- trace overlay: same viewBox as NetworkMapAlt so strokes line up exactly -->
+  <svg
+    viewBox="0 0 640 400"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <!-- upstream trace -->
+    <g stroke="#eab308" stroke-width={PIPE_STROKE_WIDTH} stroke-linecap="round" fill="none">
+      {
+        upstream.map(([x1, y1, x2, y2], i) => (
+          <line
+            class={`tra-up tra-up-${i + 1}`}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            pathLength="100"
+          />
+        ))
+      }
+    </g>
+
+    <!-- boundary trace -->
+    <g stroke="#eab308" stroke-width={PIPE_STROKE_WIDTH} stroke-linecap="round" fill="none">
+      {
+        boundary.map(({ line: [x1, y1, x2, y2], hop }) => (
+          <line
+            class={`tra-b tra-b-${hop}`}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            pathLength="100"
+          />
+        ))
+      }
+    </g>
+
+    <!-- redraw the junction dots on top of the upstream/boundary trace
+         lines, since this overlay is a separate sibling painted after
+         NetworkMapAlt's own junctions and would otherwise cover them -->
+    <g stroke={OUTLINE_COLOR} stroke-width={OUTLINE_STROKE_WIDTH}>
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r={JUNCTION_RADIUS} fill={JUNCTION_COLOR} />
+        ))
+      }
+    </g>
+
+    <!-- closed valve: gray until the trace reaches it, then red -->
+    <g
+      class="tra-valve-gray"
+      fill="#6b7280"
+      stroke="#ffffff"
+      stroke-width={V_STROKE_WIDTH}
+      stroke-linejoin="round">
+      <path d={valveLeftPath}></path>
+      <path d={valveRightPath}></path>
+    </g>
+    <g
+      class="tra-valve-red"
+      fill="#ef4444"
+      stroke="#ffffff"
+      stroke-width={V_STROKE_WIDTH}
+      stroke-linejoin="round">
+      <path d={valveLeftPath}></path>
+      <path d={valveRightPath}></path>
+    </g>
+
+    <!-- selected junction -->
+    <circle
+      class="tra-ring"
+      cx="270"
+      cy="196"
+      r={RING_RADIUS}
+      fill="none"
+      stroke="#eab308"
+      stroke-width={RING_STROKE_WIDTH}></circle>
+
+    <!-- reservoir marker: the upstream trace's last segment ends right at
+         it, so it needs to be drawn last to stay on top of every line -->
+    <path
+      d={`M${reservoirPoint[0]} ${reservoirPoint[1] - RESERVOIR_APEX_OFFSET} L${reservoirPoint[0] + RESERVOIR_HALF_WIDTH} ${reservoirPoint[1] + RESERVOIR_BASE_OFFSET} L${reservoirPoint[0] - RESERVOIR_HALF_WIDTH} ${reservoirPoint[1] + RESERVOIR_BASE_OFFSET} Z`}
+      fill={RESERVOIR_COLOR}
+      stroke={OUTLINE_COLOR}
+      stroke-width={OUTLINE_STROKE_WIDTH}></path>
+  </svg>
+
+  <!-- trace panel (bottom-right, like the asset panel) -->
+  <div
+    class="absolute bottom-2 right-2 w-[168px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-xs font-semibold text-gray-700">Trace</p>
+      <p class="text-xs text-gray-400">Connectivity</p>
+    </div>
+    <div class="px-3 py-2 space-y-2.5 text-xs">
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500">Mode</span>
+        <span class="relative font-medium text-gray-700">
+          <span class="tra-swap-a">Upstream</span>
+          <span class="tra-swap-b absolute inset-y-0 right-0 whitespace-nowrap">
+            Boundary
+          </span>
+        </span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500">Start node</span>
+        <span class="font-medium text-gray-700 tabular-nums">J34</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-gray-500">Selected</span>
+        <span class="relative text-gray-700 tabular-nums">
+          <span class="tra-swap-a">3 pipes</span>
+          <span class="tra-swap-b absolute inset-y-0 right-0 whitespace-nowrap">
+            6 pipes
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  /* selected junction: gentle pulse for the whole cycle */
+  .tra-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: tra-ring-pulse 2s ease-in-out infinite;
+  }
+  @keyframes tra-ring-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.7;
+    }
+  }
+
+  .tra-up {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+  .tra-up-1 {
+    animation:
+      tra-up-d1 10s linear infinite both,
+      tra-up-fade 10s ease-in-out infinite both;
+  }
+  .tra-up-2 {
+    animation:
+      tra-up-d2 10s linear infinite both,
+      tra-up-fade 10s ease-in-out infinite both;
+  }
+  .tra-up-3 {
+    animation:
+      tra-up-d3 10s linear infinite both,
+      tra-up-fade 10s ease-in-out infinite both;
+  }
+  @keyframes tra-up-d1 {
+    0%,
+    4% {
+      stroke-dashoffset: 100;
+    }
+    14.9%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tra-up-d2 {
+    0%,
+    14.9% {
+      stroke-dashoffset: 100;
+    }
+    25.8%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tra-up-d3 {
+    0%,
+    25.8% {
+      stroke-dashoffset: 100;
+    }
+    36.7%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tra-up-fade {
+    0%,
+    40% {
+      opacity: 1;
+    }
+    46%,
+    93.6% {
+      opacity: 0.25;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* boundary trace: hops spread outward from the junction */
+  .tra-b {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+  .tra-b-1 {
+    animation:
+      tra-b-d1 10s linear infinite both,
+      tra-out 10s ease-in-out infinite both;
+  }
+  .tra-b-2 {
+    animation:
+      tra-b-d2 10s linear infinite both,
+      tra-out 10s ease-in-out infinite both;
+  }
+  .tra-b-3 {
+    animation:
+      tra-b-d3 10s linear infinite both,
+      tra-out 10s ease-in-out infinite both;
+  }
+  .tra-b-4 {
+    animation:
+      tra-b-d4 10s linear infinite both,
+      tra-out 10s ease-in-out infinite both;
+  }
+  @keyframes tra-b-d1 {
+    0%,
+    40% {
+      stroke-dashoffset: 100;
+    }
+    45.6%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tra-b-d2 {
+    0%,
+    45.6% {
+      stroke-dashoffset: 100;
+    }
+    51.2%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tra-b-d3 {
+    0%,
+    51.2% {
+      stroke-dashoffset: 100;
+    }
+    56.8%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tra-b-d4 {
+    0%,
+    56.8% {
+      stroke-dashoffset: 100;
+    }
+    62.4%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes tra-out {
+    0%,
+    93.6% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .tra-valve-gray {
+    animation: tra-valve-off 10s ease-in-out infinite both;
+  }
+  .tra-valve-red {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation:
+      tra-valve-on 10s ease-in-out infinite both,
+      tra-valve-pulse 10s ease-in-out infinite both;
+  }
+  @keyframes tra-valve-off {
+    0%,
+    60% {
+      opacity: 1;
+    }
+    64%,
+    93.6% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes tra-valve-on {
+    0%,
+    60% {
+      opacity: 0;
+    }
+    64%,
+    93.6% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes tra-valve-pulse {
+    0%,
+    63.2% {
+      transform: scale(1);
+    }
+    65.6% {
+      transform: scale(1.35);
+    }
+    68% {
+      transform: scale(1);
+    }
+    70.4% {
+      transform: scale(1.3);
+    }
+    72.8%,
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .tra-swap-a {
+    animation: tra-swap-out 10s ease-in-out infinite both;
+  }
+  .tra-swap-b {
+    animation: tra-swap-in 10s ease-in-out infinite both;
+  }
+  @keyframes tra-swap-out {
+    0%,
+    35.2% {
+      opacity: 1;
+    }
+    40%,
+    94.4% {
+      opacity: 0;
+    }
+    99.2%,
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes tra-swap-in {
+    0%,
+    35.2% {
+      opacity: 0;
+    }
+    40%,
+    94.4% {
+      opacity: 1;
+    }
+    99.2%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tra-ring,
+    .tra-up,
+    .tra-up-1,
+    .tra-up-2,
+    .tra-up-3,
+    .tra-b,
+    .tra-b-1,
+    .tra-b-2,
+    .tra-b-3,
+    .tra-b-4,
+    .tra-valve-gray,
+    .tra-valve-red,
+    .tra-swap-a,
+    .tra-swap-b {
+      animation: none;
+    }
+    .tra-ring {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .tra-up {
+      stroke-dashoffset: 0;
+      opacity: 0.25;
+    }
+    .tra-b {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .tra-valve-gray {
+      opacity: 0;
+    }
+    .tra-valve-red {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .tra-swap-a {
+      opacity: 0;
+    }
+    .tra-swap-b {
+      opacity: 1;
+    }
+  }
+</style>

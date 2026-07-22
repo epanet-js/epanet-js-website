@@ -11,38 +11,47 @@ import Link from "@components/ui/link.astro";
 
 import AppWindow from "@components/demos/AppWindow.astro";
 import AssetSearchDemo from "@components/demos/AssetSearchDemo.astro";
+import AssetSearchDemoAlt from "@components/demos/AssetSearchDemoAlt.astro";
 import BrowserAppDemo from "@components/demos/BrowserAppDemo.astro";
 import CalibrationPanel from "@components/demos/CalibrationPanel.astro";
 import CalibrationReviewDemo from "@components/demos/CalibrationReviewDemo.astro";
 import CalibrationScatterDemo from "@components/demos/CalibrationScatterDemo.astro";
 import ChlorineBoosterDemo from "@components/demos/ChlorineBoosterDemo.astro";
+import ChlorineBoosterDemoAlt from "@components/demos/ChlorineBoosterDemoAlt.astro";
 import CloudOptionalDemo from "@components/demos/CloudOptionalDemo.astro";
 import CloudYourStorageDiagram from "@components/demos/CloudYourStorageDiagram.astro";
 import ControlRuleDemo from "@components/demos/ControlRuleDemo.astro";
 import CustomerPointsDemo from "@components/demos/CustomerPointsDemo.astro";
 import DataRegionsDemo from "@components/demos/DataRegionsDemo.astro";
 import DataTableDemo from "@components/demos/DataTableDemo.astro";
+import DataTableDemoAlt from "@components/demos/DataTableDemoAlt.astro";
 import DemandAllocationDemo from "@components/demos/DemandAllocationDemo.astro";
 import DemandCategoriesDemo from "@components/demos/DemandCategoriesDemo.astro";
+import DemandCategoriesDemoAlt from "@components/demos/DemandCategoriesDemoAlt.astro";
 import DemandScalingDemo from "@components/demos/DemandScalingDemo.astro";
 import DeploymentOptionsDiagram from "@components/demos/DeploymentOptionsDiagram.astro";
 import ElevationDemo from "@components/demos/ElevationDemo.astro";
 import ElevationDemoAlt from "@components/demos/ElevationDemoAlt.astro";
 import EncryptedTransitDemo from "@components/demos/EncryptedTransitDemo.astro";
 import EpsPlaybackDemo from "@components/demos/EpsPlaybackDemo.astro";
+import EpsPlaybackDemoAlt from "@components/demos/EpsPlaybackDemoAlt.astro";
 import FieldDataImportDemo from "@components/demos/FieldDataImportDemo.astro";
+import FieldDataImportDemoAlt from "@components/demos/FieldDataImportDemoAlt.astro";
 import FileTransferDemo from "@components/demos/FileTransferDemo.astro";
 import FireFlowDemo from "@components/demos/FireFlowDemo.astro";
 import FlushingPlanDemo from "@components/demos/FlushingPlanDemo.astro";
+import FlushingPlanDemoAlt from "@components/demos/FlushingPlanDemoAlt.astro";
 import GisImportDemo from "@components/demos/GisImportDemo.astro";
 import GisImportDemoAlt from "@components/demos/GisImportDemoAlt.astro";
 import HydrantTestPlanDemo from "@components/demos/HydrantTestPlanDemo.astro";
+import HydrantTestPlanDemoAlt from "@components/demos/HydrantTestPlanDemoAlt.astro";
 import InpCompatReportDemo from "@components/demos/InpCompatReportDemo.astro";
 import LegendPanel from "@components/demos/LegendPanel.astro";
 import LicenseTimelineDemo from "@components/demos/LicenseTimelineDemo.astro";
 import LocalFirstDiagram from "@components/demos/LocalFirstDiagram.astro";
 import LocalFirstFlowDemo from "@components/demos/LocalFirstFlowDemo.astro";
 import LoggerPlacementDemo from "@components/demos/LoggerPlacementDemo.astro";
+import LoggerPlacementDemoAlt from "@components/demos/LoggerPlacementDemoAlt.astro";
 import NetworkDrawDemo from "@components/demos/NetworkDrawDemo.astro";
 import NetworkMap from "@components/demos/NetworkMap.astro";
 import NetworkReviewDemo from "@components/demos/NetworkReviewDemo.astro";
@@ -63,18 +72,25 @@ import ResultsExportDemo from "@components/demos/ResultsExportDemo.astro";
 import ScenarioCompareDemo from "@components/demos/ScenarioCompareDemo.astro";
 import ScenarioTreeDemo from "@components/demos/ScenarioTreeDemo.astro";
 import SelectionBatchEditDemo from "@components/demos/SelectionBatchEditDemo.astro";
+import SelectionBatchEditDemoAlt from "@components/demos/SelectionBatchEditDemoAlt.astro";
 import ShutdownPlanDemo from "@components/demos/ShutdownPlanDemo.astro";
+import ShutdownPlanDemoAlt from "@components/demos/ShutdownPlanDemoAlt.astro";
 import SimulationRunDemo from "@components/demos/SimulationRunDemo.astro";
 import SourceTraceDemo from "@components/demos/SourceTraceDemo.astro";
+import SourceTraceDemoAlt from "@components/demos/SourceTraceDemoAlt.astro";
 import SustainableOpenSourceDemo from "@components/demos/SustainableOpenSourceDemo.astro";
 import TankOperationsDemo from "@components/demos/TankOperationsDemo.astro";
 import TeamAccessDemo from "@components/demos/TeamAccessDemo.astro";
 import TimeSeriesPlotDemo from "@components/demos/TimeSeriesPlotDemo.astro";
 import TraceDemo from "@components/demos/TraceDemo.astro";
+import TraceDemoAlt from "@components/demos/TraceDemoAlt.astro";
 import ValveCriticalityDemo from "@components/demos/ValveCriticalityDemo.astro";
+import ValveCriticalityDemoAlt from "@components/demos/ValveCriticalityDemoAlt.astro";
 import WaterAgeDemo from "@components/demos/WaterAgeDemo.astro";
+import WaterAgeDemoAlt from "@components/demos/WaterAgeDemoAlt.astro";
 import WaterBalanceDemo from "@components/demos/WaterBalanceDemo.astro";
 import ZoneFitDemo from "@components/demos/ZoneFitDemo.astro";
+import ZoneFitDemoAlt from "@components/demos/ZoneFitDemoAlt.astro";
 
 // SSR (not prerendered) so this can 404 in production — the gallery is a
 // local dev tool only, never meant to be reachable on a live deploy.
@@ -220,6 +236,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/model-build and homepage micro-interactions.",
         frame: "window",
         component: AssetSearchDemo,
+        altComponent: AssetSearchDemoAlt,
       },
     ],
   },
@@ -252,6 +269,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/demand-analysis.",
         frame: "window",
         component: DemandCategoriesDemo,
+        altComponent: DemandCategoriesDemoAlt,
       },
       {
         name: "DemandScalingDemo",
@@ -283,6 +301,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/field-planning hero.",
         frame: "window",
         component: LoggerPlacementDemo,
+        altComponent: LoggerPlacementDemoAlt,
       },
       {
         name: "HydrantTestPlanDemo",
@@ -291,6 +310,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/field-planning and /solutions/calibration.",
         frame: "window",
         component: HydrantTestPlanDemo,
+        altComponent: HydrantTestPlanDemoAlt,
       },
       {
         name: "FieldDataImportDemo",
@@ -299,6 +319,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/field-planning and /solutions/calibration.",
         frame: "window",
         component: FieldDataImportDemo,
+        altComponent: FieldDataImportDemoAlt,
       },
       {
         name: "ObservedOverlayDemo",
@@ -322,6 +343,8 @@ const sections: DemoSection[] = [
         useOn: "Homepage and education content.",
         frame: "window",
         component: SimulationRunDemo,
+        altComponent: SimulationRunDemo,
+        altProps: { alt: true },
       },
       {
         name: "EpsPlaybackDemo",
@@ -330,6 +353,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/operational-modeling and /who-its-for/utilities.",
         frame: "window",
         component: EpsPlaybackDemo,
+        altComponent: EpsPlaybackDemoAlt,
       },
       {
         name: "SelectionBatchEditDemo",
@@ -338,6 +362,7 @@ const sections: DemoSection[] = [
         useOn: "/who-its-for/consultants and /solutions/model-build.",
         frame: "window",
         component: SelectionBatchEditDemo,
+        altComponent: SelectionBatchEditDemoAlt,
       },
       {
         name: "TraceDemo",
@@ -346,6 +371,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/model-build and /solutions/operational-modeling.",
         frame: "window",
         component: TraceDemo,
+        altComponent: TraceDemoAlt,
       },
       {
         name: "PumpCurveDemo",
@@ -373,6 +399,8 @@ const sections: DemoSection[] = [
         concept: true,
         component: CalibrationReviewDemo,
         props: { framed: true },
+        altComponent: CalibrationReviewDemo,
+        altProps: { framed: true, alt: true },
       },
       {
         name: "CalibrationPanel",
@@ -406,6 +434,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/calibration.",
         frame: "window",
         component: ZoneFitDemo,
+        altComponent: ZoneFitDemoAlt,
       },
     ],
   },
@@ -420,6 +449,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/water-quality hero.",
         frame: "window",
         component: WaterAgeDemo,
+        altComponent: WaterAgeDemoAlt,
       },
       {
         name: "SourceTraceDemo",
@@ -428,6 +458,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/water-quality.",
         frame: "window",
         component: SourceTraceDemo,
+        altComponent: SourceTraceDemoAlt,
       },
       {
         name: "ChlorineBoosterDemo",
@@ -436,6 +467,7 @@ const sections: DemoSection[] = [
         useOn: "/solutions/water-quality.",
         frame: "window",
         component: ChlorineBoosterDemo,
+        altComponent: ChlorineBoosterDemoAlt,
       },
       {
         name: "FlushingPlanDemo",
@@ -445,6 +477,7 @@ const sections: DemoSection[] = [
         frame: "window",
         concept: true,
         component: FlushingPlanDemo,
+        altComponent: FlushingPlanDemoAlt,
       },
     ],
   },
@@ -460,6 +493,8 @@ const sections: DemoSection[] = [
         frame: "window",
         usedOn: ["/", "/solutions/fire-flow"],
         component: FireFlowDemo,
+        altComponent: FireFlowDemo,
+        altProps: { alt: true },
       },
       {
         name: "PressureFlowCurveDemo",
@@ -477,6 +512,7 @@ const sections: DemoSection[] = [
         frame: "window",
         concept: true,
         component: ValveCriticalityDemo,
+        altComponent: ValveCriticalityDemoAlt,
       },
     ],
   },
@@ -492,6 +528,8 @@ const sections: DemoSection[] = [
         frame: "window",
         usedOn: ["/solutions/planning", "/solutions/operational-modeling"],
         component: ScenarioCompareDemo,
+        altComponent: ScenarioCompareDemo,
+        altProps: { alt: true },
       },
       {
         name: "ScenarioTreeDemo",
@@ -554,6 +592,7 @@ const sections: DemoSection[] = [
         frame: "window",
         concept: true,
         component: ShutdownPlanDemo,
+        altComponent: ShutdownPlanDemoAlt,
       },
     ],
   },
@@ -579,6 +618,7 @@ const sections: DemoSection[] = [
         frame: "window",
         concept: true,
         component: DataTableDemo,
+        altComponent: DataTableDemoAlt,
       },
       {
         name: "ResultsExportDemo",

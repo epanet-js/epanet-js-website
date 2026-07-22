@@ -1,0 +1,320 @@
+---
+// Alternate version of WaterAgeDemo, banding the alt network's 16 pipes by
+// distance from the reservoir instead of the original's 20-pipe index
+// groups. Same 4-tier partition as ZoneFitDemoAlt (170/270/470/570 -- here
+// used for travel-time bands instead of calibration zones). `swap` reorders
+// each pipe's endpoints so the dashoffset draw travels away from the
+// reservoir, re-derived per pipe for the alt topology's own geometry.
+import { Clock } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import LegendPanel from "./LegendPanel.astro";
+import { pipes, junctions } from "./network-geometry-alt";
+import { JUNCTION_COLOR, JUNCTION_RADIUS, OUTLINE_COLOR, OUTLINE_STROKE_WIDTH, PIPE_STROKE_WIDTH } from "./network-style-alt";
+
+type BandPipe = { index: number; swap?: boolean };
+
+const bands: {
+  color: string;
+  cls: string;
+  stagger: boolean;
+  pipes: BandPipe[];
+}[] = [
+  {
+    color: "#3b82f6",
+    cls: "waa-band1",
+    stagger: false,
+    pipes: [{ index: 0 }, { index: 3, swap: true }, { index: 6, swap: true }],
+  },
+  {
+    color: "#22c55e",
+    cls: "waa-band2",
+    stagger: true,
+    pipes: [
+      { index: 1 },
+      { index: 2 },
+      { index: 4, swap: true },
+      { index: 7, swap: true },
+      { index: 15 },
+    ],
+  },
+  {
+    color: "#f59e0b",
+    cls: "waa-band3",
+    stagger: true,
+    pipes: [
+      { index: 5, swap: true },
+      { index: 8, swap: true },
+      { index: 9 },
+      { index: 10 },
+      { index: 13 },
+      { index: 14 },
+    ],
+  },
+  {
+    color: "#ef4444",
+    cls: "waa-band4",
+    stagger: true,
+    pipes: [{ index: 11 }, { index: 12 }],
+  },
+];
+
+const segment = ({ index, swap }: BandPipe) => {
+  const [x1, y1, x2, y2] = pipes[index];
+  return swap ? { x1: x2, y1: y2, x2: x1, y2: y1 } : { x1, y1, x2, y2 };
+};
+
+const legendEntries = [
+  { color: "#3b82f6", label: "< 6" },
+  { color: "#22c55e", label: "6 – 12" },
+  { color: "#f59e0b", label: "12 – 24" },
+  { color: "#ef4444", label: "> 24" },
+];
+---
+
+<AppWindow
+  variant="plain"
+  altNetwork
+  hideHeader
+  hideFooter
+  label="Water age in epanet-js: the network coloring by water age as it spreads from the source, with a legend in hours.">
+  <!-- age coloring overlay: same viewBox as NetworkMapAlt so strokes align -->
+  <svg
+    viewBox="0 0 640 400"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <g stroke-width={PIPE_STROKE_WIDTH} stroke-linecap="round" fill="none">
+      {
+        bands.map((band) =>
+          band.pipes.map((p, i) => {
+            const { x1, y1, x2, y2 } = segment(p);
+            return (
+              <line
+                class={band.cls}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke={band.color}
+                pathLength="100"
+                style={
+                  band.stagger
+                    ? `animation-delay: ${(i * 0.12).toFixed(2)}s`
+                    : undefined
+                }
+              />
+            );
+          }),
+        )
+      }
+    </g>
+
+    <!-- redraw the junction dots on top of the age-colored lines, since
+         this overlay is a separate sibling painted after NetworkMapAlt's own
+         junctions and would otherwise cover them -->
+    <g stroke={OUTLINE_COLOR} stroke-width={OUTLINE_STROKE_WIDTH}>
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r={JUNCTION_RADIUS} fill={JUNCTION_COLOR} />
+        ))
+      }
+    </g>
+  </svg>
+
+  <!-- age legend (top-left, like the app's result legend) -->
+  <div class="waa-legend absolute top-2 left-2">
+    <LegendPanel title="Water age (h)" entries={legendEntries} />
+  </div>
+
+  <!-- water quality panel (top-right) -->
+  <div
+    class="waa-panel absolute top-2 right-2 w-fit max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="whitespace-nowrap text-xs font-semibold text-gray-700">Water quality</p>
+      <p class="whitespace-nowrap text-xs text-gray-400">Age</p>
+    </div>
+    <p class="flex items-center gap-1 whitespace-nowrap px-3 py-2 text-xs text-gray-500">
+      <Clock size={12} className="text-gray-400 shrink-0" />
+      Extended period · 72 h
+    </p>
+  </div>
+</AppWindow>
+
+<style>
+  /* band 1: freshest water at the source crossfades in over the navy base */
+  .waa-band1 {
+    opacity: 0;
+    animation: waa-flood 8s ease-in-out infinite both;
+  }
+  @keyframes waa-flood {
+    0%,
+    4% {
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* bands 2-4 draw along the pipe so the color travels away from the reservoir */
+  .waa-band2,
+  .waa-band3,
+  .waa-band4 {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  }
+  .waa-band2 {
+    animation: waa-draw-2 8s linear infinite both;
+  }
+  .waa-band3 {
+    animation: waa-draw-3 8s linear infinite both;
+  }
+  .waa-band4 {
+    animation: waa-draw-4 8s linear infinite both;
+  }
+  @keyframes waa-draw-2 {
+    0%,
+    20% {
+      stroke-dashoffset: 100;
+    }
+    31% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes waa-draw-3 {
+    0%,
+    32.5% {
+      stroke-dashoffset: 100;
+    }
+    43.5% {
+      stroke-dashoffset: 0;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  /* band 4 breathes during the hold so the loop never sits still */
+  @keyframes waa-draw-4 {
+    0%,
+    45% {
+      stroke-dashoffset: 100;
+    }
+    56% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    64% {
+      opacity: 0.85;
+    }
+    72% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 0.85;
+    }
+    88% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    92% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    98%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+
+  .waa-legend {
+    animation: waa-legend-in 8s ease-out infinite both;
+  }
+  @keyframes waa-legend-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    8% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .waa-panel {
+    animation: waa-panel-in 8s ease-out infinite both;
+  }
+  @keyframes waa-panel-in {
+    0%,
+    10% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    16% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .waa-band1,
+    .waa-band2,
+    .waa-band3,
+    .waa-band4,
+    .waa-legend,
+    .waa-panel {
+      animation: none;
+    }
+    .waa-band1 {
+      opacity: 1;
+    }
+    .waa-band2,
+    .waa-band3,
+    .waa-band4 {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    .waa-legend,
+    .waa-panel {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

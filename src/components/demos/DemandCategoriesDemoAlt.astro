@@ -1,0 +1,247 @@
+---
+// Alternate version of DemandCategoriesDemo, highlighting the same target
+// junction as AssetSearchDemoAlt (270,196, also labeled J288) on
+// NetworkMapAlt instead of NetworkMap. Timing/panel content unchanged.
+import AppWindow from "./AppWindow.astro";
+
+const categories = [
+  { label: "Domestic", pattern: "RES-24h", value: "0.42 l/s" },
+  { label: "Commercial", pattern: "COM-24h", value: "0.18 l/s" },
+  { label: "Leakage", pattern: "Continuous", value: "0.07 l/s" },
+];
+
+const segments = [
+  { width: "63%", cls: "bg-violet-500" },
+  { width: "27%", cls: "bg-violet-300" },
+  { width: "10%", cls: "bg-gray-300" },
+];
+
+const CYCLE = 9.5;
+const toPct = (seconds: number) => +((seconds / CYCLE) * 100).toFixed(3);
+
+const START_DELAY = 0.5;
+
+const RING_HIDE_END = 0.21 + START_DELAY;
+const RING_VISIBLE = 0.56 + START_DELAY;
+const PANEL_VISIBLE = 0.42 + START_DELAY;
+const TOTAL_HIDE_END = 3.36 + START_DELAY;
+const TOTAL_VISIBLE = 3.78 + START_DELAY;
+
+const ROW_STAGGER = 0.84;
+const ROW_ENTRANCE_START = 0.84 + START_DELAY;
+const ROW_ENTRANCE = 0.35;
+const ROW_HOLD_END = 8.3 + START_DELAY;
+const ROW_FADE_END = 8.72 + START_DELAY;
+
+const SEG_STAGGER = 0.42;
+const SEG_GROW_START = 3.78 + START_DELAY;
+const SEG_GROW = 0.7;
+const SEG_HOLD_END = 8.44 + START_DELAY;
+const SEG_FADE_END = 8.86 + START_DELAY;
+
+const HOLD_END = 8.44 + START_DELAY;
+const FADE_END = 8.86 + START_DELAY;
+
+const singleCss = `
+.dca-ring { animation-name: dca-ring-in; }
+@keyframes dca-ring-in {
+  0%, ${toPct(RING_HIDE_END)}% { opacity: 0; }
+  ${toPct(RING_VISIBLE)}% { opacity: 1; }
+  ${toPct(HOLD_END)}% { opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}
+.dca-panel { animation-name: dca-panel-in; }
+@keyframes dca-panel-in {
+  0%, ${toPct(START_DELAY)}% { opacity: 0; transform: translateY(4px); }
+  ${toPct(PANEL_VISIBLE)}% { opacity: 1; transform: translateY(0); }
+  ${toPct(HOLD_END)}% { opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}
+.dca-total { animation-name: dca-total-in; }
+@keyframes dca-total-in {
+  0%, ${toPct(TOTAL_HIDE_END)}% { opacity: 0; }
+  ${toPct(TOTAL_VISIBLE)}% { opacity: 1; }
+  ${toPct(HOLD_END)}% { opacity: 1; }
+  ${toPct(FADE_END)}%, 100% { opacity: 0; }
+}`;
+
+const rowCss = categories
+  .map((_, i) => {
+    const start = ROW_ENTRANCE_START + i * ROW_STAGGER;
+    return `
+.dca-row-${i} { animation-name: dca-row-in-${i}; }
+@keyframes dca-row-in-${i} {
+  0%, ${toPct(start)}% { opacity: 0; transform: translateY(4px); }
+  ${toPct(start + ROW_ENTRANCE)}% { opacity: 1; transform: translateY(0); }
+  ${toPct(ROW_HOLD_END)}% { opacity: 1; }
+  ${toPct(ROW_FADE_END)}%, 100% { opacity: 0; }
+}`;
+  })
+  .join("\n");
+
+const segCss = segments
+  .map((_, i) => {
+    const start = SEG_GROW_START + i * SEG_STAGGER;
+    return `
+.dca-seg-${i} { animation-name: dca-seg-grow-${i}; }
+@keyframes dca-seg-grow-${i} {
+  0%, ${toPct(start)}% { transform: scaleX(0); opacity: 1; }
+  ${toPct(start + SEG_GROW)}% { transform: scaleX(1); }
+  ${toPct(SEG_HOLD_END)}% { transform: scaleX(1); opacity: 1; }
+  ${toPct(SEG_FADE_END)}%, 100% { transform: scaleX(1); opacity: 0; }
+}`;
+  })
+  .join("\n");
+
+const generatedCss = `${singleCss}\n${rowCss}\n${segCss}`;
+---
+
+<AppWindow
+  variant="plain"
+  altNetwork
+  hideHeader
+  hideFooter
+  label="Demand categories in epanet-js: junction J288's demand split into domestic, commercial, and leakage categories, each with its own pattern, summing in a stacked bar.">
+  <!-- selected junction highlight at [270, 196] -->
+  <svg
+    viewBox="0 0 640 400"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <circle
+      class="dca-ring"
+      cx="270"
+      cy="196"
+      r="11"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="3.2"></circle>
+    <circle
+      class="dca-pulse"
+      cx="270"
+      cy="196"
+      r="11"
+      fill="none"
+      stroke="#8b5cf6"
+      stroke-width="2.4"></circle>
+  </svg>
+
+  <!-- asset panel: demands tab for J288 -->
+  <div class="dca-panel absolute top-2 right-2 w-[210px] max-w-[70%] bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
+    <div class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[12px] font-semibold text-gray-700">Demands · J288</p>
+      <p class="text-[11px] text-gray-400">3 categories</p>
+    </div>
+    <div class="py-1 text-[12px]">
+      {
+        categories.map((cat, i) => (
+          <div class={`dca-row dca-row-${i} flex items-center justify-between gap-1 px-3 py-1`}>
+            <span class="flex items-center gap-1.5 min-w-0">
+              <span class="text-gray-600">{cat.label}</span>
+              <span class="rounded border border-gray-200 bg-gray-50 px-1 text-[10px] text-gray-500 whitespace-nowrap">
+                {cat.pattern}
+              </span>
+            </span>
+            <span class="font-medium text-gray-700 tabular-nums">
+              {cat.value}
+            </span>
+          </div>
+        ))
+      }
+      <div
+        class="dca-total flex items-center justify-between border-t border-gray-100 mt-1 px-3 py-1.5">
+        <span class="font-medium text-gray-600">Total</span>
+        <span class="font-semibold text-gray-800 tabular-nums">0.67 l/s</span>
+      </div>
+      <div class="px-3 pb-2">
+        <div class="flex h-1.5 gap-px overflow-hidden rounded-full bg-gray-100">
+          {
+            segments.map((seg, i) => (
+              <span
+                class:list={[`dca-seg dca-seg-${i} h-full`, seg.cls]}
+                style={`width: ${seg.width}`}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</AppWindow>
+
+<style define:vars={{ cycle: `${CYCLE}s` }}>
+  .dca-ring {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .dca-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: dca-pulse 1.8s ease-out infinite;
+  }
+  @keyframes dca-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    70%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  .dca-panel {
+    opacity: 0;
+    transform: translateY(4px);
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  .dca-row {
+    opacity: 0;
+    transform: translateY(4px);
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  .dca-total {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  .dca-seg {
+    transform: scaleX(0);
+    transform-origin: left;
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dca-ring,
+    .dca-pulse,
+    .dca-panel,
+    .dca-row,
+    .dca-total,
+    .dca-seg {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .dca-pulse {
+      opacity: 0;
+    }
+  }
+</style>
+
+<style set:html={generatedCss} />

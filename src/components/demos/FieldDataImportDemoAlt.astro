@@ -1,0 +1,321 @@
+---
+// Alternate version of FieldDataImportDemo, drawing the alt network/basemap
+// by hand instead of NetworkMap's. Same timing; chip percentages use the
+// alt 640x400 viewBox instead of 400x300.
+import { FileUp } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import BasemapAlt from "./BasemapAlt.astro";
+import { pipes, junctions, markerPoints, reservoirPoint } from "./network-geometry-alt";
+import {
+  PIPE_COLOR,
+  PIPE_STROKE_WIDTH,
+  JUNCTION_COLOR,
+  JUNCTION_RADIUS,
+  OUTLINE_COLOR,
+  OUTLINE_STROKE_WIDTH,
+  RESERVOIR_COLOR,
+  RESERVOIR_APEX_OFFSET,
+  RESERVOIR_BASE_OFFSET,
+  RESERVOIR_HALF_WIDTH,
+} from "./network-style-alt";
+
+// The reservoir, pipes, junctions, and their monitoring-point markers are
+// nudged down 40px (translate-y-10, below) -- only the basemap stays put,
+// same as the original. Chip positions are a percentage of the 640x400
+// viewBox plus that same fixed 40px.
+const chipPos = markerPoints.map(([x, y]) => ({
+  left: `${((x / 640) * 100).toFixed(1)}%`,
+  top: `calc(${((y / 400) * 100).toFixed(1)}% + 40px)`,
+}));
+
+const sparkPoints = [
+  "1,10 7,5 13,8 19,4 25,7 31,3 37,6",
+  "1,4 7,8 13,5 19,9 25,6 31,9 37,5",
+  "1,7 7,3 13,7 19,5 25,9 31,5 37,8",
+  "1,5 7,9 13,4 19,7 25,4 31,8 37,4",
+];
+
+const sparkEnds = sparkPoints.map((points) => {
+  const [x, y] = points.trim().split(" ").at(-1)!.split(",").map(Number);
+  return { x, y };
+});
+
+const toPct = (seconds: number, cycle: number) =>
+  +((seconds / cycle) * 100).toFixed(3);
+
+const CHIP_VISIBLE = 0.56;
+const PROGRESS_HOLD_START = 0.8;
+const PROGRESS_COMPLETE = 2.24;
+
+const HALO_START = PROGRESS_COMPLETE + 0.5;
+const HALO_STAGGER = 0.5;
+const HALO_ENTRANCE = 0.3;
+const haloTimings = markerPoints.map((_, i) => {
+  const start = HALO_START + i * HALO_STAGGER;
+  return { start, visible: start + HALO_ENTRANCE };
+});
+
+const SPARK_DELAY_AFTER_HALO = 0.25;
+const SPARK_ENTRANCE = 0.32;
+const sparkTimings = haloTimings.map(({ visible: haloVisible }) => {
+  const visible = haloVisible + SPARK_DELAY_AFTER_HALO;
+  return { start: visible - SPARK_ENTRANCE, visible };
+});
+const lastSparkVisible = sparkTimings.at(-1)!.visible;
+
+const SUMMARY_ENTRANCE = 0.48;
+const SUMMARY_VISIBLE = lastSparkVisible + 1;
+const SUMMARY_START = SUMMARY_VISIBLE - SUMMARY_ENTRANCE;
+
+const HOLD_END = SUMMARY_VISIBLE + 1.28;
+const FADE_END = HOLD_END + 0.48;
+const CYCLE = FADE_END + 0.22;
+const pct = (seconds: number) => toPct(seconds, CYCLE);
+
+const haloCss = haloTimings
+  .map(
+    ({ start, visible }, i) => `
+.fdia-halo-${i} {
+  animation-name: fdia-marker-pulse, fdia-halo-in-${i};
+  animation-duration: 1.8s, ${CYCLE}s;
+  animation-timing-function: ease-in-out, ease-out;
+  animation-iteration-count: infinite, infinite;
+  animation-fill-mode: none, both;
+  animation-delay: ${i * 0.4}s, 0s;
+}
+@keyframes fdia-halo-in-${i} {
+  0%, ${pct(start)}% { opacity: 0; }
+  ${pct(visible)}% { opacity: 1; }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}`,
+  )
+  .join("\n");
+
+const sparkCss = sparkTimings
+  .map(
+    ({ start, visible }, i) => `
+.fdia-spark-${i + 1} { animation-name: fdia-spark-${i + 1}; }
+@keyframes fdia-spark-${i + 1} {
+  0%, ${pct(start)}% { opacity: 0; transform: translateY(calc(-100% + 2px)) scale(0.92); }
+  ${pct(visible)}% { opacity: 1; transform: translateY(-100%) scale(1); }
+  ${pct(HOLD_END)}% { opacity: 1; transform: translateY(-100%) scale(1); }
+  ${pct(FADE_END)}%, 100% { opacity: 0; transform: translateY(-100%) scale(1); }
+}`,
+  )
+  .join("\n");
+
+const singleCss = `
+.fdia-chip { animation-name: fdia-chip-in; }
+@keyframes fdia-chip-in {
+  0% { opacity: 0; transform: translateY(-6px); }
+  ${pct(CHIP_VISIBLE)}% { opacity: 1; transform: translateY(0); }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}
+.fdia-progress { animation-name: fdia-progress; }
+@keyframes fdia-progress {
+  0%, ${pct(PROGRESS_HOLD_START)}% { width: 0; opacity: 1; }
+  ${pct(PROGRESS_COMPLETE)}% { width: 100%; opacity: 1; }
+  ${pct(HOLD_END)}% { width: 100%; opacity: 1; }
+  ${pct(FADE_END)}%, 100% { width: 100%; opacity: 0; }
+}
+.fdia-summary { animation-name: fdia-summary-in; }
+@keyframes fdia-summary-in {
+  0%, ${pct(SUMMARY_START)}% { opacity: 0; transform: translateY(4px); }
+  ${pct(SUMMARY_VISIBLE)}% { opacity: 1; transform: translateY(0); }
+  ${pct(HOLD_END)}% { opacity: 1; }
+  ${pct(FADE_END)}%, 100% { opacity: 0; }
+}`;
+
+const generatedCss = `${singleCss}\n${haloCss}\n${sparkCss}`;
+---
+
+<AppWindow
+  bare
+  hideHeader
+  hideFooter
+  label="Field data import in epanet-js: a logger CSV drops in and sparkline chips appear at each monitoring point, with a summary of loggers, duration, and interval.">
+  <!-- basemap stays put -->
+  <svg
+    viewBox="0 0 640 400"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <BasemapAlt />
+  </svg>
+
+  <!-- reservoir, pipes, junctions, and monitoring markers, nudged down 40px
+       (see chipPos above) -->
+  <svg
+    viewBox="0 0 640 400"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full translate-y-10"
+    aria-hidden="true">
+    <path
+      d={`M${reservoirPoint[0]} ${reservoirPoint[1] - RESERVOIR_APEX_OFFSET} L${reservoirPoint[0] + RESERVOIR_HALF_WIDTH} ${reservoirPoint[1] + RESERVOIR_BASE_OFFSET} L${reservoirPoint[0] - RESERVOIR_HALF_WIDTH} ${reservoirPoint[1] + RESERVOIR_BASE_OFFSET} Z`}
+      fill={RESERVOIR_COLOR}
+      stroke={OUTLINE_COLOR}
+      stroke-width={OUTLINE_STROKE_WIDTH}></path>
+    <g stroke-width={PIPE_STROKE_WIDTH} stroke-linecap="round">
+      {
+        pipes.map(([x1, y1, x2, y2]) => (
+          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={PIPE_COLOR} />
+        ))
+      }
+    </g>
+    <g stroke={OUTLINE_COLOR} stroke-width={OUTLINE_STROKE_WIDTH}>
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r={JUNCTION_RADIUS} fill={JUNCTION_COLOR} />
+        ))
+      }
+    </g>
+    <g fill="none" stroke="#8b5cf6" stroke-width={PIPE_STROKE_WIDTH}>
+      {
+        markerPoints.map(([x, y], i) => (
+          <circle cx={x} cy={y} r="13" class={`fdia-halo-${i}`} />
+        ))
+      }
+    </g>
+  </svg>
+
+  <!-- dropped CSV chip + campaign summary, side by side (top left) -->
+  <div class="absolute top-2 left-2 flex items-center gap-4">
+    <div class="fdia-chip">
+      <div
+        class="flex items-center gap-1.5 bg-white rounded-lg border border-gray-100 shadow-md pl-1.5 pr-2.5 py-1.5">
+        <span
+          class="flex items-center justify-center w-5 h-5 rounded bg-violet-50 text-violet-600">
+          <FileUp size={14} />
+        </span>
+        <span class="text-[12px] font-medium text-gray-700">loggers.csv</span>
+        <span class="text-[11px] text-gray-400">680 KB</span>
+      </div>
+      <div class="mx-1.5 -mt-px h-0.5 rounded-full bg-gray-100 overflow-hidden">
+        <div class="fdia-progress h-full bg-violet-500"></div>
+      </div>
+    </div>
+
+    <!-- campaign summary -->
+    <div
+      class="fdia-summary whitespace-nowrap rounded-lg border border-gray-100 bg-white px-3 py-1.5 text-[12px] text-gray-600 shadow-md">
+      <span class="font-medium text-gray-700">4 loggers</span>
+      · 14 days · 2-min interval
+    </div>
+  </div>
+
+  <!-- sparkline chips landing at the monitoring points -->
+  {
+    chipPos.map((pos, i) => (
+      <span
+        class={`fdia-spark-${i + 1} absolute -translate-y-full ml-2 -mt-1.5 rounded border border-gray-200 bg-white px-2.5 py-2 shadow-sm`}
+        style={`left: ${pos.left}; top: ${pos.top};`}>
+        <svg viewBox="0 0 40 12" class="h-3 w-10" aria-hidden="true">
+          <polyline
+            points={sparkPoints[i]}
+            fill="none"
+            stroke="#8b5cf6"
+            stroke-width="1.5"
+            stroke-linejoin="round"
+          />
+          <circle cx={sparkEnds[i].x} cy={sparkEnds[i].y} r="2" fill="#8b5cf6" />
+        </svg>
+      </span>
+    ))
+  }
+</AppWindow>
+
+<style define:vars={{ cycle: `${CYCLE}s` }}>
+  .fdia-halo-0,
+  .fdia-halo-1,
+  .fdia-halo-2,
+  .fdia-halo-3 {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  @keyframes fdia-marker-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+  }
+
+  .fdia-chip {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .fdia-progress {
+    width: 0;
+    animation-duration: var(--cycle);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .fdia-summary {
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  .fdia-spark-1,
+  .fdia-spark-2,
+  .fdia-spark-3,
+  .fdia-spark-4 {
+    opacity: 0;
+    animation-duration: var(--cycle);
+    animation-timing-function: ease-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fdia-halo-0,
+    .fdia-halo-1,
+    .fdia-halo-2,
+    .fdia-halo-3,
+    .fdia-chip,
+    .fdia-progress,
+    .fdia-spark-1,
+    .fdia-spark-2,
+    .fdia-spark-3,
+    .fdia-spark-4,
+    .fdia-summary {
+      animation: none;
+    }
+    .fdia-halo-0,
+    .fdia-halo-1,
+    .fdia-halo-2,
+    .fdia-halo-3 {
+      opacity: 1;
+    }
+    .fdia-chip {
+      opacity: 1;
+      transform: none;
+    }
+    .fdia-progress {
+      width: 100%;
+      opacity: 1;
+    }
+    .fdia-spark-1,
+    .fdia-spark-2,
+    .fdia-spark-3,
+    .fdia-spark-4 {
+      opacity: 1;
+      transform: translateY(-100%);
+    }
+    .fdia-summary {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<style set:html={generatedCss} />

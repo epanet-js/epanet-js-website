@@ -1,0 +1,331 @@
+---
+// Alternate version of DataTableDemo, flashing a pipe on NetworkMapAlt
+// instead of NetworkMap. Table content/timing unchanged; only the flashed
+// pipe (170,86)-(270,86) and its map chip position differ.
+import { ChevronDown } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+
+const rows = [
+  { id: "P-104", dia: "200", mat: "PVC", moveCls: "dtba-move-down" },
+  { id: "P-211", dia: "150", mat: "DI", moveCls: "dtba-move-down" },
+  { id: "P-7", dia: "250", mat: "PVC", moveCls: "dtba-move-up", edited: true },
+  { id: "P-58", dia: "100", mat: "PE", moveCls: "" },
+];
+---
+
+<AppWindow
+  variant="plain"
+  altNetwork
+  label="Data table in epanet-js: a sortable pipe table re-sorting by diameter, with one cell edit updating the matching label on the map.">
+  <!-- the edited pipe flashes on the map -->
+  <svg
+    viewBox="0 0 640 400"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <line
+      class="dtba-pipe-flash"
+      x1="170"
+      y1="86"
+      x2="270"
+      y2="86"
+      stroke="#8b5cf6"
+      stroke-width="5.6"
+      stroke-linecap="round"></line>
+  </svg>
+
+  <!-- map label for the edited pipe -->
+  <span
+    class="dtba-map-chip absolute left-[31%] top-[13%] whitespace-nowrap rounded border border-gray-200 bg-white px-1 py-px text-[9px] font-medium text-gray-700 shadow-sm">
+    <span class="relative tabular-nums">
+      <span class="dtba-val-old">250 mm</span>
+      <span class="dtba-val-new absolute inset-0 bg-white">300 mm</span>
+    </span>
+  </span>
+
+  <!-- pipe table panel -->
+  <div
+    class="dtba-panel absolute top-2 left-2 w-[230px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-[11px] font-semibold text-gray-700">Pipes</p>
+      <p class="text-[10px] text-gray-400">1,407 rows</p>
+    </div>
+    <div
+      class="grid grid-cols-[1fr_64px_56px] items-center px-3 py-1 text-[9px] font-medium text-gray-400">
+      <span>Pipe</span>
+      <span class="flex items-center justify-end gap-0.5">
+        Dia (mm)
+        <span class="dtba-arrow inline-flex">
+          <ChevronDown size={10} />
+        </span>
+      </span>
+      <span class="text-right">Material</span>
+    </div>
+    <div class="pb-1">
+      {
+        rows.map((row, i) => (
+          <div
+            class:list={["dtba-row", row.moveCls]}
+            style={`animation-delay: ${(i * 0.35).toFixed(2)}s${row.moveCls ? ", 0s" : ""}`}>
+            <div class="grid h-[22px] grid-cols-[1fr_64px_56px] items-center border-t border-gray-100 px-3 text-[10px] text-gray-600">
+              <span class="font-medium text-gray-700">{row.id}</span>
+              {row.edited ? (
+                <span class="dtba-cell relative justify-self-end rounded px-1 tabular-nums">
+                  <span class="dtba-val-old">{row.dia}</span>
+                  <span class="dtba-val-new absolute inset-0 bg-white px-1 text-right">
+                    300
+                  </span>
+                </span>
+              ) : (
+                <span class="px-1 text-right tabular-nums">{row.dia}</span>
+              )}
+              <span class="text-right">{row.mat}</span>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  /* rows populate, then re-sort by diameter */
+  .dtba-row {
+    animation: dtba-row-in 8s ease-out infinite both;
+  }
+  @keyframes dtba-row-in {
+    0%,
+    8% {
+      opacity: 0;
+    }
+    13% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .dtba-move-down {
+    animation:
+      dtba-row-in 8s ease-out infinite both,
+      dtba-move-down 8s ease-in-out infinite both;
+  }
+  .dtba-move-up {
+    animation:
+      dtba-row-in 8s ease-out infinite both,
+      dtba-move-up 8s ease-in-out infinite both;
+  }
+  @keyframes dtba-move-down {
+    0%,
+    34% {
+      transform: translateY(0);
+    }
+    44% {
+      transform: translateY(22px);
+    }
+    100% {
+      transform: translateY(22px);
+    }
+  }
+  @keyframes dtba-move-up {
+    0%,
+    34% {
+      transform: translateY(0);
+    }
+    44% {
+      transform: translateY(-44px);
+    }
+    100% {
+      transform: translateY(-44px);
+    }
+  }
+
+  /* the sort arrow flips to descending */
+  .dtba-arrow {
+    animation: dtba-arrow-flip 8s ease-in-out infinite both;
+  }
+  @keyframes dtba-arrow-flip {
+    0%,
+    30% {
+      transform: rotate(0deg);
+      color: #9ca3af;
+    }
+    34% {
+      transform: rotate(180deg);
+      color: #8b5cf6;
+    }
+    100% {
+      transform: rotate(180deg);
+      color: #8b5cf6;
+    }
+  }
+
+  /* the edited cell gets focus, then its value swaps */
+  .dtba-cell {
+    animation: dtba-cell-focus 8s linear infinite both;
+  }
+  @keyframes dtba-cell-focus {
+    0%,
+    50% {
+      box-shadow: none;
+    }
+    53%,
+    66% {
+      box-shadow: 0 0 0 1.5px #8b5cf6;
+    }
+    70%,
+    100% {
+      box-shadow: none;
+    }
+  }
+  .dtba-val-old {
+    animation: dtba-val-old 8s linear infinite both;
+  }
+  @keyframes dtba-val-old {
+    0%,
+    60% {
+      opacity: 1;
+    }
+    62%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .dtba-val-new {
+    animation: dtba-val-new 8s linear infinite both;
+  }
+  @keyframes dtba-val-new {
+    0%,
+    60% {
+      opacity: 0;
+    }
+    62% {
+      opacity: 1;
+      color: #8b5cf6;
+    }
+    72% {
+      color: #374151;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .dtba-panel {
+    animation: dtba-panel-in 8s ease-out infinite both;
+  }
+  @keyframes dtba-panel-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    6% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .dtba-map-chip {
+    animation: dtba-chip-in 8s ease-out infinite both;
+  }
+  @keyframes dtba-chip-in {
+    0%,
+    8% {
+      opacity: 0;
+    }
+    14% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    98%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* the edited pipe flashes on the map as the value lands */
+  .dtba-pipe-flash {
+    animation: dtba-pipe-flash 8s linear infinite both;
+  }
+  @keyframes dtba-pipe-flash {
+    0%,
+    60% {
+      opacity: 0;
+    }
+    63% {
+      opacity: 1;
+    }
+    66% {
+      opacity: 0.3;
+    }
+    69% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    96%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dtba-row,
+    .dtba-move-down,
+    .dtba-move-up,
+    .dtba-arrow,
+    .dtba-cell,
+    .dtba-val-old,
+    .dtba-val-new,
+    .dtba-panel,
+    .dtba-map-chip,
+    .dtba-pipe-flash {
+      animation: none;
+    }
+    .dtba-row,
+    .dtba-panel,
+    .dtba-map-chip,
+    .dtba-pipe-flash {
+      opacity: 1;
+      transform: none;
+    }
+    .dtba-move-down {
+      opacity: 1;
+      transform: translateY(22px);
+    }
+    .dtba-move-up {
+      opacity: 1;
+      transform: translateY(-44px);
+    }
+    .dtba-arrow {
+      transform: rotate(180deg);
+      color: #8b5cf6;
+    }
+    .dtba-val-old {
+      opacity: 0;
+    }
+    .dtba-val-new {
+      opacity: 1;
+      color: #374151;
+    }
+  }
+</style>

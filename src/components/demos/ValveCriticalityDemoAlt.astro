@@ -1,0 +1,393 @@
+---
+// Alternate version of ValveCriticalityDemo (concept, unshipped). The valve
+// sits mid-pipe on pipe 10 (370,86)-(470,86) instead of the original's
+// pipe 9; everything beyond (470,86) -- 3 pipes reaching 3 junctions,
+// matching the original's count -- drops out of service. The alt grid has
+// loops just like the original network, so this is the same stylized
+// "closing this valve isolates this branch" narrative, not a rigorous
+// graph-connectivity result.
+import AppWindow from "./AppWindow.astro";
+import { pipes } from "./network-geometry-alt";
+import { JUNCTION_COLOR, JUNCTION_RADIUS, OUTLINE_COLOR, OUTLINE_STROKE_WIDTH, PIPE_STROKE_WIDTH, SCALE } from "./network-style-alt";
+
+const findPipe = (x1: number, y1: number, x2: number, y2: number) =>
+  pipes.find(([a, b, c, d]) => a === x1 && b === y1 && c === x2 && d === y2)!;
+
+const outOfServicePipes = [
+  { pipe: findPipe(470, 196, 470, 86) },
+  { pipe: findPipe(470, 196, 570, 196) },
+  { pipe: findPipe(470, 306, 470, 196) },
+];
+
+const outOfServiceNodes: { x: number; y: number }[] = [
+  { x: 470, y: 196 },
+  { x: 570, y: 196 },
+  { x: 470, y: 306 },
+];
+
+const rows = [
+  { label: "Customers affected", value: "142" },
+  { label: "Demand isolated", value: "4.6 l/s" },
+  { label: "Backup valves", value: "0" },
+];
+
+// Valve glyph (two triangles pointing at each other), scaled the same way as
+// NetworkMapAlt's own sizing (SCALE = 1.6x NetworkMap).
+const VALVE_POINT: [number, number] = [420, 86];
+const V_HALF_WIDTH = 7 * SCALE; // = 11.2
+const V_HALF_HEIGHT = 5 * SCALE; // = 8
+const V_STROKE_WIDTH = 0.75 * SCALE; // = 1.2
+const [vpx, vpy] = VALVE_POINT;
+const valveLeftPath = `M${(vpx - V_HALF_WIDTH).toFixed(1)} ${(vpy - V_HALF_HEIGHT).toFixed(1)} L${vpx} ${vpy} L${(vpx - V_HALF_WIDTH).toFixed(1)} ${(vpy + V_HALF_HEIGHT).toFixed(1)} Z`;
+const valveRightPath = `M${(vpx + V_HALF_WIDTH).toFixed(1)} ${(vpy - V_HALF_HEIGHT).toFixed(1)} L${vpx} ${vpy} L${(vpx + V_HALF_WIDTH).toFixed(1)} ${(vpy + V_HALF_HEIGHT).toFixed(1)} Z`;
+
+const RING_RADIUS = Math.round(6 * SCALE); // 9.6 -> 10
+const RING_STROKE_WIDTH = 1.5 * SCALE; // = 2.4
+---
+
+<AppWindow
+  variant="plain"
+  altNetwork
+  hideHeader
+  hideFooter
+  label="Valve criticality concept in epanet-js: closing one valve isolates part of the network and reports the customers affected.">
+  <!-- map overlay: closed valve, out-of-service segment, isolation rings -->
+  <svg
+    viewBox="0 0 640 400"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <!-- pipes dropping out of service -->
+    <g stroke="#d1d5db" stroke-width={PIPE_STROKE_WIDTH} stroke-linecap="round">
+      {
+        outOfServicePipes.map(({ pipe: [x1, y1, x2, y2] }, i) => (
+          <line class={`vca-pipe-out-${i + 1}`} x1={x1} y1={y1} x2={x2} y2={y2} />
+        ))
+      }
+    </g>
+
+    <!-- the still-in-service junction at the near end of the pipe run
+         (470,86) -- NetworkMapAlt draws this first, so the gray
+         out-of-service line above would otherwise cover it. Matches
+         NetworkMapAlt's own junction styling exactly. -->
+    <circle cx="470" cy="86" r={JUNCTION_RADIUS} fill={JUNCTION_COLOR} stroke={OUTLINE_COLOR} stroke-width={OUTLINE_STROKE_WIDTH} />
+
+    <!-- junctions losing supply -->
+    <g fill="#9ca3af" stroke={OUTLINE_COLOR} stroke-width={OUTLINE_STROKE_WIDTH}>
+      {
+        outOfServiceNodes.map(({ x, y }, i) => (
+          <circle class={`vca-node-out-${i + 1}`} cx={x} cy={y} r={JUNCTION_RADIUS} />
+        ))
+      }
+    </g>
+
+    <!-- isolation rings -->
+    <g fill="none" stroke="#ef4444" stroke-width={RING_STROKE_WIDTH}>
+      {
+        outOfServiceNodes.map(({ x, y }, i) => (
+          <circle class={`vca-ring-${i + 1}`} cx={x} cy={y} r={RING_RADIUS} />
+        ))
+      }
+    </g>
+
+    <!-- closed valve: open (gray) crossfading to closed (red) -->
+    <g class="vca-valve-gray">
+      <path d={valveLeftPath} fill="#6b7280" stroke="#ffffff" stroke-width={V_STROKE_WIDTH}></path>
+      <path d={valveRightPath} fill="#6b7280" stroke="#ffffff" stroke-width={V_STROKE_WIDTH}></path>
+    </g>
+    <g class="vca-valve-red">
+      <path d={valveLeftPath} fill="#ef4444" stroke="#ffffff" stroke-width={V_STROKE_WIDTH}></path>
+      <path d={valveRightPath} fill="#ef4444" stroke="#ffffff" stroke-width={V_STROKE_WIDTH}></path>
+    </g>
+  </svg>
+
+  <!-- results panel -->
+  <div
+    class="absolute bottom-2 left-2 w-[200px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-xs font-semibold text-gray-700">Valve criticality</p>
+      <p class="text-xs text-gray-400">V-114</p>
+    </div>
+    <div class="py-1 text-xs">
+      {
+        rows.map((row, i) => (
+          <div class={`vca-row-${i + 1} flex items-center justify-between px-3 py-1`}>
+            <span class="text-gray-500">{row.label}</span>
+            <span class="font-medium text-gray-700 tabular-nums">
+              {row.value}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+    <div class="px-3 py-2 border-t border-gray-100">
+      <span
+        class="vca-pill inline-block rounded-full bg-red-100 text-red-600 text-xs font-medium px-2.5 py-1">
+        Critical
+      </span>
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  .vca-pipe-out-1 {
+    animation: vca-pipe-out-1 9s infinite both;
+  }
+  .vca-pipe-out-2 {
+    animation: vca-pipe-out-2 9s infinite both;
+  }
+  .vca-pipe-out-3 {
+    animation: vca-pipe-out-3 9s infinite both;
+  }
+  @keyframes vca-pipe-out-1 {
+    0%, 9.333% { opacity: 0; }
+    15.556% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vca-pipe-out-2 {
+    0%, 11% { opacity: 0; }
+    17.222% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vca-pipe-out-3 {
+    0%, 12.667% { opacity: 0; }
+    18.889% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .vca-node-out-1 {
+    animation: vca-node-out-1 9s infinite both;
+  }
+  .vca-node-out-2 {
+    animation: vca-node-out-2 9s infinite both;
+  }
+  .vca-node-out-3 {
+    animation: vca-node-out-3 9s infinite both;
+  }
+  @keyframes vca-node-out-1 {
+    0%, 11% { opacity: 0; }
+    17.222% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vca-node-out-2 {
+    0%, 12.667% { opacity: 0; }
+    18.889% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vca-node-out-3 {
+    0%, 14.334% { opacity: 0; }
+    20.556% { opacity: 1; }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .vca-valve-gray {
+    animation: vca-valve-gray 9s infinite both;
+  }
+  @keyframes vca-valve-gray {
+    0%,
+    3.111% {
+      opacity: 1;
+    }
+    9.333%,
+    93.778% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .vca-valve-red {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: vca-valve-red 9s infinite both;
+  }
+  @keyframes vca-valve-red {
+    0%,
+    3.111% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    6.222% {
+      opacity: 0.7;
+      transform: scale(1.45);
+    }
+    9.333% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    12.444% {
+      transform: scale(1);
+    }
+    93.778% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  .vca-ring-1,
+  .vca-ring-2,
+  .vca-ring-3 {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .vca-ring-1 {
+    animation: vca-ring-1 9s infinite both;
+  }
+  .vca-ring-2 {
+    animation: vca-ring-2 9s infinite both;
+  }
+  .vca-ring-3 {
+    animation: vca-ring-3 9s infinite both;
+  }
+  @keyframes vca-ring-1 {
+    0%, 21.778% { opacity: 0; transform: scale(0.4); }
+    25.667% { opacity: 1; transform: scale(1.25); }
+    29.556% { transform: scale(1); }
+    38.889% { transform: scale(1.18); }
+    48.222% { transform: scale(1); }
+    57.556% { transform: scale(1.18); }
+    66.889% { transform: scale(1); }
+    93.778% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
+  }
+  @keyframes vca-ring-2 {
+    0%, 23.445% { opacity: 0; transform: scale(0.4); }
+    27.333% { opacity: 1; transform: scale(1.25); }
+    31.222% { transform: scale(1); }
+    40.556% { transform: scale(1.18); }
+    49.889% { transform: scale(1); }
+    59.222% { transform: scale(1.18); }
+    68.556% { transform: scale(1); }
+    93.778% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
+  }
+  @keyframes vca-ring-3 {
+    0%, 25.111% { opacity: 0; transform: scale(0.4); }
+    29% { opacity: 1; transform: scale(1.25); }
+    32.889% { transform: scale(1); }
+    42.222% { transform: scale(1.18); }
+    51.556% { transform: scale(1); }
+    60.889% { transform: scale(1.18); }
+    70.222% { transform: scale(1); }
+    93.778% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
+  }
+
+  .vca-row-1 {
+    animation: vca-row-1 9s infinite both;
+  }
+  .vca-row-2 {
+    animation: vca-row-2 9s infinite both;
+  }
+  .vca-row-3 {
+    animation: vca-row-3 9s infinite both;
+  }
+  @keyframes vca-row-1 {
+    0%, 27.222% { opacity: 0; transform: translateY(4px); }
+    32.667% { opacity: 1; transform: translateY(0); }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vca-row-2 {
+    0%, 33.889% { opacity: 0; transform: translateY(4px); }
+    39.333% { opacity: 1; transform: translateY(0); }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes vca-row-3 {
+    0%, 40.556% { opacity: 0; transform: translateY(4px); }
+    46% { opacity: 1; transform: translateY(0); }
+    93.778% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .vca-pill {
+    animation: vca-pill 9s infinite both;
+  }
+  @keyframes vca-pill {
+    0%,
+    46.667% {
+      opacity: 0;
+    }
+    51.333% {
+      opacity: 1;
+    }
+    57.556% {
+      opacity: 0.55;
+    }
+    63.778% {
+      opacity: 1;
+    }
+    68.444% {
+      opacity: 0.6;
+    }
+    93.778% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vca-pipe-out-1,
+    .vca-pipe-out-2,
+    .vca-pipe-out-3,
+    .vca-node-out-1,
+    .vca-node-out-2,
+    .vca-node-out-3,
+    .vca-valve-gray,
+    .vca-valve-red,
+    .vca-ring-1,
+    .vca-ring-2,
+    .vca-ring-3,
+    .vca-row-1,
+    .vca-row-2,
+    .vca-row-3,
+    .vca-pill {
+      animation: none;
+    }
+    .vca-pipe-out-1,
+    .vca-pipe-out-2,
+    .vca-pipe-out-3,
+    .vca-node-out-1,
+    .vca-node-out-2,
+    .vca-node-out-3 {
+      opacity: 1;
+    }
+    .vca-valve-gray {
+      opacity: 0;
+    }
+    .vca-valve-red {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .vca-ring-1,
+    .vca-ring-2,
+    .vca-ring-3 {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .vca-row-1,
+    .vca-row-2,
+    .vca-row-3 {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .vca-pill {
+      opacity: 1;
+    }
+  }
+</style>

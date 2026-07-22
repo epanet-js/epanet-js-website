@@ -3,12 +3,20 @@
 // with Main and Scenario #1 traces drawing in over the map.
 import { GitBranch, Plus } from "lucide-react";
 import AppWindow from "./AppWindow.astro";
+
+interface Props {
+  /** Render the map as NetworkMapAlt instead of NetworkMap. */
+  alt?: boolean;
+}
+
+const { alt = false } = Astro.props;
 ---
 
 <AppWindow
   variant="plain"
   hideHeader
   hideFooter
+  altNetwork={alt}
   label="Scenarios in epanet-js: a scenario switcher and a quick graph comparing results between the main model and a scenario.">
   <!-- scenario switcher (bottom-left, like the app) -->
   <div

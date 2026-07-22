@@ -1,0 +1,448 @@
+---
+// Alternate version of ShutdownPlanDemo (concept), repairing pipes 7 and 14
+// of the alt network instead of the original's pipes 11/12. The detour
+// route isn't invented geometry -- it retraces pipes 15, 6, and 2 (the
+// existing west-side loop around the isolated segment), the same way the
+// original's detour retraces existing pipe paths rather than drawing new
+// infrastructure.
+import { CheckCircle2 } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import BasemapAlt from "./BasemapAlt.astro";
+import { pipes, junctions, reservoirPoint } from "./network-geometry-alt";
+import {
+  JUNCTION_COLOR,
+  JUNCTION_RADIUS,
+  OUTLINE_COLOR,
+  OUTLINE_STROKE_WIDTH,
+  PIPE_COLOR,
+  PIPE_STROKE_WIDTH,
+  RESERVOIR_COLOR,
+  RESERVOIR_APEX_OFFSET,
+  RESERVOIR_BASE_OFFSET,
+  RESERVOIR_HALF_WIDTH,
+  SCALE,
+} from "./network-style-alt";
+
+// This demo draws its own network by hand (AppWindow's bare prop skips
+// NetworkMapAlt), so it's always the alt network -- no alt prop to toggle,
+// matching GisImportDemoAlt/FlushingPlanDemoAlt.
+
+// The main under repair: pipes 7 and 14, isolated at their outer ends.
+const isolated = [pipes[7], pipes[14]];
+
+// Valve positions at the isolation points (pipe midpoints).
+const valves = [
+  { x: 270, y: 251 },
+  { x: 320, y: 306 },
+];
+
+const SHIFT_Y = 16 * SCALE; // = 25.6
+const VALVE_SIZE = Math.round(8 * SCALE); // 12.8 -> 13
+const VALVE_RADIUS = 1.5 * SCALE; // = 2.4
+---
+
+<AppWindow
+  bare
+  hideHeader
+  hideFooter
+  label="Shutdown planning in epanet-js: two valves close, the isolated main grays out with its length and customers affected counted, and a detour supply path draws around it.">
+  <svg
+    viewBox="0 0 640 400"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <!-- basemap stays put -- everything else (the network itself, plus
+         this file's own isolated/detour/valve overlay) shifts down
+         together, inside the translate group below. The shpa-panel
+         dropdown is a plain HTML div outside this svg entirely, also
+         unaffected. -->
+    <BasemapAlt />
+
+    <g transform={`translate(0, ${SHIFT_Y})`}>
+    <!-- the network, normally drawn by NetworkMapAlt -- rendered by hand
+         here (AppWindow's bare prop skips NetworkMapAlt) so it can shift
+         down with the rest of this file's content instead of staying
+         fixed with the basemap. -->
+    <g stroke-width={PIPE_STROKE_WIDTH} stroke-linecap="round">
+      {
+        pipes.map(([x1, y1, x2, y2]) => (
+          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={PIPE_COLOR} />
+        ))
+      }
+    </g>
+
+    <!-- isolated segment grays out (its junction dot is redrawn last,
+         below, so it stays on top of every asset instead of just the
+         detour/valve elements that happen to come after it here) -->
+    <g class="shpa-isolated">
+      {
+        isolated.map(([x1, y1, x2, y2]) => (
+          <line
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke="#fca5a5"
+            stroke-width="4.8"
+            stroke-linecap="round"
+            stroke-dasharray="9.6 6.4"
+          />
+        ))
+      }
+    </g>
+
+    <!-- detour supply path around the isolation: retraces pipes 15, 6, 2 --
+         the existing west-side loop -->
+    <polyline
+      class="shpa-detour"
+      pathLength="100"
+      points="270,306 170,306 170,196 270,196"
+      fill="none"
+      stroke="#22c55e"
+      stroke-width="4.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      opacity="0.9"></polyline>
+
+    <!-- valves pop in, then close -->
+    {
+      valves.map(({ x, y }, i) => (
+        <rect
+          class={`shpa-valve shpa-valve-${i + 1}`}
+          x={x - VALVE_SIZE / 2}
+          y={y - VALVE_SIZE / 2}
+          width={VALVE_SIZE}
+          height={VALVE_SIZE}
+          rx={VALVE_RADIUS}
+          stroke="#312e81"
+          stroke-width={VALVE_RADIUS}
+        />
+      ))
+    }
+
+    <!-- all junction dots drawn last, on top of every pipe/detour/valve
+         asset above -- matching NetworkMapAlt's own convention of junction
+         dots sitting above pipes. Since the whole network is now drawn by
+         hand in this file (see above), this covers every junction, not
+         just the handful along the isolated segment/detour that used to
+         need a manual patch. -->
+    <g stroke={OUTLINE_COLOR} stroke-width={OUTLINE_STROKE_WIDTH}>
+      {
+        junctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r={JUNCTION_RADIUS} fill={JUNCTION_COLOR} />
+        ))
+      }
+    </g>
+
+    <!-- reservoir, matching NetworkMapAlt's own fixed triangle glyph -->
+    <path
+      d={`M${reservoirPoint[0]} ${reservoirPoint[1] - RESERVOIR_APEX_OFFSET} L${reservoirPoint[0] + RESERVOIR_HALF_WIDTH} ${reservoirPoint[1] + RESERVOIR_BASE_OFFSET} L${reservoirPoint[0] - RESERVOIR_HALF_WIDTH} ${reservoirPoint[1] + RESERVOIR_BASE_OFFSET} Z`}
+      fill={RESERVOIR_COLOR}
+      stroke={OUTLINE_COLOR}
+      stroke-width={OUTLINE_STROKE_WIDTH}></path>
+
+    <!-- the isolated segment's own junction (370,306) -- reduced to a
+         single remaining connection once pipes 7/14 are down -- overrides
+         the plain navy dot above with its muted "shut off" look -->
+    <circle
+      class="shpa-isolated"
+      cx="370"
+      cy="306"
+      r={JUNCTION_RADIUS}
+      fill="#9ca3af"
+      stroke={OUTLINE_COLOR}
+      stroke-width={OUTLINE_STROKE_WIDTH}></circle>
+
+    <!-- valve rings, drawn last so they flare on top of the valves too -->
+    {
+      valves.map(({ x, y }, i) => (
+        <circle
+          class="shpa-ring"
+          cx={x}
+          cy={y}
+          r="11"
+          fill="none"
+          stroke="#ef4444"
+          stroke-width="2.4"
+          style={`animation-delay: ${(i * 0.48).toFixed(2)}s`}
+        />
+      ))
+    }
+    </g>
+  </svg>
+
+  <!-- shutdown plan panel -->
+  <div
+    class="shpa-panel absolute top-2 right-2 w-[192px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-xs font-semibold text-gray-700">Shutdown plan</p>
+      <p class="text-xs text-gray-400">Main repair</p>
+    </div>
+    <div class="py-1 text-xs">
+      {
+        [
+          { label: "Valves to close", value: "2" },
+          { label: "Isolated length", value: "412 m" },
+          { label: "Customers affected", value: "28" },
+        ].map((row, i) => (
+          <div class={`shpa-row-${i + 1} flex items-center justify-between px-3 py-1`}>
+            <span class="text-gray-500">{row.label}</span>
+            <span class="font-medium text-gray-700 tabular-nums">
+              {row.value}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+    <p
+      class="shpa-footer flex items-center gap-1 px-3 py-1.5 border-t border-gray-100 text-xs text-green-600">
+      <CheckCircle2 size={11} />
+      Detour available
+    </p>
+  </div>
+</AppWindow>
+
+<style>
+  /* valves pop in white, then close red */
+  .shpa-valve {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .shpa-valve-1 {
+    animation: shpa-valve-1 10s ease-out infinite both;
+  }
+  .shpa-valve-2 {
+    animation: shpa-valve-2 10s ease-out infinite both;
+  }
+  @keyframes shpa-valve-1 {
+    0%, 6.4% { opacity: 0; transform: scale(0); fill: #ffffff; }
+    9.6% { opacity: 1; transform: scale(1.2); fill: #ffffff; }
+    11.2% { transform: scale(1); }
+    16% { fill: #ffffff; }
+    19.2% { fill: #ef4444; }
+    93.6% { opacity: 1; fill: #ef4444; }
+    98.4%, 100% { opacity: 0; fill: #ef4444; }
+  }
+  @keyframes shpa-valve-2 {
+    0%, 11.2% { opacity: 0; transform: scale(0); fill: #ffffff; }
+    14.4% { opacity: 1; transform: scale(1.2); fill: #ffffff; }
+    16% { transform: scale(1); }
+    20.8% { fill: #ffffff; }
+    24% { fill: #ef4444; }
+    93.6% { opacity: 1; fill: #ef4444; }
+    98.4%, 100% { opacity: 0; fill: #ef4444; }
+  }
+
+  /* a ring flares as each valve shuts */
+  .shpa-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: shpa-ring-flare 10s ease-out infinite both;
+  }
+  @keyframes shpa-ring-flare {
+    0%,
+    16% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    19.2% {
+      opacity: 0.8;
+      transform: scale(1);
+    }
+    25.6% {
+      opacity: 0;
+      transform: scale(2);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .shpa-isolated {
+    animation: shpa-isolated-in 10s ease-in-out infinite both;
+  }
+  @keyframes shpa-isolated-in {
+    0%,
+    25.6% {
+      opacity: 0;
+    }
+    33.6% {
+      opacity: 1;
+    }
+    93.6% {
+      opacity: 1;
+    }
+    98.4%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .shpa-detour {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: shpa-detour-draw 10s linear infinite both;
+  }
+  @keyframes shpa-detour-draw {
+    0%,
+    44.8% {
+      stroke-dashoffset: 100;
+      opacity: 0.9;
+    }
+    59.2% {
+      stroke-dashoffset: 0;
+    }
+    93.6% {
+      stroke-dashoffset: 0;
+      opacity: 0.9;
+    }
+    98.4%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+
+  .shpa-panel {
+    animation: shpa-panel-in 10s ease-out infinite both;
+  }
+  @keyframes shpa-panel-in {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    4.8% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    93.6% {
+      opacity: 1;
+    }
+    98.4%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .shpa-row-1 {
+    animation: shpa-row-1 10s ease-out infinite both;
+  }
+  @keyframes shpa-row-1 {
+    0%,
+    8% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    12.8% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    96.8%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .shpa-row-2 {
+    animation: shpa-row-2 10s ease-out infinite both;
+  }
+  @keyframes shpa-row-2 {
+    0%,
+    12.8% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    17.6% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    96.8%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .shpa-row-3 {
+    animation: shpa-row-3 10s ease-out infinite both;
+  }
+  @keyframes shpa-row-3 {
+    0%,
+    17.6% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    22.4% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    92% {
+      opacity: 1;
+    }
+    96.8%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .shpa-footer {
+    animation: shpa-footer-in 10s ease-out infinite both;
+  }
+  @keyframes shpa-footer-in {
+    0%,
+    62.4% {
+      opacity: 0;
+    }
+    67.2% {
+      opacity: 1;
+    }
+    93.6% {
+      opacity: 1;
+    }
+    98.4%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shpa-valve-1,
+    .shpa-valve-2,
+    .shpa-ring,
+    .shpa-isolated,
+    .shpa-detour,
+    .shpa-panel,
+    .shpa-row-1,
+    .shpa-row-2,
+    .shpa-row-3,
+    .shpa-footer {
+      animation: none;
+    }
+    .shpa-valve-1,
+    .shpa-valve-2 {
+      opacity: 1;
+      transform: scale(1);
+      fill: #ef4444;
+    }
+    .shpa-ring {
+      opacity: 0;
+    }
+    .shpa-isolated,
+    .shpa-panel,
+    .shpa-row-1,
+    .shpa-row-2,
+    .shpa-row-3,
+    .shpa-footer {
+      opacity: 1;
+      transform: none;
+    }
+    .shpa-detour {
+      stroke-dashoffset: 0;
+      opacity: 0.9;
+    }
+  }
+</style>

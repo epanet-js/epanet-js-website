@@ -1,0 +1,334 @@
+---
+// Alternate version of EpsPlaybackDemo, shifting evening-peak color to
+// groups of the alt network's own pipes instead of the original's 20-pipe
+// index groups. The alt network's two dead-end cul-de-sac tips (indices
+// 11, 12) worsen first at 12:00, the two "low" verticals feeding them
+// (5, 8) at 18:00, and two more "low" pipes (10, 13) at 24:00.
+import { Play } from "lucide-react";
+import AppWindow from "./AppWindow.astro";
+import { pipes, junctions } from "./network-geometry-alt";
+import { JUNCTION_COLOR, JUNCTION_RADIUS, OUTLINE_COLOR, OUTLINE_STROKE_WIDTH, PIPE_STROKE_WIDTH } from "./network-style-alt";
+
+const peakGroupIndices: Record<number, number[]> = {
+  1: [11, 12], // the two dead-end cul-de-sac tips
+  2: [5, 8], // the "low" verticals feeding them
+  3: [10, 13], // two more "low" pipes
+};
+
+const groupByCoords = new Map<string, number>();
+Object.entries(peakGroupIndices).forEach(([group, indices]) => {
+  indices.forEach((i) => {
+    const [x1, y1, x2, y2] = pipes[i];
+    groupByCoords.set(`${x1},${y1},${x2},${y2}`, Number(group));
+  });
+});
+
+const peakPipes = Object.values(peakGroupIndices)
+  .flat()
+  .map((i) => pipes[i]);
+
+const peakGroup = ([x1, y1, x2, y2]: [number, number, number, number, ...unknown[]]) =>
+  groupByCoords.get(`${x1},${y1},${x2},${y2}`)!;
+
+// Junction dots sit above pipes in NetworkMapAlt, so redraw the affected ones
+// over the overlay strokes to preserve the stacking order of the base map.
+const peakJunctions = junctions.filter(([x, y]) =>
+  peakPipes.some(
+    ([x1, y1, x2, y2]) => (x1 === x && y1 === y) || (x2 === x && y2 === y),
+  ),
+);
+
+const ticks = [0, 25, 50, 75, 100];
+const times = ["06:00", "12:00", "18:00", "00:00"];
+---
+
+<AppWindow
+  variant="pressure"
+  altNetwork
+  hideHeader
+  hideFooter
+  label="Extended period simulation in epanet-js: playing through 24 hours of results as pressures shift across the day.">
+  <!-- evening-peak color shift over the base pressure map -->
+  <svg
+    viewBox="0 0 640 400"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    <g stroke-width={PIPE_STROKE_WIDTH} stroke-linecap="round" fill="none">
+      {
+        peakPipes.map(([x1, y1, x2, y2]) => {
+          const group = peakGroup([x1, y1, x2, y2]);
+          return (
+            <Fragment>
+              <line
+                class={`epa-peak-amber-${group}`}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#f59e0b"
+              />
+              <line
+                class={`epa-peak-red-${group}`}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#ef4444"
+              />
+            </Fragment>
+          );
+        })
+      }
+    </g>
+    <g stroke={OUTLINE_COLOR} stroke-width={OUTLINE_STROKE_WIDTH}>
+      {
+        peakJunctions.map(([x, y]) => (
+          <circle cx={x} cy={y} r={JUNCTION_RADIUS} fill={JUNCTION_COLOR} />
+        ))
+      }
+    </g>
+  </svg>
+
+  <!-- time browser (bottom-center, like the app) -->
+  <div
+    class="absolute bottom-2 left-1/2 -translate-x-1/2 w-[240px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div class="flex items-center gap-2 px-2.5 py-2">
+      <span
+        class="epa-play flex items-center justify-center w-5 h-5 rounded bg-violet-600 text-white shrink-0">
+        <Play size={12} className="fill-current" />
+      </span>
+      <span class="relative flex-1 h-1 rounded-full bg-gray-100">
+        {
+          ticks.map((p) => (
+            <span
+              class="absolute top-1/2 w-px h-1.5 -translate-x-1/2 -translate-y-1/2 bg-gray-300/70"
+              style={`left: ${p}%`}
+            />
+          ))
+        }
+        <span class="epa-thumb absolute inset-0">
+          <span
+            class="absolute -top-0.5 left-0 -ml-1 w-2 h-2 rounded-full bg-violet-600"
+          ></span>
+        </span>
+      </span>
+      <span
+        class="relative block w-8 shrink-0 text-[10px] tabular-nums text-gray-600 text-right">
+        <span class="invisible">00:00</span>
+        {
+          times.map((t, i) => (
+            <span
+              class:list={[
+                i === times.length - 1 ? "epa-time-last" : "epa-time",
+                "absolute inset-0 text-right",
+                t === "12:00" && "epa-time-noon",
+              ]}
+              style={`animation-delay: ${i * 2}s`}>
+              {t}
+            </span>
+          ))
+        }
+      </span>
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  .epa-thumb {
+    animation: epa-thumb 10s linear infinite both;
+  }
+  @keyframes epa-thumb {
+    0%,
+    3.2% {
+      transform: translateX(0);
+    }
+    70.4%,
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .epa-time {
+    opacity: 0;
+    animation: epa-time 10s linear infinite both;
+  }
+  @keyframes epa-time {
+    0% {
+      opacity: 0;
+    }
+    2.4%,
+    20% {
+      opacity: 1;
+    }
+    23.2%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .epa-time-last {
+    opacity: 0;
+    animation: epa-time-last 10s linear infinite both;
+  }
+  @keyframes epa-time-last {
+    0% {
+      opacity: 0;
+    }
+    2.4%,
+    40% {
+      opacity: 1;
+    }
+    40.1%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .epa-play {
+    animation: epa-breathe 2s ease-in-out infinite;
+  }
+  @keyframes epa-breathe {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.06);
+    }
+  }
+
+  .epa-peak-amber-1,
+  .epa-peak-amber-2,
+  .epa-peak-amber-3 {
+    animation-duration: 10s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .epa-peak-red-1,
+  .epa-peak-red-2,
+  .epa-peak-red-3 {
+    opacity: 0;
+    animation-duration: 10s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+  .epa-peak-amber-1 {
+    animation-name: epa-peak-amber-1;
+  }
+  .epa-peak-red-1 {
+    animation-name: epa-peak-red-1;
+  }
+  @keyframes epa-peak-amber-1 {
+    0%,
+    20% {
+      opacity: 1;
+    }
+    23%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes epa-peak-red-1 {
+    0%,
+    20% {
+      opacity: 0;
+    }
+    23%,
+    100% {
+      opacity: 1;
+    }
+  }
+  .epa-peak-amber-2 {
+    animation-name: epa-peak-amber-2;
+  }
+  .epa-peak-red-2 {
+    animation-name: epa-peak-red-2;
+  }
+  @keyframes epa-peak-amber-2 {
+    0%,
+    40% {
+      opacity: 1;
+    }
+    43%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes epa-peak-red-2 {
+    0%,
+    40% {
+      opacity: 0;
+    }
+    43%,
+    100% {
+      opacity: 1;
+    }
+  }
+  .epa-peak-amber-3 {
+    animation-name: epa-peak-amber-3;
+  }
+  .epa-peak-red-3 {
+    animation-name: epa-peak-red-3;
+  }
+  @keyframes epa-peak-amber-3 {
+    0%,
+    60% {
+      opacity: 1;
+    }
+    63%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes epa-peak-red-3 {
+    0%,
+    60% {
+      opacity: 0;
+    }
+    63%,
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .epa-thumb,
+    .epa-time,
+    .epa-time-last,
+    .epa-play,
+    .epa-peak-amber-1,
+    .epa-peak-amber-2,
+    .epa-peak-amber-3,
+    .epa-peak-red-1,
+    .epa-peak-red-2,
+    .epa-peak-red-3 {
+      animation: none;
+    }
+    .epa-thumb {
+      transform: translateX(60%);
+    }
+    .epa-time,
+    .epa-time-last {
+      opacity: 0;
+    }
+    .epa-time-noon {
+      opacity: 1;
+    }
+    .epa-play {
+      transform: none;
+    }
+    .epa-peak-amber-1,
+    .epa-peak-amber-2,
+    .epa-peak-amber-3 {
+      opacity: 1;
+    }
+    .epa-peak-red-1,
+    .epa-peak-red-2,
+    .epa-peak-red-3 {
+      opacity: 0;
+    }
+  }
+</style>

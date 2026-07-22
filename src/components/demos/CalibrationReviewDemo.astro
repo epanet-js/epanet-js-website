@@ -6,9 +6,11 @@ import CalibrationPanel from "./CalibrationPanel.astro";
 
 interface Props {
   framed?: boolean;
+  /** Render the framed variant's map as NetworkMapAlt instead of NetworkMap. */
+  alt?: boolean;
 }
 
-const { framed = false } = Astro.props;
+const { framed = false, alt = false } = Astro.props;
 ---
 
 {
@@ -17,6 +19,7 @@ const { framed = false } = Astro.props;
       variant="pressure"
       hideHeader
       hideFooter
+      altNetwork={alt}
       label="Assisted calibration in epanet-js: a review panel suggesting a roughness change, with observed and simulated pressures converging.">
       <CalibrationPanel class="absolute top-2 right-2 w-[296px] max-w-[72%]" />
     </AppWindow>

@@ -1,10 +1,16 @@
 ---
 // Alternate illustrative water network, traced from a hand-made reference
 // (diagram-network.svg): navy pipes and junctions over BasemapAlt's streets.
-// Plain-only (no pressure/pass-fail variants) since the reference has a
-// single color throughout.
+// Supports the same variant/markers props as NetworkMap.astro, so it's a
+// drop-in swap wherever AppWindow's altNetwork prop is used.
 import BasemapAlt from "./BasemapAlt.astro";
-import { pipes, junctions, reservoirPoint } from "./network-geometry-alt";
+import {
+  pipes,
+  junctions,
+  markerPoints,
+  reservoirPoint,
+  type Zone,
+} from "./network-geometry-alt";
 import {
   PIPE_COLOR,
   PIPE_STROKE_WIDTH,
@@ -16,13 +22,23 @@ import {
   RESERVOIR_APEX_OFFSET,
   RESERVOIR_BASE_OFFSET,
   RESERVOIR_HALF_WIDTH,
+  pressureColor,
+  MARKER_RADIUS,
 } from "./network-style-alt";
 
 interface Props {
+  variant?: "plain" | "pressure" | "passfail";
+  markers?: boolean;
   class?: string;
 }
 
-const { class: className } = Astro.props;
+const { variant = "plain", markers = false, class: className } = Astro.props;
+
+const pipeColor = (zone: Zone) =>
+  variant === "pressure" ? pressureColor[zone] : PIPE_COLOR;
+
+const junctionColor = (passes: boolean) =>
+  variant === "passfail" ? (passes ? "#22c55e" : "#ef4444") : JUNCTION_COLOR;
 ---
 
 <div class:list={["w-full h-full", className]} aria-hidden="true">
@@ -38,10 +54,10 @@ const { class: className } = Astro.props;
     class="absolute inset-0 w-full h-full"
     preserveAspectRatio="xMidYMid slice">
     <!-- pipes -->
-    <g stroke={PIPE_COLOR} stroke-width={PIPE_STROKE_WIDTH} stroke-linecap="round">
+    <g stroke-width={PIPE_STROKE_WIDTH} stroke-linecap="round">
       {
-        pipes.map(([x1, y1, x2, y2]) => (
-          <line x1={x1} y1={y1} x2={x2} y2={y2} />
+        pipes.map(([x1, y1, x2, y2, zone]) => (
+          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={pipeColor(zone)} />
         ))
       }
     </g>
@@ -49,8 +65,14 @@ const { class: className } = Astro.props;
     <!-- junctions -->
     <g stroke={OUTLINE_COLOR} stroke-width={OUTLINE_STROKE_WIDTH}>
       {
-        junctions.map(([x, y]) => (
-          <circle cx={x} cy={y} r={JUNCTION_RADIUS} fill={JUNCTION_COLOR} />
+        junctions.map(([x, y, passes]) => (
+          <circle
+            cx={x}
+            cy={y}
+            r={JUNCTION_RADIUS}
+            fill={junctionColor(passes)}
+            class={variant === "passfail" && !passes ? "nma-pulse" : undefined}
+          />
         ))
       }
     </g>
@@ -61,5 +83,44 @@ const { class: className } = Astro.props;
       fill={RESERVOIR_COLOR}
       stroke={OUTLINE_COLOR}
       stroke-width={OUTLINE_STROKE_WIDTH}></path>
+
+    <!-- monitoring point markers -->
+    {
+      markers && (
+        <g fill="none" stroke="#8b5cf6" stroke-width={PIPE_STROKE_WIDTH}>
+          {markerPoints.map(([x, y], i) => (
+            <circle
+              cx={x}
+              cy={y}
+              r={MARKER_RADIUS}
+              class="nma-pulse"
+              style={`animation-delay: ${i * 0.4}s`}
+            />
+          ))}
+        </g>
+      )
+    }
   </svg>
 </div>
+
+<style>
+  .nma-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: nma-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes nma-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nma-pulse {
+      animation: none;
+    }
+  }
+</style>

@@ -3,6 +3,13 @@
 // rows populating as the analysis "runs". Labels mirror the real tool.
 import AppWindow from "./AppWindow.astro";
 
+interface Props {
+  /** Render the map as NetworkMapAlt instead of NetworkMap. */
+  alt?: boolean;
+}
+
+const { alt = false } = Astro.props;
+
 const results = [
   { junction: "J107", flow: "47.2", passes: true },
   { junction: "J67", flow: "30.9", passes: false },
@@ -14,6 +21,7 @@ const results = [
   variant="passfail"
   hideHeader
   hideFooter
+  altNetwork={alt}
   label="Fire flow analysis in epanet-js: results panel showing available flow per junction with pass and fail status over a network map.">
   <div
     class="absolute top-2 left-2 w-[216px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">

@@ -1,0 +1,460 @@
+---
+// Alternate version of HydrantTestPlanDemo, laid out on the alt network
+// instead of NetworkMap. Same timing; the hydrant/observation points are
+// repositioned to alt junctions clear of the top-right panel (below and
+// left of it, rather than spanning under it like the original).
+import AppWindow from "./AppWindow.astro";
+
+// Hydrant at (270,306); observation junctions with expected drawdowns.
+const observations = [
+  { id: "J12", x: 170, y: 306, drawdown: "−8.4 m", chip: "left-[22%] top-[68%]" },
+  { id: "J67", x: 370, y: 306, drawdown: "−5.1 m", chip: "left-[54%] top-[68%]" },
+  { id: "J31", x: 270, y: 196, drawdown: "−2.9 m", chip: "left-[38%] top-[41%]" },
+];
+---
+
+<AppWindow
+  altNetwork
+  hideHeader
+  hideFooter
+  label="Hydrant test planning in epanet-js: a test hydrant with three observation points, each showing its expected pressure drawdown.">
+  <!-- hydrant, observation rings, and connecting lines -->
+  <svg
+    viewBox="0 0 640 400"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true">
+    {
+      observations.map((obs, i) => (
+        <line
+          class="hta-line"
+          x1="270"
+          y1="306"
+          x2={obs.x}
+          y2={obs.y}
+          stroke="#9ca3af"
+          stroke-width="1.9"
+          stroke-dasharray="6 5"
+          style={`animation-delay: ${(i * 0.64).toFixed(2)}s`}
+        />
+      ))
+    }
+    {
+      observations.map((obs, i) => (
+        <circle
+          class={`hta-obs-${i + 1}`}
+          cx={obs.x}
+          cy={obs.y}
+          r="9"
+          fill="none"
+          stroke="#312e81"
+          stroke-width="3.2"
+        />
+      ))
+    }
+    <g class="hta-hydrant">
+      <rect
+        x="262"
+        y="298"
+        width="16"
+        height="16"
+        rx="3"
+        fill="#8b5cf6"
+        stroke="#ffffff"
+        stroke-width="2.4"></rect>
+    </g>
+    <g class="hta-hydrant-pulse-gate">
+      <circle
+        class="hta-hydrant-pulse"
+        cx="270"
+        cy="306"
+        r="13"
+        fill="none"
+        stroke="#8b5cf6"
+        stroke-width="2.4"></circle>
+    </g>
+  </svg>
+
+  <!-- expected drawdown chips at the observation points -->
+  {
+    observations.map((obs, i) => (
+      <span
+        class:list={[
+          `hta-chip-${i + 1}`,
+          "absolute whitespace-nowrap rounded border border-gray-200 bg-white px-1 py-px text-xs font-medium text-gray-700 shadow-sm",
+          obs.chip,
+        ]}>
+        {obs.drawdown}
+      </span>
+    ))
+  }
+
+  <!-- test plan panel -->
+  <div
+    class="hta-panel absolute top-2 right-2 w-[180px] max-w-[70%] bg-white rounded-lg border border-gray-100 shadow-md overflow-hidden">
+    <div
+      class="flex items-baseline justify-between px-3 pt-2.5 pb-2 border-b border-gray-100">
+      <p class="text-xs font-semibold text-gray-700">Hydrant test plan</p>
+      <p class="text-xs text-gray-400">FH-7</p>
+    </div>
+    <div
+      class="flex items-center justify-between px-3 py-1.5 text-xs border-b border-gray-100">
+      <span class="text-gray-500">Test flow</span>
+      <span class="font-medium text-gray-700 tabular-nums">30 l/s</span>
+    </div>
+    <div class="py-1 text-xs">
+      {
+        observations.map((obs, i) => (
+          <div
+            class={`hta-row-${i + 1} flex items-center justify-between px-3 py-1`}>
+            <span class="text-gray-600">{obs.id}</span>
+            <span class="font-medium text-gray-700 tabular-nums">
+              {obs.drawdown}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</AppWindow>
+
+<style>
+  .hta-hydrant {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: hta-hydrant-in 10s ease-out infinite both;
+  }
+  @keyframes hta-hydrant-in {
+    0%,
+    4% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    7% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    10% {
+      transform: scale(1);
+    }
+    80% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .hta-hydrant-pulse-gate {
+    animation: hta-pulse-vis 10s linear infinite both;
+  }
+  @keyframes hta-pulse-vis {
+    0%,
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .hta-hydrant-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: hta-pulse 1.8s ease-out infinite;
+  }
+  @keyframes hta-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    70%,
+    100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  .hta-line {
+    animation:
+      hta-line-in 10s ease-out infinite both,
+      hta-march 1.4s linear infinite;
+  }
+  @keyframes hta-line-in {
+    0%,
+    10% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes hta-march {
+    0% {
+      stroke-dashoffset: 11;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .hta-obs-1,
+  .hta-obs-2,
+  .hta-obs-3 {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .hta-obs-1 {
+    animation: hta-obs-1 10s ease-out infinite both;
+  }
+  @keyframes hta-obs-1 {
+    0%,
+    40% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    45% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    50% {
+      transform: scale(1);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .hta-obs-2 {
+    animation: hta-obs-2 10s ease-out infinite both;
+  }
+  @keyframes hta-obs-2 {
+    0%,
+    50% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    55% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    60% {
+      transform: scale(1);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .hta-obs-3 {
+    animation: hta-obs-3 10s ease-out infinite both;
+  }
+  @keyframes hta-obs-3 {
+    0%,
+    60% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    65% {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+    70% {
+      transform: scale(1);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .hta-chip-1 {
+    animation: hta-chip-1 10s ease-out infinite both;
+  }
+  @keyframes hta-chip-1 {
+    0%,
+    40% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .hta-chip-2 {
+    animation: hta-chip-2 10s ease-out infinite both;
+  }
+  @keyframes hta-chip-2 {
+    0%,
+    50% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .hta-chip-3 {
+    animation: hta-chip-3 10s ease-out infinite both;
+  }
+  @keyframes hta-chip-3 {
+    0%,
+    60% {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    70% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .hta-panel {
+    animation: hta-panel-in 10s ease-out infinite both;
+  }
+  @keyframes hta-panel-in {
+    0%,
+    30% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    40% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .hta-row-1 {
+    animation: hta-row-1 10s ease-out infinite both;
+  }
+  @keyframes hta-row-1 {
+    0%,
+    40% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .hta-row-2 {
+    animation: hta-row-2 10s ease-out infinite both;
+  }
+  @keyframes hta-row-2 {
+    0%,
+    50% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .hta-row-3 {
+    animation: hta-row-3 10s ease-out infinite both;
+  }
+  @keyframes hta-row-3 {
+    0%,
+    60% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    70% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+    }
+    90%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hta-hydrant,
+    .hta-hydrant-pulse-gate,
+    .hta-line,
+    .hta-obs-1,
+    .hta-obs-2,
+    .hta-obs-3,
+    .hta-chip-1,
+    .hta-chip-2,
+    .hta-chip-3,
+    .hta-panel,
+    .hta-row-1,
+    .hta-row-2,
+    .hta-row-3 {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .hta-hydrant-pulse-gate {
+      opacity: 0;
+    }
+  }
+</style>

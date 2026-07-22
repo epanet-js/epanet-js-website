@@ -18,9 +18,8 @@ interface Props {
   markers?: boolean;
   /** Skip the built-in NetworkMap so the slot supplies the whole map stack. */
   bare?: boolean;
-  /** Render NetworkMapAlt instead of NetworkMap. Plain-only -- ignores
-   * variant/markers, since the alt network has no pressure/passfail/marker
-   * styling of its own. */
+  /** Render NetworkMapAlt instead of NetworkMap -- same variant/markers
+   * support, so it's a drop-in swap. */
   altNetwork?: boolean;
   label?: string;
   class?: string;
@@ -92,7 +91,11 @@ const tools = [Circle, Triangle, RectangleHorizontal];
     {
       !bare &&
         (altNetwork ? (
-          <NetworkMapAlt class="absolute inset-0" />
+          <NetworkMapAlt
+            variant={variant}
+            markers={markers}
+            class="absolute inset-0"
+          />
         ) : (
           <NetworkMap
             variant={variant}

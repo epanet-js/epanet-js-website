@@ -4,7 +4,16 @@
 // loop reads as the model being re-run.
 import { Zap } from "lucide-react";
 import NetworkMap from "./NetworkMap.astro";
+import NetworkMapAlt from "./NetworkMapAlt.astro";
 import LegendPanel from "./LegendPanel.astro";
+
+interface Props {
+  /** Render NetworkMapAlt instead of NetworkMap. */
+  alt?: boolean;
+}
+
+const { alt = false } = Astro.props;
+const Map = alt ? NetworkMapAlt : NetworkMap;
 ---
 
 <div
@@ -12,11 +21,11 @@ import LegendPanel from "./LegendPanel.astro";
   role="img"
   aria-label="Running a simulation in epanet-js: the network recolors by flow when the simulation finishes, with a legend.">
   <!-- plain base map, recolored by the flow overlay below -->
-  <NetworkMap variant="plain" class="absolute inset-0" />
+  <Map variant="plain" class="absolute inset-0" />
 
   <!-- flow result layer fading in over the plain base map -->
   <div class="sr-result absolute inset-0">
-    <NetworkMap variant="pressure" class="absolute inset-0" />
+    <Map variant="pressure" class="absolute inset-0" />
   </div>
 
   <!-- run toast -->
