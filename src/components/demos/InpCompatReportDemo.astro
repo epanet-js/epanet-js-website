@@ -106,7 +106,7 @@ const label =
   framed ? (
     <AppWindow variant="plain" hideHeader hideFooter label={label} class={className}>
       <div class="absolute top-2 right-2 w-[250px] max-w-[72%] bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden">
-        <div class="px-3 pt-2.5 pb-2 border-b border-gray-100">
+        <div class="px-3 pt-2.5 pb-2 border-b border-gray-200">
           <div class="flex items-center justify-between">
             <p class="flex items-center gap-1.5 text-[12px] font-semibold text-gray-700">
               <FileText size={14} className="text-gray-400" />
@@ -121,7 +121,7 @@ const label =
           <div class="overflow-hidden">
             <div>
               {rows.map((row, i) => (
-                <div class={`inp-row inp-row-${i} border-t border-gray-50 first:border-t-0 px-3 py-1.5`}>
+                <div class={`inp-row inp-row-${i} px-3 py-1.5`}>
                   <div
                     class:list={[
                       "flex items-center justify-between text-[12px]",
@@ -146,7 +146,7 @@ const label =
                 </div>
               ))}
             </div>
-            <div class={`inp-row inp-row-${rows.length} flex px-3 pt-1.5 pb-2.5 border-t border-gray-50`}>
+            <div class={`inp-row inp-row-${rows.length} flex px-3 pt-1.5 pb-2.5 border-t border-gray-200`}>
               <span class="inp-open rounded bg-violet-600 text-white text-[12px] font-medium px-2.5 py-1">
                 Review model
               </span>

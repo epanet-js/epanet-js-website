@@ -105,25 +105,28 @@ const observed: [number, number][] = [
 </div>
 
 <style>
+  /* 9s cycle: entrance timing unchanged (0-2.45s draw), the fully settled
+     state now holds 2s longer before the shared fade-out, which still
+     runs for the same duration as before, just pushed later. */
   .oo-trace {
     stroke-dasharray: 100;
     stroke-dashoffset: 100;
-    animation: oo-draw 7s linear infinite both;
+    animation: oo-draw 9s linear infinite both;
   }
   @keyframes oo-draw {
     0%,
-    5% {
+    3.89% {
       stroke-dashoffset: 100;
       opacity: 1;
     }
-    35% {
+    27.22% {
       stroke-dashoffset: 0;
     }
-    92% {
+    93.78% {
       stroke-dashoffset: 0;
       opacity: 1;
     }
-    98%,
+    98.44%,
     100% {
       stroke-dashoffset: 0;
       opacity: 0;
@@ -134,26 +137,26 @@ const observed: [number, number][] = [
   .oo-dot {
     transform-box: fill-box;
     transform-origin: center;
-    animation: oo-dot-land 7s ease-out infinite both;
+    animation: oo-dot-land 9s ease-out infinite both;
   }
   @keyframes oo-dot-land {
     0%,
-    38% {
+    29.56% {
       opacity: 0;
       transform: translateY(-6px) scale(0.6);
     }
-    42% {
+    32.67% {
       opacity: 1;
       transform: translateY(0) scale(1.2);
     }
-    44% {
+    34.22% {
       transform: translateY(0) scale(1);
     }
-    90% {
+    92.22% {
       opacity: 1;
       transform: translateY(0) scale(1);
     }
-    96%,
+    96.89%,
     100% {
       opacity: 0;
       transform: translateY(0) scale(1);
@@ -161,42 +164,42 @@ const observed: [number, number][] = [
   }
 
   .oo-residual {
-    animation: oo-residual-in 7s ease-in-out infinite both;
+    animation: oo-residual-in 9s ease-in-out infinite both;
   }
   @keyframes oo-residual-in {
     0%,
-    68% {
+    52.89% {
       opacity: 0;
     }
-    74% {
+    57.56% {
       opacity: 0.22;
     }
-    92% {
+    93.78% {
       opacity: 0.22;
     }
-    98%,
+    98.44%,
     100% {
       opacity: 0;
     }
   }
 
   .oo-chip {
-    animation: oo-chip-in 7s ease-out infinite both;
+    animation: oo-chip-in 9s ease-out infinite both;
   }
   @keyframes oo-chip-in {
     0%,
-    76% {
+    59.11% {
       opacity: 0;
       transform: translateY(3px);
     }
-    82% {
+    63.78% {
       opacity: 1;
       transform: translateY(0);
     }
-    92% {
+    93.78% {
       opacity: 1;
     }
-    98%,
+    98.44%,
     100% {
       opacity: 0;
     }
